@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
-import com.orgzly.android.BookUtils
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.prefs.AppPreferences
@@ -54,8 +53,6 @@ class BookPrefaceFragment : Fragment() {
 
         sharedMainActivityViewModel = ViewModelProvider(requireActivity())
                 .get(SharedMainActivityViewModel::class.java)
-
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -92,6 +89,40 @@ class BookPrefaceFragment : Fragment() {
         }
 
         book = dataRepository.getBook(bookId)
+
+        appBarToDefault()
+    }
+
+    private fun appBarToDefault() {
+        binding.bottomAppBar.run {
+            replaceMenu(R.menu.preface_actions)
+
+            setNavigationOnClickListener {
+                listener?.onBookPrefaceEditCancelRequest()
+            }
+
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.delete -> {
+                        save("")
+                    }
+                }
+
+                true
+            }
+        }
+
+        binding.fab.run {
+            setOnClickListener {
+                save(binding.fragmentBookPrefaceContent.text.toString())
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        sharedMainActivityViewModel.unlockDrawer();
     }
 
     override fun onResume() {
@@ -99,15 +130,9 @@ class BookPrefaceFragment : Fragment() {
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        announceChangesToActivity()
-    }
+        sharedMainActivityViewModel.setCurrentFragment(FRAGMENT_TAG)
 
-    private fun announceChangesToActivity() {
-        sharedMainActivityViewModel.setFragment(
-                FRAGMENT_TAG,
-                BookUtils.getFragmentTitleForBook(book),
-                BookUtils.getFragmentSubtitleForBook(context, book),
-                0)
+        sharedMainActivityViewModel.lockDrawer();
     }
 
     override fun onDetach() {
@@ -116,41 +141,6 @@ class BookPrefaceFragment : Fragment() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         listener = null
-    }
-
-    /*
-	 * Options Menu.
-	 */
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater)
-
-        menu.clear()
-
-        inflater.inflate(R.menu.close_done_delete, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, item)
-
-        when (item.itemId) {
-            R.id.close -> {
-                listener?.onBookPrefaceEditCancelRequest()
-                return true
-            }
-
-            R.id.done -> {
-                save(binding.fragmentBookPrefaceContent.text.toString())
-                return true
-            }
-
-            R.id.delete -> {
-                save("")
-                return true
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
     }
 
     private fun save(preface: String) {

@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.ContextMenu
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
@@ -49,8 +48,6 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_repos)
 
-        setupActionBar(R.string.repositories)
-
         setupNoReposButtons()
 
         listAdapter = object : ArrayAdapter<Repo>(this, R.layout.item_repo, R.id.item_repo_url) {
@@ -70,7 +67,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             binding.activityReposFlipper.displayedChild =
                     if (repos != null && repos.isNotEmpty()) 0 else 1
 
-            invalidateOptionsMenu()
+            appBarToDefault()
         })
 
         viewModel.openRepoRequestEvent.observeSingle(this, Observer { repo ->
@@ -89,6 +86,55 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             it.onItemClickListener = this
             it.adapter = listAdapter
             registerForContextMenu(it)
+        }
+
+        appBarToDefault()
+    }
+
+    private fun appBarToDefault() {
+        binding.bottomAppBar.run {
+            if (listAdapter.count > 0) {
+                replaceMenu(R.menu.repos_actions)
+
+                val newRepos = menu.findItem(R.id.repos_options_menu_item_new).subMenu
+
+                if (!BuildConfig.IS_DROPBOX_ENABLED) {
+                    newRepos.removeItem(R.id.repos_options_menu_item_new_dropbox)
+                }
+
+                if (!AppPreferences.gitIsEnabled(App.getAppContext())) {
+                    newRepos.removeItem(R.id.repos_options_menu_item_new_git)
+                }
+            } else {
+                menu.clear()
+            }
+
+            setNavigationOnClickListener {
+                finish()
+            }
+
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.repos_options_menu_item_new_dropbox -> {
+                        startRepoActivity(menuItem.itemId)
+                    }
+
+                    R.id.repos_options_menu_item_new_git -> {
+                        startRepoActivity(menuItem.itemId)
+                    }
+
+                    R.id.repos_options_menu_item_new_webdav -> {
+                        startRepoActivity(menuItem.itemId)
+                    }
+
+                    R.id.repos_options_menu_item_new_directory -> {
+                        startRepoActivity(menuItem.itemId)
+                    }
+                }
+
+                true
+            }
+
         }
     }
 
@@ -127,7 +173,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
     }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
-        menuInflater.inflate(R.menu.repos_context, menu)
+        menuInflater.inflate(R.menu.repos_cab, menu)
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
@@ -145,56 +191,6 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
 
     private fun deleteRepo(id: Long) {
         viewModel.deleteRepo(id)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Do not display add icon if there are no repositories - large repo buttons will be shown
-        if (listAdapter.count > 0) {
-            menuInflater.inflate(R.menu.repos_actions, menu)
-
-            val newRepos = menu.findItem(R.id.repos_options_menu_item_new).subMenu
-
-            if (!BuildConfig.IS_DROPBOX_ENABLED) {
-                newRepos.removeItem(R.id.repos_options_menu_item_new_dropbox)
-            }
-
-            if (!AppPreferences.gitIsEnabled(App.getAppContext())) {
-                newRepos.removeItem(R.id.repos_options_menu_item_new_git)
-            }
-        }
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.repos_options_menu_item_new_dropbox -> {
-                startRepoActivity(item.itemId)
-                return true
-            }
-
-            R.id.repos_options_menu_item_new_git -> {
-                startRepoActivity(item.itemId)
-                return true
-            }
-
-            R.id.repos_options_menu_item_new_webdav -> {
-                startRepoActivity(item.itemId)
-                return true
-            }
-
-            R.id.repos_options_menu_item_new_directory -> {
-                startRepoActivity(item.itemId)
-                return true
-            }
-
-            android.R.id.home -> {
-                finish()
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {

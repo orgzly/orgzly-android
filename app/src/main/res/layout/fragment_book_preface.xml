@@ -1,32 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <ScrollView
-        android:id="@+id/fragment_book_preface_container"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/screen_edge"
-        android:clipToPadding="false"
-        android:fadeScrollbars="false"
-        android:scrollbarStyle="outsideOverlay">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/fragment_book_preface_container"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/screen_edge"
+            android:clipToPadding="false"
+            android:fadeScrollbars="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/list_view_with_fab_bottom_padding">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/book_preface_hint" />
+
+                <com.orgzly.android.ui.views.EditTextWithMarkup
+                    android:id="@+id/fragment_book_preface_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text|textCapSentences|textMultiLine" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            style="@style/BottomAppBar.FabAlignEnd.WithCancel" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:src="?attr/ic_done_24dp"
+            app:layout_anchor="@id/bottomAppBar"
+            app:backgroundTint="?attr/bottom_action_bar_bg_color" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/book_preface_hint" />
-
-            <com.orgzly.android.ui.views.EditTextWithMarkup
-                android:id="@+id/fragment_book_preface_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text|textCapSentences|textMultiLine" />
-
-        </LinearLayout>
-
-    </ScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

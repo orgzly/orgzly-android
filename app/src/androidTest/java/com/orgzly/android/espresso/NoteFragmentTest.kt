@@ -94,7 +94,7 @@ class NoteFragmentTest : OrgzlyTest() {
         onNoteInBook(1).perform(click())
         onView(withId(R.id.fragment_note_title))
                 .perform(*replaceTextCloseKeyboard("Note title changed"))
-        onView(withId(R.id.done)).perform(click())
+        onView(withId(R.id.fab)).perform(click())
 
         onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note title changed")))
     }
@@ -222,8 +222,8 @@ class NoteFragmentTest : OrgzlyTest() {
 
     @Test
     fun testTitleCanNotBeEmptyForNewNote() {
-        onView(withId(R.id.fab)).perform(click())
-        onView(withId(R.id.done)).perform(click())
+        onView(withId(R.id.fab)).perform(click()) // New note
+        onView(withId(R.id.fab)).perform(click()) // Done
         onSnackbar().check(matches(withText(R.string.title_can_not_be_empty)))
     }
 
@@ -231,14 +231,14 @@ class NoteFragmentTest : OrgzlyTest() {
     fun testTitleCanNotBeEmptyForExistingNote() {
         onNoteInBook(1).perform(click())
         onView(withId(R.id.fragment_note_title)).perform(*replaceTextCloseKeyboard(""))
-        onView(withId(R.id.done)).perform(click())
+        onView(withId(R.id.fab)).perform(click())
         onSnackbar().check(matches(withText(R.string.title_can_not_be_empty)))
     }
 
     @Test
     fun testSavingNoteWithRepeater() {
         onNoteInBook(4).perform(click())
-        onView(withId(R.id.done)).perform(click())
+        onView(withId(R.id.fab)).perform(click())
     }
 
     @Test
@@ -468,7 +468,7 @@ class NoteFragmentTest : OrgzlyTest() {
         onView(allOf(withId(R.id.name), withText("prop-name-1"))).check(matches(isDisplayed()))
         onView(allOf(withId(R.id.value), withText("prop-value-1"))).check(matches(isDisplayed()))
 
-        onView(withId(R.id.done)).perform(click())
+        onView(withId(R.id.fab)).perform(click())
 
         onNoteInBook(1).perform(click())
 
@@ -481,7 +481,7 @@ class NoteFragmentTest : OrgzlyTest() {
         onNoteInBook(1).perform(click())
         onView(withId(R.id.body_edit)).perform(scrollTo()) // For smaller screens
         onView(withId(R.id.body_edit)).perform(*replaceTextCloseKeyboard("a\nb\nc"))
-        onView(withId(R.id.done)).perform(click())
+        onView(withId(R.id.fab)).perform(click())
         onNoteInBook(1, R.id.item_head_fold_button).perform(click())
         onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("3"))))
     }
@@ -508,7 +508,7 @@ class NoteFragmentTest : OrgzlyTest() {
     @Test
     fun testBreadcrumbsPromptWhenCreatingNewNote() {
         onNoteInBook(1).perform(longClick())
-        onView(withId(R.id.bottom_action_bar_new)).perform(click())
+        onView(withId(R.id.new_note)).perform(click())
         onView(withText(R.string.new_under)).perform(click())
         onView(withId(R.id.fragment_note_title)).perform(*replaceTextCloseKeyboard("1.1"))
         onView(withId(R.id.fragment_note_breadcrumbs_text)).perform(clickClickableSpan("Note #1."))

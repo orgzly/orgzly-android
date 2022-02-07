@@ -2,24 +2,22 @@ package com.orgzly.android.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
-import android.widget.Toast;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.App;
 import com.orgzly.android.AppIntent;
-import com.orgzly.android.BookFormat;
+import com.orgzly.android.BookUtils;
 import com.orgzly.android.data.DataRepository;
 import com.orgzly.android.db.entity.Book;
-import com.orgzly.android.BookUtils;
 import com.orgzly.android.ui.books.BooksFragment;
 import com.orgzly.android.ui.main.MainActivity;
 import com.orgzly.android.util.LogUtils;
-
-import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
@@ -47,8 +45,6 @@ public class BookChooserActivity extends CommonActivity
         action = getIntent().getAction();
 
         setContentView(R.layout.activity_bookchooser);
-
-        setupActionBar(R.string.pick_a_notebook, false);
 
         setupFragments(savedInstanceState);
     }

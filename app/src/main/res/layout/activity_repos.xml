@@ -80,7 +80,16 @@
 
         </ViewFlipper>
 
-        <include layout="@layout/app_bar" />
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            style="@style/BottomAppBar.FabAlignEnd.WithBack">
+
+            <TextView
+                android:id="@+id/bottomAppBarTitle"
+                style="@style/BottomAppBarTitle"
+                android:text="@string/repositories" />
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -16,13 +16,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.view.ActionMode;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -32,8 +30,6 @@ import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.App;
 import com.orgzly.android.AppIntent;
-import com.orgzly.android.BookFormat;
-import com.orgzly.android.BookName;
 import com.orgzly.android.db.NotesClipboard;
 import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.db.entity.Note;
@@ -43,15 +39,12 @@ import com.orgzly.android.query.Condition;
 import com.orgzly.android.query.Query;
 import com.orgzly.android.query.user.DottedQueryBuilder;
 import com.orgzly.android.sync.AutoSync;
-import com.orgzly.android.sync.SyncService;
-import com.orgzly.android.ui.ActionModeListener;
 import com.orgzly.android.ui.BottomActionBar;
 import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.DisplayManager;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.ui.books.BooksFragment;
-import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.drawer.DrawerNavigationView;
 import com.orgzly.android.ui.note.NoteFragment;
 import com.orgzly.android.ui.notes.book.BookFragment;
@@ -62,9 +55,7 @@ import com.orgzly.android.ui.savedsearch.SavedSearchFragment;
 import com.orgzly.android.ui.savedsearches.SavedSearchesFragment;
 import com.orgzly.android.ui.settings.SettingsActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
-import com.orgzly.android.usecase.BookCreate;
 import com.orgzly.android.usecase.BookExport;
-import com.orgzly.android.usecase.BookImportFromUri;
 import com.orgzly.android.usecase.BookImportGettingStarted;
 import com.orgzly.android.usecase.BookSparseTreeForNote;
 import com.orgzly.android.usecase.BookUpdatePreface;
@@ -101,7 +92,6 @@ import java.util.Set;
 
 public class MainActivity extends CommonActivity
         implements
-        ActionModeListener,
         SavedSearchFragment.Listener,
         SavedSearchesFragment.Listener,
         BooksFragment.Listener,
@@ -121,7 +111,6 @@ public class MainActivity extends CommonActivity
 
     private LocalBroadcastManager broadcastManager;
 
-    private ActionMode mActionMode;
     private boolean mPromoteDemoteOrMoveRequested = false;
 
     private Runnable runnableOnResumeFragments;
@@ -153,8 +142,6 @@ public class MainActivity extends CommonActivity
                 MainActivityViewModelFactory.Companion.getInstance(dataRepository);
 
         viewModel = new ViewModelProvider(this, factory).get(MainActivityViewModel.class);
-
-        setupActionBar();
 
         broadcastManager = LocalBroadcastManager.getInstance(this);
 
@@ -306,24 +293,19 @@ public class MainActivity extends CommonActivity
             }
         });
 
-        sharedMainActivityViewModel.getFragmentState().observe(this, state -> {
+        sharedMainActivityViewModel.getOpenDrawerRequest().observeSingle(this, open -> {
+            if (open) {
+                mDrawerLayout.openDrawer(GravityCompat.START);
+            } else {
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+        sharedMainActivityViewModel.getCurrentFragmentState().observe(this, state -> {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed fragment state: " + state);
 
             if (state != null) {
-                getSupportActionBar().setTitle(state.getTitle());
-
-                // Clean up whitespace for multi-line query
-                CharSequence subTitle = state.getSubTitle();
-                if (subTitle != null) {
-                    subTitle = subTitle.toString().replaceAll("\\s{2,}", " ");
-                }
-
-                getSupportActionBar().setSubtitle(subTitle);
-
                 drawerNavigationView.updateActiveFragment(state.getTag());
-
-                /* Update floating action button. */
-                MainFab.updateFab(this, state.getTag(), state.getSelectionCount());
             }
         });
 
@@ -565,28 +547,26 @@ public class MainActivity extends CommonActivity
     }
 
     /**
-     * Callback for options menu.
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu);
-
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_actions, menu);
-
-        setupSearchView(menu);
-
-        return true;
-    }
-
-    /**
      * SearchView setup and query text listeners.
      * TODO: http://developer.android.com/training/search/setup.html
      */
-    private void setupSearchView(Menu menu) {
-        final MenuItem searchItem = menu.findItem(R.id.activity_action_search);
+    public void setupSearchView(Menu menu) {
+        final MenuItem searchItem = menu.findItem(R.id.search_view);
+
+        // Hide FAB while searching
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                MainFab.hide(MainActivity.this);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                MainFab.show(MainActivity.this);
+                return true;
+            }
+        });
 
         final SearchView searchView = (SearchView) searchItem.getActionView();
 
@@ -625,8 +605,6 @@ public class MainActivity extends CommonActivity
 
             @Override
             public boolean onQueryTextSubmit(String str) {
-                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, str);
-
                 /* Close search. */
                 searchItem.collapseActionView();
 
@@ -635,31 +613,6 @@ public class MainActivity extends CommonActivity
                 return true;
             }
         });
-    }
-
-    /**
-     * Callback for options menu.
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-        if (mDrawerToggle != null && mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        switch (item.getItemId()) {
-            case R.id.activity_action_sync:
-                SyncService.start(this, new Intent(this, SyncService.class));
-                return true;
-
-            case R.id.activity_action_settings:
-                openSettings();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override
@@ -679,14 +632,11 @@ public class MainActivity extends CommonActivity
     /* Open note fragment to create a new note. */
     @Override
     public void onNoteNewRequest(NotePlace target) {
-        finishActionMode();
-
         DisplayManager.displayNewNote(getSupportFragmentManager(), target);
     }
 
     @Override
     public void onNoteCreated(Note note) {
-        finishActionMode();
         popBackStackAndCloseKeyboard();
 
         // Display Snackbar with an action (create new note below just created one)
@@ -738,8 +688,6 @@ public class MainActivity extends CommonActivity
     @Override /* BookFragment */
     public void onBookPrefaceEditRequest(Book book) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
-
-        finishActionMode();
 
         DisplayManager.displayEditor(getSupportFragmentManager(), book);
     }
@@ -853,73 +801,11 @@ public class MainActivity extends CommonActivity
         return null;
     }
 
-    /*
-     * Action mode
-     */
-
-    @Override
-    public void updateActionModeForSelection(int selectedCount, Fragment fragment) {
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, selectedCount, fragment);
-
-        if (mActionMode != null) { /* Action menu is already activated. */
-            /* Finish action mode if there are no more selected items. */
-            if (selectedCount == 0) {
-                mActionMode.finish();
-            } else {
-                mActionMode.invalidate();
-            }
-
-        } else { /* No action menu activated - started it. */
-            if (selectedCount > 0) {
-                /* Start new action mode. */
-                mActionMode = startSupportActionMode((ActionMode.Callback) fragment);
-            }
-        }
-
-        Toolbar bottomToolBar = findViewById(R.id.bottom_action_bar);
-
-        if (bottomToolBar != null) {
-            if (fragment instanceof BottomActionBar.Callback) {
-                BottomActionBar.Callback callback = (BottomActionBar.Callback) fragment;
-
-                if (selectedCount == 0) {
-                    BottomActionBar.hideBottomBar(bottomToolBar);
-                } else {
-                    BottomActionBar.showBottomBar(bottomToolBar, callback);
-                }
-
-            } else {
-                BottomActionBar.hideBottomBar(bottomToolBar);
-            }
-        }
-
-    }
-
-    @Override
-    public ActionMode getActionMode() {
-        return mActionMode;
-    }
-
-    @Override
-    public void actionModeDestroyed() {
-        if (mActionMode != null) {
-            if ("M".equals(mActionMode.getTag()) && mPromoteDemoteOrMoveRequested) {
-                // TODO: Remove this from here if possible
-                autoSync.trigger(AutoSync.Type.DATA_MODIFIED);
-            }
-        }
-        mPromoteDemoteOrMoveRequested = false;
-        mActionMode = null;
-
-        BottomActionBar.hideBottomBar(findViewById(R.id.bottom_action_bar));
-    }
-
-    private void finishActionMode() {
-        if (mActionMode != null) {
-            mActionMode.finish();
-        }
-    }
+    // TODO: Sync when action mode is destroyed
+    // autoSync.trigger(AutoSync.Type.DATA_MODIFIED);
+    // TODO: When action mode is destroyed
+//    mPromoteDemoteOrMoveRequested = false;
+//        BottomActionBar.hideBottomBar(findViewById(R.id.bottom_action_bar));
 
     @Override
     public void onSavedSearchNewRequest() {
@@ -1057,8 +943,6 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onNoteOpen(long noteId) {
-        finishActionMode();
-
         viewModel.openNote(noteId);
     }
 

@@ -3,8 +3,10 @@ package com.orgzly.android;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
-import android.provider.MediaStore;
+import android.os.storage.StorageManager;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -12,6 +14,8 @@ import com.orgzly.android.util.LogUtils;
 
 import java.io.File;
 import java.io.IOException;
+
+import kotlin.Suppress;
 
 
 /**
@@ -158,5 +162,23 @@ public class LocalStorage {
         if (! file.delete()) {
             Log.e(TAG, "Failed deleting " + file);
         }
+    }
+
+    @SuppressWarnings("deprecation")
+    public static String storage(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return LocalStorage.getExternalStoragePath(context).getAbsolutePath();
+        } else {
+            return Environment.getExternalStorageDirectory().getAbsolutePath();
+        }
+    }
+
+    /**
+     * Get external SD card path
+     */
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    private static File getExternalStoragePath(Context context) {
+        StorageManager storageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
+        return storageManager.getStorageVolumes().get(0).getDirectory();
     }
 }

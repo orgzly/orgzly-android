@@ -77,8 +77,6 @@ public class ShareActivity extends CommonActivity
 
         setContentView(R.layout.activity_share);
 
-        setupActionBar(R.string.new_note, false);
-
         Data data = getDataFromIntent(getIntent());
 
         setupFragments(savedInstanceState, data);

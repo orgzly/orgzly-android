@@ -2,6 +2,7 @@ package com.orgzly.android.ui.note
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
@@ -34,6 +35,7 @@ import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.ui.notes.book.BookFragment
+import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.share.ShareActivity
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.removeBackgroundKeepPadding
@@ -137,8 +139,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 initialContent)
 
         viewModel = ViewModelProvider(this, factory).get(NoteViewModel::class.java)
-
-        setHasOptionsMenu(true)
 
         requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -297,6 +297,100 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         setContentFoldState(AppPreferences.isNoteContentFolded(context))
 
+        appBarToDefault()
+    }
+
+    private fun appBarToDefault() {
+        binding.bottomAppBar.run {
+            replaceMenu(R.menu.note_actions)
+
+            setNavigationOnClickListener {
+                userCancel()
+            }
+
+            // TODO: Move keep_screen_on to the fun, rename all is to be the same for this item
+            ActivityUtils.keepScreenOnUpdateMenuItem(
+                activity,
+                menu,
+                menu.findItem(R.id.keep_screen_on))
+
+            if (viewModel.notePayload == null) { // Displaying non-existent note.
+                menu.removeItem(R.id.note_view_edit)
+                menu.removeItem(R.id.done)
+                menu.removeItem(R.id.metadata)
+                menu.removeItem(R.id.delete)
+
+            } else {
+                when (AppPreferences.noteMetadataVisibility(context)) {
+                    "selected" -> menu.findItem(R.id.metadata_show_selected).isChecked = true
+                    else -> menu.findItem(R.id.metadata_show_all).isChecked = true
+                }
+
+                menu.findItem(R.id.metadata_always_show_set).isChecked =
+                    AppPreferences.alwaysShowSetNoteMetadata(context)
+
+                menu.findItem(R.id.note_view_edit)
+                    ?.actionView
+                    ?.findViewById<Switch>(R.id.note_view_edit_switch)
+                    ?.let { switch ->
+
+                        switch.isChecked = viewModel.isInEditMode()
+
+                        switch.setOnCheckedChangeListener { _, _ ->
+                            viewModel.toggleViewEditMode()
+                        }
+                    }
+            }
+
+            /* Newly created note cannot be deleted. */
+            if (viewModel.isNew()) {
+                menu.removeItem(R.id.delete)
+            }
+
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.done -> {
+                        userSave()
+                    }
+
+                    R.id.keep_screen_on -> {
+                        dialog = ActivityUtils.keepScreenOnToggle(activity, menuItem)
+                    }
+
+                    R.id.delete -> {
+                        userDelete()
+                    }
+
+                    R.id.metadata_show_all -> {
+                        menuItem.isChecked = true
+                        AppPreferences.noteMetadataVisibility(context, "all")
+                        setMetadataViewsVisibility()
+                    }
+
+                    R.id.metadata_show_selected -> {
+                        menuItem.isChecked = true
+                        AppPreferences.noteMetadataVisibility(context, "selected")
+                        setMetadataViewsVisibility()
+                    }
+
+                    R.id.metadata_always_show_set -> {
+                        menuItem.isChecked = !menuItem.isChecked
+                        AppPreferences.alwaysShowSetNoteMetadata(context, menuItem.isChecked)
+                        setMetadataViewsVisibility()
+                    }
+
+                    R.id.activity_action_settings -> {
+                        startActivity(Intent(context, SettingsActivity::class.java))
+                    }
+                }
+
+                true
+            }
+        }
+
+        binding.fab.setOnClickListener {
+            userSave()
+        }
     }
 
     private fun isNoteContentFolded(): Boolean {
@@ -381,9 +475,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 null -> { }
             }
 
-            // For updating view-edit switch
-            activity?.invalidateOptionsMenu()
-
+            // To update view-edit switch
+            appBarToDefault()
         })
 
         viewModel.errorEvent.observeSingle(viewLifecycleOwner, Observer { error ->
@@ -609,10 +702,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
             setMetadataViewsVisibility()
 
-            /* Refresh action bar items (hide or display, depending on if book is loaded. */
-            activity?.invalidateOptionsMenu()
-
-            announceChangesToActivity()
+            // Refresh action bar items (hide or display, depending on if book is loaded
+            appBarToDefault()
         })
 
         viewModel.loadData()
@@ -635,16 +726,10 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         super.onResume()
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
-    }
 
-    private fun announceChangesToActivity() {
-//        sharedMainActivityViewModel.setFragment(
-//                FRAGMENT_TAG,
-//                viewModel.bookView.value?.book?.name,
-//                BookUtils.getError(context, viewModel.bookView.value?.book),
-//                0)
+        sharedMainActivityViewModel.setCurrentFragment(FRAGMENT_TAG)
 
-        sharedMainActivityViewModel.setFragment(FRAGMENT_TAG, null, null, 0)
+        sharedMainActivityViewModel.lockDrawer();
     }
 
     override fun onPause() {
@@ -654,6 +739,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         dialog = null
 
         ActivityUtils.keepScreenOnClear(activity)
+
+        sharedMainActivityViewModel.unlockDrawer();
     }
 
     override fun onDestroyView() {
@@ -888,100 +975,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
     }
 
-    /*
-     * Options Menu.
-     */
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater)
-
-        inflater.inflate(R.menu.note_actions, menu)
-
-        ActivityUtils.keepScreenOnUpdateMenuItem(
-                activity,
-                menu,
-                menu.findItem(R.id.keep_screen_on))
-
-        // Remove search item
-        menu.removeItem(R.id.activity_action_search)
-
-        if (viewModel.notePayload == null) { // Displaying non-existent note.
-            menu.removeItem(R.id.note_view_edit)
-            menu.removeItem(R.id.done)
-            menu.removeItem(R.id.metadata)
-            menu.removeItem(R.id.delete)
-
-        } else {
-            when (AppPreferences.noteMetadataVisibility(context)) {
-                "selected" -> menu.findItem(R.id.metadata_show_selected).isChecked = true
-                else -> menu.findItem(R.id.metadata_show_all).isChecked = true
-            }
-
-            menu.findItem(R.id.metadata_always_show_set).isChecked =
-                    AppPreferences.alwaysShowSetNoteMetadata(context)
-
-            menu.findItem(R.id.note_view_edit)
-                    ?.actionView
-                    ?.findViewById<Switch>(R.id.note_view_edit_switch)
-                    ?.let { switch ->
-
-                        switch.isChecked = viewModel.isInEditMode()
-
-                        switch.setOnCheckedChangeListener { _, _ ->
-                            viewModel.toggleViewEditMode()
-                        }
-                    }
-        }
-
-        /* Newly created note cannot be deleted. */
-        if (viewModel.isNew()) {
-            menu.removeItem(R.id.delete)
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, item)
-
-        when (item.itemId) {
-            R.id.done -> {
-                userSave()
-                return true
-            }
-
-            R.id.keep_screen_on -> {
-                dialog = ActivityUtils.keepScreenOnToggle(activity, item)
-                return true
-            }
-
-            R.id.delete -> {
-                userDelete()
-                return true
-            }
-
-            R.id.metadata_show_all -> {
-                item.isChecked = true
-                AppPreferences.noteMetadataVisibility(context, "all")
-                setMetadataViewsVisibility()
-                return true
-            }
-
-            R.id.metadata_show_selected -> {
-                item.isChecked = true
-                AppPreferences.noteMetadataVisibility(context, "selected")
-                setMetadataViewsVisibility()
-                return true
-            }
-
-            R.id.metadata_always_show_set -> {
-                item.isChecked = !item.isChecked
-                AppPreferences.alwaysShowSetNoteMetadata(context, item.isChecked)
-                setMetadataViewsVisibility()
-                return true
-            }
-
-            else -> return super.onOptionsItemSelected(item)
-        }
-    }
-
     private fun setMetadataViewsVisibility() {
         setMetadataViewsVisibility(
                 "tags",
@@ -1032,7 +1025,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     }
 
     private fun userSave() {
-        ActivityUtils.closeSoftKeyboard(activity)
+        // ActivityUtils.closeSoftKeyboard(activity)
 
         updatePayloadFromViews()
 

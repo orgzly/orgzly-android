@@ -36,7 +36,7 @@ public class ListWidgetTest {
     private static final String HEADER_ADD = "com.orgzly:id/list_widget_header_add";
     private static final String ITEM_DONE = "com.orgzly:id/item_list_widget_done";
     private static final String ITEM_TITLE = "com.orgzly:id/item_list_widget_title";
-    private static final String ORGZLY_SEARCH = "com.orgzly:id/activity_action_search";
+    private static final String ORGZLY_SEARCH = "com.orgzly:id/search_view";
     private static final String NOTE_TITLE = "com.orgzly:id/fragment_note_title";
 
     private UiDevice device;

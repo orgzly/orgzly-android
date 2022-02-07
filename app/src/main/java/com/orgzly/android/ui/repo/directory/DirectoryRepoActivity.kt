@@ -7,8 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.Menu
-import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -42,8 +40,6 @@ class DirectoryRepoActivity : CommonActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_directory)
-
-        setupActionBar(R.string.directory)
 
         // Not working when done in XML
         binding.activityRepoDirectory.apply {
@@ -86,6 +82,16 @@ class DirectoryRepoActivity : CommonActivity() {
                 showSnackbar((error.cause ?: error).localizedMessage)
             }
         })
+
+        binding.bottomAppBar.run {
+            setNavigationOnClickListener {
+                finish()
+            }
+        }
+
+        binding.fab.setOnClickListener {
+            saveAndFinish()
+        }
     }
 
     private fun startFileBrowser() {
@@ -161,31 +167,6 @@ class DirectoryRepoActivity : CommonActivity() {
             val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
 
             contentResolver.takePersistableUriPermission(uri, takeFlags)
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        super.onCreateOptionsMenu(menu)
-
-        menuInflater.inflate(R.menu.done, menu)
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.done -> {
-                saveAndFinish()
-                true
-            }
-
-            android.R.id.home -> {
-                finish()
-                true
-            }
-
-            else ->
-                super.onOptionsItemSelected(item)
         }
     }
 

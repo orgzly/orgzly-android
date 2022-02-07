@@ -1,43 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeContainer"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ViewFlipper
-            android:id="@+id/fragment_books_view_flipper"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/fragment_books_bg_color">
+            android:layout_height="match_parent">
 
-            <ProgressBar style="@style/LoadingProgressBar" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fragment_books_recycler_view"
+            <ViewFlipper
+                android:id="@+id/fragment_books_view_flipper"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingLeft="@dimen/cards_margin"
-                android:paddingRight="@dimen/cards_margin"
-                android:paddingTop="@dimen/cards_margin"
-                android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
+                android:background="?attr/fragment_books_bg_color">
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                <ProgressBar style="@style/LoadingProgressBar" />
 
-                <TextView
-                    style="@style/BigCenteredText"
-                    android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
-                    android:text="@string/no_notebooks" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fragment_books_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingLeft="@dimen/cards_margin"
+                    android:paddingRight="@dimen/cards_margin"
+                    android:paddingTop="@dimen/cards_margin"
+                    android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
 
-            </ScrollView>
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        style="@style/BigCenteredText"
+                        android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
+                        android:text="@string/no_notebooks" />
+                </ScrollView>
 
-        </ViewFlipper>
+            </ViewFlipper>
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            style="@style/BottomAppBar.WithMenu" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="?attr/ic_add_24dp"
+            app:layout_anchor="@id/bottomAppBar"
+            app:backgroundTint="?attr/bottom_action_bar_bg_color" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

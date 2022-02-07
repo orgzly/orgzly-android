@@ -10,6 +10,7 @@ import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.db.entity.Repo
+import com.orgzly.android.ui.AppBar
 import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.SingleLiveEvent
 import com.orgzly.android.usecase.*
@@ -39,7 +40,7 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
 
     val viewState = MutableLiveData<ViewState>(ViewState.LOADING)
 
-    val books = Transformations.switchMap(booksParams) {
+    val data = Transformations.switchMap(booksParams) {
         Transformations.map(dataRepository.getBooksLiveData()) { books ->
             viewState.value = if (books.isNotEmpty()) {
                 ViewState.LOADED
@@ -49,6 +50,8 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
             books
         }
     }
+
+    val appBar = AppBar()
 
     /* Triggers querying only if parameters changed. */
     fun refresh(sortOrder: String) {

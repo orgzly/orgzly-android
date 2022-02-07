@@ -9,48 +9,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/bottom_action_bar_bg_color"
+            android:elevation="4dp" tools:targetApi="lollipop"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar" />
+
+        <ListView
+            android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:orientation="vertical">
+            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_marginBottom="?attr/actionBarSize"
+            android:divider="@null"
+            android:dividerHeight="0dp" />
 
-            <ListView
-                android:id="@+id/list"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:divider="@null"
-                android:dividerHeight="0dp" />
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            style="@style/BottomAppBar.FabAlignEnd.WithCancel" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:orientation="horizontal"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:background="?android:attr/windowBackground"
-                android:elevation="2dp" tools:targetApi="21">
-
-                <Button
-                    android:id="@+id/activity_browser_button_create"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="@string/new_folder"/>
-
-                <Button
-                    android:id="@+id/activity_browser_button_use"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text="@string/select"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <include layout="@layout/app_bar"/>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="?attr/ic_done_24dp"
+            app:layout_anchor="@id/bottomAppBar"
+            app:backgroundTint="?attr/bottom_action_bar_bg_color" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

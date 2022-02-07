@@ -28,6 +28,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.Assume;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
@@ -38,7 +39,6 @@ import static androidx.test.espresso.action.ViewActions.pressKey;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
-import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -315,18 +315,15 @@ class EspressoUtils {
         pressBack();
     }
 
-    static void openContextualToolbarOverflowMenu() {
-        onView(allOf(
-                anyOf(
-                        withContentDescription(R.string.abc_action_menu_overflow_description),
-                        withClassName(endsWith("OverflowMenuButton"))),
-                isDescendantOfA(withId(R.id.toolbar))
-        )).perform(click());
+    static ViewInteraction contextualToolbarOverflowMenu() {
+        return onView(anyOf(
+                withContentDescription(R.string.abc_action_menu_overflow_description),
+                withClassName(endsWith("OverflowMenuButton"))));
     }
 
     static void searchForText(String str) {
-        onView(allOf(withId(R.id.activity_action_search), isDisplayed())).perform(click());
-        onView(withHint(R.string.search_hint)).perform(replaceText(str), pressKey(KeyEvent.KEYCODE_ENTER));
+        onView(allOf(withId(R.id.search_view), isDisplayed())).perform(click());
+        onView(withId(R.id.search_src_text)).perform(replaceText(str), pressKey(KeyEvent.KEYCODE_ENTER));
     }
 
     static ViewAction[] replaceTextCloseKeyboard(String str) {
@@ -423,23 +420,18 @@ class EspressoUtils {
                 TextView textView = (TextView) view;
                 Spanned spannable = (Spanned) textView.getText();
 
-                ClickableSpan clickable = null;
                 for (ClickableSpan span: SpanUtils.getSpans(spannable, ClickableSpan.class)) {
                     int start = spannable.getSpanStart(span);
                     int end = spannable.getSpanEnd(span);
 
                     CharSequence sequence = spannable.subSequence(start, end);
                     if (sequence.toString().contains(textToClick)) {
-                        clickable = span;
-                        break;
+                        span.onClick(textView);
+                        return;
                     }
                 }
 
-                if (clickable != null) {
-                    clickable.onClick(textView);
-                } else {
-                    throw new IllegalStateException("No clickable span found in " + spannable);
-                }
+                throw new IllegalStateException("No clickable span found in " + spannable);
             }
         };
     }

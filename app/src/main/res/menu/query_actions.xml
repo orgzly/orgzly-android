@@ -1,10 +1,23 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/search_view"
+        android:title="@string/options_menu_item_search"
+        android:icon="?attr/ic_search_24dp"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="collapseActionView|always" tools:ignore="AlwaysShowAction"/>
 
     <item
         android:id="@+id/query_options_keep_screen_on"
         app:showAsAction="never"
         android:checkable="true"
         android:title="@string/keep_screen_on"/>
+
+    <item
+        android:id="@+id/activity_action_settings"
+        app:showAsAction="never"
+        android:title="@string/settings"/>
 </menu>

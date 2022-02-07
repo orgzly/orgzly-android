@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import com.orgzly.BuildConfig
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.NoteView
+import com.orgzly.android.ui.AppBar
 import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.util.LogUtils
 
@@ -24,7 +25,7 @@ class QueryViewModel(private val dataRepository: DataRepository) : CommonViewMod
 
     private val notesParams = MutableLiveData<Params>()
 
-    private val notesLiveData = Transformations.switchMap(notesParams) { params ->
+    val data = Transformations.switchMap(notesParams) { params ->
         if (params.query != null) {
             Transformations.map(dataRepository.selectNotesFromQueryLiveData(params.query)) {
                 viewState.value = if (it.isNotEmpty()) {
@@ -40,16 +41,14 @@ class QueryViewModel(private val dataRepository: DataRepository) : CommonViewMod
         }
     }
 
+    val appBar: AppBar = AppBar()
+
     /* Triggers querying only if parameters changed. */
     fun refresh(query: String?, defaultPriority: String) {
         Params(query, defaultPriority).let {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, it)
             notesParams.value = it
         }
-    }
-
-    fun notes(): LiveData<List<NoteView>> {
-        return notesLiveData
     }
 
     companion object {

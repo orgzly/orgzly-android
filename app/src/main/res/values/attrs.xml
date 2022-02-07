@@ -98,11 +98,13 @@
         <attr name="ic_arrow_forward_24dp" format="reference"/>
         <attr name="ic_arrow_upward_24dp" format="reference"/>
         <attr name="ic_cancel_24dp" format="reference"/>
+        <attr name="ic_cancel_outline_24dp" format="reference"/>
         <attr name="ic_center_focus_strong_24dp" format="reference"/>
         <attr name="ic_close_24dp" format="reference"/>
         <attr name="ic_content_copy_24dp" format="reference"/>
         <attr name="ic_content_cut_24dp" format="reference"/>
         <attr name="ic_content_paste_24dp" format="reference"/>
+        <attr name="ic_create_new_folder_24dp" format="reference"/>
         <attr name="ic_delete_24dp" format="reference"/>
         <attr name="ic_done_18dp" format="reference"/>
         <attr name="ic_done_24dp" format="reference"/>
@@ -126,6 +128,7 @@
         <attr name="ic_language_18dp" format="reference"/>
         <attr name="ic_library_books_24dp" format="reference"/>
         <attr name="ic_link_18dp" format="reference"/>
+        <attr name="ic_menu_24dp" format="reference"/>
         <attr name="ic_menu_open_24dp" format="reference"/>
         <attr name="ic_more_horiz_24dp" format="reference"/>
         <attr name="ic_move_to_inbox_24dp" format="reference"/>

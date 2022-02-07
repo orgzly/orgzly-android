@@ -69,7 +69,25 @@
 
         </ScrollView>
 
-        <include layout="@layout/app_bar" />
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            style="@style/BottomAppBar.FabAlignEnd.WithCancel">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:text="@string/directory" />
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="?attr/ic_done_24dp"
+            app:layout_anchor="@id/bottomAppBar"
+            app:backgroundTint="?attr/bottom_action_bar_bg_color" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

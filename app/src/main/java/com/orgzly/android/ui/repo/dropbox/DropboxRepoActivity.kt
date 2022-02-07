@@ -8,8 +8,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -49,8 +47,6 @@ class DropboxRepoActivity : CommonActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_dropbox)
-
-        setupActionBar(R.string.dropbox)
 
         /* Dropbox link / unlink button. */
         binding.activityRepoDropboxLinkButton.setOnClickListener {
@@ -114,6 +110,16 @@ class DropboxRepoActivity : CommonActivity() {
         ActivityUtils.openSoftKeyboardWithDelay(this, binding.activityRepoDropboxDirectory)
 
         client = DropboxClient(applicationContext, repoId)
+
+        binding.bottomAppBar.run {
+            setNavigationOnClickListener {
+                finish()
+            }
+        }
+
+        binding.fab.setOnClickListener {
+            saveAndFinish()
+        }
     }
 
     private fun editAccessToken() {
@@ -163,31 +169,6 @@ class DropboxRepoActivity : CommonActivity() {
         dropboxCompleteAuthentication()
 
         updateDropboxLinkUnlinkButton()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        super.onCreateOptionsMenu(menu)
-
-        menuInflater.inflate(R.menu.done, menu)
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.done -> {
-                saveAndFinish()
-                true
-            }
-
-            android.R.id.home -> {
-                finish()
-                true
-            }
-
-            else ->
-                super.onOptionsItemSelected(item)
-        }
     }
 
     private fun saveAndFinish() {

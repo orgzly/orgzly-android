@@ -9,6 +9,7 @@ import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.SingleLiveEvent
+import com.orgzly.android.ui.AppBar
 import com.orgzly.android.usecase.BookCycleVisibility
 import com.orgzly.android.usecase.UseCaseRunner
 
@@ -18,17 +19,17 @@ class BookViewModel(private val dataRepository: DataRepository, val bookId: Long
 
     private val params = MutableLiveData<Params>(Params())
 
-    enum class ViewState {
+    enum class FlipperDisplayedChild {
         LOADING,
         LOADED,
         EMPTY,
         DOES_NOT_EXIST
     }
 
-    val viewState = MutableLiveData<ViewState>(ViewState.LOADING)
+    val flipperDisplayedChild = MutableLiveData(FlipperDisplayedChild.LOADING)
 
-    fun setViewState(state: ViewState) {
-        viewState.value = state
+    fun setFlipperDisplayedChild(child: FlipperDisplayedChild) {
+        flipperDisplayedChild.value = child
     }
 
     data class Data(val book: Book?, val notes: List<NoteView>?)
@@ -43,6 +44,8 @@ class BookViewModel(private val dataRepository: DataRepository, val bookId: Long
             }
         }
     }
+
+    val appBar = AppBar()
 
     fun cycleVisibility() {
         data.value?.book?.let { book ->

@@ -4,13 +4,11 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.view.ActionMode
 import androidx.fragment.app.Fragment
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
-import com.orgzly.android.ui.ActionModeListener
 import com.orgzly.android.ui.NotePlace
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.TimeType
@@ -28,9 +26,6 @@ import javax.inject.Inject
  */
 abstract class NotesFragment : Fragment(), TimestampDialogFragment.OnDateTimeSetListener {
 
-    @JvmField
-    var actionModeListener: ActionModeListener? = null
-
     @Inject
     lateinit var dataRepository: DataRepository
 
@@ -42,8 +37,6 @@ abstract class NotesFragment : Fragment(), TimestampDialogFragment.OnDateTimeSet
     @JvmField
     var dialog: AlertDialog? = null
 
-
-    var fragmentActionMode: ActionMode? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -65,13 +58,7 @@ abstract class NotesFragment : Fragment(), TimestampDialogFragment.OnDateTimeSet
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        getAdapter()?.let { adapter ->
-            adapter.getSelection().saveIds(outState)
-
-            /* Save action mode state (move mode). */
-            val actionMode = actionModeListener?.actionMode
-            outState.putBoolean("actionModeMove", actionMode != null && "M" == actionMode.tag)
-        }
+        getAdapter()?.getSelection()?.saveIds(outState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -151,11 +138,11 @@ abstract class NotesFragment : Fragment(), TimestampDialogFragment.OnDateTimeSet
     }
 
     fun scheduledTimeButtonIds(): Set<Int> {
-        return setOf(R.id.bottom_action_bar_schedule, R.id.quick_bar_schedule)
+        return setOf(R.id.schedule, R.id.quick_bar_schedule)
     }
 
     fun deadlineTimeButtonIds(): Set<Int> {
-        return setOf(R.id.bottom_action_bar_deadline, R.id.quick_bar_deadline)
+        return setOf(R.id.deadline, R.id.quick_bar_deadline)
     }
 
     interface Listener {

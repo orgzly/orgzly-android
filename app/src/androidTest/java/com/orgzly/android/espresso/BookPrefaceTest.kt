@@ -1,5 +1,6 @@
 package com.orgzly.android.espresso
 
+import android.os.SystemClock
 import androidx.annotation.StringRes
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.*
@@ -49,7 +50,7 @@ class BookPrefaceTest : OrgzlyTest() {
     fun testUpdatingBookPreface() {
         onPreface().perform(click())
         onView(withId(R.id.fragment_book_preface_content)).perform(*replaceTextCloseKeyboard("New content"))
-        onView(withId(R.id.done)).perform(click())
+        onView(withId(R.id.fab)).perform(click()) // Preface done
         onPreface().perform(click())
         onView(withId(R.id.fragment_book_preface_content)).check(matches(withText("New content")))
     }
@@ -59,10 +60,9 @@ class BookPrefaceTest : OrgzlyTest() {
         // Preface is displayed
         onPreface().check(matches(isDisplayed()))
 
-        // Enter and delete it
+        // Open preface and delete it
         onPreface().perform(click())
-        openContextualActionModeOverflowMenu()
-        onView(withText(R.string.delete)).perform(click())
+        onView(withId(R.id.delete)).perform(click())
 
         // Preface is not displayed anymore
         onPreface().check(matches(not(isDisplayed())))

@@ -119,7 +119,7 @@ class ShareActivityTest : OrgzlyTest() {
                 type = "text/plain",
                 extraText = "This is some shared text")
 
-        onView(withId(R.id.done)).perform(click())
+        onView(withId(R.id.fab)).perform(click()); // Note done
     }
 
     @Test
@@ -134,19 +134,19 @@ class ShareActivityTest : OrgzlyTest() {
             activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
 
-        onView(withId(R.id.done)).perform(click())
+        onView(withId(R.id.fab)).perform(click()); // Note done
     }
 
     @Test
     fun testTextEmpty() {
         startActivityWithIntent(action = Intent.ACTION_SEND, type = "text/plain", extraText = "")
-        onView(withId(R.id.done)).perform(click())
+        onView(withId(R.id.fab)).perform(click()); // Note done
     }
 
     @Test
     fun testTextNull() {
         startActivityWithIntent(action = Intent.ACTION_SEND, type = "text/plain")
-        onView(withId(R.id.done)).perform(click())
+        onView(withId(R.id.fab)).perform(click()); // Note done
     }
 
     @Test
@@ -159,7 +159,7 @@ class ShareActivityTest : OrgzlyTest() {
         onView(withId(R.id.fragment_note_title)).check(matches(withText("content://uri")))
         onView(withId(R.id.body_edit)).check(matches(withText("Cannot find image using this URI.")))
 
-        onView(withId(R.id.done)).perform(click())
+        onView(withId(R.id.fab)).perform(click()); // Note done
     }
 
     @Test
@@ -209,7 +209,7 @@ class ShareActivityTest : OrgzlyTest() {
                 type = "text/plain",
                 extraText = "Note 3")
 
-        onView(withId(R.id.done)).perform(click())
+        onView(withId(R.id.fab)).perform(click()); // Note done
 
         val (_, lft, rgt) = dataRepository.getLastNote("Note 1")!!.position
         val (_, lft1, rgt1) = dataRepository.getLastNote("Note 2")!!.position

@@ -53,7 +53,7 @@ class BooksSortOrderTest : OrgzlyTest() {
         // Modify book
         onBook(1).perform(click())
         onNoteInBook(1).perform(longClick())
-        onView(withId(R.id.bottom_action_bar_done)).perform(click())
+        onView(withId(R.id.toggle_state)).perform(click())
         pressBack()
         pressBack()
     }

@@ -86,6 +86,16 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             }
         }
 
+        preference(R.string.pref_key_file_absolute_root)?.let {
+            val pref = it as EditTextPreference
+            pref.text = AppPreferences.fileAbsoluteRoot(context)
+        }
+
+        preference(R.string.pref_key_file_relative_root)?.let {
+            val pref = it as EditTextPreference
+            pref.text = AppPreferences.fileRelativeRoot(context)
+        }
+
         /* Update preferences which depend on multiple others. */
         updateRemindersScreen()
     }

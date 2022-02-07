@@ -11,9 +11,7 @@
 
          See and try using http://developer.android.com/design/style/typography.html
     -->
-    <style name="AppLightTheme" parent="Theme.Design.Light.NoActionBar">
-        <item name="windowActionModeOverlay">true</item>
-
+    <style name="AppLightTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <!-- Avoid white screen appearing briefly. -->
         <item name="android:windowDisablePreview">true</item>
 
@@ -117,11 +115,13 @@
         <item name="ic_arrow_forward_24dp">@drawable/ic_arrow_forward_black_24dp</item>
         <item name="ic_arrow_upward_24dp">@drawable/ic_arrow_upward_black_24dp</item>
         <item name="ic_cancel_24dp">@drawable/ic_cancel_black_24dp</item>
+        <item name="ic_cancel_outline_24dp">@drawable/outline_cancel_black_24</item>
         <item name="ic_center_focus_strong_24dp">@drawable/ic_center_focus_strong_black_24dp</item>
         <item name="ic_close_24dp">@drawable/ic_close_black_24dp</item>
         <item name="ic_content_copy_24dp">@drawable/ic_content_copy_black_24dp</item>
         <item name="ic_content_cut_24dp">@drawable/ic_content_cut_black_24dp</item>
         <item name="ic_content_paste_24dp">@drawable/ic_content_paste_black_24dp</item>
+        <item name="ic_create_new_folder_24dp">@drawable/outline_create_new_folder_black_24</item>
         <item name="ic_delete_24dp">@drawable/ic_delete_black_24dp</item>
         <item name="ic_done_18dp">@drawable/ic_done_black_18dp</item>
         <item name="ic_done_24dp">@drawable/ic_done_black_24dp</item>
@@ -147,6 +147,7 @@
         <item name="ic_link_18dp">@drawable/ic_link_black_18dp</item>
         <item name="ic_move_to_inbox_24dp">@drawable/ic_move_to_inbox_black_24dp</item>
         <item name="ic_more_horiz_24dp">@drawable/ic_more_horiz_black_24dp</item>
+        <item name="ic_menu_24dp">@drawable/outline_menu_black_24</item>
         <item name="ic_menu_open_24dp">@drawable/ic_menu_open_black_24dp</item>
         <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_black_24dp</item>
         <item name="ic_open_in_new_24dp">@drawable/ic_open_in_new_black_24dp</item>
@@ -191,9 +192,7 @@
         <item name="bullet_unfolded">@drawable/bullet_state_default</item>
     </style>
 
-    <style name="AppDarkTheme" parent="Theme.Design.NoActionBar">
-        <item name="windowActionModeOverlay">true</item>
-
+    <style name="AppDarkTheme" parent="Theme.MaterialComponents.NoActionBar.Bridge">
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
 
         <!-- Font sizes (defaults) -->
@@ -289,11 +288,13 @@
         <item name="ic_arrow_forward_24dp">@drawable/ic_arrow_forward_white_24dp</item>
         <item name="ic_arrow_upward_24dp">@drawable/ic_arrow_upward_white_24dp</item>
         <item name="ic_cancel_24dp">@drawable/ic_cancel_white_24dp</item>
+        <item name="ic_cancel_outline_24dp">@drawable/outline_cancel_white_24</item>
         <item name="ic_center_focus_strong_24dp">@drawable/ic_center_focus_strong_white_24dp</item>
         <item name="ic_close_24dp">@drawable/ic_close_white_24dp</item>
         <item name="ic_content_copy_24dp">@drawable/ic_content_copy_white_24dp</item>
         <item name="ic_content_cut_24dp">@drawable/ic_content_cut_white_24dp</item>
         <item name="ic_content_paste_24dp">@drawable/ic_content_paste_white_24dp</item>
+        <item name="ic_create_new_folder_24dp">@drawable/outline_create_new_folder_white_24</item>
         <item name="ic_delete_24dp">@drawable/ic_delete_white_24dp</item>
         <item name="ic_done_18dp">@drawable/ic_done_white_18dp</item>
         <item name="ic_done_24dp">@drawable/ic_done_white_24dp</item>
@@ -319,6 +320,7 @@
         <item name="ic_link_18dp">@drawable/ic_link_white_18dp</item>
         <item name="ic_move_to_inbox_24dp">@drawable/ic_move_to_inbox_white_24dp</item>
         <item name="ic_more_horiz_24dp">@drawable/ic_more_horiz_white_24dp</item>
+        <item name="ic_menu_24dp">@drawable/outline_menu_white_24</item>
         <item name="ic_menu_open_24dp">@drawable/ic_menu_open_white_24dp</item>
         <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_white_24dp</item>
         <item name="ic_open_in_new_24dp">@drawable/ic_open_in_new_white_24dp</item>
@@ -692,5 +694,39 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="BottomAppBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="fabCradleMargin">0dp</item>
+        <item name="fabCradleRoundedCornerRadius">0dp</item>
+        <item name="backgroundTint">?attr/bottom_action_bar_bg_color</item>
+    </style>
+
+    <style name="BottomAppBar.FabAlignEnd">
+        <item name="fabAlignmentMode">end</item>
+    </style>
+
+    <style name="BottomAppBar.WithMenu">
+        <item name="navigationIcon">?attr/ic_menu_24dp</item>
+    </style>
+
+    <style name="BottomAppBar.FabAlignEnd.WithBack">
+        <item name="navigationIcon">?attr/ic_arrow_back_24dp</item>
+    </style>
+
+    <style name="BottomAppBar.FabAlignEnd.WithCancel">
+        <item name="navigationIcon">?attr/ic_close_24dp</item>
+    </style>
+
+    <style name="BottomAppBarTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+<!--        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Widget.ActionBar.Subtitle</item>-->
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Widget.ActionBar.Title</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
     </style>
 </resources>

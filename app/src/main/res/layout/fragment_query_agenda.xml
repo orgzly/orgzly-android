@@ -1,29 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeContainer"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ViewFlipper
-            android:id="@+id/fragment_query_agenda_view_flipper"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ProgressBar style="@style/LoadingProgressBar" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fragment_query_agenda_recycler_view"
-                style="@style/FastScroll"
+            <ViewFlipper
+                android:id="@+id/fragment_query_agenda_view_flipper"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="?attr/actionBarSize"
-                android:clipToPadding="false" />
+                android:layout_height="match_parent">
 
-        </ViewFlipper>
+                <ProgressBar style="@style/LoadingProgressBar" />
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fragment_query_agenda_recycler_view"
+                    style="@style/FastScroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="?attr/actionBarSize"
+                    android:clipToPadding="false" />
+
+            </ViewFlipper>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            style="@style/BottomAppBar.WithMenu">
+
+            <TextView
+                android:id="@+id/bottomAppBarTitle"
+                style="@style/BottomAppBarTitle" />
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

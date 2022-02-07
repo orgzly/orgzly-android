@@ -5,9 +5,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
 import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -40,8 +37,6 @@ class WebdavRepoActivity : CommonActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_webdav)
-
-        setupActionBar(R.string.webdav)
 
         binding.activityRepoWebdavCertificates.setOnClickListener {
             editCertificates()
@@ -118,30 +113,15 @@ class WebdavRepoActivity : CommonActivity() {
                 viewModel.certificates.value = repoWithProps.props[CERTIFICATES_PREF_KEY]
             }
         }
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        super.onCreateOptionsMenu(menu)
-
-        menuInflater.inflate(R.menu.done, menu)
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.done -> {
-                saveAndFinish()
-                true
-            }
-
-            android.R.id.home -> {
+        binding.bottomAppBar.run {
+            setNavigationOnClickListener {
                 finish()
-                true
             }
+        }
 
-            else ->
-                super.onOptionsItemSelected(item)
+        binding.fab.setOnClickListener {
+            saveAndFinish()
         }
     }
 

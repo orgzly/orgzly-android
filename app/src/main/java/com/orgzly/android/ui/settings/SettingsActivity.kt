@@ -2,15 +2,18 @@ package com.orgzly.android.ui.settings
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.view.MenuItem
+import androidx.databinding.DataBindingUtil
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.settings.SettingsFragment.Listener
 import com.orgzly.android.usecase.*
+import com.orgzly.databinding.ActivitySettingsBinding
 
 
 class SettingsActivity : CommonActivity(), Listener {
+    private lateinit var binding: ActivitySettingsBinding
+
     override fun onWhatsNewDisplayRequest() {
         displayWhatsNewDialog()
     }
@@ -62,7 +65,7 @@ class SettingsActivity : CommonActivity(), Listener {
     }
 
     override fun onTitleChange(title: CharSequence?) {
-        supportActionBar?.title = title ?: getText(R.string.settings)
+        binding.bottomAppBarTitle.text = title ?: getText(R.string.settings)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,9 +73,7 @@ class SettingsActivity : CommonActivity(), Listener {
 
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_settings)
-
-        setupActionBar(R.string.settings)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_settings)
 
         if (savedInstanceState == null) {
             val fragment = SettingsFragment.getInstance()
@@ -82,14 +83,11 @@ class SettingsActivity : CommonActivity(), Listener {
                     .add(R.id.activity_settings_container, fragment)
                     .commit()
         }
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == android.R.id.home) {
-            onBackPressed()
-            true
-        } else {
-            super.onOptionsItemSelected(item)
+        binding.bottomAppBar.run {
+            setNavigationOnClickListener {
+                onBackPressed()
+            }
         }
     }
 

@@ -22,27 +22,6 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:ignore="MergeRootFrame"/>
 
-        <!-- With pressedTranslationZ 12dp on smaller devices we get
-             "...at least 90 percent of the view's area is displayed to the user..."
-              exception in Espresso tests due to shadow being too large.
-             TODO: Move value to dimens.xml
-        -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="?attr/ic_add_24dp"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="@dimen/screen_edge"
-            app:backgroundTint="?attr/app_bar_bg_color"
-            app:elevation="6dp"
-            app:pressedTranslationZ="6dp"
-            app:borderWidth="0dp"/>
-
-        <include layout="@layout/app_bar"/>
-
-        <include layout="@layout/bottom_action_bar"/>
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <!--<include layout="@layout/drawer"/>-->

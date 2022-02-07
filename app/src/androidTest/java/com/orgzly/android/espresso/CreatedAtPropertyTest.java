@@ -105,7 +105,7 @@ public class CreatedAtPropertyTest extends OrgzlyTest {
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.fragment_note_title))
                 .perform(replaceTextCloseKeyboard("new note created by test"));
-        onView(withId(R.id.done)).perform(click());
+        onView(withId(R.id.fab)).perform(click()); // Note done
 
         onNoteInBook(3, R.id.item_head_title)
                 .check(matches(allOf(withText("new note created by test"), isDisplayed())));

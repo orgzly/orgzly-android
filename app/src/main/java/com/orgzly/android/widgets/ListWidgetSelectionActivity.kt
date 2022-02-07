@@ -60,7 +60,7 @@ class ListWidgetSelectionActivity : AppCompatActivity(), OnViewHolderClickListen
             }
         })
 
-        model.savedSearches.observe(this, Observer { savedSearches ->
+        model.data.observe(this, Observer { savedSearches ->
             viewAdapter.submitList(savedSearches)
 
             val ids = savedSearches.mapTo(hashSetOf()) { it.id }

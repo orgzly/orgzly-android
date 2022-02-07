@@ -60,8 +60,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_git)
 
-        setupActionBar(R.string.git)
-
         fields = arrayOf(
                 Field(
                         binding.activityRepoGitDirectory,
@@ -150,6 +148,16 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         }
 
         updateAuthVisibility()
+
+        binding.bottomAppBar.run {
+            setNavigationOnClickListener {
+                finish()
+            }
+        }
+
+        binding.fab.setOnClickListener {
+            saveAndFinish()
+        }
     }
 
     private fun getRepoScheme(): String {
@@ -254,7 +262,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
-        menuInflater.inflate(R.menu.repos_context, menu)
+        menuInflater.inflate(R.menu.repos_cab, menu)
     }
 
     private fun saveAndFinish() {

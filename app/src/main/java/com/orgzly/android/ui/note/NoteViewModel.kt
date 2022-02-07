@@ -366,4 +366,10 @@ class NoteViewModel(
             true
         }
     }
+
+    enum class Selection {
+        NONE,
+        MAIN,
+        MOVE
+    }
 }

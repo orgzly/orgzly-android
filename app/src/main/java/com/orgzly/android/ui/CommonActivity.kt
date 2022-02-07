@@ -144,6 +144,9 @@ abstract class CommonActivity : AppCompatActivity() {
         val bgColor = snackbarBackgroundColor
         s.view.setBackgroundColor(bgColor)
 
+        // Show snackbar above all
+        s.anchorView = findViewById(R.id.fab) ?: findViewById(R.id.bottomAppBar)
+
         s.show()
 
         snackbar = s
@@ -294,22 +297,6 @@ abstract class CommonActivity : AppCompatActivity() {
 
             getString(R.string.pref_value_font_size_small) ->
                 theme.applyStyle(R.style.FontSize_Small, true)
-        }
-    }
-
-    @JvmOverloads
-    fun setupActionBar(title: Int? = null, homeButton: Boolean = true) {
-        val myToolbar = findViewById<Toolbar>(R.id.toolbar)
-
-        setSupportActionBar(myToolbar)
-
-        if (homeButton) {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setHomeButtonEnabled(true)
-        }
-
-        if (title != null) {
-            supportActionBar?.setTitle(title)
         }
     }
 

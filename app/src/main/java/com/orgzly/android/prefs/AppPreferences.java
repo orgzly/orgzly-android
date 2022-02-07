@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 
 import com.orgzly.R;
 import com.orgzly.android.App;
+import com.orgzly.android.LocalStorage;
 import com.orgzly.org.OrgStatesWorkflow;
 
 import org.eclipse.jgit.transport.URIish;
@@ -647,7 +649,7 @@ public class AppPreferences {
     public static String fileRelativeRoot(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_file_relative_root),
-                Environment.getExternalStorageDirectory().getPath()
+                LocalStorage.storage(context)
         );
     }
 

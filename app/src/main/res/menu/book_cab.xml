@@ -3,58 +3,108 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/book_cab_cut"
-        android:icon="?attr/ic_content_cut_24dp"
+        android:id="@+id/toggle_state"
         app:showAsAction="always"
-        android:title="@string/cut">
-    </item>
+        android:title="@string/done"
+        android:icon="?attr/ic_outline_check_circle_24dp"/>
 
     <item
-        android:id="@+id/book_cab_copy"
-        android:icon="?attr/ic_content_copy_24dp"
-        app:showAsAction="always"
-        android:title="@string/copy">
-    </item>
+        android:id="@+id/refile"
+        app:showAsAction="never"
+        android:title="@string/refile"
+        android:icon="?attr/ic_move_to_inbox_24dp"/>
 
     <item
-        android:id="@+id/book_cab_paste"
-        android:icon="?attr/ic_content_paste_24dp"
+        android:id="@+id/state"
         app:showAsAction="always"
-        android:title="@string/paste">
+        android:title="@string/state"
+        android:icon="?attr/ic_flag_24dp"/>
+
+    <item
+        android:id="@+id/schedule"
+        app:showAsAction="always"
+        android:title="@string/schedule"
+        android:icon="?attr/ic_today_24dp"/>
+
+    <item
+        android:id="@+id/deadline"
+        app:showAsAction="always"
+        android:layout_height="wrap_content"
+        android:title="@string/deadline"
+        android:icon="?attr/ic_alarm_24dp" />
+
+
+    <item
+        android:id="@+id/new_note"
+        android:icon="?attr/ic_add_24dp"
+        app:showAsAction="always"
+        android:title="@string/new_note">
 
         <menu>
             <item
-                android:id="@+id/book_cab_paste_above"
-                android:icon="?attr/oic_new_above_24dp"
-                android:title="@string/heads_action_menu_item_paste_above"/>
+                android:id="@+id/new_note_above"
+                android:title="@string/new_above"
+                android:icon="?attr/oic_new_above_24dp"/>
 
             <item
-                android:id="@+id/book_cab_paste_under"
-                android:icon="?attr/oic_new_under_24dp"
-                android:title="@string/heads_action_menu_item_paste_under"/>
+                android:id="@+id/new_note_under"
+                android:title="@string/new_under"
+                android:icon="?attr/oic_new_under_24dp"/>
 
             <item
-                android:id="@+id/book_cab_paste_below"
-                android:icon="?attr/oic_new_below_24dp"
-                android:title="@string/heads_action_menu_item_paste_below"/>
+                android:id="@+id/new_note_below"
+                android:title="@string/new_below"
+                android:icon="?attr/oic_new_below_24dp"/>
         </menu>
     </item>
 
     <item
-        android:id="@+id/book_cab_move"
+        android:id="@+id/move"
         app:showAsAction="never"
         android:icon="?attr/ic_swap_vert_24dp"
         android:title="@string/move">
     </item>
 
     <item
-        android:id="@+id/book_cab_refile"
+        android:id="@+id/cut"
+        android:icon="?attr/ic_content_cut_24dp"
         app:showAsAction="never"
-        android:title="@string/refile"
-        android:icon="?attr/ic_move_to_inbox_24dp"/>
+        android:title="@string/cut">
+    </item>
 
     <item
-        android:id="@+id/book_cab_delete_note"
+        android:id="@+id/copy"
+        android:icon="?attr/ic_content_copy_24dp"
+        app:showAsAction="never"
+        android:title="@string/copy">
+    </item>
+
+    <item
+        android:id="@+id/paste"
+        android:icon="?attr/ic_content_paste_24dp"
+        app:showAsAction="never"
+        android:title="@string/paste">
+
+        <menu>
+            <item
+                android:id="@+id/paste_above"
+                android:icon="?attr/oic_new_above_24dp"
+                android:title="@string/heads_action_menu_item_paste_above"/>
+
+            <item
+                android:id="@+id/paste_under"
+                android:icon="?attr/oic_new_under_24dp"
+                android:title="@string/heads_action_menu_item_paste_under"/>
+
+            <item
+                android:id="@+id/paste_below"
+                android:icon="?attr/oic_new_below_24dp"
+                android:title="@string/heads_action_menu_item_paste_below"/>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/delete_note"
         app:showAsAction="never"
         android:title="@string/delete"/>
 

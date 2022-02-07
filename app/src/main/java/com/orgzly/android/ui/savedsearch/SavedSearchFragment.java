@@ -79,8 +79,6 @@ public class SavedSearchFragment extends Fragment implements DrawerItem {
 
         sharedMainActivityViewModel = new ViewModelProvider(requireActivity())
                 .get(SharedMainActivityViewModel.class);
-
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -123,6 +121,16 @@ public class SavedSearchFragment extends Fragment implements DrawerItem {
         if (viewToFocus != null && activity != null) {
             ActivityUtils.openSoftKeyboardWithDelay(activity, viewToFocus);
         }
+
+        appBarToDefault();
+    }
+
+    private void appBarToDefault() {
+        binding.bottomAppBar.getMenu().clear();
+
+        binding.bottomAppBar.setNavigationOnClickListener(v -> close());
+
+        binding.fab.setOnClickListener(v -> save());
     }
 
     @Override
@@ -131,15 +139,16 @@ public class SavedSearchFragment extends Fragment implements DrawerItem {
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
-        announceChangesToActivity();
+        sharedMainActivityViewModel.setCurrentFragment(FRAGMENT_TAG);
+
+        sharedMainActivityViewModel.lockDrawer();
     }
 
-    private void announceChangesToActivity() {
-        sharedMainActivityViewModel.setFragment(
-                FRAGMENT_TAG,
-                getString(isEditingExistingFilter() ? R.string.search : R.string.new_search),
-                null,
-                0);
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        sharedMainActivityViewModel.unlockDrawer();
     }
 
     private boolean isEditingExistingFilter() {
@@ -170,41 +179,6 @@ public class SavedSearchFragment extends Fragment implements DrawerItem {
     }
 
     /**
-     * Callback for options menu.
-     */
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater);
-
-        inflater.inflate(R.menu.close_done, menu);
-
-        // Remove search item.
-        menu.removeItem(R.id.activity_action_search);
-    }
-
-    /**
-     * Callback for options menu.
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.close:
-                if (mListener != null) {
-                    mListener.onSavedSearchCancelRequest();
-                }
-
-                return true;
-
-            case R.id.done:
-                save();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    /**
      * Sends current values to listener.
      */
     private void save() {
@@ -219,6 +193,12 @@ public class SavedSearchFragment extends Fragment implements DrawerItem {
                     mListener.onSavedSearchCreateRequest(savedSearch);
                 }
             }
+        }
+    }
+
+    private void close() {
+        if (mListener != null) {
+            mListener.onSavedSearchCancelRequest();
         }
     }
 

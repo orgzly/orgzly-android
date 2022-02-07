@@ -31,11 +31,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.contextualToolbarOverflowMenu;
 import static com.orgzly.android.espresso.EspressoUtils.onBook;
 import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
 import static com.orgzly.android.espresso.EspressoUtils.onNoteInSearch;
 import static com.orgzly.android.espresso.EspressoUtils.onNotesInSearch;
-import static com.orgzly.android.espresso.EspressoUtils.openContextualToolbarOverflowMenu;
 import static com.orgzly.android.espresso.EspressoUtils.recyclerViewItemCount;
 import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
 import static com.orgzly.android.espresso.EspressoUtils.searchForText;
@@ -44,6 +44,7 @@ import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
 
 public class QueryFragmentTest extends OrgzlyTest {
@@ -201,7 +202,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(withText("To Do")).perform(click());
         onNotesInSearch().check(matches(recyclerViewItemCount(3)));
         onView(allOf(withText(endsWith("Note C.")), isDisplayed())).perform(longClick());
-        onView(withId(R.id.bottom_action_bar_state)).perform(click());
+        onView(withId(R.id.state)).perform(click());
         onView(withText(R.string.clear)).perform(click());
         onNotesInSearch().check(matches(recyclerViewItemCount(2)));
     }
@@ -213,7 +214,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         searchForText("Note");
         onNoteInSearch(0).perform(longClick());
-        onView(withId(R.id.bottom_action_bar_done)).perform(click());
+        onView(withId(R.id.toggle_state)).perform(click());
         onNoteInSearch(0, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
     }
 
@@ -242,7 +243,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onNotesInSearch().check(matches(recyclerViewItemCount(2)));
 
         onView(allOf(withText(endsWith("Note C.")), isDisplayed())).perform(longClick());
-        onView(withId(R.id.bottom_action_bar_schedule)).perform(click());
+        onView(withId(R.id.schedule)).perform(click());
         onView(withId(R.id.date_picker_button)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
         onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
@@ -382,9 +383,10 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         /* Move Note C down. */
         onNoteInBook(3).perform(longClick());
-        openContextualToolbarOverflowMenu();
+        contextualToolbarOverflowMenu().perform(click());
         onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_down)).perform(click());
+        pressBack();
         pressBack();
 
         searchForText("t.tag3");
@@ -410,9 +412,10 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         /* Demote Note B. */
         onNoteInBook(2).perform(longClick());
-        openContextualToolbarOverflowMenu();
+        contextualToolbarOverflowMenu().perform(click());
         onView(withText(R.string.move)).perform(click());
         onView(withId(R.id.notes_action_move_right)).perform(click());
+        pressBack();
         pressBack();
 
         searchForText("t.tag3");
@@ -438,11 +441,14 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         /* Cut Note B. */
         onNoteInBook(2).perform(longClick());
-        onView(withId(R.id.book_cab_cut)).perform(click());
+
+        contextualToolbarOverflowMenu().perform(click());
+        onView(withText(R.string.cut)).perform(click());
 
         /* Paste under Note A. */
         onNoteInBook(1).perform(longClick());
-        onView(withId(R.id.book_cab_paste)).perform(click());
+        contextualToolbarOverflowMenu().perform(click());
+        onView(withText(R.string.paste)).perform(click());
         onView(withText(R.string.heads_action_menu_item_paste_under)).perform(click());
 
         searchForText("t.tag3");
@@ -529,14 +535,14 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(withText(R.string.notebooks)).perform(click());
 
         onBook(0).perform(longClick());
-        openContextualToolbarOverflowMenu();
+        contextualToolbarOverflowMenu().perform(click());
         onView(withText(R.string.rename)).perform(click());
         onView(withId(R.id.name)).perform(replaceTextCloseKeyboard("renamed book-one"));
         onView(withText(R.string.rename)).perform(click());
 
         /* The other book is now first. Rename it too to keep the order of notes the same. */
         onBook(0).perform(longClick());
-        openContextualToolbarOverflowMenu();
+        contextualToolbarOverflowMenu().perform(click());
         onView(withText(R.string.rename)).perform(click());
         onView(withId(R.id.name)).perform(replaceTextCloseKeyboard("renamed book-two"));
         onView(withText(R.string.rename)).perform(click());
@@ -733,14 +739,14 @@ public class QueryFragmentTest extends OrgzlyTest {
         onNoteInSearch(0).perform(longClick());
 
         onNotesInSearch().check(matches(recyclerViewItemCount(2)));
-        onView(withId(R.id.action_bar_title)).check(matches(withText("1")));
+        onView(withId(R.id.bottomAppBarTitle)).check(matches(withText("1")));
 
         // Remove state from selected note
-        onView(withId(R.id.bottom_action_bar_state)).perform(click());
+        onView(withId(R.id.state)).perform(click());
         onView(withText(R.string.clear)).perform(click());
 
         onNotesInSearch().check(matches(recyclerViewItemCount(1)));
-        onView(withId(R.id.action_bar_title)).check(doesNotExist());
+        onView(withId(R.id.bottomAppBarTitle)).check(matches(not(isDisplayed())));
     }
 
     @Test
@@ -760,7 +766,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onNoteInSearch(1).perform(longClick());
 
-        onView(withId(R.id.bottom_action_bar_state)).perform(click());
+        onView(withId(R.id.state)).perform(click());
 
         onView(withText("TODO")).check(matches(isChecked()));
     }
@@ -806,7 +812,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         // Remove time usage
         onView(allOf(withText(endsWith("Note A")), isDisplayed())).perform(longClick());
-        onView(withId(R.id.bottom_action_bar_schedule)).perform(click());
+        onView(withId(R.id.schedule)).perform(click());
         onView(withId(R.id.time_used_checkbox)).perform(click());
         onView(withText(R.string.set)).perform(click());
         pressBack();

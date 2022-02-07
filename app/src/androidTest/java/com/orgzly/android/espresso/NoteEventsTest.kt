@@ -281,7 +281,7 @@ class NoteEventsTest : OrgzlyTest() {
         onBook(0).perform(click())
         onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note A-01 <2000-01-10 +1d>")))
         onNoteInBook(1).perform(longClick())
-        onView(withId(R.id.bottom_action_bar_done)).perform(click())
+        onView(withId(R.id.toggle_state)).perform(click())
         onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note A-01 <2000-01-11 Tue +1d>")))
     }
 

@@ -1,12 +1,21 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="AlwaysShowAction">
 
     <item
         android:id="@+id/saved_searches_help"
         android:icon="?attr/ic_help_outline_24dp"
         app:showAsAction="always"
         android:title="@string/help" />
+
+    <item
+        android:id="@+id/search_view"
+        android:title="@string/options_menu_item_search"
+        android:icon="?attr/ic_search_24dp"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="collapseActionView|always" tools:ignore="AlwaysShowAction"/>
 
     <item
         android:id="@+id/saved_searches_import"

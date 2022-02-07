@@ -12,12 +12,6 @@
     </item>
 
     <item
-        android:id="@+id/done"
-        android:icon="?attr/ic_done_24dp"
-        app:showAsAction="always"
-        android:title="@string/done" />
-
-    <item
         android:id="@+id/keep_screen_on"
         app:showAsAction="never"
         android:checkable="true"
@@ -50,4 +44,9 @@
         android:icon="?attr/ic_delete_24dp"
         app:showAsAction="never"
         android:title="@string/delete" />
+
+    <item
+        android:id="@+id/activity_action_settings"
+        app:showAsAction="never"
+        android:title="@string/settings"/>
 </menu>
