@@ -6,12 +6,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="36dp"
+        android:layout_height="?android:attr/actionBarSize"
         android:paddingLeft="@dimen/screen_edge"
         android:paddingRight="@dimen/screen_edge"
         android:orientation="horizontal"
-        android:background="?android:attr/windowBackground">
+        android:background="?attr/bottom_action_bar_bg_color">
 
         <TextView
             android:id="@+id/item_agenda_divider_text"
