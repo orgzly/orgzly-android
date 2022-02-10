@@ -92,7 +92,7 @@ class NoteFragmentTest : OrgzlyTest() {
         onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note #1.")))
 
         onNoteInBook(1).perform(click())
-        onView(withId(R.id.fragment_note_title))
+        onNoteTitle()
                 .perform(*replaceTextCloseKeyboard("Note title changed"))
         onView(withId(R.id.done)).perform(click())
 
@@ -230,7 +230,7 @@ class NoteFragmentTest : OrgzlyTest() {
     @Test
     fun testTitleCanNotBeEmptyForExistingNote() {
         onNoteInBook(1).perform(click())
-        onView(withId(R.id.fragment_note_title)).perform(*replaceTextCloseKeyboard(""))
+        onNoteTitle().perform(*replaceTextCloseKeyboard(""))
         onView(withId(R.id.done)).perform(click())
         onSnackbar().check(matches(withText(R.string.title_can_not_be_empty)))
     }
@@ -502,7 +502,7 @@ class NoteFragmentTest : OrgzlyTest() {
     fun testBreadcrumbsFollowToNote() {
         onNoteInBook(3).perform(click())
         onView(withId(R.id.fragment_note_breadcrumbs_text)).perform(clickClickableSpan("Note #2."))
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note #2.")))
+        onNoteTitle().check(matches(withText("Note #2.")))
     }
 
     @Test
@@ -510,7 +510,7 @@ class NoteFragmentTest : OrgzlyTest() {
         onNoteInBook(1).perform(longClick())
         onView(withId(R.id.bottom_action_bar_new)).perform(click())
         onView(withText(R.string.new_under)).perform(click())
-        onView(withId(R.id.fragment_note_title)).perform(*replaceTextCloseKeyboard("1.1"))
+        onNoteTitle().perform(*replaceTextCloseKeyboard("1.1"))
         onView(withId(R.id.fragment_note_breadcrumbs_text)).perform(clickClickableSpan("Note #1."))
 
         // Dialog is displayed
@@ -521,7 +521,7 @@ class NoteFragmentTest : OrgzlyTest() {
         onView(withText(R.string.cancel)).perform(click())
 
         // Title remains the same
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("1.1")))
+        onNoteTitle().check(matches(withText("1.1")))
     }
 
     // https://github.com/orgzly/orgzly-android/issues/605
