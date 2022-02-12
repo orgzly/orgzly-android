@@ -6,6 +6,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -48,7 +49,14 @@ public class GoogleDriveClient {
 
     private final Context mContext;
     private final long repoId;
+
+    private GoogleSignInAccount mGoogleAccount;
     private Drive mDriveService;
+
+    // Make static? Or maybe need to serialize or manage token.
+    // SharedPreferences or SQLite
+    // https://stackoverflow.com/questions/19274063/object-becomes-null
+    // Thought that Google sign-in would handle it, but it's not working or not building.
 
     private Map<String, String> pathIds;
     {
@@ -63,20 +71,33 @@ public class GoogleDriveClient {
         repoId = id;
     }
 
-    public void setService(Drive driveService) {
-        mDriveService = driveService;
-    }
-
     public boolean isLinked() {
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
-        return GoogleSignIn.getLastSignedInAccount(mContext) != null;
+        return setService();
     }
 
     private void linkedOrThrow() throws IOException {
         if (! isLinked()) {
             throw new IOException(NOT_LINKED);
         }
+    }
+
+    public boolean setService() {
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        if (mDriveService == null) {
+            mGoogleAccount = GoogleSignIn.getLastSignedInAccount(mContext);
+            if (mGoogleAccount != null) {
+                // Use the authenticated account to sign in to the Drive service.
+                GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(mContext, Collections.singleton(DriveScopes.DRIVE));
+                credential.setSelectedAccount(mGoogleAccount.getAccount());
+                mDriveService = Drive.Builder(AndroidHttp.newCompatibleTransport(),
+                                              new GsonFactory(),
+                                              credential)
+                    .setApplicationName("Orgzly")
+                    .build();
+            }
+        }
+        return mDriveService != null;
     }
 
     private String findId(String path) throws IOException {

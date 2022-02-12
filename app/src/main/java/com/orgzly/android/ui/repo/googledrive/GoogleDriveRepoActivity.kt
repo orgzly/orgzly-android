@@ -160,19 +160,9 @@ class GoogleDriveRepoActivity : CommonActivity() {
             GoogleSignIn.getSignedInAccountFromIntent(result)
                 .addOnSuccessListener({ googleAccount->
                                             Log.d(TAG, "Signed in as " + googleAccount.getEmail())
-                                        // Use the authenticated account to sign in to the Drive service.
-                                        val credential = GoogleAccountCredential.usingOAuth2(
-                                            this, Collections.singleton(DriveScopes.DRIVE))
-                                        credential.setSelectedAccount(googleAccount.getAccount())
-                                        val googleDriveService = Drive.Builder(
-                                            AndroidHttp.newCompatibleTransport(),
-                                            GsonFactory(),
-                                            credential)
-                                            .setApplicationName("Orgzly")
-                                            .build()
                                         // The DriveServiceHelper encapsulates all REST API and SAF functionality.
                                         // Its instantiation is required before handling any onClick actions.
-                                        client.setService(googleDriveService);
+                                        client.setService();
                                         showSnackbar(R.string.message_google_drive_linked)
                 })
                 .addOnFailureListener({ exception-> Log.d(TAG, "Unable to sign in." + exception) })
