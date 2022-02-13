@@ -138,7 +138,7 @@
             android:name=".android.ui.BookChooserActivity"
             android:label="@string/book_shortcut_label"
             android:icon="@mipmap/cic_shortcut_notebook"
-            android:exported="false">
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
