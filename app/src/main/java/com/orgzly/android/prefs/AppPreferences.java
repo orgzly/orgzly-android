@@ -975,6 +975,12 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_auto_sync_on_resume));
     }
 
+    public static boolean syncDeletion(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_sync_deletion),
+                context.getResources().getBoolean(R.bool.pref_default_sync_deletion));
+    }
+
     /*
      * Notes clipboard
      */

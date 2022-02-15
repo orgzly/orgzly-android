@@ -590,4 +590,6 @@
     <string name="developer_options">Параметри розробника</string>
     <string name="git_repository_type">Тип git-репозиторію</string>
     <string name="in_development">У розробці</string>
+    <string name="pref_title_sync_deletion">Sync deletion</string>
+    <string name="pref_title_summary_sync_deletion">Delete notebook if its deleted from repo</string>
 </resources>

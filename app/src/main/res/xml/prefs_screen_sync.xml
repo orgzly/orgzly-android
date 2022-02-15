@@ -42,5 +42,10 @@
             android:title="@string/org_file_format"
             android:summary="@string/org_file_format_summary">
         </androidx.preference.PreferenceScreen>
+        <SwitchPreference
+            android:defaultValue="@bool/pref_default_sync_deletion"
+            android:key="@string/pref_key_sync_deletion"
+            android:summary="@string/pref_title_summary_sync_deletion"
+            android:title="@string/pref_title_sync_deletion" />
     </PreferenceCategory>
 </androidx.preference.PreferenceScreen>

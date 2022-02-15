@@ -557,4 +557,6 @@
     <string name="developer_options">開発者オプション</string>
     <string name="git_repository_type">リポジトリの種類</string>
     <string name="in_development">開発中</string>
+    <string name="pref_title_sync_deletion">Sync deletion</string>
+    <string name="pref_title_summary_sync_deletion">Delete notebook if its deleted from repo</string>
 </resources>

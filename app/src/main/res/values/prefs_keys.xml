@@ -254,6 +254,9 @@
     <string name="pref_key_auto_sync_on_resume" translatable="false">pref_key_auto_sync_on_resume</string>
     <bool name="pref_default_auto_sync_on_resume" translatable="false">false</bool>
 
+    <string name="pref_key_sync_deletion" translatable="false">pref_key_sync_deletion</string>
+    <bool name="pref_default_sync_deletion" translatable="false">false</bool>
+
     <string name="pref_key_auto_sync_on_repo_change" translatable="false">pref_key_auto_sync_on_repo_change</string>
     <bool name="pref_default_auto_sync_on_repo_change" translatable="false">false</bool>
 
