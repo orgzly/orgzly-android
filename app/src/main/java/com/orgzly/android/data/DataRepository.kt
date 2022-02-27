@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.database.DatabaseUtils
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Handler
@@ -1127,7 +1128,11 @@ class DataRepository @Inject constructor(
     }
 
     private fun buildSqlQuery(query: Query): SupportSQLiteQuery {
-        val queryBuilder = SqliteQueryBuilder(context)
+        val defaultPriority = AppPreferences.defaultPriority(context);
+        val todoKeywordsSet = AppPreferences.todoKeywordsSet(context)
+        val doneKeywordsSet = AppPreferences.doneKeywordsSet(context)
+        val sqlEscape = DatabaseUtils::sqlEscapeString;
+        val queryBuilder = SqliteQueryBuilder(defaultPriority, todoKeywordsSet, doneKeywordsSet, sqlEscape)
 
         val (selection, selectionArgs, having, orderBy) = queryBuilder.build(query)
 

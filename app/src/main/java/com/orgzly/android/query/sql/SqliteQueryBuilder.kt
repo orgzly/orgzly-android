@@ -1,14 +1,14 @@
 package com.orgzly.android.query.sql
 
-import android.content.Context
-import android.database.DatabaseUtils
-import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.query.*
 import com.orgzly.org.datetime.OrgInterval
 import java.util.*
 
 
-class SqliteQueryBuilder(val context: Context) {
+class SqliteQueryBuilder(private val defaultPriority: String,
+                         private val todoKeywordsSet: Set<String>,
+                         private val doneKeywordsSet: Set<String>,
+                         private val sqlEscape: (str: String) -> String) {
     private var where: String = ""
     private val arguments: MutableList<String> = ArrayList()
 
@@ -39,7 +39,7 @@ class SqliteQueryBuilder(val context: Context) {
             o.add("book_name")
 
             /* Priority or default priority. */
-            o.add("COALESCE(priority, '" + AppPreferences.defaultPriority(context) + "')")
+            o.add("COALESCE(priority, '" + defaultPriority + "')")
             o.add("priority IS NULL")
 
             if (hasScheduledCondition) {
@@ -141,19 +141,18 @@ class SqliteQueryBuilder(val context: Context) {
                     }
 
                     is SortOrder.Priority -> {
-                        o.add("COALESCE(priority, '" + AppPreferences.defaultPriority(context) + "')" + if (order.desc) " DESC" else "")
+                        o.add("COALESCE(priority, '" + defaultPriority + "')" + if (order.desc) " DESC" else "")
                         o.add("priority" + if (order.desc) " IS NOT NULL" else " IS NULL")
                     }
 
                     is SortOrder.State -> {
-                        val states = AppPreferences.todoKeywordsSet(context)
-                                .union(AppPreferences.doneKeywordsSet(context))
+                        val states = todoKeywordsSet.union(doneKeywordsSet)
 
                         if (states.isNotEmpty()) {
                             val statesInOrder = if (order.desc) states.reversed() else states
 
                             o.add(statesInOrder.foldIndexed("CASE state") { i, str, state ->
-                                "$str WHEN ${DatabaseUtils.sqlEscapeString(state)} THEN $i"
+                                "$str WHEN ${sqlEscape(state)} THEN $i"
                             } + " ELSE ${states.size} END")
                         }
                     }
@@ -194,12 +193,12 @@ class SqliteQueryBuilder(val context: Context) {
             is Condition.HasStateType -> {
                 when (expr.type) {
                     StateType.TODO -> {
-                        val states = AppPreferences.todoKeywordsSet(context)
+                        val states = todoKeywordsSet
                         arguments.addAll(states)
                         not(expr.not, "COALESCE(state, '') IN (" + Collections.nCopies(states.size, "?").joinToString() + ")")
                     }
                     StateType.DONE -> {
-                        val states = AppPreferences.doneKeywordsSet(context)
+                        val states = doneKeywordsSet
                         arguments.addAll(states)
                         not(expr.not, "COALESCE(state, '') IN (" + Collections.nCopies(states.size, "?").joinToString() + ")")
 
@@ -209,7 +208,7 @@ class SqliteQueryBuilder(val context: Context) {
             }
 
             is Condition.HasPriority -> {
-                arguments.add(AppPreferences.defaultPriority(context))
+                arguments.add(defaultPriority)
                 arguments.add(expr.priority)
                 not(expr.not, "LOWER(COALESCE(NULLIF(priority, ''), ?)) = ?")
             }
