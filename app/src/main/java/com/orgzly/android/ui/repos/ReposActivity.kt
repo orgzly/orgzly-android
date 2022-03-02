@@ -2,6 +2,7 @@ package com.orgzly.android.ui.repos
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.ContextMenu
 import android.view.MenuItem
@@ -199,7 +200,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
         when (requestCode) {
             ACTIVITY_REQUEST_CODE_FOR_READ_WRITE_EXTERNAL_STORAGE -> {
                 val granted = grantResults.zip(permissions)
-                        .find { (_, perm) -> perm == READ_WRITE_EXTERNAL_STORAGE }
+                        .find { (_, perm) -> perm == Manifest.permission.WRITE_EXTERNAL_STORAGE }
                         ?.let { (grantResult, _) -> grantResult == PackageManager.PERMISSION_GRANTED }
                 if (granted == true) {
                     GitRepoActivity.start(this)
@@ -216,11 +217,14 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             }
 
             R.id.repos_options_menu_item_new_git -> {
-                if (ContextCompat.checkSelfPermission(this, READ_WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     GitRepoActivity.start(this)
                 } else {
                     // TODO: Show explanation why possibly, if ActivityCompat.shouldShowRequestPermissionRationale() says so?
-                    ActivityCompat.requestPermissions(this, arrayOf(READ_WRITE_EXTERNAL_STORAGE), ACTIVITY_REQUEST_CODE_FOR_READ_WRITE_EXTERNAL_STORAGE)
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                        ACTIVITY_REQUEST_CODE_FOR_READ_WRITE_EXTERNAL_STORAGE)
                 }
                 return
             }
@@ -273,7 +277,6 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
     companion object {
         val TAG: String = ReposActivity::class.java.name
 
-        const val READ_WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE
         const val ACTIVITY_REQUEST_CODE_FOR_READ_WRITE_EXTERNAL_STORAGE = 0
     }
 }
