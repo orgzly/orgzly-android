@@ -75,7 +75,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
 
     private lateinit var viewModel: BooksViewModel
 
-    private val backPressHandler = object : OnBackPressedCallback(false) {
+    private val appBarBackPressHandler = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
             viewModel.appBar.handleOnBackPressed()
         }
@@ -122,7 +122,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
         val factory = BooksViewModelFactory.getInstance(dataRepository)
         viewModel = ViewModelProvider(this, factory).get(BooksViewModel::class.java)
 
-        requireActivity().onBackPressedDispatcher.addCallback(this, backPressHandler)
+        requireActivity().onBackPressedDispatcher.addCallback(this, appBarBackPressHandler)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -511,7 +511,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
 
                     sharedMainActivityViewModel.unlockDrawer()
 
-                    backPressHandler.isEnabled = false
+                    appBarBackPressHandler.isEnabled = false
                 }
 
                 is AppBar.State.MainSelection -> {
@@ -519,7 +519,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
 
                     sharedMainActivityViewModel.lockDrawer()
 
-                    backPressHandler.isEnabled = true
+                    appBarBackPressHandler.isEnabled = true
                 }
 
                 is AppBar.State.NextSelection -> TODO()

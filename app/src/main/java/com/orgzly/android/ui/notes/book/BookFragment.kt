@@ -73,7 +73,7 @@ class BookFragment :
 
     private var mBookId: Long = 0
 
-    private val backPressHandler = object : OnBackPressedCallback(false) {
+    private val appBarBackPressHandler = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
             viewModel.appBar.handleOnBackPressed()
         }
@@ -109,7 +109,7 @@ class BookFragment :
         val factory = BookViewModelFactory.forBook(dataRepository, mBookId)
         viewModel = ViewModelProvider(this, factory).get(BookViewModel::class.java)
 
-        requireActivity().onBackPressedDispatcher.addCallback(this, backPressHandler)
+        requireActivity().onBackPressedDispatcher.addCallback(this, appBarBackPressHandler)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -246,7 +246,7 @@ class BookFragment :
 
                     sharedMainActivityViewModel.unlockDrawer()
 
-                    backPressHandler.isEnabled = false
+                    appBarBackPressHandler.isEnabled = false
 
                     // Hide bar's title
                     binding.bottomAppBarTitle.visibility = View.GONE
@@ -257,7 +257,7 @@ class BookFragment :
 
                     sharedMainActivityViewModel.lockDrawer()
 
-                    backPressHandler.isEnabled = true
+                    appBarBackPressHandler.isEnabled = true
 
                     // Set bar's title
                     binding.bottomAppBarTitle.run {
@@ -271,7 +271,7 @@ class BookFragment :
 
                     sharedMainActivityViewModel.lockDrawer()
 
-                    backPressHandler.isEnabled = true
+                    appBarBackPressHandler.isEnabled = true
 
                     // Set bar's title
                     binding.bottomAppBarTitle.run {

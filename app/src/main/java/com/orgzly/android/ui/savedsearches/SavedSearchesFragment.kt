@@ -49,7 +49,7 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
 
     private lateinit var sharedMainActivityViewModel: SharedMainActivityViewModel
 
-    private val backPressHandler = object : OnBackPressedCallback(false) {
+    private val appBarBackPressHandler = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
             viewModel.appBar.handleOnBackPressed()
         }
@@ -74,7 +74,7 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
         sharedMainActivityViewModel = ViewModelProvider(requireActivity())
                 .get(SharedMainActivityViewModel::class.java)
 
-        requireActivity().onBackPressedDispatcher.addCallback(this, backPressHandler)
+        requireActivity().onBackPressedDispatcher.addCallback(this, appBarBackPressHandler)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -287,7 +287,7 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
 
                     sharedMainActivityViewModel.unlockDrawer()
 
-                    backPressHandler.isEnabled = false
+                    appBarBackPressHandler.isEnabled = false
                 }
 
                 is AppBar.State.MainSelection -> {
@@ -295,7 +295,7 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
 
                     sharedMainActivityViewModel.lockDrawer()
 
-                    backPressHandler.isEnabled = true
+                    appBarBackPressHandler.isEnabled = true
                 }
 
                 is AppBar.State.NextSelection -> TODO()

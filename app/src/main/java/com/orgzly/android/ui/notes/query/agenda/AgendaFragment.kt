@@ -46,7 +46,7 @@ class AgendaFragment :
 
     lateinit var viewAdapter: AgendaAdapter
 
-    private val backPressHandler = object : OnBackPressedCallback(false) {
+    private val appBarBackPressHandler = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
             viewModel.appBar.handleOnBackPressed()
         }
@@ -59,7 +59,7 @@ class AgendaFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        requireActivity().onBackPressedDispatcher.addCallback(this, backPressHandler)
+        requireActivity().onBackPressedDispatcher.addCallback(this, appBarBackPressHandler)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -228,7 +228,7 @@ class AgendaFragment :
                 is AppBar.State.Default, null -> {
                     appBarToDefault()
                     sharedMainActivityViewModel.unlockDrawer()
-                    backPressHandler.isEnabled = false
+                    appBarBackPressHandler.isEnabled = false
 
                     // Active query as a title
                     binding.bottomAppBarTitle.run {
@@ -239,7 +239,7 @@ class AgendaFragment :
                 is AppBar.State.MainSelection -> {
                     appBarToMainSelection()
                     sharedMainActivityViewModel.lockDrawer()
-                    backPressHandler.isEnabled = true
+                    appBarBackPressHandler.isEnabled = true
 
                     // Number of selected notes as a title
                     binding.bottomAppBarTitle.run {

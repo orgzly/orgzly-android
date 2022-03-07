@@ -43,7 +43,7 @@ class SearchFragment :
 
     private lateinit var viewAdapter: SearchAdapter
 
-    private val backPressHandler = object : OnBackPressedCallback(false) {
+    private val appBarBackPressHandler = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
             viewModel.appBar.handleOnBackPressed()
         }
@@ -60,7 +60,7 @@ class SearchFragment :
         val factory = QueryViewModelFactory.forQuery(dataRepository)
         viewModel = ViewModelProvider(this, factory).get(QueryViewModel::class.java)
 
-        requireActivity().onBackPressedDispatcher.addCallback(this, backPressHandler)
+        requireActivity().onBackPressedDispatcher.addCallback(this, appBarBackPressHandler)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -215,7 +215,7 @@ class SearchFragment :
                 is AppBar.State.Default, null -> {
                     appBarToDefault()
                     sharedMainActivityViewModel.unlockDrawer()
-                    backPressHandler.isEnabled = false
+                    appBarBackPressHandler.isEnabled = false
 
                     // Active query as a title
                     binding.bottomAppBarTitle.run {
@@ -226,7 +226,7 @@ class SearchFragment :
                 is AppBar.State.MainSelection -> {
                     appBarToMainSelection()
                     sharedMainActivityViewModel.lockDrawer()
-                    backPressHandler.isEnabled = true
+                    appBarBackPressHandler.isEnabled = true
 
                     // Number of selected notes as a title
                     binding.bottomAppBarTitle.run {
