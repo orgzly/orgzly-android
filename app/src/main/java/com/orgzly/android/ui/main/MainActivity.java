@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.orgzly.BuildConfig;
@@ -510,11 +511,23 @@ public class MainActivity extends CommonActivity
     public void onBackPressed() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
-        /* Close drawer if opened. */
+        // Close drawer if opened
         if (mDrawerLayout != null) {
             if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
                 mDrawerLayout.closeDrawer(GravityCompat.START);
                 return;
+            }
+        }
+
+        // Collapse search view if expanded
+        BottomAppBar bottomAppBar = findViewById(R.id.bottomAppBar);
+        if (bottomAppBar != null) {
+            MenuItem menuItem = bottomAppBar.getMenu().findItem(R.id.search_view);
+            if (menuItem != null) {
+                if (menuItem.isActionViewExpanded()) {
+                    menuItem.collapseActionView();
+                    return;
+                }
             }
         }
 
