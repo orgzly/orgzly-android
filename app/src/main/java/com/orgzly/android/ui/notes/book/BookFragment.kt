@@ -597,6 +597,7 @@ class BookFragment :
     private fun appBarToMainSelection() {
         binding.bottomAppBar.run {
             replaceMenu(R.menu.book_cab)
+
             hideMenuItemsBasedOnSelection(menu)
 
             setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
@@ -620,6 +621,7 @@ class BookFragment :
     private fun appBarToNextSelection() {
         binding.bottomAppBar.run {
             replaceMenu(R.menu.book_cab)
+
             hideMenuItemsBasedOnSelection(menu)
 
             setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
@@ -640,12 +642,9 @@ class BookFragment :
     }
 
     private fun hideMenuItemsBasedOnSelection(menu: Menu) {
-        // Hide some menu items when multiple notes are selected
-        for (id in ITEMS_HIDDEN_ON_MULTIPLE_SELECTED_NOTES) {
-            val item = menu.findItem(id)
-            if (item != null) {
-                item.isVisible = viewAdapter.getSelection().count == 1
-            }
+        // Hide buttons that can't be used when multiple notes are selected
+        for (id in listOf(R.id.paste, R.id.new_note)) {
+            menu.findItem(id)?.isVisible = viewAdapter.getSelection().count == 1
         }
     }
 
@@ -784,10 +783,6 @@ class BookFragment :
         /* Arguments. */
         private const val ARG_BOOK_ID = "bookId"
         private const val ARG_NOTE_ID = "noteId"
-
-        private val ITEMS_HIDDEN_ON_MULTIPLE_SELECTED_NOTES = arrayOf(
-            R.id.paste,
-            R.id.new_note)
 
         /**
          * @param bookId Book ID

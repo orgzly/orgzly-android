@@ -4,17 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:id="@+id/books_options_menu_item_cycle_visibility"
-        android:icon="?attr/ic_unfold_more_24dp"
-        app:showAsAction="always"
-        android:title="@string/cycle_visibility"/>
-
-    <item
         android:id="@+id/search_view"
         android:title="@string/options_menu_item_search"
         android:icon="?attr/ic_search_24dp"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|always" tools:ignore="AlwaysShowAction"/>
+
+    <item
+        android:id="@+id/books_options_menu_item_cycle_visibility"
+        android:icon="?attr/ic_unfold_more_24dp"
+        app:showAsAction="always"
+        android:title="@string/cycle_visibility"/>
 
     <item
         android:id="@+id/books_options_keep_screen_on"

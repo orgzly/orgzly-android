@@ -161,7 +161,7 @@ class AgendaFragment :
 
             // Hide buttons that can't be used when multiple notes are selected
             listOf(R.id.focus).forEach { id ->
-                menu.findItem(id)?.isVisible = viewAdapter.getSelection().count <= 1
+                menu.findItem(id)?.isVisible = viewAdapter.getSelection().count == 1
             }
 
             setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
