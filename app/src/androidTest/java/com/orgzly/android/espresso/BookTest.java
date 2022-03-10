@@ -128,7 +128,8 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(9, R.id.item_head_scheduled_text).check(matches(allOf(withText(userDateTime("<2014-05-26 Mon>")), isDisplayed())));
 
         onNoteInBook(9).perform(longClick());
-        onView(withId(R.id.schedule)).perform(click());
+        onActionItemClick(R.id.edit, R.string.edit);
+        onView(withText(R.string.schedule)).perform(click());
         onView(withText(R.string.set)).perform(click());
 
         onNoteInBook(9, R.id.item_head_scheduled_text).check(matches(allOf(withText(userDateTime("<2014-05-26 Mon>")), isDisplayed())));
@@ -142,7 +143,8 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(8).perform(longClick());
         onNoteInBook(9).perform(click());
 
-        onView(withId(R.id.schedule)).perform(click());
+        onActionItemClick(R.id.edit, R.string.edit);
+        onView(withText(R.string.schedule)).perform(click());
         onView(withText(R.string.clear)).perform(click());
 
         onNoteInBook(8, R.id.item_head_scheduled_text).check(matches(not(isDisplayed())));
@@ -157,7 +159,8 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(5).perform(longClick());
         onNoteInBook(8).perform(click());
 
-        onView(withId(R.id.state)).perform(click());
+        onActionItemClick(R.id.edit, R.string.edit);
+        onView(withText(R.string.state)).perform(click());
         onView(withText("TODO")).perform(click());
 
         onNoteInBook(5, R.id.item_head_title).check(matches(withText(startsWith("TODO"))));
@@ -169,7 +172,8 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note #1.")));
 
         onNoteInBook(1).perform(longClick());
-        onView(withId(R.id.state)).perform(click());
+        onActionItemClick(R.id.edit, R.string.edit);
+        onView(withText(R.string.state)).perform(click());
         onView(withText(R.string.clear)).perform(click());
 
         onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note #1.")));
@@ -485,7 +489,8 @@ public class BookTest extends OrgzlyTest {
     public void testPreselectedStateOfSelectedNote() {
         onNoteInBook(3).perform(longClick());
 
-        onView(withId(R.id.state)).perform(click());
+        onActionItemClick(R.id.edit, R.string.edit);
+        onView(withText(R.string.state)).perform(click());
 
         onView(withText("TODO")).check(matches(isChecked()));
     }

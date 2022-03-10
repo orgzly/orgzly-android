@@ -203,7 +203,8 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(withText("To Do")).perform(click());
         onNotesInSearch().check(matches(recyclerViewItemCount(3)));
         onView(allOf(withText(endsWith("Note C.")), isDisplayed())).perform(longClick());
-        onView(withId(R.id.state)).perform(click());
+        onActionItemClick(R.id.edit, R.string.edit);
+        onView(withText(R.string.state)).perform(click());
         onView(withText(R.string.clear)).perform(click());
         onNotesInSearch().check(matches(recyclerViewItemCount(2)));
     }
@@ -244,7 +245,8 @@ public class QueryFragmentTest extends OrgzlyTest {
         onNotesInSearch().check(matches(recyclerViewItemCount(2)));
 
         onView(allOf(withText(endsWith("Note C.")), isDisplayed())).perform(longClick());
-        onView(withId(R.id.schedule)).perform(click());
+        onActionItemClick(R.id.edit, R.string.edit);
+        onView(withText(R.string.schedule)).perform(click());
         onView(withId(R.id.date_picker_button)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
         onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
@@ -739,7 +741,8 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(withId(R.id.bottomAppBarTitle)).check(matches(withText("1")));
 
         // Remove state from selected note
-        onView(withId(R.id.state)).perform(click());
+        onActionItemClick(R.id.edit, R.string.edit);
+        onView(withText(R.string.state)).perform(click());
         onView(withText(R.string.clear)).perform(click());
 
         onNotesInSearch().check(matches(recyclerViewItemCount(1)));
@@ -763,7 +766,8 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onNoteInSearch(1).perform(longClick());
 
-        onView(withId(R.id.state)).perform(click());
+        onActionItemClick(R.id.edit, R.string.edit);
+        onView(withText(R.string.state)).perform(click());
 
         onView(withText("TODO")).check(matches(isChecked()));
     }
@@ -809,7 +813,8 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         // Remove time usage
         onView(allOf(withText(endsWith("Note A")), isDisplayed())).perform(longClick());
-        onView(withId(R.id.schedule)).perform(click());
+        onActionItemClick(R.id.edit, R.string.edit);
+        onView(withText(R.string.schedule)).perform(click());
         onView(withId(R.id.time_used_checkbox)).perform(click());
         onView(withText(R.string.set)).perform(click());
         pressBack();

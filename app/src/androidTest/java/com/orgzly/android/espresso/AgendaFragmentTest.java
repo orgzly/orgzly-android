@@ -26,6 +26,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onItemInAgenda;
 import static com.orgzly.android.espresso.EspressoUtils.onNotesInAgenda;
 import static com.orgzly.android.espresso.EspressoUtils.recyclerViewItemCount;
@@ -143,7 +144,8 @@ public class AgendaFragmentTest extends OrgzlyTest {
         defaultSetUp();
         searchForText(".it.done ad.7");
         onItemInAgenda(2).perform(longClick());
-        onView(withId(R.id.schedule)).perform(click());
+        onActionItemClick(R.id.edit, R.string.edit);
+        onView(withText(R.string.schedule)).perform(click());
         onView(withId(R.id.date_picker_button)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName())))
                 .perform(PickerActions.setDate(
@@ -185,7 +187,8 @@ public class AgendaFragmentTest extends OrgzlyTest {
         onView(withId(R.id.bottomAppBarTitle)).check(matches(withText("1")));
 
         // Remove state
-        onView(withId(R.id.state)).perform(click());
+        onActionItemClick(R.id.edit, R.string.edit);
+        onView(withText(R.string.state)).perform(click());
         onView(withText(R.string.clear)).perform(click());
 
         onNotesInAgenda().check(matches(recyclerViewItemCount(8)));
@@ -201,7 +204,8 @@ public class AgendaFragmentTest extends OrgzlyTest {
         searchForText("ad.3");
 
         onItemInAgenda(1).perform(longClick());
-        onView(withId(R.id.state)).perform(click());
+        onActionItemClick(R.id.edit, R.string.edit);
+        onView(withText(R.string.state)).perform(click());
 
         onView(withText("TODO")).check(matches(isChecked()));
     }
@@ -238,7 +242,8 @@ public class AgendaFragmentTest extends OrgzlyTest {
 
         searchForText(".it.done ad.7");
         onItemInAgenda(1).perform(longClick());
-        onView(withId(R.id.state)).perform(click());
+        onActionItemClick(R.id.edit, R.string.edit);
+        onView(withText(R.string.state)).perform(click());
         onView(withText("NEXT")).perform(click());
     }
 
