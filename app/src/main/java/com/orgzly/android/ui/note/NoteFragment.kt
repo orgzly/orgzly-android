@@ -455,8 +455,9 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         viewModel.viewEditMode.observe(viewLifecycleOwner, Observer { viewEditMode ->
             when (viewEditMode) {
-                NoteViewModel.ViewEditMode.VIEW ->
+                NoteViewModel.ViewEditMode.VIEW -> {
                     toViewMode()
+                }
 
                 NoteViewModel.ViewEditMode.EDIT -> {
                     toEditMode()
@@ -494,6 +495,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         binding.bodyView.visibility = View.GONE
         binding.bodyEdit.visibility = View.VISIBLE
+
+        // binding.toolbar.visibility = View.GONE
     }
 
     private fun toViewMode() {
@@ -510,6 +513,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         ImageLoader.loadImages(binding.bodyView)
 
         binding.bodyView.visibility = View.VISIBLE
+
+        // binding.toolbar.visibility = View.VISIBLE
     }
 
     private fun updateViewsFromPayload() {
