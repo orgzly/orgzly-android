@@ -1,0 +1,54 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/move"
+        app:showAsAction="always"
+        android:icon="?attr/ic_swap_vert_24dp"
+        android:title="@string/move">
+    </item>
+
+    <item
+        android:id="@+id/cut"
+        android:icon="?attr/ic_content_cut_24dp"
+        app:showAsAction="always"
+        android:title="@string/cut">
+    </item>
+
+    <item
+        android:id="@+id/copy"
+        android:icon="?attr/ic_content_copy_24dp"
+        app:showAsAction="always"
+        android:title="@string/copy">
+    </item>
+
+    <item
+        android:id="@+id/paste"
+        android:icon="?attr/ic_content_paste_24dp"
+        app:showAsAction="always"
+        android:title="@string/paste">
+
+        <menu>
+            <item
+                android:id="@+id/paste_above"
+                android:icon="?attr/oic_new_above_24dp"
+                android:title="@string/heads_action_menu_item_paste_above"/>
+
+            <item
+                android:id="@+id/paste_under"
+                android:icon="?attr/oic_new_under_24dp"
+                android:title="@string/heads_action_menu_item_paste_under"/>
+
+            <item
+                android:id="@+id/paste_below"
+                android:icon="?attr/oic_new_below_24dp"
+                android:title="@string/heads_action_menu_item_paste_below"/>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/delete_note"
+        app:showAsAction="never"
+        android:title="@string/delete"/>
+</menu>

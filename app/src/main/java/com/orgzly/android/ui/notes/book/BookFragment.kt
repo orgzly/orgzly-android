@@ -69,6 +69,8 @@ class BookFragment :
         return listener
     }
 
+    // TODO: Move to ViewModel
+
     var currentBook: Book? = null
 
     private var mBookId: Long = 0
@@ -189,6 +191,10 @@ class BookFragment :
             }
         })
 
+        viewModel.title.observe(viewLifecycleOwner, Observer { title ->
+            binding.toolbar.title = title
+        })
+
         viewModel.data.observe(viewLifecycleOwner, Observer { data ->
             if (BuildConfig.LOG_DEBUG)
                 LogUtils.d(TAG, "Observed data: book ${data.book} and ${data.notes?.size} notes")
@@ -198,7 +204,7 @@ class BookFragment :
 
             this.currentBook = book
 
-            binding.toolbar.title = BookUtils.getFragmentTitleForBook(currentBook)
+            viewModel.setTitle(BookUtils.getFragmentTitleForBook(currentBook))
 
             viewAdapter.setPreface(book)
 
@@ -250,6 +256,10 @@ class BookFragment :
 
                     // Hide bar's title
                     binding.bottomAppBarTitle.visibility = View.GONE
+
+                    binding.toolbar.menu.clear()
+
+                    viewModel.setTitle(BookUtils.getFragmentTitleForBook(currentBook))
                 }
 
                 is AppBar.State.MainSelection -> {
@@ -264,6 +274,16 @@ class BookFragment :
                         text = viewAdapter.getSelection().count.toString()
                         visibility = View.VISIBLE
                     }
+
+                    binding.toolbar.menu.clear()
+                    binding.toolbar.inflateMenu(R.menu.book_cab_top)
+                    hideMenuItemsBasedOnSelection(binding.toolbar.menu)
+                    binding.toolbar.setOnMenuItemClickListener { menuItem ->
+                        handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
+                        true
+                    }
+
+                    viewModel.hideTitle()
                 }
 
                 is AppBar.State.NextSelection -> {
@@ -278,6 +298,16 @@ class BookFragment :
                         text = viewAdapter.getSelection().count.toString()
                         visibility = View.VISIBLE
                     }
+
+                    binding.toolbar.menu.clear()
+                    binding.toolbar.inflateMenu(R.menu.book_cab_moving)
+                    hideMenuItemsBasedOnSelection(binding.toolbar.menu)
+                    binding.toolbar.setOnMenuItemClickListener { menuItem ->
+                        handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
+                        true
+                    }
+
+                    viewModel.hideTitle()
                 }
             }
         }
@@ -567,6 +597,7 @@ class BookFragment :
     private fun appBarToMainSelection() {
         binding.bottomAppBar.run {
             replaceMenu(R.menu.book_cab)
+            hideMenuItemsBasedOnSelection(menu)
 
             setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
                 typedArray.getResourceId(R.styleable.Icons_ic_arrow_back_24dp, 0)
@@ -574,14 +605,6 @@ class BookFragment :
 
             setNavigationOnClickListener {
                 viewModel.appBar.toDefault()
-            }
-
-            // Hide some menu items when multiple notes are selected
-            for (id in ITEMS_HIDDEN_ON_MULTIPLE_SELECTED_NOTES) {
-                val item = menu.findItem(id)
-                if (item != null) {
-                    item.isVisible = viewAdapter.getSelection().count == 1
-                }
             }
 
             setOnMenuItemClickListener { menuItem ->
@@ -596,7 +619,8 @@ class BookFragment :
 
     private fun appBarToNextSelection() {
         binding.bottomAppBar.run {
-            replaceMenu(R.menu.book_cab_moving)
+            replaceMenu(R.menu.book_cab)
+            hideMenuItemsBasedOnSelection(menu)
 
             setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
                 typedArray.getResourceId(R.styleable.Icons_ic_arrow_back_24dp, 0)
@@ -613,6 +637,16 @@ class BookFragment :
         }
 
         binding.fab.hide()
+    }
+
+    private fun hideMenuItemsBasedOnSelection(menu: Menu) {
+        // Hide some menu items when multiple notes are selected
+        for (id in ITEMS_HIDDEN_ON_MULTIPLE_SELECTED_NOTES) {
+            val item = menu.findItem(id)
+            if (item != null) {
+                item.isVisible = viewAdapter.getSelection().count == 1
+            }
+        }
     }
 
     private fun handleActionItemClick(actionId: Int, ids: Set<Long>) {
@@ -660,6 +694,7 @@ class BookFragment :
                 delete(ids)
 
                 // TODO: Wait for user confirmation (dialog close) before doing this
+                // TODO: Don't do it if canceled
                 viewModel.appBar.toDefault()
             }
 
@@ -750,8 +785,9 @@ class BookFragment :
         private const val ARG_BOOK_ID = "bookId"
         private const val ARG_NOTE_ID = "noteId"
 
-        private val ITEMS_HIDDEN_ON_MULTIPLE_SELECTED_NOTES = intArrayOf(
-                R.id.paste)
+        private val ITEMS_HIDDEN_ON_MULTIPLE_SELECTED_NOTES = arrayOf(
+            R.id.paste,
+            R.id.new_note)
 
         /**
          * @param bookId Book ID

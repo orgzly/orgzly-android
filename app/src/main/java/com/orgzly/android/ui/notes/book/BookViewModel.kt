@@ -4,6 +4,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.orgzly.android.App
+import com.orgzly.android.BookUtils
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.NoteView
@@ -76,5 +77,15 @@ class BookViewModel(private val dataRepository: DataRepository, val bookId: Long
             val count = dataRepository.getNotesAndSubtreesCount(ids)
             notesDeleteRequest.postValue(Pair(ids, count))
         }
+    }
+
+    val title = MutableLiveData<String?>(null)
+
+    fun setTitle(str: String?) {
+        title.postValue(str)
+    }
+
+    fun hideTitle() {
+        title.postValue(null)
     }
 }
