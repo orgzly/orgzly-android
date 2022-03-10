@@ -508,7 +508,7 @@ class NoteFragmentTest : OrgzlyTest() {
     @Test
     fun testBreadcrumbsPromptWhenCreatingNewNote() {
         onNoteInBook(1).perform(longClick())
-        onView(withId(R.id.new_note)).perform(click())
+        onActionItemClick(R.id.new_note, R.string.new_note);
         onView(withText(R.string.new_under)).perform(click())
         onView(withId(R.id.fragment_note_title)).perform(*replaceTextCloseKeyboard("1.1"))
         onView(withId(R.id.fragment_note_breadcrumbs_text)).perform(clickClickableSpan("Note #1."))

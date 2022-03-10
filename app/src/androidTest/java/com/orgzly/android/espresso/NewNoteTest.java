@@ -17,6 +17,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.contextualToolbarOverflowMenu;
+import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onBook;
 import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
 import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
@@ -50,7 +51,7 @@ public class NewNoteTest extends OrgzlyTest {
         onBook(0).perform(click());
 
         onNoteInBook(2).perform(longClick());
-        onView(withId(R.id.new_note)).perform(click());
+        onActionItemClick(R.id.new_note, R.string.new_note);
         onView(withText(R.string.new_under)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("A"));
         onView(withId(R.id.fab)).perform(click()); // Note done
@@ -69,7 +70,7 @@ public class NewNoteTest extends OrgzlyTest {
         onBook(0).perform(click());
 
         onNoteInBook(2).perform(longClick());
-        onView(withId(R.id.new_note)).perform(click());
+        onActionItemClick(R.id.new_note, R.string.new_note);
         onView(withText(R.string.new_above)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("A"));
         onView(withId(R.id.fab)).perform(click()); // Note done
@@ -93,7 +94,7 @@ public class NewNoteTest extends OrgzlyTest {
         onBook(0).perform(click());
 
         onNoteInBook(2).perform(longClick());
-        onView(withId(R.id.new_note)).perform(click());
+        onActionItemClick(R.id.new_note, R.string.new_note);
         onView(withText(R.string.new_below)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("A"));
         onView(withId(R.id.fab)).perform(click()); // Note done
@@ -138,8 +139,7 @@ public class NewNoteTest extends OrgzlyTest {
         /* Move A B and C under Parent 1. */
         for (int i = 0; i < 3; i++) {
             onNoteInBook(1).perform(longClick());
-            contextualToolbarOverflowMenu().perform(click());
-            onView(withText(R.string.move)).perform(click());
+            onActionItemClick(R.id.move, R.string.move);
             onView(withId(R.id.notes_action_move_down)).perform(click());
             onView(withId(R.id.notes_action_move_down)).perform(click());
             onView(withId(R.id.notes_action_move_down)).perform(click());
@@ -153,7 +153,7 @@ public class NewNoteTest extends OrgzlyTest {
         onView(withId(R.id.fab)).perform(click()); // Note done
 
         onNoteInBook(1).perform(longClick());
-        onView(withId(R.id.new_note)).perform(click());
+        onActionItemClick(R.id.new_note, R.string.new_note);
         onView(withText(R.string.new_under)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("Note"));
         onView(withId(R.id.fab)).perform(click()); // Note done

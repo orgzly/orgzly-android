@@ -235,8 +235,7 @@ public class BookTest extends OrgzlyTest {
     public void testCutThenOpenNoteAtThePosition() {
         onNoteInBook(2).perform(longClick());
 
-        contextualToolbarOverflowMenu().perform(click());
-        onView(withText(R.string.cut)).perform(click());
+        onActionItemClick(R.id.cut, R.string.cut);
 
         /* Open note at the same position as the cut one. */
         onNoteInBook(2).perform(click());
@@ -245,8 +244,7 @@ public class BookTest extends OrgzlyTest {
     @Test
     public void testCabForMovingNotesDisplayed() {
         onNoteInBook(1).perform(longClick());
-        contextualToolbarOverflowMenu().perform(click());
-        onView(withText(R.string.move)).perform(click());
+        onActionItemClick(R.id.move, R.string.move);
         onView(withId(R.id.notes_action_move_down)).check(matches(isDisplayed()));
     }
 
@@ -254,8 +252,7 @@ public class BookTest extends OrgzlyTest {
     public void testOrderOfMovedNote() {
         onNoteInBook(3).perform(longClick());
 
-        contextualToolbarOverflowMenu().perform(click());
-        onView(withText(R.string.move)).perform(click());
+        onActionItemClick(R.id.move, R.string.move);
         onView(withId(R.id.notes_action_move_down)).perform(click());
 
         onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
@@ -275,8 +272,7 @@ public class BookTest extends OrgzlyTest {
 
         onNoteInBook(2).perform(longClick());
 
-        contextualToolbarOverflowMenu().perform(click());
-        onView(withText(R.string.move)).perform(click());
+        onActionItemClick(R.id.move, R.string.move);
         onView(withId(R.id.notes_action_move_down)).check(matches(isDisplayed()));
 
         scenario.onActivity(activity ->
@@ -289,24 +285,21 @@ public class BookTest extends OrgzlyTest {
     public void testPromoting() {
         onNoteInBook(2).perform(longClick());
 
-        contextualToolbarOverflowMenu().perform(click());
-        onView(withText(R.string.move)).perform(click());
+        onActionItemClick(R.id.move, R.string.move);
         onView(withId(R.id.notes_action_move_left)).perform(click());
     }
 
     @Test
     public void testPasteAbove() {
         onNoteInBook(2).perform(longClick());
-        contextualToolbarOverflowMenu().perform(click());
-        onView(withText(R.string.cut)).perform(click());
+        onActionItemClick(R.id.cut, R.string.cut);
 
         onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
         onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #8."))));
         onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #9."))));
 
         onNoteInBook(1).perform(longClick());
-        contextualToolbarOverflowMenu().perform(click());
-        onView(withText(R.string.paste)).perform(click());
+        onActionItemClick(R.id.paste, R.string.paste);
         onView(withText(R.string.heads_action_menu_item_paste_above)).perform(click());
 
         onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #2."))));
@@ -323,16 +316,14 @@ public class BookTest extends OrgzlyTest {
     @Test
     public void testPasteUnder() {
         onNoteInBook(2).perform(longClick());
-        contextualToolbarOverflowMenu().perform(click());
-        onView(withText(R.string.cut)).perform(click());
+        onActionItemClick(R.id.cut, R.string.cut);
 
         onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
         onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #8."))));
         onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #9."))));
 
         onNoteInBook(2).perform(longClick());
-        contextualToolbarOverflowMenu().perform(click());
-        onView(withText(R.string.paste)).perform(click());
+        onActionItemClick(R.id.paste, R.string.paste);
         onView(withText(R.string.heads_action_menu_item_paste_under)).perform(click());
 
         onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
@@ -346,12 +337,10 @@ public class BookTest extends OrgzlyTest {
     @Test
     public void testCopyBelow() {
         onNoteInBook(1).perform(longClick());
-        contextualToolbarOverflowMenu().perform(click());
-        onView(withText(R.string.copy)).perform(click());
+        onActionItemClick(R.id.copy, R.string.copy);
 
         onNoteInBook(1).perform(longClick());
-        contextualToolbarOverflowMenu().perform(click());
-        onView(withText(R.string.paste)).perform(click());
+        onActionItemClick(R.id.paste, R.string.paste);
         onView(withText(R.string.heads_action_menu_item_paste_below)).perform(click());
 
         onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
@@ -375,7 +364,7 @@ public class BookTest extends OrgzlyTest {
 
         /* Create new note under folded. */
         onNoteInBook(2).perform(longClick());
-        onView(withId(R.id.new_note)).perform(click());
+        onActionItemClick(R.id.new_note, R.string.new_note);
         onView(withText(R.string.new_under)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("Created"));
         onView(withId(R.id.fab)).perform(click()); // Note done

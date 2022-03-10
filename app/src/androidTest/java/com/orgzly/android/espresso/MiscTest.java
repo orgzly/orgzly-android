@@ -626,8 +626,7 @@ public class MiscTest extends OrgzlyTest {
 
         onBook(0).perform(click());
         onNoteInBook(3).perform(longClick());
-        contextualToolbarOverflowMenu().perform(click());
-        onView(withText(R.string.move)).perform(click());
+        onActionItemClick(R.id.move, R.string.move);
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(allOf(withText("booky"), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
         onView(withId(R.id.notes_action_move_left)).check(matches(isDisplayed()));

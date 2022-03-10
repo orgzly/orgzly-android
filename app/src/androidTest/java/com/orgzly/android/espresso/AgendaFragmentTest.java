@@ -189,7 +189,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
         onView(withText(R.string.clear)).perform(click());
 
         onNotesInAgenda().check(matches(recyclerViewItemCount(8)));
-        onView(withId(R.id.bottomAppBarTitle)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.bottomAppBarTitle)).check(matches(not(withText("1"))));
     }
 
     @Ignore("Not implemented yet")

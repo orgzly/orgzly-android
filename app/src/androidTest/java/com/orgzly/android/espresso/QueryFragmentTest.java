@@ -32,6 +32,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.contextualToolbarOverflowMenu;
+import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onBook;
 import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
 import static com.orgzly.android.espresso.EspressoUtils.onNoteInSearch;
@@ -383,8 +384,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         /* Move Note C down. */
         onNoteInBook(3).perform(longClick());
-        contextualToolbarOverflowMenu().perform(click());
-        onView(withText(R.string.move)).perform(click());
+        onActionItemClick(R.id.move, R.string.move);
         onView(withId(R.id.notes_action_move_down)).perform(click());
         pressBack();
         pressBack();
@@ -412,8 +412,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         /* Demote Note B. */
         onNoteInBook(2).perform(longClick());
-        contextualToolbarOverflowMenu().perform(click());
-        onView(withText(R.string.move)).perform(click());
+        onActionItemClick(R.id.move, R.string.move);
         onView(withId(R.id.notes_action_move_right)).perform(click());
         pressBack();
         pressBack();
@@ -442,13 +441,11 @@ public class QueryFragmentTest extends OrgzlyTest {
         /* Cut Note B. */
         onNoteInBook(2).perform(longClick());
 
-        contextualToolbarOverflowMenu().perform(click());
-        onView(withText(R.string.cut)).perform(click());
+        onActionItemClick(R.id.cut, R.string.cut);
 
         /* Paste under Note A. */
         onNoteInBook(1).perform(longClick());
-        contextualToolbarOverflowMenu().perform(click());
-        onView(withText(R.string.paste)).perform(click());
+        onActionItemClick(R.id.paste, R.string.paste);
         onView(withText(R.string.heads_action_menu_item_paste_under)).perform(click());
 
         searchForText("t.tag3");
@@ -746,7 +743,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(withText(R.string.clear)).perform(click());
 
         onNotesInSearch().check(matches(recyclerViewItemCount(1)));
-        onView(withId(R.id.bottomAppBarTitle)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.bottomAppBarTitle)).check(matches(not(withText("1"))));
     }
 
     @Test
