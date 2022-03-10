@@ -217,9 +217,12 @@ class SearchFragment :
                     sharedMainActivityViewModel.unlockDrawer()
                     appBarBackPressHandler.isEnabled = false
 
-                    // Active query as a title
+                    // Active query as a title, clickable
                     binding.bottomAppBarTitle.run {
                         text = currentQuery
+                    }
+                    binding.bottomAppBarTitle.setOnClickListener {
+                        binding.bottomAppBar.menu.findItem(R.id.search_view)?.expandActionView()
                     }
                 }
 
