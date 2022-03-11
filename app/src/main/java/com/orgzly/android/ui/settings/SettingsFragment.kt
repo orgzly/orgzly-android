@@ -12,6 +12,7 @@ import androidx.preference.*
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
+import com.orgzly.android.SharingShortcutsManager
 import com.orgzly.android.prefs.*
 import com.orgzly.android.reminders.RemindersScheduler
 import com.orgzly.android.ui.CommonActivity
@@ -309,6 +310,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
          */
         RemindersScheduler.notifyDataSetChanged(requireContext())
         ListWidgetProvider.notifyDataSetChanged(requireContext())
+        SharingShortcutsManager().replaceDynamicShortcuts(requireContext())
     }
 
     private fun updateRemindersScreen() {

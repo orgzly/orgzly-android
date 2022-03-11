@@ -327,6 +327,7 @@ class SyncService : Service() {
                     // TODO: Call only if book was loaded, move to usecase
                     RemindersScheduler.notifyDataSetChanged(App.getAppContext())
                     ListWidgetProvider.notifyDataSetChanged(App.getAppContext())
+                    SharingShortcutsManager().replaceDynamicShortcuts(App.getAppContext())
 
                     syncStatus.set(SyncStatus.Type.BOOK_ENDED, namesake.name, curr + 1, namesakes.size)
                     announceActiveSyncStatus()

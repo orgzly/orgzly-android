@@ -27,4 +27,10 @@
             android:targetClass="com.orgzly.android.ui.SyncShortcutActivity" />
     </shortcut>
 
+    <share-target android:targetClass="com.orgzly.android.ui.share.ShareActivity">
+        <data android:mimeType="text/plain" />
+        <data android:mimeType="image/*" />
+        <category android:name="com.orgzly.android.directshare.category.SPECIFIC_NOTEBOOK" />
+    </share-target>
+
 </shortcuts>

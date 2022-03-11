@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -31,6 +30,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.App;
 import com.orgzly.android.AppIntent;
+import com.orgzly.android.SharingShortcutsManager;
 import com.orgzly.android.db.NotesClipboard;
 import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.db.entity.Note;
@@ -40,7 +40,6 @@ import com.orgzly.android.query.Condition;
 import com.orgzly.android.query.Query;
 import com.orgzly.android.query.user.DottedQueryBuilder;
 import com.orgzly.android.sync.AutoSync;
-import com.orgzly.android.ui.BottomActionBar;
 import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.DisplayManager;
 import com.orgzly.android.ui.NotePlace;
@@ -167,6 +166,8 @@ public class MainActivity extends CommonActivity
                 viewModel.exportSavedSearches(uri);
             }
         };
+
+        new SharingShortcutsManager().replaceDynamicShortcuts(this);
     }
 
     @NotNull

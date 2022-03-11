@@ -1,6 +1,5 @@
 package com.orgzly.android.di
 
-import com.orgzly.android.ChooserShareTargetService
 import com.orgzly.android.NewNoteBroadcastReceiver
 import com.orgzly.android.TimeChangeBroadcastReceiver
 import com.orgzly.android.di.module.ApplicationModule
@@ -13,6 +12,7 @@ import com.orgzly.android.ui.BookChooserActivity
 import com.orgzly.android.ui.TemplateChooserActivity
 import com.orgzly.android.ui.books.BooksFragment
 import com.orgzly.android.ui.main.MainActivity
+import com.orgzly.android.SharingShortcutsManager
 import com.orgzly.android.ui.note.NoteFragment
 import com.orgzly.android.ui.notes.NotesFragment
 import com.orgzly.android.ui.notes.book.BookFragment
@@ -77,11 +77,11 @@ interface AppComponent {
     fun inject(arg: SyncStatusBroadcastReceiver)
     fun inject(arg: NoteReminders)
     fun inject(arg: UseCaseRunner.Factory)
-    fun inject(arg: ChooserShareTargetService)
     fun inject(arg: UseCaseWorker)
     fun inject(arg: ListWidgetService)
     fun inject(arg: ListWidgetProvider)
     fun inject(arg: NewNoteBroadcastReceiver)
     fun inject(arg: TimeChangeBroadcastReceiver)
     fun inject(arg: RemindersBroadcastReceiver)
+    fun inject(arg: SharingShortcutsManager)
 }
