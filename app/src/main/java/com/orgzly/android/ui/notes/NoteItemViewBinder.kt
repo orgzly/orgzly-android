@@ -26,14 +26,13 @@ import com.orgzly.databinding.ItemAgendaDividerBinding
 import com.orgzly.databinding.ItemHeadBinding
 
 class NoteItemViewBinder(private val context: Context, private val inBook: Boolean) {
-    private val attrs: Attrs
+    private val attrs: Attrs = Attrs.obtain(context)
 
     private val titleGenerator: TitleGenerator
 
     private val userTimeFormatter: UserTimeFormatter
 
     init {
-        attrs = Attrs.obtain(context)
 
         val titleAttributes = TitleGenerator.TitleAttributes(
                 attrs.todoColor,

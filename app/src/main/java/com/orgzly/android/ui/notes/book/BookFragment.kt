@@ -125,8 +125,9 @@ class BookFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val quickBars = QuickBars(binding.root.context, true)
 
-        viewAdapter = BookAdapter(binding.root.context, this, quickBars, inBook = true)
-        viewAdapter.setHasStableIds(true)
+        viewAdapter = BookAdapter(binding.root.context, this, quickBars, inBook = true).apply {
+            setHasStableIds(true)
+        }
 
         // Restores selection, requires adapter
         super.onViewCreated(view, savedInstanceState)

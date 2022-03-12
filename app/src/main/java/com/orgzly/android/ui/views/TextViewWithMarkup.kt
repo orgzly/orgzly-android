@@ -24,13 +24,17 @@ import com.orgzly.android.util.OrgFormatter
  * Used for title, content and preface text.
  */
 class TextViewWithMarkup : TextViewFixed {
-    constructor(context: Context) : super(context)
+    constructor(context: Context) : super(context) {
+        // addTextChangedListener(EditTextWatcher())
+    }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+        // addTextChangedListener(EditTextWatcher())
         parseAttrs(attrs)
     }
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        // addTextChangedListener(EditTextWatcher())
         parseAttrs(attrs)
     }
 
