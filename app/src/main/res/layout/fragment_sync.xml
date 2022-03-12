@@ -8,15 +8,14 @@
         android:id="@+id/fragment_sync_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/drawer_bg"
+        android:background="?android:attr/windowBackground"
         android:orientation="vertical">
 
         <ProgressBar
             android:id="@+id/sync_progress_bar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="16dp"
-            android:background="?attr/drawer_bg"/>
+            android:layout_height="16dp"/>
 
         <View
             android:layout_width="match_parent"

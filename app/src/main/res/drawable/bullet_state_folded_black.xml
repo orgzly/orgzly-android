@@ -4,10 +4,10 @@
 
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/grey_800"/>
+            <solid android:color="@color/grey_700"/>
         </shape>
     </item>
 
-    <item android:drawable="@drawable/bullet_state_default_dark"/>
+    <item android:drawable="@drawable/bullet_state_default_black"/>
 
 </layer-list>

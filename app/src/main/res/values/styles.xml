@@ -3,7 +3,7 @@
 <resources
     xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppDayNightTheme" parent="AppLightTheme" />
+    <style name="AppDayNightTheme" parent="AppLightTheme.Light" />
 
     <!--
          Custom light themes should inherit from AppLightTheme, dark themes from AppDarkTheme.
@@ -48,62 +48,6 @@
         <!-- For some reason, cursor is invisible (or was it black on black?) on Nexus 7 (API 19).
              With this, it's white. -->
         <item name="android:textCursorDrawable">@null</item>
-
-        <!-- Color scheme -->
-
-        <item name="android:windowBackground">@color/white</item>
-
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@color/black</item>
-
-        <item name="colorAccent">@color/blue_grey_600</item>
-
-        <item name="android:statusBarColor" tools:targetApi="21">#e6757575</item>
-
-        <item name="app_bar_bg_color">@color/grey_300</item>
-
-        <item name="bottom_action_bar_bg_color">@color/light_theme_background</item>
-
-        <!-- Make buttons lighter. -->
-        <item name="android:colorButtonNormal" tools:targetApi="21">@color/grey_100</item>
-
-
-        <item name="item_bg">@drawable/item_selector</item>
-
-        <item name="item_selected_bg_color">@color/item_selected_light_bg_color</item>
-        <item name="item_spotlighted_bg_color">@color/item_selected_light_bg_color</item>
-
-        <item name="fragment_books_bg_color">@color/light_theme_app_bar</item>
-        <item name="item_book_card_bg_color">@color/light_theme_cards_and_dialogs</item>
-
-        <item name="drawer_bg">@color/white</item>
-        <item name="drawer_item_bg">@drawable/drawer_item_selector</item>
-
-        <item name="item_head_state_todo_color">@color/red_900</item>
-        <item name="item_head_state_done_color">@color/green_900</item>
-        <item name="item_head_state_unknown_color">@color/blue_900</item>
-
-        <item name="item_head_post_title_color">@color/grey_600</item>
-
-        <item name="text_primary_color">@color/dark_text_primary_color</item>
-        <item name="text_secondary_color">@color/dark_text_secondary_color</item>
-        <item name="text_disabled_color">@color/dark_text_disabled_color</item>
-        <item name="text_highlighted_color">@color/black</item>
-        <item name="text_error_color">@color/red_900</item>
-
-        <item name="indent_line_color">#0c000000</item>
-
-        <item name="snackbar_bg_color">#323232</item> <!-- Default color -->
-
-        <item name="swipe_label_text_color">@color/dark_text_primary_color</item>
-        <item name="swipe_label_bg_color">@color/grey_100</item>
-        <item name="swipe_label_border_color">@color/grey_200</item>
-
-        <item name="switch_thumb_color">@color/grey_100</item>
-        <item name="switch_thumb_icon_tint">@color/grey_800</item>
-        <item name="switch_track_color">@color/grey_500</item>
-
-        <!-- / Color scheme -->
 
         <item name="ic_access_time_18dp">@drawable/ic_access_time_black_18dp</item>
         <item name="ic_access_time_24dp">@drawable/ic_access_time_black_24dp</item>
@@ -186,10 +130,6 @@
         <!-- https://material.io/design/iconography/system-icons.html#color -->
         <item name="active_focused_icon_alpha">0.87</item>
         <item name="active_unfocused_icon_alpha">0.54</item>
-
-        <item name="bullet_default">@drawable/bullet_state_default</item>
-        <item name="bullet_folded">@drawable/bullet_state_folded</item>
-        <item name="bullet_unfolded">@drawable/bullet_state_default</item>
     </style>
 
     <style name="AppDarkTheme" parent="Theme.MaterialComponents.NoActionBar.Bridge">
@@ -225,58 +165,6 @@
         <!-- For some reason, cursor is invisible (or was it black on black?) on Nexus 7 (API 19).
              With this, it's white. -->
         <item name="android:textCursorDrawable">@null</item>
-
-        <item name="switch_thumb_color">@color/grey_800</item>
-        <item name="switch_thumb_icon_tint">@color/white</item>
-        <item name="switch_track_color">#141414</item> <!-- TODO: Fix dark color scheme -->
-
-        <!-- Color scheme -->
-
-        <item name="android:windowBackground">@color/dark_theme_cards_and_dialogs</item>
-
-        <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryDark">@color/white</item>
-
-        <item name="colorAccent">@color/blue_grey_300</item>
-
-        <item name="android:statusBarColor" tools:targetApi="21">#e6000000</item>
-
-        <item name="app_bar_bg_color">@color/dark_theme_app_bar</item>
-
-        <item name="bottom_action_bar_bg_color">@color/dark_theme_background</item>
-
-        <item name="item_bg">@drawable/item_selector_dark</item>
-
-        <item name="item_selected_bg_color">@color/item_selected_dark_bg_color</item>
-        <item name="item_spotlighted_bg_color">@color/item_selected_dark_bg_color</item>
-
-        <item name="fragment_books_bg_color">@color/dark_theme_background</item>
-        <item name="item_book_card_bg_color">@color/dark_theme_cards_and_dialogs</item>
-
-        <item name="drawer_bg">@color/dark_theme_cards_and_dialogs</item>
-        <item name="drawer_item_bg">@drawable/drawer_item_selector_dark</item>
-
-        <item name="item_head_state_todo_color">@color/red_200</item>
-        <item name="item_head_state_done_color">@color/green_200</item>
-        <item name="item_head_state_unknown_color">@color/blue_200</item>
-
-        <item name="item_head_post_title_color">@color/grey_400</item>
-
-        <item name="text_primary_color">@color/white_text_primary_color</item>
-        <item name="text_secondary_color">@color/white_text_secondary_color</item>
-        <item name="text_disabled_color">#60ffffff</item>
-        <item name="text_highlighted_color">@color/white_text_primary_color</item>
-        <item name="text_error_color">@color/red_200</item>
-
-        <item name="indent_line_color">#0cffffff</item>
-
-        <item name="snackbar_bg_color">@color/dark_theme_app_bar</item>
-
-        <item name="swipe_label_text_color">@color/white_text_primary_color</item>
-        <item name="swipe_label_bg_color">@color/grey_900</item>
-        <item name="swipe_label_border_color">@color/grey_700</item>
-
-        <!-- / Color scheme -->
 
         <item name="ic_access_time_18dp">@drawable/ic_access_time_white_18dp</item>
         <item name="ic_access_time_24dp">@drawable/ic_access_time_white_24dp</item>
@@ -359,59 +247,120 @@
         <!-- https://material.io/design/iconography/system-icons.html#color -->
         <item name="active_focused_icon_alpha">1.00</item>
         <item name="active_unfocused_icon_alpha">0.70</item>
-
-        <item name="bullet_default">@drawable/bullet_state_default_dark</item>
-        <item name="bullet_folded">@drawable/bullet_state_folded_dark</item>
-        <item name="bullet_unfolded">@drawable/bullet_state_default_dark</item>
     </style>
 
-    <!-- Color schemes -->
-
+    <!-- Color scheme -->
     <style name="AppLightTheme.Light">
+<!--        <item name="colorBackgroundFloating">@color/white</item>-->
+<!--        <item name="android:colorBackgroundFloating" tools:targetApi="23">@color/white</item>-->
+        <item name="android:colorButtonNormal" tools:targetApi="21">@color/grey_100</item>
+        <item name="android:itemBackground">?android:itemBackground</item>
+        <item name="android:statusBarColor" tools:targetApi="21">#e6757575</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="app_bar_bg_color">@color/light_theme_app_bar</item>
+        <item name="bottom_action_bar_bg_color">@color/light_theme_app_bar</item>
+        <item name="bullet_state_default">@drawable/bullet_state_default_light</item>
+        <item name="bullet_state_folded">@drawable/bullet_state_folded_light</item>
+        <item name="colorAccent">@color/blue_grey_600</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="drawer_item_background">@drawable/drawer_item_background_light</item>
+        <item name="indent_line_color">#0c000000</item>
+        <item name="item_book_card_bg_color">@color/light_theme_cards_and_dialogs</item>
+        <item name="item_head_post_title_color">@color/grey_600</item>
+        <item name="item_head_state_done_color">@color/green_900</item>
+        <item name="item_head_state_todo_color">@color/red_900</item>
+        <item name="item_head_state_unknown_color">@color/blue_900</item>
+        <item name="item_selected_bg_color">@color/item_selected_light_bg_color</item>
+        <item name="item_spotlighted_bg_color">@color/item_selected_light_bg_color</item>
+        <item name="snackbar_bg_color">#323232</item> <!-- Default color -->
+        <item name="swipe_label_bg_color">@color/grey_100</item>
+        <item name="swipe_label_border_color">@color/grey_200</item>
+        <item name="swipe_label_text_color">@color/dark_text_primary_color</item>
+        <item name="switch_thumb_color">@color/grey_100</item>
+        <item name="switch_thumb_icon_tint">@color/grey_800</item>
+        <item name="switch_track_color">@color/grey_500</item>
+        <item name="text_disabled_color">@color/dark_text_disabled_color</item>
+        <item name="text_error_color">@color/red_900</item>
+        <item name="text_highlighted_color">@color/black</item>
+        <item name="text_primary_color">@color/dark_text_primary_color</item>
+        <item name="text_secondary_color">@color/dark_text_secondary_color</item>
     </style>
 
+    <!-- Color scheme -->
     <style name="AppDarkTheme.Dark">
+<!--        <item name="colorBackgroundFloating">@color/dark_theme_app_bar</item>-->
+<!--        <item name="android:colorBackgroundFloating" tools:targetApi="23">@color/dark_theme_app_bar</item>-->
+<!--        <item name="android:colorButtonNormal" tools:targetApi="21">@color/dark_theme_background</item>-->
+        <item name="android:itemBackground">?android:itemBackground</item>
+        <item name="android:statusBarColor" tools:targetApi="21">@color/dark_theme_status_bar</item>
+        <item name="android:windowBackground">@color/dark_theme_background</item>
+        <item name="app_bar_bg_color">@color/dark_theme_app_bar</item>
+        <item name="bottom_action_bar_bg_color">@color/dark_theme_app_bar</item>
+        <item name="bullet_state_default">@drawable/bullet_state_default_dark</item>
+        <item name="bullet_state_folded">@drawable/bullet_state_folded_dark</item>
+        <item name="colorAccent">@color/blue_grey_300</item>
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="drawer_item_background">@drawable/drawer_item_background_dark</item>
+        <item name="indent_line_color">#0cffffff</item>
+        <item name="item_book_card_bg_color">@color/dark_theme_cards_and_dialogs</item>
+        <item name="item_head_post_title_color">@color/grey_400</item>
+        <item name="item_head_state_done_color">@color/green_200</item>
+        <item name="item_head_state_todo_color">@color/red_200</item>
+        <item name="item_head_state_unknown_color">@color/blue_200</item>
+        <item name="item_selected_bg_color">@color/item_selected_dark_bg_color</item>
+        <item name="item_spotlighted_bg_color">@color/item_selected_dark_bg_color</item>
+        <item name="snackbar_bg_color">@color/dark_theme_app_bar</item>
+        <item name="swipe_label_bg_color">@color/grey_900</item>
+        <item name="swipe_label_border_color">@color/grey_700</item>
+        <item name="swipe_label_text_color">@color/white_text_primary_color</item>
+        <item name="switch_thumb_color">@color/grey_800</item>
+        <item name="switch_thumb_icon_tint">@color/white</item>
+        <item name="switch_track_color">#141414</item> <!-- TODO: Fix? -->
+        <item name="text_disabled_color">#60ffffff</item>
+        <item name="text_error_color">@color/red_200</item>
+        <item name="text_highlighted_color">@color/white_text_primary_color</item>
+        <item name="text_primary_color">@color/white_text_primary_color</item>
+        <item name="text_secondary_color">@color/white_text_secondary_color</item>
     </style>
 
+    <!-- Color scheme -->
     <style name="AppDarkTheme.Black">
-        <item name="android:windowBackground">@color/dark_theme_status_bar</item>
-
-        <item name="android:itemBackground">@color/dark_theme_status_bar</item>
+        <item name="colorBackgroundFloating">@color/dark_theme_status_bar</item>
+        <item name="android:colorBackgroundFloating" tools:targetApi="23">@color/dark_theme_status_bar</item>
         <item name="android:colorButtonNormal" tools:targetApi="21">@color/dark_theme_app_bar</item>
-
-        <item name="colorAccent">@color/blue_grey_200</item>
-
+        <item name="android:itemBackground">@color/dark_theme_status_bar</item>
         <item name="android:statusBarColor" tools:targetApi="21">#000000</item>
-
+        <item name="android:windowBackground">@color/dark_theme_status_bar</item>
         <item name="app_bar_bg_color">@color/dark_theme_status_bar</item>
-
         <item name="bottom_action_bar_bg_color">@color/dark_theme_status_bar</item>
-
-        <item name="item_bg">@drawable/item_selector_black</item>
-
+        <item name="bullet_state_default">@drawable/bullet_state_default_black</item>
+        <item name="bullet_state_folded">@drawable/bullet_state_folded_black</item>
+        <item name="colorAccent">@color/blue_grey_200</item>
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="drawer_item_background">@drawable/drawer_item_background_black</item>
+        <item name="indent_line_color">#1cffffff</item>
+        <item name="item_book_card_bg_color">@color/dark_theme_status_bar</item>
+        <item name="item_head_post_title_color">@color/grey_400</item>
+        <item name="item_head_state_done_color">@color/green_200</item>
+        <item name="item_head_state_todo_color">@color/red_200</item>
+        <item name="item_head_state_unknown_color">@color/blue_200</item>
         <item name="item_selected_bg_color">@color/item_selected_black_bg_color</item>
         <item name="item_spotlighted_bg_color">@color/item_selected_black_bg_color</item>
-
-        <item name="fragment_books_bg_color">@color/dark_theme_status_bar</item>
-        <item name="item_book_card_bg_color">@color/dark_theme_status_bar</item>
-
-        <item name="drawer_bg">@color/dark_theme_status_bar</item>
-        <item name="drawer_item_bg">@drawable/drawer_item_selector_black</item>
-
-        <item name="indent_line_color">#1cffffff</item>
-
         <item name="snackbar_bg_color">@color/dark_theme_status_bar</item>
-
         <item name="swipe_label_bg_color">#1cffffff</item>
         <item name="swipe_label_border_color">#33FFFFFF</item>
-
+        <item name="swipe_label_text_color">@color/white_text_primary_color</item>
         <item name="switch_thumb_color">@color/grey_800</item>
         <item name="switch_thumb_icon_tint">@color/white</item>
         <item name="switch_track_color">@color/grey_900</item>
-
-        <item name="bullet_default">@drawable/bullet_state_default_dark</item>
-        <item name="bullet_folded">@drawable/bullet_state_folded_black</item>
-        <item name="bullet_unfolded">@drawable/bullet_state_default_dark</item>
+        <item name="text_disabled_color">#60ffffff</item>
+        <item name="text_error_color">@color/red_200</item>
+        <item name="text_highlighted_color">@color/white_text_primary_color</item>
+        <item name="text_primary_color">@color/white_text_primary_color</item>
+        <item name="text_secondary_color">@color/white_text_secondary_color</item>
     </style>
 
     <style name="FontSize"/>
@@ -478,52 +427,12 @@
         <!--<item name="android:textAppearanceMedium">@style/TextAppearance.AppCompat.Large</item>-->
     </style>
 
-
     <style name="WindowAnimation" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/fragment_enter</item>
         <item name="android:activityOpenExitAnimation">@anim/fragment_exit</item>
         <item name="android:activityCloseEnterAnimation">@anim/fragment_enter</item>
         <item name="android:activityCloseExitAnimation">@anim/fragment_exit</item>
     </style>
-
-    <!-- Timestamp dialog. -->
-    <style name="TimestampDialogShortcutButton" parent="android:style/Widget.Holo.Button.Borderless"/>
-    <style name="TimestampDialogButton" parent="android:style/Widget.Holo.Button.Borderless"/>
-
-    <style name="TimestampDialogShortcutButton.Common">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <!--<item name="android:layout_weight">1</item>-->
-        <!--<item name="android:layout_marginLeft">8dp</item>-->
-        <!--<item name="android:layout_marginRight">8dp</item>-->
-        <!--<item name="android:layout_gravity">center_vertical</item>-->
-        <!--<item name="android:padding">8dp</item>-->
-    </style>
-
-    <style name="TimestampDialogButton.Common">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:gravity">center</item>
-
-        <item name="android:minHeight">48dp</item>
-
-        <item name="android:textAppearance">?android:textAppearanceMedium</item>
-        <item name="android:textColor">?attr/text_highlighted_color</item>
-        <!--<item name="android:textStyle">bold</item>-->
-    </style>
-
-    <style name="TimestampDialogLabel">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:gravity">center</item>
-
-        <item name="android:minHeight">48dp</item>
-
-        <item name="android:textAppearance">?android:textAppearanceMedium</item>
-        <item name="android:textColor">?attr/text_highlighted_color</item>
-        <!--<item name="android:textStyle">bold</item>-->
-    </style>
-
 
     <!-- Note fragment. -->
 
@@ -566,7 +475,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:minWidth">@dimen/fragment_note_field_min_width</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:backgroundTint" tools:targetApi="lollipop">?attr/text_disabled_color</item>
+        <item name="android:backgroundTint" tools:targetApi="lollipop">?attr/text_secondary_color</item>
     </style>
 
     <style name="BookItemInfoIcon">

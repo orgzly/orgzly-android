@@ -13,7 +13,7 @@
         android:layout_margin="@dimen/card_margin"
         app:cardUseCompatPadding="true"
         app:cardCornerRadius="0dp"
-        app:cardElevation="1dp"
+        app:cardElevation="2dp"
         app:cardBackgroundColor="?attr/item_book_card_bg_color"
         android:foreground="?android:attr/selectableItemBackground">
 

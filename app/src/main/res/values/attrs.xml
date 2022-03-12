@@ -49,42 +49,27 @@
     <declare-styleable name="ColorScheme">
         <attr name="app_bar_bg_color" format="color"/>
         <attr name="bottom_action_bar_bg_color" format="color"/>
-
-        <attr name="item_bg" format="reference" />
-
+        <attr name="drawer_item_background" format="reference"/>
+        <attr name="indent_line_color" format="color"/>
+        <attr name="item_book_card_bg_color" format="color"/>
+        <attr name="item_head_post_title_color" format="color"/>
+        <attr name="item_head_state_done_color" format="color"/>
+        <attr name="item_head_state_todo_color" format="color"/>
+        <attr name="item_head_state_unknown_color" format="color"/>
         <attr name="item_selected_bg_color" format="color" />
         <attr name="item_spotlighted_bg_color" format="color" />
-
-        <attr name="fragment_books_bg_color" format="color"/>
-        <attr name="item_book_card_bg_color" format="color"/>
-
-        <attr name="drawer_bg" format="color"/>
-        <attr name="drawer_item_bg" format="reference"/>
-
-        <attr name="item_head_state_todo_color" format="color"/>
-        <attr name="item_head_state_done_color" format="color"/>
-        <attr name="item_head_state_unknown_color" format="color"/>
-
-        <attr name="item_head_post_title_color" format="color"/>
-
-        <attr name="text_primary_color" format="color"/>
-        <attr name="text_secondary_color" format="color"/>
-        <attr name="text_disabled_color" format="color"/>
-        <attr name="text_highlighted_color" format="color"/>
-        <attr name="text_error_color" format="color"/>
-
-        <attr name="indent_line_color" format="color"/>
-
         <attr name="snackbar_bg_color" format="color"/>
-
-        <attr name="swipe_label_text_color" format="color"/>
         <attr name="swipe_label_bg_color" format="color"/>
         <attr name="swipe_label_border_color" format="color"/>
-
-        <!-- Used for note's view-edit mode Switch -->
+        <attr name="swipe_label_text_color" format="color"/>
         <attr name="switch_thumb_color" format="color"/>
         <attr name="switch_thumb_icon_tint" format="color"/>
         <attr name="switch_track_color" format="color"/>
+        <attr name="text_disabled_color" format="color"/>
+        <attr name="text_error_color" format="color"/>
+        <attr name="text_highlighted_color" format="color"/>
+        <attr name="text_primary_color" format="color"/>
+        <attr name="text_secondary_color" format="color"/>
     </declare-styleable>
 
     <declare-styleable name="Icons">
@@ -169,8 +154,7 @@
         <attr name="active_focused_icon_alpha" format="float"/>
         <attr name="active_unfocused_icon_alpha" format="float"/>
 
-        <attr name="bullet_default" format="reference"/>
-        <attr name="bullet_folded" format="reference"/>
-        <attr name="bullet_unfolded" format="reference"/>
+        <attr name="bullet_state_default" format="reference"/>
+        <attr name="bullet_state_folded" format="reference"/>
     </declare-styleable>
 </resources>

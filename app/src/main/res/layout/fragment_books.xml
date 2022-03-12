@@ -16,8 +16,7 @@
             <ViewFlipper
                 android:id="@+id/fragment_books_view_flipper"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?attr/fragment_books_bg_color">
+                android:layout_height="match_parent">
 
                 <ProgressBar style="@style/LoadingProgressBar" />
 

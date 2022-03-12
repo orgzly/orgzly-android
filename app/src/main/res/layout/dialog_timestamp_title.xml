@@ -16,7 +16,6 @@
             android:gravity="center"
             android:lines="1"
             android:layout_margin="@dimen/screen_edge"
-            android:textColor="?attr/text_primary_color"
             android:textStyle="bold"
             app:autoSizeMaxTextSize="?attr/font_medium"
             app:autoSizeMinTextSize="?attr/font_small"

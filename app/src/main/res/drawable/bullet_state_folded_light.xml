@@ -8,6 +8,6 @@
         </shape>
     </item>
 
-    <item android:drawable="@drawable/bullet_state_default"/>
+    <item android:drawable="@drawable/bullet_state_default_light"/>
 
 </layer-list>

@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/bullet_margin"
             android:layout_marginRight="@dimen/bullet_margin"
-            android:src="?attr/bullet_folded"
+            android:src="?attr/bullet_state_default"
             android:visibility="visible"
             app:layout_constraintTop_toTopOf="@id/item_head_bullet_anchor"
             app:layout_constraintBottom_toBottomOf="@id/item_head_bullet_anchor"

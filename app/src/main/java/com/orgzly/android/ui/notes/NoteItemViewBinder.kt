@@ -261,22 +261,23 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
      * Change bullet appearance depending on folding state and number of descendants.
      */
     private fun setupBullet(holder: NoteItemViewHolder, note: Note) {
-        if (inBook) {
-            if (note.position.descendantsCount > 0) { // With descendants
-                if (note.position.isFolded) { // Folded
-                    holder.binding.itemHeadBullet.setImageDrawable(attrs.bulletFolded)
-                } else { // Not folded
-                    holder.binding.itemHeadBullet.setImageDrawable(attrs.bulletUnfolded)
-                }
-            } else { // No descendants
+        if (!inBook) {
+            holder.binding.itemHeadBullet.visibility = View.GONE
+            return
+        }
+
+        if (note.position.descendantsCount > 0) { // With descendants
+            if (note.position.isFolded) { // Folded
+                holder.binding.itemHeadBullet.setImageDrawable(attrs.bulletFolded)
+            } else { // Not folded
                 holder.binding.itemHeadBullet.setImageDrawable(attrs.bulletDefault)
             }
-
-            holder.binding.itemHeadBullet.visibility = View.VISIBLE
-
-        } else {
-            holder.binding.itemHeadBullet.visibility = View.GONE
+        } else { // No descendants
+            holder.binding.itemHeadBullet.setImageDrawable(attrs.bulletDefault)
         }
+
+        holder.binding.itemHeadBullet.visibility = View.VISIBLE
+
     }
 
     private fun setupFoldingButtons(holder: NoteItemViewHolder, note: Note) {
@@ -464,14 +465,13 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
 
     private data class Attrs(
-            @ColorInt val todoColor: Int,
-            @ColorInt val doneColor: Int,
-            @ColorInt val unknownColor: Int,
-            val postTitleTextSize: Int,
-            @ColorInt val postTitleTextColor: Int,
-            val bulletDefault: Drawable,
-            val bulletFolded: Drawable,
-            val bulletUnfolded: Drawable
+        @ColorInt val todoColor: Int,
+        @ColorInt val doneColor: Int,
+        @ColorInt val unknownColor: Int,
+        val postTitleTextSize: Int,
+        @ColorInt val postTitleTextColor: Int,
+        val bulletDefault: Drawable,
+        val bulletFolded: Drawable
     ) {
         companion object {
             @SuppressWarnings("ResourceType")
@@ -483,9 +483,8 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
                                 R.attr.item_head_state_unknown_color,
                                 R.attr.item_head_post_title_text_size,
                                 R.attr.item_head_post_title_color,
-                                R.attr.bullet_default,
-                                R.attr.bullet_folded,
-                                R.attr.bullet_unfolded)) { typedArray ->
+                                R.attr.bullet_state_default,
+                                R.attr.bullet_state_folded)) { typedArray ->
 
                     Attrs(
                             typedArray.getColor(0, 0),
@@ -494,8 +493,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
                             typedArray.getDimensionPixelSize(3, 0),
                             typedArray.getColor(4, 0),
                             typedArray.getDrawable(5)!!,
-                            typedArray.getDrawable(6)!!,
-                            typedArray.getDrawable(7)!!)
+                            typedArray.getDrawable(6)!!)
                 }
             }
         }

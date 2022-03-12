@@ -13,7 +13,6 @@
             android:id="@+id/dialog_refile_toolbar"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/app_bar_bg_color"
             android:elevation="8dp" tools:targetApi="lollipop"
             app:navigationIcon="?attr/ic_close_24dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -34,8 +33,7 @@
             android:id="@+id/dialog_refile_second_bar"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="?attr/item_book_card_bg_color"
-            android:elevation="4dp" tools:targetApi="lollipop"
+            android:elevation="2dp" tools:targetApi="lollipop"
             app:layout_constraintTop_toBottomOf="@+id/dialog_refile_toolbar">
 
             <!-- Breadcrumbs -->
@@ -60,7 +58,6 @@
                     android:scrollHorizontally="true"
                     android:gravity="center_vertical"
                     android:linksClickable="true"
-                    android:textColor="?attr/text_primary_color"
                     tools:text="@string/breadcrumbs_sample" />
             </HorizontalScrollView>
 
@@ -90,7 +87,6 @@
             android:paddingRight="8dp"
             android:paddingEnd="8dp"
             android:clipToPadding="false"
-            android:background="?attr/item_book_card_bg_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
