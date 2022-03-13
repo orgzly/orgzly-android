@@ -17,6 +17,7 @@ import android.widget.Switch
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.StringRes
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -331,9 +332,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
                 menu.findItem(R.id.note_view_edit)
                     ?.actionView
-                    ?.findViewById<Switch>(R.id.note_view_edit_switch)
+                    ?.findViewById<SwitchCompat>(R.id.note_view_edit_switch)
                     ?.let { switch ->
-
                         switch.isChecked = viewModel.isInEditMode()
 
                         switch.setOnCheckedChangeListener { _, _ ->
