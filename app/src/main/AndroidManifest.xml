@@ -55,7 +55,7 @@
         <activity
             android:name=".android.ui.main.MainActivity"
             android:windowSoftInputMode="stateAlwaysHidden"
-            android:exported="false">
+            android:exported="true">
         </activity>
 
         <activity

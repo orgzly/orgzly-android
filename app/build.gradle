@@ -141,6 +141,11 @@ dependencies {
     androidTestImplementation "androidx.test:rules:$versions.android_test"
     androidTestImplementation "androidx.test.ext:junit:$versions.android_test_ext_junit"
 
+    /* For running tests on lower API versions (e.g. 18) to avoid:
+     * Didn't find class "androidx.test.core.app.InstrumentationActivityInvoker$BootstrapActivity"
+     */
+    implementation "androidx.test:core:$versions.android_test"
+
     // For ANDROIDX_TEST_ORCHESTRATOR
     // androidTestUtil "androidx.test:orchestrator:$android_test_version"
 
