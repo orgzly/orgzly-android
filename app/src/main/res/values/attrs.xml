@@ -62,9 +62,6 @@
         <attr name="swipe_label_bg_color" format="color"/>
         <attr name="swipe_label_border_color" format="color"/>
         <attr name="swipe_label_text_color" format="color"/>
-        <attr name="switch_thumb_color" format="color"/>
-        <attr name="switch_thumb_icon_tint" format="color"/>
-        <attr name="switch_track_color" format="color"/>
         <attr name="text_disabled_color" format="color"/>
         <attr name="text_error_color" format="color"/>
         <attr name="text_highlighted_color" format="color"/>

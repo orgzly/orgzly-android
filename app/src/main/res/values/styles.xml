@@ -287,9 +287,6 @@
         <item name="swipe_label_bg_color">@color/grey_100</item>
         <item name="swipe_label_border_color">@color/grey_200</item>
         <item name="swipe_label_text_color">@color/dark_text_primary_color</item>
-        <item name="switch_thumb_color">@color/grey_100</item>
-        <item name="switch_thumb_icon_tint">@color/grey_800</item>
-        <item name="switch_track_color">@color/grey_500</item>
         <item name="text_disabled_color">@color/dark_text_disabled_color</item>
         <item name="text_error_color">@color/red_900</item>
         <item name="text_highlighted_color">@color/black</item>
@@ -325,9 +322,6 @@
         <item name="swipe_label_bg_color">@color/grey_900</item>
         <item name="swipe_label_border_color">@color/grey_700</item>
         <item name="swipe_label_text_color">@color/white_text_primary_color</item>
-        <item name="switch_thumb_color">@color/grey_800</item>
-        <item name="switch_thumb_icon_tint">@color/white</item>
-        <item name="switch_track_color">#141414</item> <!-- TODO: Fix? -->
         <item name="text_disabled_color">#60ffffff</item>
         <item name="text_error_color">@color/red_200</item>
         <item name="text_highlighted_color">@color/white_text_primary_color</item>
@@ -363,9 +357,6 @@
         <item name="swipe_label_bg_color">#1cffffff</item>
         <item name="swipe_label_border_color">#33FFFFFF</item>
         <item name="swipe_label_text_color">@color/white_text_primary_color</item>
-        <item name="switch_thumb_color">@color/grey_800</item>
-        <item name="switch_thumb_icon_tint">@color/white</item>
-        <item name="switch_track_color">@color/grey_900</item>
         <item name="text_disabled_color">#60ffffff</item>
         <item name="text_error_color">@color/red_200</item>
         <item name="text_highlighted_color">@color/white_text_primary_color</item>

@@ -5,10 +5,17 @@
     tools:ignore="AlwaysShowAction">
 
     <item
-        android:id="@+id/note_view_edit"
-        android:title=""
-        app:showAsAction="always"
-        app:actionLayout="@layout/note_view_edit_switch">
+        android:id="@+id/note_edit"
+        android:title="@string/edit"
+        android:icon="?attr/ic_edit_24dp"
+        app:showAsAction="always">
+    </item>
+
+    <item
+        android:id="@+id/note_view"
+        android:title="@string/view"
+        android:icon="?attr/ic_remove_red_eye_24dp"
+        app:showAsAction="always">
     </item>
 
     <item

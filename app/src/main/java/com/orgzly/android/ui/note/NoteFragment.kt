@@ -316,12 +316,19 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 menu.findItem(R.id.keep_screen_on))
 
             if (viewModel.notePayload == null) { // Displaying non-existent note.
-                menu.removeItem(R.id.note_view_edit)
+                menu.removeItem(R.id.note_edit)
+                menu.removeItem(R.id.note_view)
                 menu.removeItem(R.id.done)
                 menu.removeItem(R.id.metadata)
                 menu.removeItem(R.id.delete)
 
             } else {
+                if (viewModel.isInEditMode()) {
+                    menu.removeItem(R.id.note_edit)
+                } else {
+                    menu.removeItem(R.id.note_view)
+                }
+
                 when (AppPreferences.noteMetadataVisibility(context)) {
                     "selected" -> menu.findItem(R.id.metadata_show_selected).isChecked = true
                     else -> menu.findItem(R.id.metadata_show_all).isChecked = true
@@ -329,17 +336,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
                 menu.findItem(R.id.metadata_always_show_set).isChecked =
                     AppPreferences.alwaysShowSetNoteMetadata(context)
-
-                menu.findItem(R.id.note_view_edit)
-                    ?.actionView
-                    ?.findViewById<SwitchCompat>(R.id.note_view_edit_switch)
-                    ?.let { switch ->
-                        switch.isChecked = viewModel.isInEditMode()
-
-                        switch.setOnCheckedChangeListener { _, _ ->
-                            viewModel.toggleViewEditMode()
-                        }
-                    }
             }
 
             /* Newly created note cannot be deleted. */
@@ -351,6 +347,10 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 when (menuItem.itemId) {
                     R.id.done -> {
                         userSave()
+                    }
+
+                    R.id.note_view, R.id.note_edit -> {
+                        viewModel.toggleViewEditMode()
                     }
 
                     R.id.keep_screen_on -> {
