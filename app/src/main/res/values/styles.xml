@@ -17,6 +17,8 @@
 
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
 
+        <item name="actionOverflowButtonStyle">@style/OverFlow</item>
+
         <!-- Font sizes (defaults) -->
         <item name="font_micro">12sp</item>
         <item name="font_small">14sp</item>
@@ -135,6 +137,8 @@
     <style name="AppDarkTheme" parent="Theme.MaterialComponents.NoActionBar.Bridge">
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
 
+        <item name="actionOverflowButtonStyle">@style/OverFlow</item>
+
         <!-- Font sizes (defaults) -->
         <item name="font_micro">12sp</item>
         <item name="font_small">14sp</item>
@@ -247,6 +251,10 @@
         <!-- https://material.io/design/iconography/system-icons.html#color -->
         <item name="active_focused_icon_alpha">1.00</item>
         <item name="active_unfocused_icon_alpha">0.70</item>
+    </style>
+
+    <style name="OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="tint">?attr/text_primary_color</item>
     </style>
 
     <!-- Color scheme -->
