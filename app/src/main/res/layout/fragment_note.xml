@@ -36,7 +36,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?attr/bottom_action_bar_bg_color"
-                        android:elevation="4dp" tools:targetApi="lollipop"
+                        android:elevation="1dp" tools:targetApi="lollipop"
                         app:contentInsetLeft="@dimen/screen_edge"
                         app:contentInsetStart="@dimen/screen_edge"
                         app:contentInsetRight="@dimen/screen_edge"

@@ -97,6 +97,7 @@
         <item name="ic_menu_open_24dp">@drawable/ic_menu_open_black_24dp</item>
         <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_black_24dp</item>
         <item name="ic_open_in_new_24dp">@drawable/ic_open_in_new_black_24dp</item>
+        <item name="ic_outline_abc_24dp">@drawable/outline_abc_black_24</item>
         <item name="ic_outline_check_circle_18dp">@drawable/outline_check_circle_black_18</item>
         <item name="ic_outline_check_circle_24dp">@drawable/outline_check_circle_black_24</item>
         <item name="ic_outline_cloud_48dp">@drawable/outline_cloud_black_48</item>
@@ -216,6 +217,7 @@
         <item name="ic_menu_open_24dp">@drawable/ic_menu_open_white_24dp</item>
         <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_white_24dp</item>
         <item name="ic_open_in_new_24dp">@drawable/ic_open_in_new_white_24dp</item>
+        <item name="ic_outline_abc_24dp">@drawable/outline_abc_white_24</item>
         <item name="ic_outline_check_circle_18dp">@drawable/outline_check_circle_white_18</item>
         <item name="ic_outline_check_circle_24dp">@drawable/outline_check_circle_white_24</item>
         <item name="ic_outline_cloud_48dp">@drawable/outline_cloud_white_48</item>
