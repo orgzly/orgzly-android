@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
@@ -39,7 +38,9 @@ class DirectoryRepoActivity : CommonActivity() {
 
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_directory)
+        binding = ActivityRepoDirectoryBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
 
         // Not working when done in XML
         binding.activityRepoDirectory.apply {

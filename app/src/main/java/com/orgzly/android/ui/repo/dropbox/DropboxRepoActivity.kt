@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.EditText
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
@@ -46,7 +45,9 @@ class DropboxRepoActivity : CommonActivity() {
 
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_dropbox)
+        binding = ActivityRepoDropboxBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
 
         /* Dropbox link / unlink button. */
         binding.activityRepoDropboxLinkButton.setOnClickListener {

@@ -1,89 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeContainer"
+        <ViewFlipper
+            android:id="@+id/fragment_book_view_flipper"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ViewFlipper
-                android:id="@+id/fragment_book_view_flipper"
+            <ProgressBar style="@style/LoadingProgressBar" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <ProgressBar style="@style/LoadingProgressBar" />
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/bottom_action_bar_bg_color"
+                    android:elevation="4dp" tools:targetApi="lollipop"
+                    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fragment_book_recycler_view"
+                    style="@style/FastScroll"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:clipToPadding="false"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
+            </LinearLayout>
 
-                    <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
-                        android:background="?attr/bottom_action_bar_bg_color"
-                        android:elevation="4dp" tools:targetApi="lollipop"
-                        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-                        app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    style="@style/BigCenteredText"
+                    android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
+                    android:text="@string/no_notes" />
+            </ScrollView>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/fragment_book_recycler_view"
-                        style="@style/FastScroll"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clipToPadding="false"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
-                </LinearLayout>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    style="@style/BigCenteredText"
+                    android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
+                    android:text="@string/book_does_not_exist_anymore" />
+            </ScrollView>
 
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        style="@style/BigCenteredText"
-                        android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
-                        android:text="@string/no_notes" />
-                </ScrollView>
+        </ViewFlipper>
 
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        style="@style/BigCenteredText"
-                        android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
-                        android:text="@string/book_does_not_exist_anymore" />
-                </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-            </ViewFlipper>
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        style="@style/BottomAppBar.WithMenu">
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <TextView
+            android:id="@+id/bottomAppBarTitle"
+            style="@style/BottomAppBarTitle" />
 
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomAppBar"
-            style="@style/BottomAppBar.WithMenu">
+    </com.google.android.material.bottomappbar.BottomAppBar>
 
-            <TextView
-                android:id="@+id/bottomAppBarTitle"
-                style="@style/BottomAppBarTitle" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="?attr/ic_add_24dp"
+        app:layout_anchor="@id/bottomAppBar"
+        app:backgroundTint="?attr/bottom_action_bar_bg_color" />
 
-        </com.google.android.material.bottomappbar.BottomAppBar>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="?attr/ic_add_24dp"
-            app:layout_anchor="@id/bottomAppBar"
-            app:backgroundTint="?attr/bottom_action_bar_bg_color" />
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</layout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

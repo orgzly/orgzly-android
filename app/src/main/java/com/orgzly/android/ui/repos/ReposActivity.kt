@@ -11,7 +11,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
@@ -47,7 +46,9 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
 
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_repos)
+        binding = ActivityReposBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
 
         setupNoReposButtons()
 

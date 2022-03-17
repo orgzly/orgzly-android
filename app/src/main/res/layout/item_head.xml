@@ -1,290 +1,268 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_head_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <data>
-        <!-- For done notes -->
-        <variable name="alpha" type="float" />
-    </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/item_head_container"
+    <View
+        android:id="@+id/item_head_top"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="100dp"
+        android:background="@color/green_200"
+        android:visibility="invisible"/>
 
-        <View
-            android:id="@+id/item_head_top"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/green_200"
-            android:visibility="invisible"/>
+    <View
+        android:id="@+id/item_head_bottom"
+        app:layout_constraintTop_toBottomOf="@id/item_head_content"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/blue_200"
+        android:visibility="invisible"/>
 
-        <View
-            android:id="@+id/item_head_bottom"
-            app:layout_constraintTop_toBottomOf="@id/item_head_content"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/blue_200"
-            android:visibility="invisible"/>
+    <!-- Indent -->
+    <LinearLayout
+        android:id="@+id/item_head_indent_container"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/item_head_bottom"
+        app:layout_constraintStart_toEndOf="@+id/item_head_book_name_before_note_text">
 
-        <!-- Indent -->
-        <LinearLayout
-            android:id="@+id/item_head_indent_container"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/item_head_bottom"
-            app:layout_constraintStart_toEndOf="@+id/item_head_book_name_before_note_text">
+        <!--
+          Optimal number of indents. We want to avoid inflating as much as possible
+          and prefer changing visibility.
+          -->
+        <include layout="@layout/indent" />
+        <include layout="@layout/indent" />
+        <include layout="@layout/indent" />
+        <include layout="@layout/indent" />
 
-            <!--
-              Optimal number of indents. We want to avoid inflating as much as possible
-              and prefer changing visibility.
-              -->
-            <include layout="@layout/indent" />
-            <include layout="@layout/indent" />
-            <include layout="@layout/indent" />
-            <include layout="@layout/indent" />
-
-        </LinearLayout>
+    </LinearLayout>
 
 
-        <!-- Anchor for centering bullet -->
-        <TextView
-            android:id="@+id/item_head_bullet_anchor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            app:layout_constraintBaseline_toBaselineOf="@id/item_head_title"
-            app:layout_constraintStart_toStartOf="parent" />
+    <!-- Anchor for centering bullet -->
+    <TextView
+        android:id="@+id/item_head_bullet_anchor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBaseline_toBaselineOf="@id/item_head_title"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <!-- Bullet -->
-        <ImageView
-            android:id="@+id/item_head_bullet"
-            android:layout_width="?attr/item_head_indent_width"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/bullet_margin"
-            android:layout_marginRight="@dimen/bullet_margin"
-            android:src="?attr/bullet_state_default"
-            android:visibility="visible"
-            app:layout_constraintTop_toTopOf="@id/item_head_bullet_anchor"
-            app:layout_constraintBottom_toBottomOf="@id/item_head_bullet_anchor"
-            app:layout_constraintStart_toEndOf="@+id/item_head_indent_container"
-            app:layout_constraintEnd_toStartOf="@+id/item_head_title" />
+    <!-- Bullet -->
+    <ImageView
+        android:id="@+id/item_head_bullet"
+        android:layout_width="?attr/item_head_indent_width"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/bullet_margin"
+        android:layout_marginRight="@dimen/bullet_margin"
+        android:src="?attr/bullet_state_default"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/item_head_bullet_anchor"
+        app:layout_constraintBottom_toBottomOf="@id/item_head_bullet_anchor"
+        app:layout_constraintStart_toEndOf="@+id/item_head_indent_container"
+        app:layout_constraintEnd_toStartOf="@+id/item_head_title" />
 
-        <!-- Title -->
-        <com.orgzly.android.ui.views.TextViewWithMarkup
-            android:id="@+id/item_head_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/bullet_total_size"
-            android:gravity="center_vertical"
-            android:textColor="?attr/text_primary_color"
-            android:textSize="?attr/item_head_title_text_size"
-            android:alpha="@{alpha}"
-            app:layout_constraintTop_toBottomOf="@id/item_head_top"
-            app:layout_constraintStart_toEndOf="@+id/item_head_bullet"
-            app:layout_constraintEnd_toStartOf="@+id/item_head_fold_button_text"
-            tools:text="@string/note_title_sample" />
+    <!-- Title -->
+    <com.orgzly.android.ui.views.TextViewWithMarkup
+        android:id="@+id/item_head_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/bullet_total_size"
+        android:gravity="center_vertical"
+        android:textColor="?attr/text_primary_color"
+        android:textSize="?attr/item_head_title_text_size"
+        app:layout_constraintTop_toBottomOf="@id/item_head_top"
+        app:layout_constraintStart_toEndOf="@+id/item_head_bullet"
+        app:layout_constraintEnd_toStartOf="@+id/item_head_fold_button_text"
+        tools:text="@string/note_title_sample" />
 
-        <!-- Notebook's name. -->
-        <ImageView
-            android:id="@+id/item_head_book_name_icon"
-            android:layout_width="?attr/item_head_info_icon_size"
-            android:layout_height="0dp"
-            android:src="?attr/ic_folder_open_24dp"
-            app:tint="?attr/item_head_post_title_color"
-            android:alpha="@{alpha}"
-            app:layout_constraintTop_toBottomOf="@+id/item_head_title"
-            app:layout_constraintBottom_toBottomOf="@+id/item_head_book_name_text"
-            app:layout_constraintStart_toStartOf="@+id/item_head_title" />
-        <TextView
-            android:id="@+id/item_head_book_name_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginStart="4dp"
-            android:textColor="?attr/item_head_post_title_color"
-            android:textSize="?attr/item_head_sub_title_text"
-            android:alpha="@{alpha}"
-            app:layout_constraintTop_toBottomOf="@+id/item_head_title"
-            app:layout_constraintStart_toEndOf="@+id/item_head_book_name_icon"
-            app:layout_constraintEnd_toStartOf="@+id/item_head_fold_button_text"
-            tools:text="@string/book_name_sample" />
+    <!-- Notebook's name. -->
+    <ImageView
+        android:id="@+id/item_head_book_name_icon"
+        android:layout_width="?attr/item_head_info_icon_size"
+        android:layout_height="0dp"
+        android:src="?attr/ic_folder_open_24dp"
+        app:tint="?attr/item_head_post_title_color"
+        app:layout_constraintTop_toBottomOf="@+id/item_head_title"
+        app:layout_constraintBottom_toBottomOf="@+id/item_head_book_name_text"
+        app:layout_constraintStart_toStartOf="@+id/item_head_title" />
+    <TextView
+        android:id="@+id/item_head_book_name_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:textColor="?attr/item_head_post_title_color"
+        android:textSize="?attr/item_head_sub_title_text"
+        app:layout_constraintTop_toBottomOf="@+id/item_head_title"
+        app:layout_constraintStart_toEndOf="@+id/item_head_book_name_icon"
+        app:layout_constraintEnd_toStartOf="@+id/item_head_fold_button_text"
+        tools:text="@string/book_name_sample" />
 
-        <!-- Notebook's name before note. -->
-        <TextView
-            android:id="@+id/item_head_book_name_before_note_text"
-            android:layout_width="@dimen/item_head_book_name_width"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/bullet_total_size"
-            app:layout_constraintTop_toTopOf="@+id/item_head_title"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginEnd="@dimen/screen_edge"
-            android:layout_marginRight="@dimen/screen_edge"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:textColor="?attr/text_primary_color"
-            android:textSize="?attr/item_head_book_name_text"
-            android:textStyle="italic"
-            android:alpha="@{alpha}"
-            tools:text="@string/book_name_sample"
-            android:visibility="visible"/>
+    <!-- Notebook's name before note. -->
+    <TextView
+        android:id="@+id/item_head_book_name_before_note_text"
+        android:layout_width="@dimen/item_head_book_name_width"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/bullet_total_size"
+        app:layout_constraintTop_toTopOf="@+id/item_head_title"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="@dimen/screen_edge"
+        android:layout_marginRight="@dimen/screen_edge"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:textColor="?attr/text_primary_color"
+        android:textSize="?attr/item_head_book_name_text"
+        android:textStyle="italic"
+        tools:text="@string/book_name_sample"
+        android:visibility="visible"/>
 
-        <!-- Scheduled time -->
-        <ImageView
-            android:id="@+id/item_head_scheduled_icon"
-            android:layout_width="?attr/item_head_info_icon_size"
-            android:layout_height="0dp"
-            android:src="?attr/ic_today_24dp"
-            app:tint="?attr/item_head_post_title_color"
-            android:alpha="@{alpha}"
-            app:layout_constraintTop_toBottomOf="@+id/item_head_book_name_text"
-            app:layout_constraintBottom_toBottomOf="@+id/item_head_scheduled_text"
-            app:layout_constraintStart_toStartOf="@+id/item_head_book_name_icon" />
-        <TextView
-            android:id="@+id/item_head_scheduled_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginStart="4dp"
-            android:textColor="?attr/item_head_post_title_color"
-            android:textSize="?attr/item_head_sub_title_text"
-            android:alpha="@{alpha}"
-            app:layout_constraintTop_toBottomOf="@+id/item_head_book_name_text"
-            app:layout_constraintStart_toEndOf="@+id/item_head_scheduled_icon"
-            app:layout_constraintEnd_toStartOf="@+id/item_head_fold_button_text"
-            tools:text="@string/note_scheduled_sample" />
+    <!-- Scheduled time -->
+    <ImageView
+        android:id="@+id/item_head_scheduled_icon"
+        android:layout_width="?attr/item_head_info_icon_size"
+        android:layout_height="0dp"
+        android:src="?attr/ic_today_24dp"
+        app:tint="?attr/item_head_post_title_color"
+        app:layout_constraintTop_toBottomOf="@+id/item_head_book_name_text"
+        app:layout_constraintBottom_toBottomOf="@+id/item_head_scheduled_text"
+        app:layout_constraintStart_toStartOf="@+id/item_head_book_name_icon" />
+    <TextView
+        android:id="@+id/item_head_scheduled_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:textColor="?attr/item_head_post_title_color"
+        android:textSize="?attr/item_head_sub_title_text"
+        app:layout_constraintTop_toBottomOf="@+id/item_head_book_name_text"
+        app:layout_constraintStart_toEndOf="@+id/item_head_scheduled_icon"
+        app:layout_constraintEnd_toStartOf="@+id/item_head_fold_button_text"
+        tools:text="@string/note_scheduled_sample" />
 
-        <!-- Deadline time -->
-        <ImageView
-            android:id="@+id/item_head_deadline_icon"
-            android:layout_width="?attr/item_head_info_icon_size"
-            android:layout_height="0dp"
-            android:src="?attr/ic_alarm_18dp"
-            app:tint="?attr/item_head_post_title_color"
-            android:alpha="@{alpha}"
-            app:layout_constraintTop_toBottomOf="@+id/item_head_scheduled_text"
-            app:layout_constraintBottom_toBottomOf="@+id/item_head_deadline_text"
-            app:layout_constraintStart_toStartOf="@+id/item_head_scheduled_icon" />
-        <TextView
-            android:id="@+id/item_head_deadline_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginStart="4dp"
-            android:textColor="?attr/item_head_post_title_color"
-            android:textSize="?attr/item_head_sub_title_text"
-            android:alpha="@{alpha}"
-            app:layout_constraintTop_toBottomOf="@+id/item_head_scheduled_text"
-            app:layout_constraintStart_toEndOf="@+id/item_head_deadline_icon"
-            app:layout_constraintEnd_toStartOf="@+id/item_head_fold_button_text"
-            tools:text="@string/note_deadline_sample" />
+    <!-- Deadline time -->
+    <ImageView
+        android:id="@+id/item_head_deadline_icon"
+        android:layout_width="?attr/item_head_info_icon_size"
+        android:layout_height="0dp"
+        android:src="?attr/ic_alarm_18dp"
+        app:tint="?attr/item_head_post_title_color"
+        app:layout_constraintTop_toBottomOf="@+id/item_head_scheduled_text"
+        app:layout_constraintBottom_toBottomOf="@+id/item_head_deadline_text"
+        app:layout_constraintStart_toStartOf="@+id/item_head_scheduled_icon" />
+    <TextView
+        android:id="@+id/item_head_deadline_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:textColor="?attr/item_head_post_title_color"
+        android:textSize="?attr/item_head_sub_title_text"
+        app:layout_constraintTop_toBottomOf="@+id/item_head_scheduled_text"
+        app:layout_constraintStart_toEndOf="@+id/item_head_deadline_icon"
+        app:layout_constraintEnd_toStartOf="@+id/item_head_fold_button_text"
+        tools:text="@string/note_deadline_sample" />
 
-        <!-- Event time -->
-        <ImageView
-            android:id="@+id/item_head_event_icon"
-            android:layout_width="?attr/item_head_info_icon_size"
-            android:layout_height="0dp"
-            android:src="?attr/ic_access_time_18dp"
-            app:tint="?attr/item_head_post_title_color"
-            android:alpha="@{alpha}"
-            app:layout_constraintTop_toBottomOf="@+id/item_head_deadline_text"
-            app:layout_constraintBottom_toBottomOf="@+id/item_head_event_text"
-            app:layout_constraintStart_toStartOf="@+id/item_head_deadline_icon" />
-        <TextView
-            android:id="@+id/item_head_event_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginStart="4dp"
-            android:textColor="?attr/item_head_post_title_color"
-            android:textSize="?attr/item_head_sub_title_text"
-            android:alpha="@{alpha}"
-            app:layout_constraintTop_toBottomOf="@+id/item_head_deadline_text"
-            app:layout_constraintStart_toEndOf="@+id/item_head_event_icon"
-            app:layout_constraintEnd_toStartOf="@+id/item_head_fold_button_text"
-            tools:text="@string/note_event_sample" />
+    <!-- Event time -->
+    <ImageView
+        android:id="@+id/item_head_event_icon"
+        android:layout_width="?attr/item_head_info_icon_size"
+        android:layout_height="0dp"
+        android:src="?attr/ic_access_time_18dp"
+        app:tint="?attr/item_head_post_title_color"
+        app:layout_constraintTop_toBottomOf="@+id/item_head_deadline_text"
+        app:layout_constraintBottom_toBottomOf="@+id/item_head_event_text"
+        app:layout_constraintStart_toStartOf="@+id/item_head_deadline_icon" />
+    <TextView
+        android:id="@+id/item_head_event_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:textColor="?attr/item_head_post_title_color"
+        android:textSize="?attr/item_head_sub_title_text"
+        app:layout_constraintTop_toBottomOf="@+id/item_head_deadline_text"
+        app:layout_constraintStart_toEndOf="@+id/item_head_event_icon"
+        app:layout_constraintEnd_toStartOf="@+id/item_head_fold_button_text"
+        tools:text="@string/note_event_sample" />
 
-        <!-- Closed time -->
-        <ImageView
-            android:id="@+id/item_head_closed_icon"
-            android:layout_width="?attr/item_head_info_icon_size"
-            android:layout_height="0dp"
-            android:src="?attr/ic_outline_check_circle_18dp"
-            app:tint="?attr/item_head_post_title_color"
-            android:alpha="@{alpha}"
-            app:layout_constraintTop_toBottomOf="@+id/item_head_event_text"
-            app:layout_constraintBottom_toBottomOf="@+id/item_head_closed_text"
-            app:layout_constraintStart_toStartOf="@+id/item_head_event_icon" />
-        <TextView
-            android:id="@+id/item_head_closed_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginStart="4dp"
-            android:textColor="?attr/item_head_post_title_color"
-            android:textSize="?attr/item_head_sub_title_text"
-            android:alpha="@{alpha}"
-            app:layout_constraintTop_toBottomOf="@+id/item_head_event_text"
-            app:layout_constraintStart_toEndOf="@+id/item_head_closed_icon"
-            app:layout_constraintEnd_toStartOf="@+id/item_head_fold_button_text"
-            tools:text="@string/note_closed_sample" />
+    <!-- Closed time -->
+    <ImageView
+        android:id="@+id/item_head_closed_icon"
+        android:layout_width="?attr/item_head_info_icon_size"
+        android:layout_height="0dp"
+        android:src="?attr/ic_outline_check_circle_18dp"
+        app:tint="?attr/item_head_post_title_color"
+        app:layout_constraintTop_toBottomOf="@+id/item_head_event_text"
+        app:layout_constraintBottom_toBottomOf="@+id/item_head_closed_text"
+        app:layout_constraintStart_toStartOf="@+id/item_head_event_icon" />
+    <TextView
+        android:id="@+id/item_head_closed_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:textColor="?attr/item_head_post_title_color"
+        android:textSize="?attr/item_head_sub_title_text"
+        app:layout_constraintTop_toBottomOf="@+id/item_head_event_text"
+        app:layout_constraintStart_toEndOf="@+id/item_head_closed_icon"
+        app:layout_constraintEnd_toStartOf="@+id/item_head_fold_button_text"
+        tools:text="@string/note_closed_sample" />
 
-        <!-- Content -->
-        <com.orgzly.android.ui.views.TextViewWithMarkup
-            android:id="@+id/item_head_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textColor="?attr/item_head_post_title_color"
-            android:textSize="?attr/item_head_sub_title_content_text"
-            android:alpha="@{alpha}"
-            app:layout_constraintTop_toBottomOf="@+id/item_head_closed_text"
-            app:layout_constraintStart_toStartOf="@+id/item_head_title"
-            app:layout_constraintEnd_toStartOf="@+id/item_head_fold_button_text"
-            tools:text="@string/note_content_sample"
-            android:visibility="visible" />
+    <!-- Content -->
+    <com.orgzly.android.ui.views.TextViewWithMarkup
+        android:id="@+id/item_head_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/item_head_post_title_color"
+        android:textSize="?attr/item_head_sub_title_content_text"
+        app:layout_constraintTop_toBottomOf="@+id/item_head_closed_text"
+        app:layout_constraintStart_toStartOf="@+id/item_head_title"
+        app:layout_constraintEnd_toStartOf="@+id/item_head_fold_button_text"
+        tools:text="@string/note_content_sample"
+        android:visibility="visible" />
 
-        <!-- Folding button -->
-        <View
-            android:id="@+id/item_head_fold_button"
-            android:layout_width="@dimen/fold_button_width"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="@+id/item_head_top"
-            app:layout_constraintBottom_toBottomOf="@+id/item_head_bottom"
-            app:layout_constraintEnd_toEndOf="parent" />
+    <!-- Folding button -->
+    <View
+        android:id="@+id/item_head_fold_button"
+        android:layout_width="@dimen/fold_button_width"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@+id/item_head_top"
+        app:layout_constraintBottom_toBottomOf="@+id/item_head_bottom"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Folding button text -->
-        <TextView
-            android:id="@+id/item_head_fold_button_text"
-            android:layout_width="@dimen/fold_button_width"
-            android:layout_height="0dp"
-            android:gravity="top|center_horizontal"
-            android:minHeight="@dimen/bullet_total_size"
-            android:text="@string/unfold_button_character"
-            android:textColor="?attr/item_head_post_title_color"
-            android:textSize="?attr/item_head_fold_button_text_size"
-            app:layout_constraintTop_toTopOf="@+id/item_head_title"
-            app:layout_constraintBottom_toBottomOf="@+id/item_head_content"
-            app:layout_constraintEnd_toEndOf="parent" />
+    <!-- Folding button text -->
+    <TextView
+        android:id="@+id/item_head_fold_button_text"
+        android:layout_width="@dimen/fold_button_width"
+        android:layout_height="0dp"
+        android:gravity="top|center_horizontal"
+        android:minHeight="@dimen/bullet_total_size"
+        android:text="@string/unfold_button_character"
+        android:textColor="?attr/item_head_post_title_color"
+        android:textSize="?attr/item_head_fold_button_text_size"
+        app:layout_constraintTop_toTopOf="@+id/item_head_title"
+        app:layout_constraintBottom_toBottomOf="@+id/item_head_content"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <include
-            android:id="@+id/quickBar"
-            layout="@layout/quick_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/item_head_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+    <include
+        android:id="@+id/quickBar"
+        layout="@layout/quick_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/item_head_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>

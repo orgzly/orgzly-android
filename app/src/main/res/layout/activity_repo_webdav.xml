@@ -1,118 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/main_content"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/screen_edge"
+            tools:context=".android.ui.repo.webdav.WebdavRepoActivity">
 
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/activity_repo_webdav_url_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/screen_edge"
-                tools:context=".android.ui.repo.webdav.WebdavRepoActivity">
+                app:errorEnabled="true">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/activity_repo_webdav_url_layout"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_repo_webdav_url"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:errorEnabled="true">
+                    android:hint="@string/webdav_url_hint"
+                    android:inputType="text|textMultiLine" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_repo_webdav_url"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/webdav_url_hint"
-                        android:inputType="text|textMultiLine" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
+            <Button
+                android:id="@+id/activity_repo_webdav_certificates"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_between_content_areas"
+                android:layout_marginBottom="@dimen/space_between_content_areas"
+                android:text="@string/add_trusted_certificates_optional" />
 
-                <Button
-                    android:id="@+id/activity_repo_webdav_certificates"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_between_content_areas"
-                    android:layout_marginBottom="@dimen/space_between_content_areas"
-                    android:text="@string/add_trusted_certificates_optional" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/activity_repo_webdav_username_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_between_content_areas"
+                app:errorEnabled="true">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/activity_repo_webdav_username_layout"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_repo_webdav_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_between_content_areas"
-                    app:errorEnabled="true">
+                    android:hint="@string/webdav_auth_username_hint"
+                    android:inputType="text" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_repo_webdav_username"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/webdav_auth_username_hint"
-                        android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/activity_repo_webdav_password_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_between_content_areas"
+                app:errorEnabled="true">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/activity_repo_webdav_password_layout"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_repo_webdav_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_between_content_areas"
-                    app:errorEnabled="true">
+                    android:hint="@string/webdav_auth_password_hint"
+                    android:inputType="textPassword" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_repo_webdav_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/webdav_auth_password_hint"
-                        android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Button
-                    android:id="@+id/activity_repo_webdav_test_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_between_content_areas"
-                    android:enabled="true"
-                    android:text="@string/test_connection" />
-
-                <TextView
-                    android:id="@+id/activity_repo_webdav_test_result"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_between_content_areas" />
-
-            </LinearLayout>
-
-        </ScrollView>
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomAppBar"
-            style="@style/BottomAppBar.FabAlignEnd.WithCancel">
+            <Button
+                android:id="@+id/activity_repo_webdav_test_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_between_content_areas"
+                android:enabled="true"
+                android:text="@string/test_connection" />
 
             <TextView
+                android:id="@+id/activity_repo_webdav_test_result"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:text="@string/webdav" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_between_content_areas" />
 
-        </com.google.android.material.bottomappbar.BottomAppBar>
+        </LinearLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="?attr/ic_done_24dp"
-            app:layout_anchor="@id/bottomAppBar"
-            app:backgroundTint="?attr/bottom_action_bar_bg_color" />
+    </ScrollView>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</layout>
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        style="@style/BottomAppBar.FabAlignEnd.WithCancel">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+            android:text="@string/webdav" />
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="?attr/ic_done_24dp"
+        app:layout_anchor="@id/bottomAppBar"
+        app:backgroundTint="?attr/bottom_action_bar_bg_color" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

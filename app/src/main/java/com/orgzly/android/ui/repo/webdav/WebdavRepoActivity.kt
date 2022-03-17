@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.WindowManager
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.orgzly.R
@@ -36,7 +35,9 @@ class WebdavRepoActivity : CommonActivity() {
 
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_webdav)
+        binding = ActivityRepoWebdavBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
 
         binding.activityRepoWebdavCertificates.setOnClickListener {
             editCertificates()

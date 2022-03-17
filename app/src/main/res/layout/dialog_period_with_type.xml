@@ -1,78 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/screen_edge"
+        android:paddingBottom="@dimen/screen_edge">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/dialog_description"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/screen_edge"
-            android:paddingBottom="@dimen/screen_edge">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/pickers"
+            app:layout_constraintRight_toRightOf="@+id/pickers"
+            tools:text="@string/repeater_description"
+            android:gravity="center"
+            android:lines="2" />
 
-            <TextView
-                android:id="@+id/dialog_description"
-                android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/pickers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/space_between_content_areas"
+            android:orientation="horizontal">
+
+            <NumberPicker
+                android:id="@+id/type_picker"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="@id/pickers"
-                app:layout_constraintRight_toRightOf="@+id/pickers"
-                tools:text="@string/repeater_description"
-                android:gravity="center"
-                android:lines="2" />
+                android:layout_marginEnd="@dimen/space_between_content_areas"
+                android:layout_marginRight="@dimen/space_between_content_areas" />
 
-            <LinearLayout
-                android:id="@+id/pickers"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintTop_toBottomOf="@+id/dialog_description"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:gravity="center"
-                android:layout_marginTop="@dimen/space_between_content_areas"
-                android:orientation="horizontal">
+            <NumberPicker
+                android:id="@+id/value_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-                <NumberPicker
-                    android:id="@+id/type_picker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/space_between_content_areas"
-                    android:layout_marginRight="@dimen/space_between_content_areas" />
-
-                <NumberPicker
-                    android:id="@+id/value_picker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <NumberPicker
-                    android:id="@+id/unit_picker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/space_between_content_areas"
-                    android:layout_marginLeft="@dimen/space_between_content_areas" />
-
-            </LinearLayout>
-
-            <!-- lines=2 added to avoid layout change on different length descriptions -->
-            <TextView
-                android:id="@+id/type_description"
-                android:layout_width="0dp"
+            <NumberPicker
+                android:id="@+id/unit_picker"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/pickers"
-                app:layout_constraintLeft_toLeftOf="@id/pickers"
-                app:layout_constraintRight_toRightOf="@+id/pickers"
-                android:layout_marginTop="@dimen/space_between_content_areas"
-                tools:text="@string/repeater_description_cumulate"
-                android:gravity="center"
-                android:lines="2" />
+                android:layout_marginStart="@dimen/space_between_content_areas"
+                android:layout_marginLeft="@dimen/space_between_content_areas" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
-    </ScrollView>
+        <!-- lines=2 added to avoid layout change on different length descriptions -->
+        <TextView
+            android:id="@+id/type_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/pickers"
+            app:layout_constraintLeft_toLeftOf="@id/pickers"
+            app:layout_constraintRight_toRightOf="@+id/pickers"
+            android:layout_marginTop="@dimen/space_between_content_areas"
+            tools:text="@string/repeater_description_cumulate"
+            android:gravity="center"
+            android:lines="2" />
 
-</layout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

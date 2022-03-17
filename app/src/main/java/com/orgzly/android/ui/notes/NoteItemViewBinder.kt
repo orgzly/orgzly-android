@@ -207,12 +207,31 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
         val isDone = state != null && AppPreferences.doneKeywordsSet(context).contains(state)
         val isArchived = tags.contains(ARCHIVE_TAG) || inheritedTags.contains(ARCHIVE_TAG)
 
-        holder.binding.alpha =
-                if (isDone || isArchived) {
-                    0.45f
-                } else {
-                    1.0f
-                }
+        val alphaValue = if (isDone || isArchived) {
+            0.45f
+        } else {
+            1.0f
+        }
+
+        holder.binding.run {
+            listOf(
+                itemHeadTitle,
+                itemHeadBookNameIcon,
+                itemHeadBookNameText,
+                itemHeadBookNameBeforeNoteText,
+                itemHeadScheduledIcon,
+                itemHeadScheduledText,
+                itemHeadDeadlineIcon,
+                itemHeadDeadlineText,
+                itemHeadEventIcon,
+                itemHeadEventText,
+                itemHeadClosedText,
+                itemHeadClosedIcon,
+                itemHeadContent
+            ).forEach {
+                it.alpha = alphaValue
+            }
+        }
     }
 
     /**

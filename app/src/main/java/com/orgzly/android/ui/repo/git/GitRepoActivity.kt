@@ -15,7 +15,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
@@ -58,7 +57,9 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_git)
+        binding = ActivityRepoGitBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
 
         fields = arrayOf(
                 Field(

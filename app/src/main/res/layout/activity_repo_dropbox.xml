@@ -1,93 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/main_content"
+    <ScrollView
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        <LinearLayout
+            android:id="@+id/activity_repo_dropbox_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:padding="@dimen/screen_edge"
+            android:orientation="vertical"
+            tools:context=".android.ui.main.MainActivity">
 
+            <!-- Link/unlink button. -->
             <LinearLayout
-                android:id="@+id/activity_repo_dropbox_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/screen_edge"
-                android:orientation="vertical"
-                tools:context=".android.ui.main.MainActivity">
+                android:minHeight="48dp"
+                android:layout_marginBottom="@dimen/space_between_content_areas"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-                <!-- Link/unlink button. -->
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/activity_repo_dropbox_icon"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minHeight="48dp"
-                    android:layout_marginBottom="@dimen/space_between_content_areas"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:src="?attr/oic_dropbox_not_linked"
+                    android:contentDescription="@string/dropbox" />
 
-                    <ImageView
-                        android:id="@+id/activity_repo_dropbox_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="?attr/oic_dropbox_not_linked"
-                        android:contentDescription="@string/dropbox" />
-
-                    <Button
-                        android:id="@+id/activity_repo_dropbox_link_button"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="@dimen/screen_edge"
-                        android:layout_marginLeft="@dimen/screen_edge"
-                        android:text="@string/repo_dropbox_button_not_linked" />
-
-                </LinearLayout>
-
-                <!-- Input. -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/activity_repo_dropbox_directory_input_layout"
+                <Button
+                    android:id="@+id/activity_repo_dropbox_link_button"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_between_content_areas"
-                    app:errorEnabled="true">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_repo_dropbox_directory"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:imeOptions="actionDone"
-                        android:hint="@string/fragment_repo_dropbox_directory_desc" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/screen_edge"
+                    android:layout_marginLeft="@dimen/screen_edge"
+                    android:text="@string/repo_dropbox_button_not_linked" />
 
             </LinearLayout>
 
-        </ScrollView>
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomAppBar"
-            style="@style/BottomAppBar.FabAlignEnd.WithCancel">
-
-            <TextView
+            <!-- Input. -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/activity_repo_dropbox_directory_input_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:text="@string/dropbox" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_between_content_areas"
+                app:errorEnabled="true">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_repo_dropbox_directory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:imeOptions="actionDone"
+                    android:hint="@string/fragment_repo_dropbox_directory_desc" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        </com.google.android.material.bottomappbar.BottomAppBar>
+        </LinearLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="?attr/ic_done_24dp"
-            app:layout_anchor="@id/bottomAppBar"
-            app:backgroundTint="?attr/bottom_action_bar_bg_color" />
+    </ScrollView>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</layout>
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        style="@style/BottomAppBar.FabAlignEnd.WithCancel">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+            android:text="@string/dropbox" />
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="?attr/ic_done_24dp"
+        app:layout_anchor="@id/bottomAppBar"
+        app:backgroundTint="?attr/bottom_action_bar_bg_color" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

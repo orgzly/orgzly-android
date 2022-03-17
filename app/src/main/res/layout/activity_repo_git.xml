@@ -1,115 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/main_content"
+    <ScrollView
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:padding="@dimen/screen_edge"
+            android:orientation="vertical"
+            tools:context=".android.ui.main.MainActivity">
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/activity_repo_git_url_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_repo_git_url"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:imeOptions="actionNext"
+                    android:hint="@string/git_url_hint"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Directory -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/screen_edge"
-                android:orientation="vertical"
-                tools:context=".android.ui.main.MainActivity">
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/activity_repo_git_directory_browse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/browse" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/activity_repo_git_url_layout"
+                    android:id="@+id/activity_repo_git_directory_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_repo_git_url"
+                        android:id="@+id/activity_repo_git_directory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:imeOptions="actionNext"
-                        android:hint="@string/git_url_hint"/>
+                        android:hint="@string/git_directory_hint"
+                        android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Directory -->
-                <LinearLayout
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/activity_repo_git_ssh_auth_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/activity_repo_git_ssh_key_browse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/browse" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/activity_repo_git_ssh_key_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    app:errorEnabled="true">
 
-                    <Button
-                        android:id="@+id/activity_repo_git_directory_browse"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="4dp"
-                        android:layout_marginEnd="4dp"
-                        android:text="@string/browse" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/activity_repo_git_directory_layout"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/activity_repo_git_ssh_key"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:errorEnabled="true">
+                        android:hint="@string/git_ssh_key_hint"
+                        android:inputType="text" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/activity_repo_git_directory"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/git_directory_hint"
-                            android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                    </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
-                </LinearLayout>
+            <LinearLayout
+                android:id="@+id/activity_repo_git_https_auth_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
 
-                <LinearLayout
-                    android:id="@+id/activity_repo_git_ssh_auth_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/activity_repo_git_ssh_key_browse"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="4dp"
-                        android:layout_marginEnd="4dp"
-                        android:text="@string/browse" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/activity_repo_git_ssh_key_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:errorEnabled="true">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/activity_repo_git_ssh_key"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/git_ssh_key_hint"
-                            android:inputType="text" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/activity_repo_git_https_auth_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
-
-                    <com.google.android.material.textfield.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/activity_repo_git_https_username_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -139,78 +137,77 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                </LinearLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/activity_repo_git_author_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:errorEnabled="true">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_repo_git_author"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/git_author_hint"
-                        android:inputType="text" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/activity_repo_git_email_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:errorEnabled="true">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_repo_git_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/git_email_hint"
-                        android:inputType="text" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/activity_repo_git_branch_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:errorEnabled="true">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_repo_git_branch"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/git_default_branch"
-                        android:hint="@string/git_branch_hint"
-                        android:selectAllOnFocus="true"
-                        android:inputType="text" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
             </LinearLayout>
 
-        </ScrollView>
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomAppBar"
-            style="@style/BottomAppBar.FabAlignEnd.WithCancel">
-
-            <TextView
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/activity_repo_git_author_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                android:text="@string/git" />
+                android:layout_height="wrap_content"
+                app:errorEnabled="true">
 
-        </com.google.android.material.bottomappbar.BottomAppBar>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_repo_git_author"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/git_author_hint"
+                    android:inputType="text" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="?attr/ic_done_24dp"
-            app:layout_anchor="@id/bottomAppBar"
-            app:backgroundTint="?attr/bottom_action_bar_bg_color" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</layout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/activity_repo_git_email_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_repo_git_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/git_email_hint"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/activity_repo_git_branch_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/activity_repo_git_branch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/git_default_branch"
+                    android:hint="@string/git_branch_hint"
+                    android:selectAllOnFocus="true"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        style="@style/BottomAppBar.FabAlignEnd.WithCancel">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+            android:text="@string/git" />
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="?attr/ic_done_24dp"
+        app:layout_anchor="@id/bottomAppBar"
+        app:backgroundTint="?attr/bottom_action_bar_bg_color" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

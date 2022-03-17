@@ -1,45 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <ViewFlipper
+        android:id="@+id/fragment_saved_searches_flipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ViewFlipper
-            android:id="@+id/fragment_saved_searches_flipper"
+        <ProgressBar style="@style/LoadingProgressBar" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fragment_saved_searches_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
+            android:clipToPadding="false" />
 
-            <ProgressBar style="@style/LoadingProgressBar" />
+        <TextView
+            style="@style/BigCenteredText"
+            android:text="@string/no_filters"
+            android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fragment_saved_searches_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
-                android:clipToPadding="false" />
+    </ViewFlipper>
 
-            <TextView
-                style="@style/BigCenteredText"
-                android:text="@string/no_filters"
-                android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        style="@style/BottomAppBar.WithMenu" />
 
-        </ViewFlipper>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="?attr/ic_add_24dp"
+        app:layout_anchor="@id/bottomAppBar"
+        app:backgroundTint="?attr/bottom_action_bar_bg_color" />
 
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomAppBar"
-            style="@style/BottomAppBar.WithMenu" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="?attr/ic_add_24dp"
-            app:layout_anchor="@id/bottomAppBar"
-            app:backgroundTint="?attr/bottom_action_bar_bg_color" />
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</layout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

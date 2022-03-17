@@ -2,7 +2,6 @@ package com.orgzly.android.ui.settings
 
 import android.app.AlertDialog
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.ui.CommonActivity
@@ -73,7 +72,9 @@ class SettingsActivity : CommonActivity(), Listener {
 
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_settings)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
 
         if (savedInstanceState == null) {
             val fragment = SettingsFragment.getInstance()

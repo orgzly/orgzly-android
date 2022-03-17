@@ -1,28 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/actionBarSize"
+    android:paddingLeft="@dimen/screen_edge"
+    android:paddingRight="@dimen/screen_edge"
+    android:orientation="horizontal"
+    android:background="?attr/bottom_action_bar_bg_color">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/item_agenda_divider_text"
         android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:paddingLeft="@dimen/screen_edge"
-        android:paddingRight="@dimen/screen_edge"
-        android:orientation="horizontal"
-        android:background="?attr/bottom_action_bar_bg_color">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:maxLines="1"
+        android:textColor="?attr/text_primary_color"
+        android:textSize="?attr/item_head_post_title_text_size"
+        android:textStyle="bold"
+        tools:text="Mon, 25 Sep"/>
 
-        <TextView
-            android:id="@+id/item_agenda_divider_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:maxLines="1"
-            android:textColor="?attr/text_primary_color"
-            android:textSize="?attr/item_head_post_title_text_size"
-            android:textStyle="bold"
-            tools:text="Mon, 25 Sep"/>
-
-    </LinearLayout>
-
-</layout>
+</LinearLayout>

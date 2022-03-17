@@ -1,56 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeContainer"
+        <ViewFlipper
+            android:id="@+id/fragment_query_search_view_flipper"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ViewFlipper
-                android:id="@+id/fragment_query_search_view_flipper"
+            <ProgressBar style="@style/LoadingProgressBar" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fragment_query_search_recycler_view"
+                style="@style/FastScroll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="?attr/actionBarSize"
+                android:clipToPadding="false" />
+
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+                <TextView
+                    style="@style/BigCenteredText"
+                    android:text="@string/no_notes_found_after_search"
+                    android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
+            </ScrollView>
 
-                <ProgressBar style="@style/LoadingProgressBar" />
+        </ViewFlipper>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/fragment_query_search_recycler_view"
-                    style="@style/FastScroll"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingBottom="?attr/actionBarSize"
-                    android:clipToPadding="false" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        style="@style/BigCenteredText"
-                        android:text="@string/no_notes_found_after_search"
-                        android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
-                </ScrollView>
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        style="@style/BottomAppBar.WithMenu">
 
-            </ViewFlipper>
+        <TextView
+            android:id="@+id/bottomAppBarTitle"
+            style="@style/BottomAppBarTitle" />
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </com.google.android.material.bottomappbar.BottomAppBar>
 
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomAppBar"
-            style="@style/BottomAppBar.WithMenu">
-
-            <TextView
-                android:id="@+id/bottomAppBarTitle"
-                style="@style/BottomAppBarTitle" />
-
-        </com.google.android.material.bottomappbar.BottomAppBar>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-</layout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

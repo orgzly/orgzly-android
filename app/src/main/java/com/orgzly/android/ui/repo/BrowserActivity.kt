@@ -2,13 +2,12 @@ package com.orgzly.android.ui.repo
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.*
-import androidx.databinding.DataBindingUtil
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
@@ -46,7 +45,9 @@ class BrowserActivity :
 
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_browser)
+        binding = ActivityBrowserBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
 
         setupViews()
 
