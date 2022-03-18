@@ -522,6 +522,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">@dimen/screen_edge</item>
+        <item name="android:paddingBottom">?attr/actionBarSize</item>
 
         <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center</item>
@@ -535,8 +536,7 @@
         <item name="android:indeterminate">true</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">top|center_horizontal</item>
-        <item name="android:paddingTop">@dimen/list_view_with_fab_bottom_padding</item>
+        <item name="android:layout_gravity">center</item>
     </style>
 
     <style name="BottomActionBarButton" parent="android:style/Widget.Holo.Button.Borderless">
@@ -606,7 +606,7 @@
 
     <style name="BottomAppBar">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:layout_gravity">bottom</item>
         <item name="fabCradleMargin">0dp</item>
         <item name="fabCradleRoundedCornerRadius">0dp</item>
@@ -634,6 +634,7 @@
         <item name="android:layout_height">match_parent</item>
 <!--        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Widget.ActionBar.Subtitle</item>-->
         <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Widget.ActionBar.Title</item>
+        <item name="android:gravity">center_vertical</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
     </style>

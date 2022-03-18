@@ -26,14 +26,14 @@
                 android:paddingLeft="@dimen/cards_margin"
                 android:paddingRight="@dimen/cards_margin"
                 android:paddingTop="@dimen/cards_margin"
-                android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
+                android:paddingBottom="@dimen/padding_bottom_for_fab"
+                android:layout_marginBottom="?attr/actionBarSize" />
 
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <TextView
                     style="@style/BigCenteredText"
-                    android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
                     android:text="@string/no_notebooks" />
             </ScrollView>
 

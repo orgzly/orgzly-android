@@ -5,12 +5,8 @@
          screen margins) for sw600dp devices (e.g. 7" tablets) here.
     -->
 
-    <dimen name="list_view_with_fab_bottom_padding">104dp</dimen>
-
     <dimen name="card_margin">2dp</dimen>
     <dimen name="cards_margin">14dp</dimen>
-
-    <dimen name="fab_margin">24dp</dimen>
 
     <dimen name="screen_edge">24dp</dimen>
     <dimen name="screen_edge_minus_2dp">22dp</dimen>

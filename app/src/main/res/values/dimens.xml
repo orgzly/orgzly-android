@@ -17,12 +17,10 @@
     <!-- Reasoning - "Spacing between each UI element is 8dp."
          (http://developer.android.com/design/style/metrics-grids.html) -->
 
-    <dimen name="list_view_with_fab_bottom_padding">88dp</dimen>
+    <dimen name="padding_bottom_for_fab">32dp</dimen>
 
     <dimen name="card_margin">2dp</dimen>
     <dimen name="cards_margin">6dp</dimen>
-
-    <dimen name="fab_margin">16dp</dimen>
 
     <!-- Padding for sync button -->
     <dimen name="design_navigation_padding_bottom" tools:override="true">64dp</dimen>

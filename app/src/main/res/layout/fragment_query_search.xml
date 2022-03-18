@@ -30,8 +30,7 @@
                 android:layout_height="match_parent">
                 <TextView
                     style="@style/BigCenteredText"
-                    android:text="@string/no_notes_found_after_search"
-                    android:paddingBottom="@dimen/list_view_with_fab_bottom_padding" />
+                    android:text="@string/no_notes_found_after_search" />
             </ScrollView>
 
         </ViewFlipper>

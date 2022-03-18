@@ -11,42 +11,57 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/screen_edge"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/screen_edge"
+            android:paddingRight="@dimen/screen_edge"
+            android:paddingTop="@dimen/screen_edge"
+            android:paddingBottom="@dimen/padding_bottom_for_fab"
+            android:layout_marginBottom="?attr/actionBarSize"
+            android:clipToPadding="false"
+            android:fadeScrollbars="false">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/fragment_saved_search_name_input_layout"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:errorEnabled="true">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/fragment_saved_search_name"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/fragment_saved_search_name_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text|textCapSentences"
-                    android:hint="@string/name"/>
-            </com.google.android.material.textfield.TextInputLayout>
+                    app:errorEnabled="true">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/fragment_saved_search_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text|textCapSentences"
+                        android:hint="@string/name"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/fragment_saved_search_query_input_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:errorEnabled="true">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/fragment_saved_search_query"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/fragment_saved_search_query_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textMultiLine"
-                    android:hint="@string/query"/>
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
+                    app:errorEnabled="true">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/fragment_saved_search_query"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:hint="@string/query"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </ScrollView>
 
-        <TextView
-            style="@style/BigCenteredText"
-            android:text="@string/search_does_not_exist_anymore"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                style="@style/BigCenteredText"
+                android:text="@string/search_does_not_exist_anymore" />
+        </ScrollView>
 
     </ViewFlipper>
 

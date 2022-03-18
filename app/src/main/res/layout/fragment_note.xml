@@ -16,7 +16,8 @@
             android:id="@+id/fragment_note_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
+            android:paddingBottom="@dimen/padding_bottom_for_fab"
+            android:layout_marginBottom="?attr/actionBarSize"
             android:clipToPadding="false"
             android:fadeScrollbars="false"
             android:scrollbarStyle="outsideOverlay">
@@ -45,15 +46,16 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp">
 
                         <!-- Breadcrumbs -->
                         <FrameLayout
                             android:id="@+id/fragment_note_breadcrumbs"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:layout_marginLeft="4dp"
+                            android:padding="4dp"
                             android:scrollbars="none"
                             android:visibility="visible">
 
@@ -75,7 +77,6 @@
                             android:id="@+id/fragment_note_location_button"
                             style="@style/NoteFragmentListItemSpinnerButton"
                             android:layout_width="match_parent"
-                            android:layout_marginTop="4dp"
                             android:textSize="?attr/fragment_note_content_text_size"
                             tools:text="GTD"
                             android:visibility="visible"/>
@@ -85,7 +86,6 @@
                             android:id="@+id/fragment_note_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
                             android:inputType="text|textCapSentences"
                             android:imeOptions="actionDone"
                             android:hint="@string/fragment_note_title_hint"
@@ -99,7 +99,6 @@
                             android:id="@+id/fragment_note_title_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
                             style="@style/Widget.AppCompat.EditText"
                             android:hint="@string/fragment_note_title_hint"
                             tools:text="@string/head_title_sample"
@@ -394,10 +393,13 @@
             </LinearLayout>
         </ScrollView>
 
-        <TextView
-            style="@style/BigCenteredText"
-            android:paddingBottom="@dimen/list_view_with_fab_bottom_padding"
-            android:text="@string/note_does_not_exist_anymore"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                style="@style/BigCenteredText"
+                android:text="@string/note_does_not_exist_anymore" />
+        </ScrollView>
     </ViewFlipper>
 
     <com.google.android.material.bottomappbar.BottomAppBar

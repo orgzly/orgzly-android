@@ -10,15 +10,18 @@
         android:id="@+id/fragment_book_preface_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/screen_edge"
+        android:paddingLeft="@dimen/screen_edge"
+        android:paddingRight="@dimen/screen_edge"
+        android:paddingTop="@dimen/screen_edge"
+        android:paddingBottom="@dimen/padding_bottom_for_fab"
+        android:layout_marginBottom="?attr/actionBarSize"
         android:clipToPadding="false"
         android:fadeScrollbars="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/list_view_with_fab_bottom_padding">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
