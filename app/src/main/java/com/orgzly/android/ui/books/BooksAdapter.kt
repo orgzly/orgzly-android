@@ -56,7 +56,7 @@ class BooksAdapter(
         }
 
         override fun onClick(v: View) {
-            adapterPosition.let { position ->
+            bindingAdapterPosition.let { position ->
                 if (position != RecyclerView.NO_POSITION) {
                     clickListener.onClick(v, position, getItem(position))
                 } else {
@@ -66,7 +66,7 @@ class BooksAdapter(
         }
 
         override fun onLongClick(v: View): Boolean {
-            adapterPosition.let { position ->
+            bindingAdapterPosition.let { position ->
                 return if (position != RecyclerView.NO_POSITION) {
                     clickListener.onLongClick(v, position, getItem(position))
                     true

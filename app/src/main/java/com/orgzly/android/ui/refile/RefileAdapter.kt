@@ -42,16 +42,16 @@ class RefileAdapter(val context: Context, val listener: OnClickListener) :
                 LayoutInflater.from(parent.context), parent, false))
 
         holder.binding.itemRefilePayload.setOnClickListener {
-            val position = holder.adapterPosition
+            val position = holder.bindingAdapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                listener.onItem(getItem(holder.adapterPosition))
+                listener.onItem(getItem(holder.bindingAdapterPosition))
             }
         }
 
         holder.binding.itemRefileButton.setOnClickListener {
-            val position = holder.adapterPosition
+            val position = holder.bindingAdapterPosition
             if (position != RecyclerView.NO_POSITION) {
-                listener.onButton(getItem(holder.adapterPosition))
+                listener.onButton(getItem(holder.bindingAdapterPosition))
             }
         }
 

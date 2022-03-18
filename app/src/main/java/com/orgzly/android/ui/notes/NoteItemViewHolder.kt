@@ -16,7 +16,7 @@ class NoteItemViewHolder(val binding: ItemHeadBinding, private val clickListener
     }
 
     override fun onClick(view: View) {
-        adapterPosition.let { position ->
+        bindingAdapterPosition.let { position ->
             if (position != RecyclerView.NO_POSITION) {
                 clickListener.onClick(view, position)
             } else {
@@ -26,7 +26,7 @@ class NoteItemViewHolder(val binding: ItemHeadBinding, private val clickListener
     }
 
     override fun onLongClick(view: View): Boolean {
-        adapterPosition.let { position ->
+        bindingAdapterPosition.let { position ->
             return if (position != RecyclerView.NO_POSITION) {
                 clickListener.onLongClick(view, position)
                 true

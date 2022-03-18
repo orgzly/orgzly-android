@@ -94,7 +94,7 @@ class NoteItemTouchHelper(inBook: Boolean, listener: Listener) :
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             if (BuildConfig.LOG_DEBUG)
-                LogUtils.d(TAG, direction, viewHolder.itemId, viewHolder.adapterPosition, viewHolder.layoutPosition)
+                LogUtils.d(TAG, direction, viewHolder.itemId, viewHolder.bindingAdapterPosition, viewHolder.layoutPosition)
 
             listener.onSwiped(viewHolder as NoteItemViewHolder, direction)
         }

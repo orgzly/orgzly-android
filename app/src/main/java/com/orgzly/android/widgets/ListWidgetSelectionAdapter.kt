@@ -30,7 +30,7 @@ class ListWidgetSelectionAdapter(
         }
 
         override fun onClick(view: View) {
-            adapterPosition.let { position ->
+            bindingAdapterPosition.let { position ->
                 if (position != RecyclerView.NO_POSITION) {
                     clickListener.onClick(view, position, getItem(position))
                 } else {
@@ -40,7 +40,7 @@ class ListWidgetSelectionAdapter(
         }
 
         override fun onLongClick(view: View): Boolean {
-            adapterPosition.let { position ->
+            bindingAdapterPosition.let { position ->
                 return if (position != RecyclerView.NO_POSITION) {
                     clickListener.onLongClick(view, position, getItem(position))
                     true
