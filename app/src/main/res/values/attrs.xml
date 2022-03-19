@@ -47,8 +47,8 @@
     </declare-styleable>
 
     <declare-styleable name="ColorScheme">
-        <attr name="app_bar_bg_color" format="color"/>
-        <attr name="bottom_action_bar_bg_color" format="color"/>
+        <attr name="top_toolbar_bg_color" format="color"/>
+        <attr name="bottom_toolbar_bg_color" format="color"/>
         <attr name="drawer_item_background" format="reference"/>
         <attr name="indent_line_color" format="color"/>
         <attr name="item_book_card_bg_color" format="color"/>

@@ -208,6 +208,6 @@
         android:layout_height="wrap_content"
         android:src="?attr/ic_done_24dp"
         app:layout_anchor="@id/bottomAppBar"
-        app:backgroundTint="?attr/bottom_action_bar_bg_color" />
+        app:backgroundTint="?attr/bottom_toolbar_bg_color" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

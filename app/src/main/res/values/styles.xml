@@ -267,8 +267,8 @@
         <item name="android:itemBackground">?android:itemBackground</item>
         <item name="android:statusBarColor" tools:targetApi="21">#e6757575</item>
         <item name="android:windowBackground">@color/white</item>
-        <item name="app_bar_bg_color">@color/light_theme_app_bar</item>
-        <item name="bottom_action_bar_bg_color">@color/light_theme_app_bar</item>
+        <item name="top_toolbar_bg_color">@color/light_theme_app_bar</item>
+        <item name="bottom_toolbar_bg_color">@color/light_theme_app_bar</item>
         <item name="bullet_state_default">@drawable/bullet_state_default_light</item>
         <item name="bullet_state_folded">@drawable/bullet_state_folded_light</item>
         <item name="colorAccent">@color/blue_grey_600</item>
@@ -302,8 +302,8 @@
         <item name="android:itemBackground">?android:itemBackground</item>
         <item name="android:statusBarColor" tools:targetApi="21">@color/dark_theme_status_bar</item>
         <item name="android:windowBackground">@color/dark_theme_background</item>
-        <item name="app_bar_bg_color">@color/dark_theme_app_bar</item>
-        <item name="bottom_action_bar_bg_color">@color/dark_theme_app_bar</item>
+        <item name="top_toolbar_bg_color">@color/dark_theme_app_bar</item>
+        <item name="bottom_toolbar_bg_color">@color/dark_theme_app_bar</item>
         <item name="bullet_state_default">@drawable/bullet_state_default_dark</item>
         <item name="bullet_state_folded">@drawable/bullet_state_folded_dark</item>
         <item name="colorAccent">@color/blue_grey_300</item>
@@ -337,8 +337,8 @@
         <item name="android:itemBackground">@color/dark_theme_status_bar</item>
         <item name="android:statusBarColor" tools:targetApi="21">#000000</item>
         <item name="android:windowBackground">@color/dark_theme_status_bar</item>
-        <item name="app_bar_bg_color">@color/dark_theme_status_bar</item>
-        <item name="bottom_action_bar_bg_color">@color/dark_theme_status_bar</item>
+        <item name="top_toolbar_bg_color">@color/dark_theme_status_bar</item>
+        <item name="bottom_toolbar_bg_color">@color/dark_theme_status_bar</item>
         <item name="bullet_state_default">@drawable/bullet_state_default_black</item>
         <item name="bullet_state_folded">@drawable/bullet_state_folded_black</item>
         <item name="colorAccent">@color/blue_grey_200</item>
@@ -586,7 +586,7 @@
         <!--<item name="android:alpha">0.0</item>-->
 
         <item name="android:layout_gravity">bottom</item>
-        <item name="android:background">?attr/bottom_action_bar_bg_color</item>
+        <item name="android:background">?attr/bottom_toolbar_bg_color</item>
         <item name="android:elevation" tools:targetApi="lollipop">4dp</item>
         <item name="android:theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
         <item name="android:popupTheme" tools:targetApi="lollipop">@style/ThemeOverlay.AppCompat.ActionBar</item>
@@ -610,7 +610,7 @@
         <item name="android:layout_gravity">bottom</item>
         <item name="fabCradleMargin">0dp</item>
         <item name="fabCradleRoundedCornerRadius">0dp</item>
-        <item name="backgroundTint">?attr/bottom_action_bar_bg_color</item>
+        <item name="backgroundTint">?attr/bottom_toolbar_bg_color</item>
     </style>
 
     <style name="BottomAppBar.FabAlignEnd">

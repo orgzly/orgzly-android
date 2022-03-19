@@ -11,7 +11,7 @@
         android:id="@+id/dialog_refile_toolbar"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:elevation="8dp" tools:targetApi="lollipop"
+        android:background="?attr/top_toolbar_bg_color"
         app:navigationIcon="?attr/ic_close_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,6 +31,7 @@
         android:id="@+id/dialog_refile_second_bar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:background="?attr/top_toolbar_bg_color"
         android:elevation="2dp" tools:targetApi="lollipop"
         app:layout_constraintTop_toBottomOf="@+id/dialog_refile_toolbar">
 
