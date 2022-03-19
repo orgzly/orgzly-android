@@ -137,7 +137,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     /*
      * Display custom preference's dialog.
      */
-    override fun onDisplayPreferenceDialog(preference: Preference?) {
+    override fun onDisplayPreferenceDialog(preference: Preference) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, preference)
 
         when (preference) {
@@ -176,7 +176,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         listener?.onTitleChange(preferenceScreen?.title)
 
         /* Start to listen for any preference changes. */
-        PreferenceManager.getDefaultSharedPreferences(activity)
+        PreferenceManager.getDefaultSharedPreferences(requireActivity())
                 .registerOnSharedPreferenceChangeListener(this)
     }
 
@@ -184,7 +184,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         super.onPause()
 
         /* Stop listening for preference changed. */
-        PreferenceManager.getDefaultSharedPreferences(activity)
+        PreferenceManager.getDefaultSharedPreferences(requireActivity())
                 .unregisterOnSharedPreferenceChangeListener(this)
     }
 
@@ -365,8 +365,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         }
     }
 
-    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
-        if (preference != null && preference is PreferenceScreen) {
+    override fun onPreferenceTreeClick(preference: Preference): Boolean {
+        if (preference is PreferenceScreen) {
             preference.key?.let { key ->
                 if (key in PREFS_RESOURCES) {
                     listener?.onPreferenceScreen(key)

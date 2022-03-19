@@ -12,20 +12,20 @@ buildscript {
 
     versions.android_multidex = '2.0.1'
 
-    versions.android_appcompat = '1.4.0'
+    versions.android_appcompat = '1.4.1'
 
     versions.android_documentfile = '1.0.1'
-    versions.android_localbroadcastmanager = '1.0.0'
+    versions.android_localbroadcastmanager = '1.1.0'
 
     versions.android_cardview = '1.0.0'
     versions.android_recyclerview = '1.2.1'
     versions.android_viewpager = '1.0.0'
-    versions.android_constraint_layout = '2.1.2'
-    versions.android_preference = '1.1.1'
-    versions.android_material = '1.4.0'
+    versions.android_constraint_layout = '2.1.3'
+    versions.android_preference = '1.2.0'
+    versions.android_material = '1.5.0'
     versions.android_swiperefreshlayout = '1.1.0'
 
-    versions.android_room = '2.4.0'
+    versions.android_room = '2.4.2'
 
     versions.android_lifecycle = '2.2.0'
 
@@ -47,7 +47,7 @@ buildscript {
 
     versions.loremipsum = '1.0'
 
-    versions.dagger = '2.40.5'
+    versions.dagger = '2.41'
 
     versions.gson = '2.8.9'
 
