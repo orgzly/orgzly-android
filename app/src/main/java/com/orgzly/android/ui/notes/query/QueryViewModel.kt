@@ -41,7 +41,9 @@ class QueryViewModel(private val dataRepository: DataRepository) : CommonViewMod
         }
     }
 
-    val appBar: AppBar = AppBar()
+    val appBar: AppBar = AppBar(mapOf(
+        APP_BAR_DEFAULT_MODE to null,
+        APP_BAR_SELECTION_MODE to APP_BAR_DEFAULT_MODE))
 
     /* Triggers querying only if parameters changed. */
     fun refresh(query: String?, defaultPriority: String) {
@@ -53,5 +55,8 @@ class QueryViewModel(private val dataRepository: DataRepository) : CommonViewMod
 
     companion object {
         private val TAG = QueryViewModel::class.java.name
+
+        const val APP_BAR_DEFAULT_MODE = 0
+        const val APP_BAR_SELECTION_MODE = 1
     }
 }

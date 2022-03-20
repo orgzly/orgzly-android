@@ -52,10 +52,14 @@ class TextViewWithMarkup : TextViewFixed {
         }
     }
 
-    fun setRawText(text: CharSequence) {
+    fun setRawText(text: CharSequence?) {
         rawText = text
 
-        setText(OrgFormatter.parse(text, context, true, parseCheckboxes), BufferType.SPANNABLE)
+        if (text != null) {
+            setText(OrgFormatter.parse(text, context, true, parseCheckboxes), BufferType.SPANNABLE)
+        } else {
+            setText(null)
+        }
     }
 
     fun getRawText() : CharSequence? {

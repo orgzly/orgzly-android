@@ -21,6 +21,8 @@ import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.notes.NoteItemViewHolder
 import com.orgzly.android.ui.notes.query.QueryFragment
 import com.orgzly.android.ui.notes.query.QueryViewModel
+import com.orgzly.android.ui.notes.query.QueryViewModel.Companion.APP_BAR_DEFAULT_MODE
+import com.orgzly.android.ui.notes.query.QueryViewModel.Companion.APP_BAR_SELECTION_MODE
 import com.orgzly.android.ui.notes.query.QueryViewModelFactory
 import com.orgzly.android.ui.notes.quickbar.ItemGestureDetector
 import com.orgzly.android.ui.notes.quickbar.QuickBarListener
@@ -164,7 +166,7 @@ class SearchFragment :
             })
 
             setNavigationOnClickListener {
-                viewModel.appBar.toDefault()
+                viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
             setOnMenuItemClickListener { menuItem ->
@@ -205,14 +207,14 @@ class SearchFragment :
 
             viewAdapter.getSelection().removeNonExistent(ids)
 
-            viewModel.appBar.toState(viewAdapter.getSelection().count)
+            viewModel.appBar.toModeFromSelectionCount(viewAdapter.getSelection().count)
         })
 
         viewModel.refresh(currentQuery, AppPreferences.defaultPriority(context))
 
-        viewModel.appBar.state.observeSingle(viewLifecycleOwner) { state ->
-            when (state) {
-                is AppBar.State.Default, null -> {
+        viewModel.appBar.mode.observeSingle(viewLifecycleOwner) { mode ->
+            when (mode) {
+                APP_BAR_DEFAULT_MODE, null -> {
                     appBarToDefault()
                     sharedMainActivityViewModel.unlockDrawer()
                     appBarBackPressHandler.isEnabled = false
@@ -226,7 +228,7 @@ class SearchFragment :
                     }
                 }
 
-                is AppBar.State.MainSelection -> {
+                APP_BAR_SELECTION_MODE -> {
                     appBarToMainSelection()
                     sharedMainActivityViewModel.lockDrawer()
                     appBarBackPressHandler.isEnabled = true
@@ -235,9 +237,6 @@ class SearchFragment :
                     binding.bottomAppBarTitle.run {
                         text = viewAdapter.getSelection().count.toString()
                     }
-                }
-
-                is AppBar.State.NextSelection -> {
                 }
             }
         }
@@ -273,7 +272,7 @@ class SearchFragment :
         viewAdapter.getSelection().toggle(noteId)
         viewAdapter.notifyItemChanged(position)
 
-        viewModel.appBar.toState(viewAdapter.getSelection().count)
+        viewModel.appBar.toModeFromSelectionCount(viewAdapter.getSelection().count)
 
     }
 

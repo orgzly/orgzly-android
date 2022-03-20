@@ -1,56 +1,33 @@
 package com.orgzly.android.ui
 
-class AppBar {
-    sealed class State(val count: Int) {
-        data class Default(val n: Int = 0): State(n)
-        data class MainSelection(val n: Int): State(n)
-        data class NextSelection(val n: Int): State(n)
-    }
+class AppBar(var modes: Map<Int, Int?>) {
 
-    val state: SingleLiveEvent<State> = SingleLiveEvent()
+    val mode: SingleLiveEvent<Int> = SingleLiveEvent()
 
-    fun toState(count: Int) {
+    fun toModeFromSelectionCount(count: Int) {
         if (count == 0) {
-            state.postValue(State.Default())
+            // No selection, default mode
+            mode.postValue(0)
         } else {
-            when (state.value) { // Current state
-                is State.MainSelection ->
-                    // Maintain state, update count
-                    state.postValue(State.MainSelection(count))
-                is State.NextSelection ->
-                    // Maintain state, update count
-                    state.postValue(State.NextSelection(count))
-                is State.Default ->
-                    state.postValue(State.MainSelection(count))
-                null ->
-                    state.postValue(State.MainSelection(count))
+            if (mode.value == 0) {
+                // Selection, from default mode
+                mode.postValue(1)
+            } else {
+                // Keep mode
+                mode.postValue(mode.value)
             }
         }
     }
 
-    fun toDefault() {
-        this.state.postValue(State.Default())
-    }
-
-    fun toMainSelection() {
-        this.state.postValue(State.MainSelection(noOfSelected()))
-    }
-    fun toNextSelection() {
-        this.state.postValue(State.NextSelection(noOfSelected()))
-    }
-
-    private fun noOfSelected(): Int {
-        return state.value?.count ?: 0
+    fun toMode(id: Int) {
+        this.mode.postValue(id)
     }
 
     fun handleOnBackPressed() {
-        when (state.value) {
-            is State.MainSelection ->
-                toDefault()
-            is State.NextSelection ->
-                toMainSelection()
-            else -> {
-                // Do nothing
+        mode.value?.let { currentMode ->
+            val previousMode = modes[currentMode]
+            if (previousMode != null) {
+                toMode(previousMode)
             }
         }
     }

@@ -33,6 +33,8 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.AppBar
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.OnViewHolderClickListener
+import com.orgzly.android.ui.books.BooksViewModel.Companion.APP_BAR_DEFAULT_MODE
+import com.orgzly.android.ui.books.BooksViewModel.Companion.APP_BAR_SELECTION_MODE
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.MainActivity
@@ -159,7 +161,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
             viewAdapter.getSelection().toggleSingleSelect(item.book.id)
             viewAdapter.notifyDataSetChanged() // FIXME
 
-            viewModel.appBar.toState(viewAdapter.getSelection().count)
+            viewModel.appBar.toModeFromSelectionCount(viewAdapter.getSelection().count)
         }
     }
 
@@ -172,7 +174,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
         viewAdapter.getSelection().toggleSingleSelect(item.book.id)
         viewAdapter.notifyDataSetChanged() // FIXME
 
-        viewModel.appBar.toState(viewAdapter.getSelection().count)
+        viewModel.appBar.toModeFromSelectionCount(viewAdapter.getSelection().count)
     }
 
     private fun appBarToDefault() {
@@ -233,7 +235,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
             })
 
             setNavigationOnClickListener {
-                viewModel.appBar.toDefault()
+                viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
             setOnMenuItemClickListener { menuItem ->
@@ -288,7 +290,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
                 viewAdapter.getSelection().clear()
                 viewAdapter.notifyDataSetChanged() // FIXME
 
-                viewModel.appBar.toDefault()
+                viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
 
                 true
             }
@@ -443,7 +445,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
 
             viewAdapter.getSelection().removeNonExistent(ids)
 
-            viewModel.appBar.toState(viewAdapter.getSelection().count)
+            viewModel.appBar.toModeFromSelectionCount(viewAdapter.getSelection().count)
         })
 
 
@@ -504,9 +506,9 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
             }
         })
 
-        viewModel.appBar.state.observeSingle(viewLifecycleOwner) { state ->
-            when (state) {
-                is AppBar.State.Default, null -> {
+        viewModel.appBar.mode.observeSingle(viewLifecycleOwner) { mode ->
+            when (mode) {
+                APP_BAR_DEFAULT_MODE -> {
                     appBarToDefault()
 
                     sharedMainActivityViewModel.unlockDrawer()
@@ -514,15 +516,13 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
                     appBarBackPressHandler.isEnabled = false
                 }
 
-                is AppBar.State.MainSelection -> {
+                APP_BAR_SELECTION_MODE -> {
                     appBarToMainSelection()
 
                     sharedMainActivityViewModel.lockDrawer()
 
                     appBarBackPressHandler.isEnabled = true
                 }
-
-                is AppBar.State.NextSelection -> TODO()
             }
         }
     }

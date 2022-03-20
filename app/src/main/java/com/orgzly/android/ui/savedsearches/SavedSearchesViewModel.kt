@@ -9,7 +9,6 @@ import androidx.lifecycle.Transformations
 import com.orgzly.android.ui.AppBar
 
 class SavedSearchesViewModel(dataRepository: DataRepository) : CommonViewModel() {
-
     enum class ViewState {
         LOADING,
         LOADED,
@@ -30,5 +29,12 @@ class SavedSearchesViewModel(dataRepository: DataRepository) : CommonViewModel()
         }
     }
 
-    val appBar = AppBar()
+    companion object {
+        const val APP_BAR_DEFAULT_MODE = 0
+        const val APP_BAR_SELECTION_MODE = 1
+    }
+
+    val appBar = AppBar(mapOf(
+        APP_BAR_DEFAULT_MODE to null,
+        APP_BAR_SELECTION_MODE to APP_BAR_DEFAULT_MODE))
 }

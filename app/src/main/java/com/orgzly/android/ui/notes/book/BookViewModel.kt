@@ -4,7 +4,6 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.orgzly.android.App
-import com.orgzly.android.BookUtils
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.NoteView
@@ -46,7 +45,17 @@ class BookViewModel(private val dataRepository: DataRepository, val bookId: Long
         }
     }
 
-    val appBar = AppBar()
+    companion object {
+        const val APP_BAR_DEFAULT_MODE = 0
+        const val APP_BAR_SELECTION_MODE = 1
+        const val APP_BAR_SELECTION_MOVE_MODE = 2
+    }
+
+    val appBar = AppBar(mapOf(
+        APP_BAR_DEFAULT_MODE to null,
+        APP_BAR_SELECTION_MODE to APP_BAR_DEFAULT_MODE,
+        APP_BAR_SELECTION_MOVE_MODE to APP_BAR_SELECTION_MODE))
+
 
     fun cycleVisibility() {
         data.value?.book?.let { book ->

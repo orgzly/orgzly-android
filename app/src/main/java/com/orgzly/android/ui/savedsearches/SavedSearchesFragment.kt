@@ -5,7 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -18,12 +21,13 @@ import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.SavedSearch
 import com.orgzly.android.savedsearch.FileSavedSearchStore
-import com.orgzly.android.ui.AppBar
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
+import com.orgzly.android.ui.savedsearches.SavedSearchesViewModel.Companion.APP_BAR_DEFAULT_MODE
+import com.orgzly.android.ui.savedsearches.SavedSearchesViewModel.Companion.APP_BAR_SELECTION_MODE
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentSavedSearchesBinding
@@ -172,7 +176,7 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
             })
 
             setNavigationOnClickListener {
-                viewModel.appBar.toDefault()
+                viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
             setOnMenuItemClickListener { menuItem ->
@@ -191,7 +195,7 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
 
                     R.id.saved_searches_cab_delete -> {
                         listener?.onSavedSearchDeleteRequest(selection.getIds())
-                        viewModel.appBar.toDefault()
+                        viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
                     }
                 }
 
@@ -234,11 +238,7 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
             viewAdapter.getSelection().toggle(item.id)
             viewAdapter.notifyItemChanged(position)
 
-            if (viewAdapter.getSelection().count > 0) {
-                viewModel.appBar.toMainSelection()
-            } else {
-                viewModel.appBar.toDefault()
-            }
+            viewModel.appBar.toModeFromSelectionCount(viewAdapter.getSelection().count)
         }
     }
 
@@ -246,11 +246,7 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
         viewAdapter.getSelection().toggle(item.id)
         viewAdapter.notifyItemChanged(position)
 
-        if (viewAdapter.getSelection().count > 0) {
-            viewModel.appBar.toMainSelection()
-        } else {
-            viewModel.appBar.toDefault()
-        }
+        viewModel.appBar.toModeFromSelectionCount(viewAdapter.getSelection().count)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -277,12 +273,12 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
 
             viewAdapter.getSelection().removeNonExistent(ids)
 
-            viewModel.appBar.toState(viewAdapter.getSelection().count)
+            viewModel.appBar.toModeFromSelectionCount(viewAdapter.getSelection().count)
         })
 
-        viewModel.appBar.state.observeSingle(viewLifecycleOwner) { state ->
-            when (state) {
-                is AppBar.State.Default, null -> {
+        viewModel.appBar.mode.observeSingle(viewLifecycleOwner) { mode ->
+            when (mode) {
+                APP_BAR_DEFAULT_MODE -> {
                     appBarToDefault()
 
                     sharedMainActivityViewModel.unlockDrawer()
@@ -290,15 +286,13 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
                     appBarBackPressHandler.isEnabled = false
                 }
 
-                is AppBar.State.MainSelection -> {
+                APP_BAR_SELECTION_MODE -> {
                     appBarToMainSelection()
 
                     sharedMainActivityViewModel.lockDrawer()
 
                     appBarBackPressHandler.isEnabled = true
                 }
-
-                is AppBar.State.NextSelection -> TODO()
             }
         }
     }

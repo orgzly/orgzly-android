@@ -26,6 +26,9 @@ import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.ui.notes.NoteItemViewHolder
 import com.orgzly.android.ui.notes.NotesFragment
+import com.orgzly.android.ui.notes.book.BookViewModel.Companion.APP_BAR_DEFAULT_MODE
+import com.orgzly.android.ui.notes.book.BookViewModel.Companion.APP_BAR_SELECTION_MODE
+import com.orgzly.android.ui.notes.book.BookViewModel.Companion.APP_BAR_SELECTION_MOVE_MODE
 import com.orgzly.android.ui.notes.quickbar.ItemGestureDetector
 import com.orgzly.android.ui.notes.quickbar.QuickBarListener
 import com.orgzly.android.ui.notes.quickbar.QuickBars
@@ -217,7 +220,7 @@ class BookFragment :
 
                 viewAdapter.getSelection().removeNonExistent(ids)
 
-                viewModel.appBar.toState(viewAdapter.getSelection().count)
+                viewModel.appBar.toModeFromSelectionCount(viewAdapter.getSelection().count)
 
                 scrollToNoteIfSet(arguments?.getLong(ARG_NOTE_ID, 0) ?: 0)
             }
@@ -246,9 +249,9 @@ class BookFragment :
                     .show()
         })
 
-        viewModel.appBar.state.observeSingle(viewLifecycleOwner) { state ->
-            when (state) {
-                is AppBar.State.Default, null -> {
+        viewModel.appBar.mode.observeSingle(viewLifecycleOwner) { mode ->
+            when (mode) {
+                APP_BAR_DEFAULT_MODE -> {
                     appBarToDefault()
 
                     sharedMainActivityViewModel.unlockDrawer()
@@ -263,7 +266,7 @@ class BookFragment :
                     viewModel.setTitle(BookUtils.getFragmentTitleForBook(currentBook))
                 }
 
-                is AppBar.State.MainSelection -> {
+                APP_BAR_SELECTION_MODE -> {
                     appBarToMainSelection()
 
                     sharedMainActivityViewModel.lockDrawer()
@@ -287,7 +290,7 @@ class BookFragment :
                     viewModel.hideTitle()
                 }
 
-                is AppBar.State.NextSelection -> {
+                APP_BAR_SELECTION_MOVE_MODE -> {
                     appBarToNextSelection()
 
                     sharedMainActivityViewModel.lockDrawer()
@@ -496,7 +499,7 @@ class BookFragment :
         viewAdapter.getSelection().toggle(noteId)
         viewAdapter.notifyItemChanged(position)
 
-        viewModel.appBar.toState(viewAdapter.getSelection().count)
+        viewModel.appBar.toModeFromSelectionCount(viewAdapter.getSelection().count)
     }
 
     override fun onPrefaceClick() {
@@ -606,7 +609,7 @@ class BookFragment :
             })
 
             setNavigationOnClickListener {
-                viewModel.appBar.toDefault()
+                viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
             setOnMenuItemClickListener { menuItem ->
@@ -630,7 +633,7 @@ class BookFragment :
             })
 
             setNavigationOnClickListener {
-                viewModel.appBar.toMainSelection()
+                viewModel.appBar.toMode(APP_BAR_SELECTION_MODE)
             }
 
             setOnMenuItemClickListener { menuItem ->
@@ -654,7 +657,7 @@ class BookFragment :
 
         if (ids.isEmpty()) {
             Log.e(TAG, "Cannot handle action when there are no items selected")
-            viewModel.appBar.toDefault()
+            viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             return
         }
 
@@ -666,23 +669,23 @@ class BookFragment :
             R.id.quick_bar_new_above,
             R.id.new_note_above -> {
                 newNoteRelativeToSelection(Place.ABOVE, ids.first())
-                viewModel.appBar.toDefault()
+                viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
             R.id.quick_bar_new_under,
             R.id.new_note_under -> {
                 newNoteRelativeToSelection(Place.UNDER, ids.first())
-                viewModel.appBar.toDefault()
+                viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
             R.id.quick_bar_new_below,
             R.id.new_note_below -> {
                 newNoteRelativeToSelection(Place.BELOW, ids.first())
-                viewModel.appBar.toDefault()
+                viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
             R.id.move -> {
-                viewModel.appBar.toNextSelection()
+                viewModel.appBar.toMode(APP_BAR_SELECTION_MOVE_MODE)
             }
 
             in scheduledTimeButtonIds(),
@@ -695,22 +698,22 @@ class BookFragment :
 
                 // TODO: Wait for user confirmation (dialog close) before doing this
                 // TODO: Don't do it if canceled
-                viewModel.appBar.toDefault()
+                viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
             R.id.cut -> {
                 listener?.onNotesCutRequest(mBookId, ids)
-                viewModel.appBar.toDefault()
+                viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
             R.id.copy -> {
                 listener?.onNotesCopyRequest(mBookId, ids)
-                viewModel.appBar.toDefault()
+                viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
             R.id.paste_above -> {
                 pasteNotes(Place.ABOVE, ids.first())
-                viewModel.appBar.toDefault()
+                viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
             R.id.quick_bar_refile,
@@ -719,12 +722,12 @@ class BookFragment :
 
             R.id.paste_under -> {
                 pasteNotes(Place.UNDER, ids.first())
-                viewModel.appBar.toDefault()
+                viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
             R.id.paste_below -> {
                 pasteNotes(Place.BELOW, ids.first())
-                viewModel.appBar.toDefault()
+                viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
             R.id.notes_action_move_up ->
@@ -774,7 +777,6 @@ class BookFragment :
     }
 
     companion object {
-
         private val TAG = BookFragment::class.java.name
 
         /** Name used for [android.app.FragmentManager].  */

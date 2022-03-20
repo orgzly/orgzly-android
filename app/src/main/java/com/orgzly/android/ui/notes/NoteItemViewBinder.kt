@@ -100,7 +100,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
     }
 
     private fun setupTitle(holder: NoteItemViewHolder, noteView: NoteView) {
-        holder.binding.itemHeadTitle.text = generateTitle(noteView)
+        holder.binding.itemHeadTitle.setText(generateTitle(noteView))
     }
 
     fun generateTitle(noteView: NoteView): CharSequence {
@@ -108,14 +108,14 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
     }
 
     private fun setupContent(holder: NoteItemViewHolder, note: Note) {
-        holder.binding.itemHeadContent.text = note.content
+        holder.binding.itemHeadContent.setText(note.content)
 
         if (note.hasContent() && titleGenerator.shouldDisplayContent(note)) {
             if (AppPreferences.isFontMonospaced(context)) {
                 holder.binding.itemHeadContent.typeface = Typeface.MONOSPACE
             }
 
-            holder.binding.itemHeadContent.setRawText(note.content as CharSequence)
+            holder.binding.itemHeadContent.setRawText(note.content)
 
             /* If content changes (for example by toggling the checkbox), update the note. */
             holder.binding.itemHeadContent.onUserTextChangeListener = Runnable {
