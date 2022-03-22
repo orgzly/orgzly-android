@@ -11,6 +11,7 @@ import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -35,11 +36,14 @@ import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
+import com.orgzly.android.ui.note.NoteViewModel.Companion.APP_BAR_DEFAULT_MODE
+import com.orgzly.android.ui.note.NoteViewModel.Companion.APP_BAR_EDIT_MODE
 import com.orgzly.android.ui.notes.book.BookFragment
 import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.share.ShareActivity
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.removeBackgroundKeepPadding
+import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.SpaceTokenizer
 import com.orgzly.android.util.UserTimeFormatter
@@ -81,6 +85,18 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     private var dialog: AlertDialog? = null
 
     private lateinit var sharedMainActivityViewModel: SharedMainActivityViewModel
+
+    private val userCancelBackPressHandler = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            userCancel()
+        }
+    }
+
+    private val toViewModeBackPressHandler = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            viewModel.toViewMode()
+        }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -141,18 +157,11 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         viewModel = ViewModelProvider(this, factory).get(NoteViewModel::class.java)
 
-        requireActivity().onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                onBackPressed()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(this, toViewModeBackPressHandler)
+        requireActivity().onBackPressedDispatcher.addCallback(this, userCancelBackPressHandler)
     }
 
-    private fun onBackPressed() {
-        userCancel()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         binding = FragmentNoteBinding.inflate(inflater, container, false)
@@ -297,13 +306,15 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         }
 
         setContentFoldState(AppPreferences.isNoteContentFolded(context))
-
-        appBarToDefault()
     }
 
     private fun appBarToDefault() {
         binding.bottomAppBar.run {
             replaceMenu(R.menu.note_actions)
+
+            setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
+                typedArray.getResourceId(R.styleable.Icons_ic_menu_24dp, 0)
+            })
 
             setNavigationOnClickListener {
                 userCancel()
@@ -316,19 +327,11 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 menu.findItem(R.id.keep_screen_on))
 
             if (viewModel.notePayload == null) { // Displaying non-existent note.
-                menu.removeItem(R.id.note_edit)
-                menu.removeItem(R.id.note_view)
                 menu.removeItem(R.id.done)
                 menu.removeItem(R.id.metadata)
                 menu.removeItem(R.id.delete)
 
             } else {
-                if (viewModel.isInEditMode()) {
-                    menu.removeItem(R.id.note_edit)
-                } else {
-                    menu.removeItem(R.id.note_view)
-                }
-
                 when (AppPreferences.noteMetadataVisibility(context)) {
                     "selected" -> menu.findItem(R.id.metadata_show_selected).isChecked = true
                     else -> menu.findItem(R.id.metadata_show_all).isChecked = true
@@ -344,53 +347,90 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             }
 
             setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.done -> {
-                        userSave()
-                    }
-
-                    R.id.note_view, R.id.note_edit -> {
-                        viewModel.toggleViewEditMode()
-                    }
-
-                    R.id.keep_screen_on -> {
-                        dialog = ActivityUtils.keepScreenOnToggle(activity, menuItem)
-                    }
-
-                    R.id.delete -> {
-                        userDelete()
-                    }
-
-                    R.id.metadata_show_all -> {
-                        menuItem.isChecked = true
-                        AppPreferences.noteMetadataVisibility(context, "all")
-                        setMetadataViewsVisibility()
-                    }
-
-                    R.id.metadata_show_selected -> {
-                        menuItem.isChecked = true
-                        AppPreferences.noteMetadataVisibility(context, "selected")
-                        setMetadataViewsVisibility()
-                    }
-
-                    R.id.metadata_always_show_set -> {
-                        menuItem.isChecked = !menuItem.isChecked
-                        AppPreferences.alwaysShowSetNoteMetadata(context, menuItem.isChecked)
-                        setMetadataViewsVisibility()
-                    }
-
-                    R.id.activity_action_settings -> {
-                        startActivity(Intent(context, SettingsActivity::class.java))
-                    }
-                }
-
-                true
+                handleActionItemClick(menuItem)
             }
         }
 
-        binding.fab.setOnClickListener {
-            userSave()
+        // binding.fab.hide()
+//        binding.fab.run {
+//            setOnClickListener {
+//                userSave()
+//            }
+//            show()
+//        }
+    }
+
+    private fun appBarToEdit() {
+        binding.bottomAppBar.run {
+            replaceMenu(R.menu.note_actions_edit)
+
+            setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
+                typedArray.getResourceId(R.styleable.Icons_ic_close_24dp, 0)
+            })
+
+            setNavigationOnClickListener {
+                userCancel()
+            }
+
+            if (viewModel.notePayload == null) { // Displaying non-existent note.
+                menu.removeItem(R.id.done)
+            }
+
+            setOnMenuItemClickListener { menuItem ->
+                handleActionItemClick(menuItem)
+            }
         }
+
+        // binding.fab.hide()
+    }
+
+    private fun handleActionItemClick(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            R.id.to_view_mode -> {
+                viewModel.toViewMode()
+            }
+
+            R.id.to_edit_mode -> {
+                viewModel.toEditMode()
+            }
+
+            R.id.done -> {
+                userSave()
+            }
+
+            R.id.keep_screen_on -> {
+                dialog = ActivityUtils.keepScreenOnToggle(activity, menuItem)
+            }
+
+            R.id.delete -> {
+                userDelete()
+            }
+
+            R.id.metadata_show_all -> {
+                menuItem.isChecked = true
+                AppPreferences.noteMetadataVisibility(context, "all")
+                setMetadataViewsVisibility()
+            }
+
+            R.id.metadata_show_selected -> {
+                menuItem.isChecked = true
+                AppPreferences.noteMetadataVisibility(context, "selected")
+                setMetadataViewsVisibility()
+            }
+
+            R.id.metadata_always_show_set -> {
+                menuItem.isChecked = !menuItem.isChecked
+                AppPreferences.alwaysShowSetNoteMetadata(context, menuItem.isChecked)
+                setMetadataViewsVisibility()
+            }
+
+            R.id.activity_action_settings -> {
+                startActivity(Intent(context, SettingsActivity::class.java))
+            }
+        }
+
+        // Handled
+        return true
     }
 
     private fun isNoteContentFolded(): Boolean {
@@ -475,10 +515,25 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
                 null -> { }
             }
-
-            // To update view-edit switch
-            appBarToDefault()
         })
+
+        viewModel.appBar.mode.observeSingle(viewLifecycleOwner) { mode ->
+            when (mode) {
+                APP_BAR_DEFAULT_MODE -> {
+                    appBarToDefault()
+                    sharedMainActivityViewModel.unlockDrawer()
+                    userCancelBackPressHandler.isEnabled = true
+                    toViewModeBackPressHandler.isEnabled = false
+                }
+
+                APP_BAR_EDIT_MODE -> {
+                    appBarToEdit()
+                    sharedMainActivityViewModel.lockDrawer()
+                    userCancelBackPressHandler.isEnabled = false
+                    toViewModeBackPressHandler.isEnabled = true
+                }
+            }
+        }
 
         viewModel.errorEvent.observeSingle(viewLifecycleOwner, Observer { error ->
             showSnackbar((error.cause ?: error).localizedMessage)
@@ -497,6 +552,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         binding.bodyEdit.visibility = View.VISIBLE
 
         // binding.toolbar.visibility = View.GONE
+
+        viewModel.appBar.toMode(APP_BAR_EDIT_MODE)
     }
 
     private fun toViewMode() {
@@ -515,6 +572,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         binding.bodyView.visibility = View.VISIBLE
 
         // binding.toolbar.visibility = View.VISIBLE
+
+        viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
     }
 
     private fun updateViewsFromPayload() {
@@ -708,7 +767,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             setMetadataViewsVisibility()
 
             // Refresh action bar items (hide or display, depending on if book is loaded
-            appBarToDefault()
+            // viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
         })
 
         viewModel.loadData()

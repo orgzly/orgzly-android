@@ -12,10 +12,7 @@ import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.ui.CommonViewModel
-import com.orgzly.android.ui.NotePlace
-import com.orgzly.android.ui.Place
-import com.orgzly.android.ui.SingleLiveEvent
+import com.orgzly.android.ui.*
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.usecase.*
 import com.orgzly.android.util.MiscUtils
@@ -63,6 +60,15 @@ class NoteViewModel(
     var notePayload: NotePayload? = null
 
     private var originalHash: Long = 0L
+
+    companion object {
+        const val APP_BAR_DEFAULT_MODE = 0
+        const val APP_BAR_EDIT_MODE = 1
+    }
+
+    val appBar: AppBar = AppBar(mapOf(
+        APP_BAR_DEFAULT_MODE to null,
+        APP_BAR_EDIT_MODE to APP_BAR_DEFAULT_MODE))
 
     fun loadData() {
         App.EXECUTORS.diskIO().execute {
@@ -140,52 +146,35 @@ class NoteViewModel(
         }
     }
 
-    /**
-     * Toggle view/edit mode.
-     */
-    fun toggleViewEditMode() {
-        val mode = when (viewEditMode.value) {
-            ViewEditMode.VIEW ->
-                ViewEditMode.EDIT
-
-            ViewEditMode.EDIT,
-            ViewEditMode.EDIT_TITLE_WITH_KEYBOARD,
-            ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD ->
-                ViewEditMode.VIEW
-
-            null ->
-                ViewEditMode.EDIT
-        }
-
-        viewEditMode.postValue(mode)
-
-        // Only remember last mode when opening existing notes
-        if (!isNew()) {
-            saveCurrentMode(mode)
-        }
-    }
-
     fun editTitle(saveMode: Boolean = true) {
-        ViewEditMode.EDIT_TITLE_WITH_KEYBOARD.let { mode ->
-            viewEditMode.postValue(mode)
-            if (saveMode) {
-                saveCurrentMode(mode)
-            }
+        viewEditMode.postValue(ViewEditMode.EDIT_TITLE_WITH_KEYBOARD)
+        if (saveMode) {
+            saveCurrentMode(ViewEditMode.EDIT_TITLE_WITH_KEYBOARD)
         }
     }
 
     fun editContent() {
-        ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD.let { mode ->
-            viewEditMode.postValue(mode)
-            saveCurrentMode(mode)
-        }
+        viewEditMode.postValue(ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD)
+        saveCurrentMode(ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD)
     }
 
-    fun isInEditMode(): Boolean {
-        return viewEditMode.value != ViewEditMode.VIEW
+    fun toViewMode() {
+        viewEditMode.postValue(ViewEditMode.VIEW)
+        saveCurrentMode(ViewEditMode.VIEW)
+
+    }
+
+    fun toEditMode() {
+        viewEditMode.postValue(ViewEditMode.EDIT)
+        saveCurrentMode(ViewEditMode.EDIT)
     }
 
     private fun saveCurrentMode(mode: ViewEditMode) {
+        // Only remember last mode when opening existing notes
+        if (isNew()) {
+            return
+        }
+
         val context = App.getAppContext()
 
         AppPreferences.noteDetailsLastMode(
@@ -365,11 +354,5 @@ class NoteViewModel(
         } else {
             true
         }
-    }
-
-    enum class Selection {
-        NONE,
-        MAIN,
-        MOVE
     }
 }

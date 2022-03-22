@@ -5,9 +5,9 @@
     tools:ignore="AlwaysShowAction">
 
     <item
-        android:id="@+id/to_edit_mode"
-        android:title="@string/edit"
-        android:icon="?attr/ic_edit_24dp"
+        android:id="@+id/to_view_mode"
+        android:title="@string/view"
+        android:icon="?attr/ic_remove_red_eye_24dp"
         app:showAsAction="always" />
 
     <item

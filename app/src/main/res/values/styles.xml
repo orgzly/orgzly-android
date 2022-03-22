@@ -613,12 +613,16 @@
         <item name="backgroundTint">?attr/bottom_toolbar_bg_color</item>
     </style>
 
-    <style name="BottomAppBar.FabAlignEnd">
-        <item name="fabAlignmentMode">end</item>
-    </style>
-
     <style name="BottomAppBar.WithMenu">
         <item name="navigationIcon">?attr/ic_menu_24dp</item>
+    </style>
+
+    <style name="BottomAppBar.WithCancel">
+        <item name="navigationIcon">?attr/ic_close_24dp</item>
+    </style>
+
+    <style name="BottomAppBar.FabAlignEnd">
+        <item name="fabAlignmentMode">end</item>
     </style>
 
     <style name="BottomAppBar.FabAlignEnd.WithBack">
