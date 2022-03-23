@@ -15,6 +15,8 @@
         <!-- Avoid white screen appearing briefly. -->
         <item name="android:windowDisablePreview">true</item>
 
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
 
         <item name="actionOverflowButtonStyle">@style/OverFlow</item>
@@ -136,6 +138,8 @@
     </style>
 
     <style name="AppDarkTheme" parent="Theme.MaterialComponents.NoActionBar.Bridge">
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
 
         <item name="actionOverflowButtonStyle">@style/OverFlow</item>
@@ -265,7 +269,7 @@
 <!--        <item name="android:colorBackgroundFloating" tools:targetApi="23">@color/white</item>-->
         <item name="android:colorButtonNormal" tools:targetApi="21">@color/grey_100</item>
         <item name="android:itemBackground">?android:itemBackground</item>
-        <item name="android:statusBarColor" tools:targetApi="21">#e6757575</item>
+        <item name="android:statusBarColor" tools:targetApi="21">@color/light_theme_app_bar</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="top_toolbar_bg_color">@color/light_theme_app_bar</item>
         <item name="bottom_toolbar_bg_color">@color/light_theme_app_bar</item>
@@ -300,7 +304,7 @@
 <!--        <item name="android:colorBackgroundFloating" tools:targetApi="23">@color/dark_theme_app_bar</item>-->
 <!--        <item name="android:colorButtonNormal" tools:targetApi="21">@color/dark_theme_background</item>-->
         <item name="android:itemBackground">?android:itemBackground</item>
-        <item name="android:statusBarColor" tools:targetApi="21">@color/dark_theme_status_bar</item>
+        <item name="android:statusBarColor" tools:targetApi="21">@color/dark_theme_app_bar</item>
         <item name="android:windowBackground">@color/dark_theme_background</item>
         <item name="top_toolbar_bg_color">@color/dark_theme_app_bar</item>
         <item name="bottom_toolbar_bg_color">@color/dark_theme_app_bar</item>
