@@ -106,15 +106,14 @@ class BookPrefaceFragment : Fragment() {
                     R.id.delete -> {
                         save("")
                     }
+
+                    R.id.done -> {
+                        save(binding.fragmentBookPrefaceContent.text.toString())
+                    }
+
                 }
 
                 true
-            }
-        }
-
-        binding.fab.run {
-            setOnClickListener {
-                save(binding.fragmentBookPrefaceContent.text.toString())
             }
         }
     }

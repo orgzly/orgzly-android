@@ -5,8 +5,14 @@
     tools:ignore="AlwaysShowAction">
 
     <item
+        android:id="@+id/done"
+        android:title="@string/done"
+        android:icon="?attr/ic_done_24dp"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/delete"
         android:icon="?attr/ic_delete_24dp"
-        app:showAsAction="always"
+        app:showAsAction="never"
         android:title="@string/delete"/>
 </menu>

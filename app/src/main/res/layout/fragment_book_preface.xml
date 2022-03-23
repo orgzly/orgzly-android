@@ -41,12 +41,4 @@
         android:id="@+id/bottomAppBar"
         style="@style/BottomAppBar.FabAlignEnd.WithCancel" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="?attr/ic_done_24dp"
-        app:layout_anchor="@id/bottomAppBar"
-        app:backgroundTint="?attr/bottom_toolbar_bg_color" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
