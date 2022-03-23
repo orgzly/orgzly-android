@@ -271,6 +271,13 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             })
         }
 
+        // View mode on keyboard back press
+        listOf(binding.bodyEdit, binding.fragmentNoteTitle).forEach { editView ->
+            editView.setOnImeBackListener {
+                viewModel.toViewMode()
+            }
+        }
+
         if (activity != null && AppPreferences.isFontMonospaced(context)) {
             binding.bodyEdit.typeface = Typeface.MONOSPACE
             binding.bodyView.typeface = Typeface.MONOSPACE
