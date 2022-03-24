@@ -2,7 +2,6 @@ package com.orgzly.android.espresso;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.SystemClock;
 
 import androidx.test.core.app.ActivityScenario;
 
@@ -26,7 +25,6 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.longClick;
-import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerActions.close;
 import static androidx.test.espresso.contrib.DrawerActions.open;
@@ -111,7 +109,7 @@ public class SyncingTest extends OrgzlyTest {
 
         // Create note
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_title))
+        onView(withId(R.id.title))
                 .perform(replaceTextCloseKeyboard("new note created by test"));
         onView(withId(R.id.done)).perform(click()); // Note done
 
@@ -344,7 +342,7 @@ public class SyncingTest extends OrgzlyTest {
         onView(allOf(withText("booky"), isDisplayed())).check(matches(isDisplayed()));
         onBook(0).perform(click());
         onNoteInBook(2).perform(click());
-        onView(withId(R.id.fragment_note_container)).check(matches(isDisplayed()));
+        onView(withId(R.id.scroll_view)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -412,7 +410,7 @@ public class SyncingTest extends OrgzlyTest {
 
         /* Open note "ANTIVIVISECTIONISTS Note #10." and check title. */
         onNoteInBook(10).perform(click());
-        onView(withId(R.id.fragment_note_title)).check(matches(allOf(withText("ANTIVIVISECTIONISTS Note #10."), isDisplayed())));
+        onView(withId(R.id.title)).check(matches(allOf(withText("ANTIVIVISECTIONISTS Note #10."), isDisplayed())));
 
         settingsSetTodoKeywords("ANTIVIVISECTIONISTS");
 
@@ -432,7 +430,7 @@ public class SyncingTest extends OrgzlyTest {
 
         /* Open note "ANTIVIVISECTIONISTS Note #10." and check title. */
         onNoteInBook(10).perform(click());
-        onView(withId(R.id.fragment_note_title)).check(matches(allOf(withText("Note #10."), isDisplayed())));
+        onView(withId(R.id.title)).check(matches(allOf(withText("Note #10."), isDisplayed())));
     }
 
     @Test
@@ -712,7 +710,7 @@ public class SyncingTest extends OrgzlyTest {
 
         onBook(0).perform(click()); // Open notebook
         onNoteInBook(1).perform(click()); // Open note
-        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("New title"));
+        onView(withId(R.id.title)).perform(replaceTextCloseKeyboard("New title"));
         onView(withId(R.id.done)).perform(click()); // Note done
 
         pressBack(); // Back to the list of notebooks

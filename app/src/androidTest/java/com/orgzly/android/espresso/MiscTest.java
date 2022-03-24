@@ -18,7 +18,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.clickClickableSpan;
 import static com.orgzly.android.espresso.EspressoUtils.clickSetting;
-import static com.orgzly.android.espresso.EspressoUtils.contextualToolbarOverflowMenu;
 import static com.orgzly.android.espresso.EspressoUtils.isHighlighted;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onBook;
@@ -30,7 +29,6 @@ import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard
 import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static com.orgzly.android.espresso.EspressoUtils.settingsSetDoneKeywords;
 import static com.orgzly.android.espresso.EspressoUtils.settingsSetTodoKeywords;
-import static com.orgzly.android.espresso.EspressoUtils.toolbarItemCount;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.containsString;
@@ -226,10 +224,10 @@ public class MiscTest extends OrgzlyTest {
         onView(withId(R.id.fab)).perform(click());
 
         /* Change state to NOTE to avoid having 1 or more spaces before title after keyword in book fragment. */
-        onView(withId(R.id.fragment_note_state_button)).perform(click());
+        onView(withId(R.id.state_button)).perform(click());
         onView(withText(R.string.clear)).perform(click());
 
-        onView(withId(R.id.fragment_note_title))
+        onView(withId(R.id.title))
                 .perform(replaceTextCloseKeyboard("    Title with empty spaces all around   "));
         onView(withId(R.id.done)).perform(click()); // Note done
         onNoteInBook(4, R.id.item_head_title).check(matches(withText("Title with empty spaces all around")));
@@ -287,7 +285,7 @@ public class MiscTest extends OrgzlyTest {
         Calendar cal = new GregorianCalendar(2015, 0, 18, 4, 5);
         String s = DateFormat.getTimeFormat(context).format(cal.getTime());
 
-        onView(withId(R.id.fragment_note_scheduled_button)).perform(click());
+        onView(withId(R.id.scheduled_button)).perform(click());
         onView(withId(R.id.time_picker_button)).check(matches(withText(containsString(s))));
         onView(withId(R.id.time_used_checkbox)).perform(scrollTo(), click());
         onView(withId(R.id.time_picker_button)).check(matches(withText(containsString(s))));
@@ -375,29 +373,29 @@ public class MiscTest extends OrgzlyTest {
         onNoteInBook(1).perform(click());
 
         /* TO DO -> DONE */
-        onView(withId(R.id.fragment_note_state_button)).perform(click());
+        onView(withId(R.id.state_button)).perform(click());
         onView(withText("DONE")).perform(click());
 
-        onView(withId(R.id.fragment_note_closed_edit_text)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
+        onView(withId(R.id.closed_edit_text)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.scheduled_button)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
 
         /* DONE -> NOTE */
-        onView(withId(R.id.fragment_note_state_button)).perform(click());
+        onView(withId(R.id.state_button)).perform(click());
         onView(withText(R.string.clear)).perform(click());
-        onView(withId(R.id.fragment_note_closed_edit_text)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
+        onView(withId(R.id.closed_edit_text)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.scheduled_button)).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
 
         /* NOTE -> DONE */
-        onView(withId(R.id.fragment_note_state_button)).perform(click());
+        onView(withId(R.id.state_button)).perform(click());
         onView(withText("DONE")).perform(click());
-        onView(withId(R.id.fragment_note_closed_edit_text)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(userDateTime("<2015-01-30 Fri 04:05 +6d>"))));
+        onView(withId(R.id.closed_edit_text)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.scheduled_button)).check(matches(withText(userDateTime("<2015-01-30 Fri 04:05 +6d>"))));
 
         /* NOTE -> OLD */
-        onView(withId(R.id.fragment_note_state_button)).perform(click());
+        onView(withId(R.id.state_button)).perform(click());
         onView(withText("OLD")).perform(click());
-        onView(withId(R.id.fragment_note_closed_edit_text)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(userDateTime("<2015-02-05 Thu 04:05 +6d>"))));
+        onView(withId(R.id.closed_edit_text)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.scheduled_button)).check(matches(withText(userDateTime("<2015-02-05 Thu 04:05 +6d>"))));
     }
 
     @Test
@@ -451,7 +449,7 @@ public class MiscTest extends OrgzlyTest {
 
         // Note
         onView(withText("Note")).perform(click());
-        fragmentTest(activity, false, withId(R.id.fragment_note_container));
+        fragmentTest(activity, false, withId(R.id.scroll_view));
         pressBack();
         pressBack();
 
@@ -619,13 +617,13 @@ public class MiscTest extends OrgzlyTest {
         onNoteInBook(8, R.id.item_head_title)
                 .check(matches(withText(startsWith("ANTIVIVISECTIONISTS "))))
                 .perform(click());
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("ANTIVIVISECTIONISTS Note #8.")));
+        onView(withId(R.id.title)).check(matches(withText("ANTIVIVISECTIONISTS Note #8.")));
         settingsSetTodoKeywords("TODO ANTIVIVISECTIONISTS");
         /* Must go to books and back, or the click below will not work for some reason. */
         pressBack(); // Leave book
         onView(allOf(withText("book-name"), isDisplayed())).perform(click());
         onNoteInBook(8).perform(click());
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note #8.")));
+        onView(withId(R.id.title)).check(matches(withText("Note #8.")));
     }
 
     @Test
@@ -680,7 +678,7 @@ public class MiscTest extends OrgzlyTest {
         onBook(0).perform(click());
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
         onNoteInBook(1).perform(click());
-        onView(withId(R.id.fragment_note_container)).check(matches(isDisplayed()));
+        onView(withId(R.id.scroll_view)).check(matches(isDisplayed()));
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(allOf(withText("booky-one"), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));

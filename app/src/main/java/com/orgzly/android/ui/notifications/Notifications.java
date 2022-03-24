@@ -41,16 +41,16 @@ public class Notifications {
     public static void createNewNoteNotification(Context context) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, context);
 
-        PendingIntent resultPendingIntent = ShareActivity.createNewNoteIntent(context, null);
+        PendingIntent shareNotePendingIntent = ShareActivity.createNewNoteIntent(context, null);
 
         // Build notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.ONGOING)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.ic_logo_for_notification)
                 .setContentTitle(context.getString(R.string.new_note))
-                .setContentText(context.getString(R.string.tap_to_create_new_note))
                 .setColor(ContextCompat.getColor(context, R.color.notification))
-                .setContentIntent(resultPendingIntent);
+                .setContentText(context.getString(R.string.tap_to_create_new_note))
+                .setContentIntent(shareNotePendingIntent);
 
         builder.setPriority(
                 getNotificationPriority(

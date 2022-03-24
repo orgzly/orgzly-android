@@ -16,15 +16,12 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.contextualToolbarOverflowMenu;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onBook;
 import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
 import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.endsWith;
-
-import android.os.SystemClock;
 
 public class NewNoteTest extends OrgzlyTest {
     @Test
@@ -35,7 +32,7 @@ public class NewNoteTest extends OrgzlyTest {
         onBook(0).perform(click());
 
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_title))
+        onView(withId(R.id.title))
                 .perform(replaceTextCloseKeyboard("new note created by test"));
         onView(withId(R.id.done)).perform(click()); // Note done
 
@@ -53,7 +50,7 @@ public class NewNoteTest extends OrgzlyTest {
         onNoteInBook(2).perform(longClick());
         onActionItemClick(R.id.new_note, R.string.new_note);
         onView(withText(R.string.new_under)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("A"));
+        onView(withId(R.id.title)).perform(replaceTextCloseKeyboard("A"));
         onView(withId(R.id.done)).perform(click()); // Note done
         onNoteInBook(2, R.id.item_head_title).check(matches(withText("2")));
         onNoteInBook(3, R.id.item_head_title).check(matches(withText("3")));
@@ -72,7 +69,7 @@ public class NewNoteTest extends OrgzlyTest {
         onNoteInBook(2).perform(longClick());
         onActionItemClick(R.id.new_note, R.string.new_note);
         onView(withText(R.string.new_above)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("A"));
+        onView(withId(R.id.title)).perform(replaceTextCloseKeyboard("A"));
         onView(withId(R.id.done)).perform(click()); // Note done
         onNoteInBook(1, R.id.item_head_title).check(matches(withText("1")));
         onNoteInBook(2, R.id.item_head_title).check(matches(withText("A")));
@@ -96,7 +93,7 @@ public class NewNoteTest extends OrgzlyTest {
         onNoteInBook(2).perform(longClick());
         onActionItemClick(R.id.new_note, R.string.new_note);
         onView(withText(R.string.new_below)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("A"));
+        onView(withId(R.id.title)).perform(replaceTextCloseKeyboard("A"));
         onView(withId(R.id.done)).perform(click()); // Note done
         onNoteInBook(2, R.id.item_head_title).check(matches(withText("2")));
         onNoteInBook(3, R.id.item_head_title).check(matches(withText("3")));
@@ -123,16 +120,16 @@ public class NewNoteTest extends OrgzlyTest {
         onBook(0).perform(click());
 
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("A"));
+        onView(withId(R.id.title)).perform(replaceTextCloseKeyboard("A"));
         onView(withId(R.id.done)).perform(click()); // Note done
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("B"));
+        onView(withId(R.id.title)).perform(replaceTextCloseKeyboard("B"));
         onView(withId(R.id.done)).perform(click()); // Note done
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("C"));
+        onView(withId(R.id.title)).perform(replaceTextCloseKeyboard("C"));
         onView(withId(R.id.done)).perform(click()); // Note done
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("Parent 1"));
+        onView(withId(R.id.title)).perform(replaceTextCloseKeyboard("Parent 1"));
         onView(withId(R.id.done)).perform(click()); // Note done
 
         /* Move A B and C under Parent 1. */
@@ -148,13 +145,13 @@ public class NewNoteTest extends OrgzlyTest {
         }
 
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("Parent 2"));
+        onView(withId(R.id.title)).perform(replaceTextCloseKeyboard("Parent 2"));
         onView(withId(R.id.done)).perform(click()); // Note done
 
         onNoteInBook(1).perform(longClick());
         onActionItemClick(R.id.new_note, R.string.new_note);
         onView(withText(R.string.new_under)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("Note"));
+        onView(withId(R.id.title)).perform(replaceTextCloseKeyboard("Note"));
         onView(withId(R.id.done)).perform(click()); // Note done
 
         onNoteInBook(5, R.id.item_head_title).check(matches(withText(endsWith("Note"))));

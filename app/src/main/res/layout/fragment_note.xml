@@ -8,12 +8,12 @@
     android:layout_height="match_parent">
 
     <ViewFlipper
-        android:id="@+id/fragment_note_view_flipper"
+        android:id="@+id/view_flipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ScrollView
-            android:id="@+id/fragment_note_container"
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="@dimen/padding_bottom_for_fab"
@@ -24,7 +24,7 @@
 
             <!-- Entire note -->
             <LinearLayout
-                android:id="@+id/fragment_note_content"
+                android:id="@+id/note"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -52,7 +52,7 @@
 
                         <!-- Breadcrumbs -->
                         <FrameLayout
-                            android:id="@+id/fragment_note_breadcrumbs"
+                            android:id="@+id/breadcrumbs"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="4dp"
@@ -60,7 +60,7 @@
                             android:visibility="visible">
 
                             <TextView
-                                android:id="@+id/fragment_note_breadcrumbs_text"
+                                android:id="@+id/breadcrumbs_text"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center_vertical"
@@ -74,7 +74,7 @@
 
                         <!-- Selectable notebook -->
                         <TextView
-                            android:id="@+id/fragment_note_location_button"
+                            android:id="@+id/location_button"
                             style="@style/NoteFragmentListItemSpinnerButton"
                             android:layout_width="match_parent"
                             android:textSize="?attr/fragment_note_content_text_size"
@@ -83,7 +83,7 @@
 
                         <!-- Title -->
                         <com.orgzly.android.ui.views.EditTextWithMarkup
-                            android:id="@+id/fragment_note_title"
+                            android:id="@+id/title_edit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text|textCapSentences"
@@ -96,7 +96,7 @@
 
                         <com.orgzly.android.ui.views.TextViewWithMarkup
                             app:parse_checkboxes="false"
-                            android:id="@+id/fragment_note_title_view"
+                            android:id="@+id/title_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             style="@style/Widget.AppCompat.EditText"
@@ -112,7 +112,7 @@
 
                 <!-- Metadata header -->
                 <LinearLayout
-                    android:id="@+id/fragment_note_metadata_header"
+                    android:id="@+id/metadata_header"
                     style="@style/NoteFragmentFullWidthButton"
                     android:layout_marginTop="@dimen/space_between_content_areas">
 
@@ -135,7 +135,7 @@
                         android:text="@string/metadata"/>
 
                     <ImageView
-                        android:id="@+id/fragment_note_metadata_header_up_icon"
+                        android:id="@+id/metadata_header_up_icon"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:padding="12dp"
@@ -143,7 +143,7 @@
                         android:alpha="?attr/active_unfocused_icon_alpha"/>
 
                     <ImageView
-                        android:id="@+id/fragment_note_metadata_header_down_icon"
+                        android:id="@+id/metadata_header_down_icon"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:padding="12dp"
@@ -155,7 +155,7 @@
 
                 <!-- Metadata -->
                 <LinearLayout
-                    android:id="@+id/fragment_note_metadata"
+                    android:id="@+id/metadata"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -167,7 +167,7 @@
 
                     <!-- Tags. -->
                     <LinearLayout
-                        android:id="@+id/fragment_note_tags_container"
+                        android:id="@+id/tags_container"
                         style="@style/NoteFragmentListItem">
 
                         <ImageView
@@ -179,7 +179,7 @@
                             android:contentDescription="@string/tags"/>
 
                         <MultiAutoCompleteTextView
-                            android:id="@+id/fragment_note_tags"
+                            android:id="@+id/tags"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
@@ -192,14 +192,14 @@
                             android:textAppearance="?android:attr/textAppearanceSmall" />
 
                         <ImageButton
-                            android:id="@+id/fragment_note_tags_button"
+                            android:id="@+id/tags_button"
                             style="@style/NoteFragmentButton"
                             android:src="?attr/ic_more_horiz_24dp" />
                     </LinearLayout>
 
                     <!-- State -->
                     <LinearLayout
-                        android:id="@+id/fragment_note_state_container"
+                        android:id="@+id/state_container"
                         style="@style/NoteFragmentListItem">
 
                         <ImageView
@@ -208,20 +208,20 @@
                             android:src="?attr/ic_flag_24dp"
                             android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
-                            android:id="@+id/fragment_note_state_button"
+                            android:id="@+id/state_button"
                             style="@style/NoteFragmentListItemSpinnerButton"
                             android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
                             android:hint="@string/state"
                             tools:text="TODO"/>
                         <ImageButton
-                            android:id="@+id/fragment_note_state_remove"
+                            android:id="@+id/state_remove"
                             style="@style/NoteFragmentButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
                     <!-- Priority -->
                     <LinearLayout
-                        android:id="@+id/fragment_note_priority_container"
+                        android:id="@+id/priority_container"
                         style="@style/NoteFragmentListItem">
 
                         <ImageView
@@ -230,20 +230,20 @@
                             android:src="?attr/ic_star_border_24dp"
                             android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
-                            android:id="@+id/fragment_note_priority_button"
+                            android:id="@+id/priority_button"
                             style="@style/NoteFragmentListItemSpinnerButton"
                             android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
                             android:hint="@string/priority"
                             tools:text="Priority A"/>
                         <ImageButton
-                            android:id="@+id/fragment_note_priority_remove"
+                            android:id="@+id/priority_remove"
                             style="@style/NoteFragmentButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
                     <!-- Scheduled time -->
                     <LinearLayout
-                        android:id="@+id/fragment_note_scheduled_time_container"
+                        android:id="@+id/scheduled_time_container"
                         style="@style/NoteFragmentListItem">
 
                         <ImageView
@@ -252,19 +252,19 @@
                             android:src="?attr/ic_today_24dp"
                             android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
-                            android:id="@+id/fragment_note_scheduled_button"
+                            android:id="@+id/scheduled_button"
                             style="@style/NoteFragmentListItemSpinnerButton"
                             android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
                             android:hint="@string/schedule_button_hint"/>
                         <ImageButton
-                            android:id="@+id/fragment_note_scheduled_remove"
+                            android:id="@+id/scheduled_remove"
                             style="@style/NoteFragmentButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
                     <!-- Deadline time -->
                     <LinearLayout
-                        android:id="@+id/fragment_note_deadline_time_container"
+                        android:id="@+id/deadline_time_container"
                         style="@style/NoteFragmentListItem">
 
                         <ImageView
@@ -273,20 +273,20 @@
                             android:src="?attr/ic_alarm_24dp"
                             android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
-                            android:id="@+id/fragment_note_deadline_button"
+                            android:id="@+id/deadline_button"
                             style="@style/NoteFragmentListItemSpinnerButton"
                             android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
                             android:hint="@string/deadline_button_hint"
                             tools:text="@string/note_deadline_sample"/>
                         <ImageButton
-                            android:id="@+id/fragment_note_deadline_remove"
+                            android:id="@+id/deadline_remove"
                             style="@style/NoteFragmentButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
                     <!-- Closed time -->
                     <LinearLayout
-                        android:id="@+id/fragment_note_closed_time_container"
+                        android:id="@+id/closed_time_container"
                         style="@style/NoteFragmentListItem"
                         android:visibility="gone">
 
@@ -296,31 +296,31 @@
                             android:src="?attr/ic_outline_check_circle_24dp"
                             android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
-                            android:id="@+id/fragment_note_closed_edit_text"
+                            android:id="@+id/closed_edit_text"
                             style="@style/NoteFragmentListItemSpinnerButton"
                             android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
                             android:hint="@string/closed_button_hint"/>
                         <ImageButton
-                            android:id="@+id/fragment_note_closed_remove"
+                            android:id="@+id/closed_remove"
                             style="@style/NoteFragmentButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
                     <!-- List of properties -->
                     <LinearLayout
-                        android:id="@+id/fragment_note_properties_container"
+                        android:id="@+id/properties_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <include layout="@layout/fragment_note_property"/>
+                        <include layout="@layout/property"/>
                     </LinearLayout>
 
                 </LinearLayout>
 
                 <!-- Content header -->
                 <LinearLayout
-                    android:id="@+id/fragment_note_content_header"
+                    android:id="@+id/content_header"
                     style="@style/NoteFragmentFullWidthButton"
                     android:visibility="gone">
 
@@ -335,7 +335,7 @@
                         android:text="@string/content"/>
 
                     <ImageView
-                        android:id="@+id/fragment_note_content_header_up_icon"
+                        android:id="@+id/content_header_up_icon"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:padding="12dp"
@@ -343,7 +343,7 @@
                         android:alpha="?attr/active_unfocused_icon_alpha"/>
 
                     <ImageView
-                        android:id="@+id/fragment_note_content_header_down_icon"
+                        android:id="@+id/content_header_down_icon"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:padding="12dp"
@@ -354,13 +354,13 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/fragment_note_content_views"
+                    android:id="@+id/content_views"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <com.orgzly.android.ui.views.EditTextWithMarkup
-                        android:id="@+id/body_edit"
+                        android:id="@+id/content_edit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/screen_edge_minus_4dp"

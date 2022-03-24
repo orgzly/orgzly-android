@@ -21,7 +21,6 @@ import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
-import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerActions.open;
 import static androidx.test.espresso.contrib.PickerActions.setDate;
@@ -232,7 +231,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(withId(R.id.fragment_query_search_view_flipper)).check(matches(isDisplayed()));
         onNotesInSearch().check(matches(recyclerViewItemCount(29)));
         onNoteInSearch(27).perform(click());
-        onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.view_flipper)).check(matches(isDisplayed()));
         onView(allOf(withText("Note #28."), isDisplayed())).check(matches(isDisplayed()));
     }
 

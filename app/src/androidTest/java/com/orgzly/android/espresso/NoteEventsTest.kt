@@ -292,10 +292,10 @@ class NoteEventsTest : OrgzlyTest() {
 
         onBook(0).perform(click())
         onNoteInBook(1).perform(click())
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note A-01 <2000-01-10 +1d>")))
-        onView(withId(R.id.fragment_note_state_button)).perform(click())
+        onView(withId(R.id.title)).check(matches(withText("Note A-01 <2000-01-10 +1d>")))
+        onView(withId(R.id.state_button)).perform(click())
         onView(withText("DONE")).perform(click())
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note A-01 <2000-01-11 Tue +1d>")))
+        onView(withId(R.id.title)).check(matches(withText("Note A-01 <2000-01-11 Tue +1d>")))
     }
 
     @Test

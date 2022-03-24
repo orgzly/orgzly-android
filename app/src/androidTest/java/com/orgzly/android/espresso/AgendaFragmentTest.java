@@ -19,7 +19,6 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
-import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -229,8 +228,8 @@ public class AgendaFragmentTest extends OrgzlyTest {
 
         onItemInAgenda(1).perform(click());
 
-        onView(withId(R.id.fragment_note_container)).check(matches(isDisplayed()));
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note A")));
+        onView(withId(R.id.scroll_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.title)).check(matches(withText("Note A")));
     }
 
     @Test

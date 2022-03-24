@@ -103,7 +103,7 @@ public class CreatedAtPropertyTest extends OrgzlyTest {
         enableCreatedAt();
 
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_title))
+        onView(withId(R.id.title))
                 .perform(replaceTextCloseKeyboard("new note created by test"));
         onView(withId(R.id.done)).perform(click()); // Note done
 

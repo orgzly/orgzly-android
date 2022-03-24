@@ -71,7 +71,7 @@ class InternalLinksTest : OrgzlyTest() {
     fun testDifferentCaseUuidInternalLink() {
         onNoteInBook(1, R.id.item_head_content)
                 .perform(clickClickableSpan("id:bdce923b-C3CD-41ED-B58E-8BDF8BABA54F"))
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-2]")))
+        onView(withId(R.id.title_edit)).check(matches(withText("Note [b-2]")))
     }
 
     @Test
@@ -86,14 +86,14 @@ class InternalLinksTest : OrgzlyTest() {
     fun testDifferentCaseCustomIdInternalLink() {
         onNoteInBook(2, R.id.item_head_content)
                 .perform(clickClickableSpan("#Different case custom id"))
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-1]")))
+        onView(withId(R.id.title)).check(matches(withText("Note [b-1]")))
     }
 
     @Test
     fun testCustomIdLink() {
         onNoteInBook(3, R.id.item_head_content)
                 .perform(clickClickableSpan("#Link to note in a different book"))
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-3]")))
+        onView(withId(R.id.title)).check(matches(withText("Note [b-3]")))
     }
 
     @Test

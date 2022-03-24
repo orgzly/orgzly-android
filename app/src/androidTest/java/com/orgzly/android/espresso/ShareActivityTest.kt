@@ -64,14 +64,14 @@ class ShareActivityTest : OrgzlyTest() {
             activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
 
-        onView(withId(R.id.fragment_note_location_button))
+        onView(withId(R.id.location_button))
                 .check(matches(withText(context.getString(R.string.default_share_notebook))))
 
         scenario.onActivity { activity ->
             activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
 
-        onView(withId(R.id.fragment_note_location_button))
+        onView(withId(R.id.location_button))
                 .check(matches(withText(context.getString(R.string.default_share_notebook))))
     }
 
@@ -90,15 +90,15 @@ class ShareActivityTest : OrgzlyTest() {
             activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
 
-        onView(withId(R.id.fragment_note_location_button)).perform(scrollTo(), click())
+        onView(withId(R.id.location_button)).perform(scrollTo(), click())
         onView(withText("book-two")).perform(click())
-        onView(withId(R.id.fragment_note_location_button)).check(matches(withText("book-two")))
+        onView(withId(R.id.location_button)).check(matches(withText("book-two")))
 
         scenario.onActivity { activity ->
             activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
 
-        onView(withId(R.id.fragment_note_location_button)).check(matches(withText("book-two")))
+        onView(withId(R.id.location_button)).check(matches(withText("book-two")))
     }
 
     @Test
@@ -108,7 +108,7 @@ class ShareActivityTest : OrgzlyTest() {
                 type = "text/plain",
                 extraText = "This is some shared text")
 
-        onView(withId(R.id.fragment_note_location_button))
+        onView(withId(R.id.location_button))
                 .check(matches(withText(context.getString(R.string.default_share_notebook))))
     }
 
@@ -156,8 +156,8 @@ class ShareActivityTest : OrgzlyTest() {
                 type = "image/png",
                 extraStreamUri = "content://uri")
 
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("content://uri")))
-        onView(withId(R.id.body_edit)).check(matches(withText("Cannot find image using this URI.")))
+        onView(withId(R.id.title)).check(matches(withText("content://uri")))
+        onView(withId(R.id.content_edit)).check(matches(withText("Cannot find image using this URI.")))
 
         onView(withId(R.id.done)).perform(click()); // Note done
     }
@@ -166,7 +166,7 @@ class ShareActivityTest : OrgzlyTest() {
     fun testNoMatchingType() {
         startActivityWithIntent(action = Intent.ACTION_SEND, type = "application/octet-stream")
 
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("")))
+        onView(withId(R.id.title)).check(matches(withText("")))
         onSnackbar().check(matches(withText(context.getString(R.string.share_type_not_supported, "application/octet-stream"))))
     }
 
@@ -174,7 +174,7 @@ class ShareActivityTest : OrgzlyTest() {
     fun testNoActionSend() {
         startActivityWithIntent()
 
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("")))
+        onView(withId(R.id.title)).check(matches(withText("")))
     }
 
     @Test
@@ -188,16 +188,16 @@ class ShareActivityTest : OrgzlyTest() {
             activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
 
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText("")))
-        onView(withId(R.id.fragment_note_scheduled_button)).perform(click())
+        onView(withId(R.id.scheduled_button)).check(matches(withText("")))
+        onView(withId(R.id.scheduled_button)).perform(click())
         onView(withText(R.string.set)).perform(click())
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(startsWith(defaultDialogUserDate()))))
+        onView(withId(R.id.scheduled_button)).check(matches(withText(startsWith(defaultDialogUserDate()))))
 
         scenario.onActivity { activity ->
             activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
 
-        onView(withId(R.id.fragment_note_scheduled_button)).check(matches(withText(startsWith(defaultDialogUserDate()))))
+        onView(withId(R.id.scheduled_button)).check(matches(withText(startsWith(defaultDialogUserDate()))))
     }
 
     @Test
@@ -232,6 +232,6 @@ class ShareActivityTest : OrgzlyTest() {
                 extraText = "This is some shared text",
                 queryString = "b.foo")
 
-        onView(withId(R.id.fragment_note_location_button)).check(matches(withText("foo")))
+        onView(withId(R.id.location_button)).check(matches(withText("foo")))
     }
 }

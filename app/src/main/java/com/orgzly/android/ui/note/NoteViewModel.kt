@@ -20,14 +20,36 @@ import com.orgzly.org.OrgProperties
 import com.orgzly.org.datetime.OrgRange
 import com.orgzly.org.parser.OrgParserWriter
 
+
+
+/** Could be 0 if new note is being created. */
+//var noteId: Long = 0
+
+/** Relative location, used for new notes. */
+//private var place: Place? = null
+
+/** Initial title, used for when sharing. */
+//private var initialTitle: String? = null
+
+/** Initial content, used for when sharing. */
+//private var initialContent: String? = null
+
+data class NoteInitialData(
+    val bookId: Long,
+    val noteId: Long,
+    val place: Place? = null,
+    val title: String? = null,
+    val content: String? = null)
+
 class NoteViewModel(
-        private val dataRepository: DataRepository,
-        var bookId: Long,
-        private var noteId: Long,
-        private val place: Place?,
-        private val title: String?,
-        private val content: String?
-) : CommonViewModel() {
+    private val dataRepository: DataRepository,
+    private val initialData: NoteInitialData) : CommonViewModel() {
+
+    var bookId = initialData.bookId
+    var noteId = initialData.noteId
+    private val place = initialData.place
+    private val title = initialData.title
+    private val content = initialData.content
 
     enum class ViewEditMode {
         VIEW,
@@ -130,7 +152,7 @@ class NoteViewModel(
     private fun startMode(): ViewEditMode {
         // Always start new notes in edit mode
         if (isNew()) {
-            return ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD
+            return ViewEditMode.EDIT_TITLE_WITH_KEYBOARD
         }
 
         return when (AppPreferences.noteDetailsOpeningMode(App.getAppContext())) {
@@ -146,14 +168,14 @@ class NoteViewModel(
         }
     }
 
-    fun editTitle(saveMode: Boolean = true) {
+    fun toEditTitleMode(saveMode: Boolean = true) {
         viewEditMode.postValue(ViewEditMode.EDIT_TITLE_WITH_KEYBOARD)
         if (saveMode) {
             saveCurrentMode(ViewEditMode.EDIT_TITLE_WITH_KEYBOARD)
         }
     }
 
-    fun editContent() {
+    fun toEditContentMode() {
         viewEditMode.postValue(ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD)
         saveCurrentMode(ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD)
     }
@@ -294,6 +316,10 @@ class NoteViewModel(
 
     fun isNew(): Boolean {
         return place != null
+    }
+
+    fun hasInitialData(): Boolean {
+        return !TextUtils.isEmpty(initialData.title) || !TextUtils.isEmpty(initialData.content)
     }
 
     fun setBook(b: BookView) {

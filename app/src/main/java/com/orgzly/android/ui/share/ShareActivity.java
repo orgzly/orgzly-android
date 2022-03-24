@@ -244,7 +244,7 @@ public class ShareActivity extends CommonActivity
     public static PendingIntent createNewNoteIntent(Context context, SavedSearch savedSearch) {
         Intent resultIntent = createNewNoteInNotebookIntent(context, null);
 
-        if (savedSearch != null && savedSearch.getQuery() != null) {
+        if (savedSearch != null) {
             resultIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, savedSearch.getQuery());
         }
 

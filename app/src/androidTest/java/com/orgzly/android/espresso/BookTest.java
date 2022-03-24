@@ -1,7 +1,6 @@
 package com.orgzly.android.espresso;
 
 import android.content.pm.ActivityInfo;
-import android.os.SystemClock;
 import android.widget.DatePicker;
 
 import androidx.test.core.app.ActivityScenario;
@@ -121,7 +120,7 @@ public class BookTest extends OrgzlyTest {
     @Test
     public void testOpensNoteFromBook() {
         onNoteInBook(2).perform(click());
-        onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.view_flipper)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -214,7 +213,7 @@ public class BookTest extends OrgzlyTest {
         onView(allOf(withText("book-created-from-scratch"), isDisplayed())).perform(click());
 
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_container)).check(matches(isDisplayed()));
+        onView(withId(R.id.scroll_view)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -372,7 +371,7 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(2).perform(longClick());
         onActionItemClick(R.id.new_note, R.string.new_note);
         onView(withText(R.string.new_under)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("Created"));
+        onView(withId(R.id.title)).perform(replaceTextCloseKeyboard("Created"));
         onView(withId(R.id.done)).perform(click()); // Note done
 
         /* New note should not be visible. */
@@ -391,12 +390,12 @@ public class BookTest extends OrgzlyTest {
 
         // Create a new note
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("Title"));
+        onView(withId(R.id.title)).perform(replaceTextCloseKeyboard("Title"));
         onView(withId(R.id.done)).perform(click()); // Note done
 
         // Enter note
         onNoteInBook(1).perform(click());
-        onView(withId(R.id.fragment_note_container)).perform(swipeUp()); // For small screens
+        onView(withId(R.id.scroll_view)).perform(swipeUp()); // For small screens
 
         // Check properties
         onView(allOf(withId(R.id.name), withText(R.string.created_property_name))).check(matches(isDisplayed()));
@@ -420,7 +419,7 @@ public class BookTest extends OrgzlyTest {
 
         // Return to note
         pressBack();
-        onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
+        onView(withId(R.id.view_flipper)).check(matches(isDisplayed()));
         onView(withText(R.string.note_does_not_exist_anymore)).check(matches(isDisplayed()));
         onView(withId(R.id.done)).check(doesNotExist());
         onView(withId(R.id.to_edit_mode)).check(doesNotExist());
@@ -438,12 +437,12 @@ public class BookTest extends OrgzlyTest {
     @Test
     public void testSetDeadlineTimeForNewNote() {
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.fragment_note_deadline_button)).perform(closeSoftKeyboardWithDelay(), scrollTo(), click());
+        onView(withId(R.id.deadline_button)).perform(closeSoftKeyboardWithDelay(), scrollTo(), click());
         onView(withId(R.id.date_picker_button)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
         onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
         onView(withText(R.string.set)).perform(click());
-        onView(withId(R.id.fragment_note_deadline_button)).check(matches(withText(userDateTime("<2014-04-01 Tue>"))));
+        onView(withId(R.id.deadline_button)).check(matches(withText(userDateTime("<2014-04-01 Tue>"))));
     }
 
     @Test
