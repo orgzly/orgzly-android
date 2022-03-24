@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.Note
@@ -18,7 +17,6 @@ import com.orgzly.android.ui.Selection
 import com.orgzly.android.ui.notes.NoteItemViewBinder
 import com.orgzly.android.ui.notes.NoteItemViewHolder
 import com.orgzly.android.ui.notes.quickbar.QuickBars
-import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.ItemHeadBookPrefaceBinding
 import com.orgzly.databinding.ItemHeadBinding
 
@@ -113,7 +111,7 @@ class BookAdapter(
                     }
 
                     currentPreface?.let {
-                        holder.binding.fragmentBookHeaderText.setRawText(it)
+                        holder.binding.fragmentBookHeaderText.setSourceText(it)
                     }
 
                     holder.binding.fragmentBookHeaderText.visibility = View.VISIBLE

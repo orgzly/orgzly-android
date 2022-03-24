@@ -1,6 +1,7 @@
 package com.orgzly.android.espresso;
 
 import android.content.pm.ActivityInfo;
+import android.os.SystemClock;
 import android.widget.DatePicker;
 
 import androidx.test.core.app.ActivityScenario;
@@ -197,7 +198,8 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(40).check(matches(isDisplayed())); // Scroll to note
         onView(withText("Note #40.")).check(matches(isDisplayed()));
         onView(withText("Note #40.")).perform(click());
-        pressBack();
+        pressBack(); // Close keyboard
+        pressBack(); // Leave note
         onView(withText("Note #40.")).check(matches(isDisplayed()));
     }
 
@@ -371,7 +373,7 @@ public class BookTest extends OrgzlyTest {
         onActionItemClick(R.id.new_note, R.string.new_note);
         onView(withText(R.string.new_under)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("Created"));
-        onView(withId(R.id.fab)).perform(click()); // Note done
+        onView(withId(R.id.done)).perform(click()); // Note done
 
         /* New note should not be visible. */
         onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
@@ -390,7 +392,7 @@ public class BookTest extends OrgzlyTest {
         // Create a new note
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("Title"));
-        onView(withId(R.id.fab)).perform(click()); // Note done
+        onView(withId(R.id.done)).perform(click()); // Note done
 
         // Enter note
         onNoteInBook(1).perform(click());
@@ -421,8 +423,8 @@ public class BookTest extends OrgzlyTest {
         onView(withId(R.id.fragment_note_view_flipper)).check(matches(isDisplayed()));
         onView(withText(R.string.note_does_not_exist_anymore)).check(matches(isDisplayed()));
         onView(withId(R.id.done)).check(doesNotExist());
-        onView(withId(R.id.note_view)).check(doesNotExist());
-        onView(withId(R.id.note_edit)).check(doesNotExist());
+        onView(withId(R.id.to_edit_mode)).check(doesNotExist());
+        onView(withId(R.id.to_view_mode)).check(doesNotExist());
 
         // Rotate
         scenario.onActivity(activity -> {
@@ -430,8 +432,7 @@ public class BookTest extends OrgzlyTest {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         });
 
-        // Leave the note
-        pressBack();
+        pressBack(); // Leave note
     }
 
     @Test

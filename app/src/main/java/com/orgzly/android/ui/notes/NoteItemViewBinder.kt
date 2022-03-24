@@ -115,15 +115,15 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
                 holder.binding.itemHeadContent.typeface = Typeface.MONOSPACE
             }
 
-            holder.binding.itemHeadContent.setRawText(note.content)
+            holder.binding.itemHeadContent.setSourceText(note.content)
 
             /* If content changes (for example by toggling the checkbox), update the note. */
             holder.binding.itemHeadContent.onUserTextChangeListener = Runnable {
-                if (holder.binding.itemHeadContent.getRawText() != null) {
+                if (holder.binding.itemHeadContent.getSourceText() != null) {
                     val useCase = NoteUpdateContent(
                             note.position.bookId,
                             note.id,
-                            holder.binding.itemHeadContent.getRawText()?.toString())
+                            holder.binding.itemHeadContent.getSourceText()?.toString())
 
                     App.EXECUTORS.diskIO().execute {
                         UseCaseRunner.run(useCase)

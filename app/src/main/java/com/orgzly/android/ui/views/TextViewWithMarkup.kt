@@ -40,7 +40,7 @@ class TextViewWithMarkup : TextViewFixed {
 
     var onUserTextChangeListener: Runnable? = null
 
-    private var rawText: CharSequence? = null
+    private var sourceText: CharSequence? = null
 
     private var parseCheckboxes = true
 
@@ -52,8 +52,8 @@ class TextViewWithMarkup : TextViewFixed {
         }
     }
 
-    fun setRawText(text: CharSequence?) {
-        rawText = text
+    fun setSourceText(text: CharSequence?) {
+        sourceText = text
 
         if (text != null) {
             setText(OrgFormatter.parse(text, context, true, parseCheckboxes), BufferType.SPANNABLE)
@@ -62,8 +62,8 @@ class TextViewWithMarkup : TextViewFixed {
         }
     }
 
-    fun getRawText() : CharSequence? {
-        return rawText
+    fun getSourceText() : CharSequence? {
+        return sourceText
     }
 
     // TODO: Consider getting MainActivity's *ViewModel* here instead
@@ -126,9 +126,7 @@ class TextViewWithMarkup : TextViewFixed {
         builder.removeSpan(checkboxSpan)
         builder.replace(checkboxStart, checkboxEnd, replacement)
 
-        var newRawText = rawText as CharSequence
-        newRawText = newRawText.replaceRange(checkboxSpan.rawStart, checkboxSpan.rawEnd, replacement)
-        setRawText(newRawText)
+        setSourceText(sourceText?.replaceRange(checkboxSpan.rawStart, checkboxSpan.rawEnd, replacement))
 
         onUserTextChangeListener?.run()
     }

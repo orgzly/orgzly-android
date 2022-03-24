@@ -50,7 +50,7 @@ class BookPrefaceTest : OrgzlyTest() {
     fun testUpdatingBookPreface() {
         onPreface().perform(click())
         onView(withId(R.id.fragment_book_preface_content)).perform(*replaceTextCloseKeyboard("New content"))
-        onView(withId(R.id.fab)).perform(click()) // Preface done
+        onView(withId(R.id.done)).perform(click()) // Preface done
         onPreface().perform(click())
         onView(withId(R.id.fragment_book_preface_content)).check(matches(withText("New content")))
     }
@@ -62,7 +62,7 @@ class BookPrefaceTest : OrgzlyTest() {
 
         // Open preface and delete it
         onPreface().perform(click())
-        onView(withId(R.id.delete)).perform(click())
+        onActionItemClick(R.id.delete, R.string.delete)
 
         // Preface is not displayed anymore
         onPreface().check(matches(not(isDisplayed())))

@@ -113,7 +113,7 @@ public class SyncingTest extends OrgzlyTest {
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.fragment_note_title))
                 .perform(replaceTextCloseKeyboard("new note created by test"));
-        onView(withId(R.id.fab)).perform(click()); // Note done
+        onView(withId(R.id.done)).perform(click()); // Note done
 
         // Check it is synced
         onView(withId(R.id.drawer_layout)).perform(open());
@@ -137,7 +137,7 @@ public class SyncingTest extends OrgzlyTest {
         onActionItemClick(R.id.books_options_menu_book_preface, R.string.edit_book_preface);
         onView(withId(R.id.fragment_book_preface_content))
                 .perform(replaceTextCloseKeyboard("Modified preface"));
-        onView(withId(R.id.fab)).perform(click()); // Preface done
+        onView(withId(R.id.done)).perform(click()); // Preface done
         pressBack();
 
         onBook(0, R.id.item_book_sync_needed_icon).check(matches(isDisplayed()));
@@ -713,7 +713,7 @@ public class SyncingTest extends OrgzlyTest {
         onBook(0).perform(click()); // Open notebook
         onNoteInBook(1).perform(click()); // Open note
         onView(withId(R.id.fragment_note_title)).perform(replaceTextCloseKeyboard("New title"));
-        onView(withId(R.id.fab)).perform(click()); // Note done
+        onView(withId(R.id.done)).perform(click()); // Note done
 
         pressBack(); // Back to the list of notebooks
 
@@ -763,7 +763,7 @@ public class SyncingTest extends OrgzlyTest {
         Intent intent = new Intent(context, SyncService.class);
         intent.setAction(AppIntent.ACTION_SYNC_START);
         context.startService(intent);
-        SystemClock.sleep(1000);
+        // SystemClock.sleep(1000);
 
         onNotesInBook().check(matches(recyclerViewItemCount(2)));
         onView(withId(R.id.bottomAppBarTitle)).check(matches(not(isDisplayed())));

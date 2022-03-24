@@ -231,7 +231,7 @@ public class MiscTest extends OrgzlyTest {
 
         onView(withId(R.id.fragment_note_title))
                 .perform(replaceTextCloseKeyboard("    Title with empty spaces all around   "));
-        onView(withId(R.id.fab)).perform(click()); // Note done
+        onView(withId(R.id.done)).perform(click()); // Note done
         onNoteInBook(4, R.id.item_head_title).check(matches(withText("Title with empty spaces all around")));
     }
 
@@ -443,7 +443,7 @@ public class MiscTest extends OrgzlyTest {
         scenario.onActivity(it -> activity = it);
 
         // Books
-        fragmentTest(activity, true, withId(R.id.fragment_books_view_flipper));
+        // fragmentTest(activity, true, withId(R.id.fragment_books_view_flipper));
 
         // Book
         onBook(0).perform(click());
@@ -452,6 +452,7 @@ public class MiscTest extends OrgzlyTest {
         // Note
         onView(withText("Note")).perform(click());
         fragmentTest(activity, false, withId(R.id.fragment_note_container));
+        pressBack();
         pressBack();
 
         // Preface
@@ -510,6 +511,7 @@ public class MiscTest extends OrgzlyTest {
 
     private void fragmentTest(Activity activity, boolean hasSearchMenuItem, Matcher<View> matcher) {
         onView(matcher).check(matches(isDisplayed()));
+
         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         SystemClock.sleep(500);
         onView(matcher).check(matches(isDisplayed()));
@@ -568,7 +570,7 @@ public class MiscTest extends OrgzlyTest {
         onActionItemClick(R.id.books_options_menu_book_preface, R.string.edit_book_preface);
         onView(withId(R.id.fragment_book_preface_content))
                 .perform(replaceTextCloseKeyboard("#+TITLE: Notebook Title"));
-        onView(withId(R.id.fab)).perform(click()); // Preface done
+        onView(withId(R.id.done)).perform(click()); // Preface done
         pressBack();
 
         onBook(0, R.id.item_book_title).check(matches(withText("Notebook Title")));
@@ -585,7 +587,7 @@ public class MiscTest extends OrgzlyTest {
         onBook(0).perform(click());
         onPreface().perform(click());
         onView(withId(R.id.fragment_book_preface_content)).perform(replaceTextCloseKeyboard("#+TTL: Notebook Title"));
-        onView(withId(R.id.fab)).perform(click()); // Preface done
+        onView(withId(R.id.done)).perform(click()); // Preface done
         onNoteInBook(0, R.id.fragment_book_header_text)
                 .check(matches(withText(containsString("#+TTL: Notebook Title"))));
         pressBack();

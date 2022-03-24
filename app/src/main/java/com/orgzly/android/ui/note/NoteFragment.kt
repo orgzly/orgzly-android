@@ -10,10 +10,7 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
@@ -258,7 +255,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
             override fun afterTextChanged(s: Editable) {
                 // Update bodyEdit text when checkboxes are clicked
-                val text = binding.bodyView.getRawText()
+                val text = binding.bodyView.getSourceText()
                 binding.bodyEdit.setText(text)
             }
         })
@@ -324,7 +321,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             })
 
             setNavigationOnClickListener {
-                userCancel()
+                sharedMainActivityViewModel.openDrawer()
             }
 
             // TODO: Move keep_screen_on to the fun, rename all is to be the same for this item
@@ -333,10 +330,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 menu,
                 menu.findItem(R.id.keep_screen_on))
 
-            if (viewModel.notePayload == null) { // Displaying non-existent note.
-                menu.removeItem(R.id.done)
-                menu.removeItem(R.id.metadata)
-                menu.removeItem(R.id.delete)
+            if (viewModel.notePayload == null) {
+                removeMenuItemsForNoData(menu)
 
             } else {
                 when (AppPreferences.noteMetadataVisibility(context)) {
@@ -379,8 +374,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 userCancel()
             }
 
-            if (viewModel.notePayload == null) { // Displaying non-existent note.
-                menu.removeItem(R.id.done)
+            if (viewModel.notePayload == null) {
+                removeMenuItemsForNoData(menu)
             }
 
             setOnMenuItemClickListener { menuItem ->
@@ -389,6 +384,15 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         }
 
         // binding.fab.hide()
+    }
+
+    // Displaying a non-existent note, remove some menu items
+    private fun removeMenuItemsForNoData(menu: Menu) {
+        menu.removeItem(R.id.to_edit_mode)
+        menu.removeItem(R.id.to_view_mode)
+        menu.removeItem(R.id.done)
+        menu.removeItem(R.id.metadata)
+        menu.removeItem(R.id.delete)
     }
 
     private fun handleActionItemClick(menuItem: MenuItem): Boolean {
@@ -567,12 +571,12 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         ActivityUtils.closeSoftKeyboard(activity)
 
         binding.fragmentNoteTitle.visibility = View.GONE
-        binding.fragmentNoteTitleView.setRawText(binding.fragmentNoteTitle.text.toString())
+        binding.fragmentNoteTitleView.setSourceText(binding.fragmentNoteTitle.text.toString())
         binding.fragmentNoteTitleView.visibility = View.VISIBLE
 
         binding.bodyEdit.visibility = View.GONE
 
-        binding.bodyView.setRawText(binding.bodyEdit.text.toString())
+        binding.bodyView.setSourceText(binding.bodyEdit.text.toString())
 
         ImageLoader.loadImages(binding.bodyView)
 
@@ -594,7 +598,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         // Title
         binding.fragmentNoteTitle.setText(payload.title)
-        binding.fragmentNoteTitleView.setRawText(payload.title)
+        binding.fragmentNoteTitleView.setSourceText(payload.title)
 
         // Tags
         if (!payload.tags.isEmpty()) {
@@ -619,7 +623,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         binding.bodyEdit.setText(payload.content)
 
-        binding.bodyView.setRawText(payload.content ?: "")
+        binding.bodyView.setSourceText(payload.content ?: "")
 
         ImageLoader.loadImages(binding.bodyView)
     }
@@ -761,6 +765,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                     binding.fragmentNoteViewFlipper.displayedChild = 0
                 } else {
                     binding.fragmentNoteViewFlipper.displayedChild = 1
+                    removeMenuItemsForNoData(binding.bottomAppBar.menu)
                 }
             }
 
@@ -772,9 +777,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             updateViewsFromPayload()
 
             setMetadataViewsVisibility()
-
-            // Refresh action bar items (hide or display, depending on if book is loaded
-            // viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
         })
 
         viewModel.loadData()
