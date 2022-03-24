@@ -7,6 +7,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import android.view.WindowManager
 import android.widget.EditText
 import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
@@ -80,9 +81,7 @@ class SimpleOneLinerDialog : DialogFragment() {
         }
 
         // Open keyboard when dialog is displayed
-        dialog.setOnShowListener {
-            openSoftKeyboard(activity, input)
-        }
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
         return dialog
     }
