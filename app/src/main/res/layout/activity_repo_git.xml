@@ -195,9 +195,8 @@
         style="@style/BottomAppBar.FabAlignEnd.WithCancel">
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+            android:id="@+id/bottomAppBarTitle"
+            style="@style/BottomAppBarTitle"
             android:text="@string/git" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
