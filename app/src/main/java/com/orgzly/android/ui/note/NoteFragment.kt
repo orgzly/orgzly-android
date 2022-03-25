@@ -279,6 +279,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         binding.contentHeader.setOnClickListener {
             isNoteContentFolded().not().let { isFolded ->
+                // Close keyboard if content has a focus and it's being folded
                 if (isFolded && binding.contentEdit.hasFocus()) {
                     ActivityUtils.closeSoftKeyboard(activity)
                 }
@@ -431,6 +432,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         binding.contentViews.visibility = visibleOrGone(!isFolded)
         binding.contentHeaderUpIcon.visibility = visibleOrGone(!isFolded)
         binding.contentHeaderDownIcon.visibility = visibleOrGone(isFolded)
+        // binding.contentHeaderText.visibility = if (isFolded) View.VISIBLE else View.INVISIBLE
     }
 
 
@@ -438,6 +440,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         binding.metadata.visibility = visibleOrGone(!isFolded)
         binding.metadataHeaderUpIcon.visibility = visibleOrGone(!isFolded)
         binding.metadataHeaderDownIcon.visibility = visibleOrGone(isFolded)
+        // binding.metadataHeaderText.visibility = if (isFolded) View.VISIBLE else View.INVISIBLE
     }
 
     private fun visibleOrGone(visible: Boolean) = if (visible) View.VISIBLE else View.GONE

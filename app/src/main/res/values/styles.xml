@@ -111,6 +111,7 @@
         <item name="ic_outline_cloud_48dp">@drawable/outline_cloud_black_48</item>
         <item name="ic_outline_cloud_download_24dp">@drawable/outline_cloud_download_black_24</item>
         <item name="ic_outline_cloud_upload_24dp">@drawable/outline_cloud_upload_black_24</item>
+        <item name="ic_outline_notes_24dp">@drawable/outline_notes_black_24</item>
         <item name="ic_palette_24dp">@drawable/ic_palette_black_24dp</item>
         <item name="ic_remove_red_eye_24dp">@drawable/ic_remove_red_eye_black_24dp</item>
         <item name="ic_repeat_24dp">@drawable/ic_repeat_black_24dp</item>
@@ -233,6 +234,7 @@
         <item name="ic_outline_cloud_48dp">@drawable/outline_cloud_white_48</item>
         <item name="ic_outline_cloud_download_24dp">@drawable/outline_cloud_download_white_24</item>
         <item name="ic_outline_cloud_upload_24dp">@drawable/outline_cloud_upload_white_24</item>
+        <item name="ic_outline_notes_24dp">@drawable/outline_notes_white_24</item>
         <item name="ic_palette_24dp">@drawable/ic_palette_white_24dp</item>
         <item name="ic_remove_red_eye_24dp">@drawable/ic_remove_red_eye_white_24dp</item>
         <item name="ic_repeat_24dp">@drawable/ic_repeat_white_24dp</item>

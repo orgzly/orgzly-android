@@ -291,6 +291,9 @@
     <string name="pref_key_note_metadata_folded" translatable="false">pref_key_note_metadata_folded</string>
     <bool name="pref_default_note_metadata_folded" translatable="false">false</bool>
 
+    <string name="pref_key_is_note_content_folded" translatable="false">pref_key_is_note_content_folded</string>
+    <bool name="pref_default_is_note_content_folded" translatable="false">false</bool>
+
     <string name="pref_key_note_metadata_visibility" translatable="false">pref_key_note_metadata_visibility</string>
     <string name="pref_default_note_metadata_visibility" translatable="false">all</string>
 
@@ -549,7 +552,5 @@
     <string name="pref_key_reminder_service_last_run_for_event" translatable="false">pref_key_reminder_service_last_run_for_event</string>
     <string name="pref_key_notes_clipboard" translatable="false">pref_key_notes_clipboard</string>
     <string name="pref_key_refile_last_location" translatable="false">pref_key_refile_last_location</string>
-    <string name="pref_key_is_note_content_folded" translatable="false">pref_key_is_note_content_folded</string>
-    <bool name="pref_default_is_note_content_folded" translatable="false">false</bool>
 
 </resources>
