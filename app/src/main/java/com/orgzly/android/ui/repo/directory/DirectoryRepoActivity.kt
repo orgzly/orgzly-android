@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
@@ -95,38 +96,22 @@ class DirectoryRepoActivity : CommonActivity() {
         }
     }
 
-    private fun startFileBrowser() {
-        var browserStarted = false
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-            /*
-             * Apparently some devices do not handle this intent.
-             * Fallback to internal browser.
-             */
-            try {
-                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-
-                /*
-                 * Try to show internal storage by default.
-                 * https://stackoverflow.com/a/31334967/2515600
-                 *
-                 * Stopped using it as some devices would still not show
-                 * it *and* would not display the option to do so.
-                 */
-                // intent.putExtra("android.content.extra.SHOW_ADVANCED", true)
-
-                startActivityForResult(intent, ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION)
-
-                browserStarted = true
-
-            } catch (e: ActivityNotFoundException) {
-                e.printStackTrace()
+    private val openDocumentTree =
+        registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
+            if (uri != null) {
+                persistPermissions(uri)
+                binding.activityRepoDirectory.setText(uri.toString())
             }
         }
 
-        if (!browserStarted) {
-            runWithPermission(AppPermissions.Usage.LOCAL_REPO, Runnable { startLocalFileBrowser() })
+    private fun startFileBrowser() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            openDocumentTree.launch(null)
+
+        } else {
+            runWithPermission(AppPermissions.Usage.LOCAL_REPO) {
+                startLocalFileBrowser()
+            }
         }
     }
 
