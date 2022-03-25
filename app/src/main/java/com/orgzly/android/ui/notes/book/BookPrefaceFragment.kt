@@ -74,7 +74,7 @@ class BookPrefaceFragment : Fragment() {
 
         // Open keyboard
         if (activity != null) {
-            ActivityUtils.openSoftKeyboardWithDelay(activity, binding.fragmentBookPrefaceContent)
+            ActivityUtils.openSoftKeyboard(activity, binding.fragmentBookPrefaceContent)
         }
 
         /* Parse arguments - set content. */

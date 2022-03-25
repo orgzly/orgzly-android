@@ -9,6 +9,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
+import android.os.Looper
+import android.os.SystemClock
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
@@ -43,23 +45,11 @@ object ActivityUtils {
     @JvmStatic
     @JvmOverloads
     fun openSoftKeyboard(
-            activity: Activity?,
-            view: View?,
-            scrollView: ScrollView? = null,
-            scrollToTopOfView: View? = null) {
-
-        openSoftKeyboardWithDelay(activity, view, 0, scrollView, scrollToTopOfView)
-    }
-
-    // TODO: Remove, open immediately when ready
-    @JvmStatic
-    @JvmOverloads
-    fun openSoftKeyboardWithDelay(
-            activity: Activity?,
-            viewToFocus: View?,
-            delay: Long = 200,
-            scrollView: ScrollView? = null,
-            scrollToTopOfView: View? = null) {
+        activity: Activity?,
+        viewToFocus: View?,
+        delay: Long = 0,
+        scrollView: ScrollView? = null,
+        scrollToTopOfView: View? = null) {
 
         if (activity != null) {
 
@@ -88,11 +78,11 @@ object ActivityUtils {
     }
 
     private fun doOpenSoftKeyboard(
-            activity: Activity,
-            view: View,
-            delay: Long,
-            scrollView: ScrollView?,
-            scrollToTopOfView: View? = null) {
+        activity: Activity,
+        view: View,
+        delay: Long,
+        scrollView: ScrollView?,
+        scrollToTopOfView: View? = null) {
 
         val listener = if (scrollView != null && scrollToTopOfView != null) {
             // Keep scrolling the view as the keyboard opens
@@ -105,16 +95,41 @@ object ActivityUtils {
 
         scrollView?.viewTreeObserver?.addOnGlobalLayoutListener(listener)
 
-        Handler().postDelayed({
-            val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-        }, delay)
+        val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-        if (scrollView != null) {
-            Handler().postDelayed({
-                scrollView.viewTreeObserver?.removeOnGlobalLayoutListener(listener)
-            }, delay + 500)
+        showSoftInput(imm, view, delay, 0) {
+            if (scrollView != null) {
+                Handler().postDelayed({
+                    scrollView.viewTreeObserver?.removeOnGlobalLayoutListener(listener)
+                }, 500)
+            }
         }
+    }
+
+    // With animations enabled, keyboard is not shown immediately. Try a few times
+    // TODO: Display keyboard when ready
+    private fun showSoftInput(imm: InputMethodManager, view: View, delay: Long, attempt: Int = 0, onShow: () -> Unit) {
+        Handler().postDelayed({
+            val shown = imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+
+            if (BuildConfig.LOG_DEBUG) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    LogUtils.d(TAG, "Keyboard shown: $shown (view attached:${view.isAttachedToWindow} has-focus:${view.hasFocus()})")
+                }
+            }
+
+            if (shown) {
+                onShow()
+
+            } else {
+                if (attempt < 3) {
+                    showSoftInput(imm, view, delay + 100, attempt + 1, onShow)
+                } else {
+                    if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Failed to show keyboard after $attempt retries")
+                }
+            }
+
+        }, delay)
     }
 
     /**
@@ -149,17 +164,17 @@ object ActivityUtils {
 
         if (!isKeepScreenOn(activity)) {
             return AlertDialog.Builder(activity)
-                    .setTitle(R.string.keep_screen_on)
-                    .setMessage(R.string.keep_screen_on_desc)
-                    .setPositiveButton(android.R.string.yes) { dialog, _ ->
-                        keepScreenOnSet(activity)
-                        item.isChecked = true
-                        dialog.dismiss()
-                    }
-                    .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .show()
+                .setTitle(R.string.keep_screen_on)
+                .setMessage(R.string.keep_screen_on_desc)
+                .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                    keepScreenOnSet(activity)
+                    item.isChecked = true
+                    dialog.dismiss()
+                }
+                .setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
         } else {
             keepScreenOnClear(activity)
             item.isChecked = false

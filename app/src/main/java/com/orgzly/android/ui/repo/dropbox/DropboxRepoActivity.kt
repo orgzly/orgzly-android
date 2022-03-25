@@ -108,7 +108,7 @@ class DropboxRepoActivity : CommonActivity() {
                 binding.activityRepoDropboxDirectory,
                 binding.activityRepoDropboxDirectoryInputLayout)
 
-        ActivityUtils.openSoftKeyboardWithDelay(this, binding.activityRepoDropboxDirectory)
+        ActivityUtils.openSoftKeyboard(this, binding.activityRepoDropboxDirectory)
 
         client = DropboxClient(applicationContext, repoId)
 

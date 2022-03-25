@@ -13,8 +13,7 @@ import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.orgzly.R
-import com.orgzly.android.ui.util.ActivityUtils.closeSoftKeyboard
-import com.orgzly.android.ui.util.ActivityUtils.openSoftKeyboard
+import com.orgzly.android.ui.util.ActivityUtils
 
 class SimpleOneLinerDialog : DialogFragment() {
     private lateinit var requestKey: String
@@ -66,11 +65,11 @@ class SimpleOneLinerDialog : DialogFragment() {
                 }
 
                 // Closing due to used android:windowSoftInputMode="stateUnchanged"
-                closeSoftKeyboard(activity)
+                ActivityUtils.closeSoftKeyboard(activity)
             }
             .setNegativeButton(negativeButtonText) { _, _ ->
                 // Closing due to used android:windowSoftInputMode="stateUnchanged"
-                closeSoftKeyboard(activity)
+                ActivityUtils.closeSoftKeyboard(activity)
             }
             .create()
 
@@ -80,8 +79,9 @@ class SimpleOneLinerDialog : DialogFragment() {
             true
         }
 
-        // Open keyboard when dialog is displayed
-        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.setOnShowListener {
+            ActivityUtils.openSoftKeyboard(activity, input)
+        }
 
         return dialog
     }

@@ -484,6 +484,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         })
 
         viewModel.viewEditMode.observe(viewLifecycleOwner, Observer { viewEditMode ->
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed viewEditMode: $viewEditMode")
+
             when (viewEditMode) {
                 NoteViewModel.ViewEditMode.VIEW -> {
                     toViewMode()
@@ -495,12 +497,12 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
                 NoteViewModel.ViewEditMode.EDIT_TITLE_WITH_KEYBOARD -> {
                     toEditMode()
-                    ActivityUtils.openSoftKeyboardWithDelay(activity, binding.titleEdit)
+                    ActivityUtils.openSoftKeyboard(activity, binding.titleEdit)
                 }
 
                 NoteViewModel.ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD -> {
                     toEditMode()
-                    ActivityUtils.openSoftKeyboardWithDelay(activity, binding.contentEdit)
+                    ActivityUtils.openSoftKeyboard(activity, binding.contentEdit)
                 }
 
                 null -> { }

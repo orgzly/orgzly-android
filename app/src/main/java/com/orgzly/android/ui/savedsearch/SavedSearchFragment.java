@@ -119,7 +119,7 @@ public class SavedSearchFragment extends Fragment implements DrawerItem {
          */
         Activity activity = getActivity();
         if (viewToFocus != null && activity != null) {
-            ActivityUtils.openSoftKeyboardWithDelay(activity, viewToFocus);
+            ActivityUtils.openSoftKeyboard(activity, viewToFocus);
         }
 
         appBarToDefault();
