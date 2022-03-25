@@ -141,6 +141,7 @@
     <string name="pref_key_displayed_book_details" translatable="false">pref_key_displayed_book_details</string>
     <string-array name="displayed_book_details_default">
         <item>@string/pref_value_book_details_mtime</item>
+        <item>@string/pref_value_book_details_link_url</item>
         <item>@string/pref_value_book_details_last_action</item>
     </string-array>
     <string name="pref_value_book_details_mtime" translatable="false">book_details_mtime</string>

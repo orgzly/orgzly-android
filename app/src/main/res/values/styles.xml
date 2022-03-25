@@ -15,6 +15,12 @@
         <!-- Avoid white screen appearing briefly. -->
         <item name="android:windowDisablePreview">true</item>
 
+        <!-- For splash screen background, use logo's background color.
+             Needs shadow removed from the logo first. -->
+        <!-- <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/ic_launcher_background</item> -->
+
+        <!-- Theme-specific items stop here -->
+
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
