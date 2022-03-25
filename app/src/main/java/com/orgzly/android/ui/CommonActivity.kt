@@ -108,13 +108,6 @@ abstract class CommonActivity : AppCompatActivity() {
     open fun recreateActivityForSettingsChange() {
     }
 
-    private val snackbarBackgroundColor: Int
-        get() {
-            return styledAttributes(R.styleable.ColorScheme) { typedArray ->
-                typedArray.getColor(R.styleable.ColorScheme_snackbar_bg_color, 0)
-            }
-        }
-
     private fun dismissSnackbar() {
         snackbar?.let {
             it.dismiss()
@@ -137,19 +130,23 @@ abstract class CommonActivity : AppCompatActivity() {
     fun showSnackbar(s: Snackbar) {
         dismissSnackbar()
 
-        /* Close drawer before displaying snackbar. */
+        // Close drawer before displaying snackbar
         findViewById<DrawerLayout>(R.id.drawer_layout)?.closeDrawer(GravityCompat.START)
 
-        /* Set background color from attribute. */
-        val bgColor = snackbarBackgroundColor
-        s.view.setBackgroundColor(bgColor)
+        // Set background color from attribute
+        val bgColor = getSnackbarBackgroundColor()
 
-        // Show snackbar above all
-        s.anchorView = findViewById(R.id.fab) ?: findViewById(R.id.bottomAppBar)
+        snackbar = s.apply {
+            view.setBackgroundColor(bgColor)
+            anchorView = findViewById(R.id.snackbar_anchor)
+            show()
+        }
+    }
 
-        s.show()
-
-        snackbar = s
+    private fun getSnackbarBackgroundColor(): Int {
+        return styledAttributes(R.styleable.ColorScheme) { typedArray ->
+            typedArray.getColor(R.styleable.ColorScheme_snackbar_bg_color, 0)
+        }
     }
 
     override fun onBackPressed() {
@@ -221,7 +218,7 @@ abstract class CommonActivity : AppCompatActivity() {
         LocalBroadcastManager.getInstance(this).registerReceiver(actionReceiver, intentFilter)
 
         PreferenceManager.getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener(settingsChangeListener)
+            .registerOnSharedPreferenceChangeListener(settingsChangeListener)
     }
 
     override fun onResume() {
@@ -271,7 +268,7 @@ abstract class CommonActivity : AppCompatActivity() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(actionReceiver)
 
         PreferenceManager.getDefaultSharedPreferences(this)
-                .unregisterOnSharedPreferenceChangeListener(settingsChangeListener)
+            .unregisterOnSharedPreferenceChangeListener(settingsChangeListener)
     }
 
     private fun setupTheme() {
@@ -334,8 +331,8 @@ abstract class CommonActivity : AppCompatActivity() {
         val view = View.inflate(this, R.layout.dialog_progress_bar, null)
 
         val builder = AlertDialog.Builder(this)
-                .setTitle(title)
-                .setView(view)
+            .setTitle(title)
+            .setView(view)
 
         if (message != null) {
             builder.setMessage(message)
@@ -350,16 +347,16 @@ abstract class CommonActivity : AppCompatActivity() {
 
         if (file.exists()) {
             runWithPermission(
-                    AppPermissions.Usage.EXTERNAL_FILES_ACCESS,
-                    Runnable {
-                        try {
-                            openFile(file)
-                        } catch (e: Exception) {
-                            showSnackbar(getString(
-                                    R.string.failed_to_open_linked_file_with_reason,
-                                    e.localizedMessage))
-                        }
-                    })
+                AppPermissions.Usage.EXTERNAL_FILES_ACCESS,
+                Runnable {
+                    try {
+                        openFile(file)
+                    } catch (e: Exception) {
+                        showSnackbar(getString(
+                            R.string.failed_to_open_linked_file_with_reason,
+                            e.localizedMessage))
+                    }
+                })
         } else {
             showSnackbar(getString(R.string.file_does_not_exist, file.canonicalFile))
         }
@@ -367,7 +364,7 @@ abstract class CommonActivity : AppCompatActivity() {
 
     private fun openFile(file: File) {
         val contentUri = FileProvider.getUriForFile(
-                this, BuildConfig.APPLICATION_ID + ".fileprovider", file)
+            this, BuildConfig.APPLICATION_ID + ".fileprovider", file)
 
         val intent = Intent(Intent.ACTION_VIEW, contentUri)
 
@@ -388,9 +385,9 @@ abstract class CommonActivity : AppCompatActivity() {
         private val TAG = CommonActivity::class.java.name
 
         private val PREFS_REQUIRE_IMMEDIATE_ACTIVITY_RECREATE = listOf(
-                R.string.pref_key_font_size,
-                R.string.pref_key_color_scheme,
-                R.string.pref_key_ignore_system_locale
+            R.string.pref_key_font_size,
+            R.string.pref_key_color_scheme,
+            R.string.pref_key_ignore_system_locale
         )
 
         @JvmStatic
