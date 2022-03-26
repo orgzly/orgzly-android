@@ -57,6 +57,8 @@
                 android:scrollHorizontally="true"
                 android:gravity="center_vertical"
                 android:linksClickable="true"
+                android:textColor="?attr/text_primary_color"
+                android:textColorLink="?attr/text_primary_color"
                 tools:text="@string/breadcrumbs_sample" />
         </HorizontalScrollView>
 

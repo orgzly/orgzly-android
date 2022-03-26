@@ -64,7 +64,8 @@
                                 android:layout_gravity="center_vertical"
                                 android:gravity="center_vertical"
                                 android:linksClickable="true"
-                                android:textColor="?attr/text_secondary_color"
+                                android:textColor="?attr/text_primary_color"
+                                android:textColorLink="?attr/text_primary_color"
                                 android:textSize="?attr/fragment_note_content_text_size"
                                 android:lineSpacingMultiplier="1.25"
                                 tools:text="@string/breadcrumbs_sample" />
