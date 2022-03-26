@@ -5,13 +5,12 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import com.google.android.material.snackbar.Snackbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import android.view.View
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.ui.CommonActivity
+import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.ui.util.ActivityUtils
 
 object AppPermissions {
@@ -25,10 +24,9 @@ object AppPermissions {
         val grantedOrRequested = if (!isGranted(activity, requestCode)) {
             /* Should we show an explanation? */
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
-                val view = activity.findViewById(R.id.main_content) as View
-
-                activity.showSnackbar(Snackbar.make(view, rationale, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.settings) { ActivityUtils.openAppInfoSettings(activity) })
+                activity.showSnackbar(rationale, R.string.settings) {
+                    ActivityUtils.openAppInfoSettings(activity)
+                }
 
             } else {
                 /* No explanation needed -- request the permission. */

@@ -101,7 +101,7 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
             val bookView = dataRepository.getBookView(bookId)
 
             if (bookView == null) {
-                errorEvent.postValue(IllegalStateException("Book not found"))
+                errorEvent.postValue(Throwable("Book not found"))
 
             } else {
                 val repos = dataRepository.getRepos()

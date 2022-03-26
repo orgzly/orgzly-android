@@ -26,6 +26,7 @@ import com.orgzly.android.query.Query;
 import com.orgzly.android.query.QueryUtils;
 import com.orgzly.android.query.user.DottedQueryParser;
 import com.orgzly.android.sync.AutoSync;
+import com.orgzly.android.ui.AppSnackbarUtils;
 import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.SharingShortcutsManager;
@@ -236,7 +237,7 @@ public class ShareActivity extends CommonActivity
         autoSync.trigger(AutoSync.Type.APP_RESUMED);
 
         if (mError != null) {
-            showSnackbar(mError);
+            AppSnackbarUtils.showSnackbar(this, mError);
             mError = null;
         }
     }
@@ -307,7 +308,7 @@ public class ShareActivity extends CommonActivity
      */
     @Override
     public void onError(UseCase action, Throwable throwable) {
-        showSnackbar(throwable.getLocalizedMessage());
+        AppSnackbarUtils.showSnackbar(this, throwable.getLocalizedMessage());
     }
 
     private class Data {

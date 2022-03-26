@@ -9,15 +9,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.MotionEvent
 import android.view.View
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.FileProvider
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.preference.PreferenceManager
-import com.google.android.material.snackbar.Snackbar
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
@@ -25,7 +20,6 @@ import com.orgzly.android.data.DataRepository
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.sync.AutoSync
 import com.orgzly.android.ui.dialogs.WhatsNewDialog
-import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import java.io.File
@@ -37,8 +31,6 @@ import javax.inject.Inject
  * Inherited by every activity in the app.
  */
 abstract class CommonActivity : AppCompatActivity() {
-
-    private var snackbar: Snackbar? = null
 
     /* Dialogs to be dismissed onPause. */
     private var whatsNewDialog: AlertDialog? = null
@@ -108,51 +100,10 @@ abstract class CommonActivity : AppCompatActivity() {
     open fun recreateActivityForSettingsChange() {
     }
 
-    private fun dismissSnackbar() {
-        snackbar?.let {
-            it.dismiss()
-            snackbar = null
-        }
-    }
-
-    fun showSnackbar(resId: Int) {
-        showSnackbar(getString(resId))
-    }
-
-    fun showSnackbar(message: String?) {
-        if (message != null) {
-            findViewById<View>(R.id.main_content)?.let { view ->
-                showSnackbar(Snackbar.make(view, message, Snackbar.LENGTH_LONG))
-            }
-        }
-    }
-
-    fun showSnackbar(s: Snackbar) {
-        dismissSnackbar()
-
-        // Close drawer before displaying snackbar
-        findViewById<DrawerLayout>(R.id.drawer_layout)?.closeDrawer(GravityCompat.START)
-
-        // Set background color from attribute
-        val bgColor = getSnackbarBackgroundColor()
-
-        snackbar = s.apply {
-            view.setBackgroundColor(bgColor)
-            anchorView = findViewById(R.id.snackbar_anchor)
-            show()
-        }
-    }
-
-    private fun getSnackbarBackgroundColor(): Int {
-        return styledAttributes(R.styleable.ColorScheme) { typedArray ->
-            typedArray.getColor(R.styleable.ColorScheme_snackbar_bg_color, 0)
-        }
-    }
 
     override fun onBackPressed() {
         super.onBackPressed()
-
-        dismissSnackbar()
+        AppSnackbar.dismiss()
     }
 
     var runOnTouchEvent: Runnable? = null
@@ -161,7 +112,7 @@ abstract class CommonActivity : AppCompatActivity() {
         val consumed = super.dispatchTouchEvent(ev)
 
         if (ev.action == MotionEvent.ACTION_UP) {
-            dismissSnackbar()
+            AppSnackbar.dismiss()
 
         } else if (ev.action == MotionEvent.ACTION_DOWN) {
             runOnTouchEvent?.run()
@@ -389,21 +340,5 @@ abstract class CommonActivity : AppCompatActivity() {
             R.string.pref_key_color_scheme,
             R.string.pref_key_ignore_system_locale
         )
-
-        @JvmStatic
-        fun showSnackbar(context: Context?, @StringRes id: Int) {
-            if (context != null) {
-                showSnackbar(context, context.getString(id))
-            }
-        }
-
-        @JvmStatic
-        fun showSnackbar(context: Context?, msg: String?) {
-            if (context != null && msg != null) {
-                val intent = Intent(AppIntent.ACTION_SHOW_SNACKBAR)
-                intent.putExtra(AppIntent.EXTRA_MESSAGE, msg)
-                LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
-            }
-        }
     }
 }

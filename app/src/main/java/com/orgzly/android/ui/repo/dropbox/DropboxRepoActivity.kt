@@ -21,6 +21,7 @@ import com.orgzly.android.repos.RepoType
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.RepoViewModel
 import com.orgzly.android.ui.repo.RepoViewModelFactory
+import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils

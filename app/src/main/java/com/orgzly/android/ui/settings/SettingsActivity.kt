@@ -6,6 +6,7 @@ import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.settings.SettingsFragment.Listener
+import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.usecase.*
 import com.orgzly.databinding.ActivitySettingsBinding
 

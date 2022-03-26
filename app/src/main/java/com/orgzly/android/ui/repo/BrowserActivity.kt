@@ -15,6 +15,7 @@ import com.orgzly.android.LocalStorage
 import com.orgzly.android.repos.DirectoryRepo
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog
+import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils

@@ -27,10 +27,4 @@ class SharedMainActivityViewModel : ViewModel() {
     fun openDrawer() {
         openDrawerRequest.postValue(true)
     }
-
-    val snackbarWithReposLink: SingleLiveEvent<String> = SingleLiveEvent()
-
-    fun showSnackbarWithReposLink(message: String) {
-        snackbarWithReposLink.postValue(message)
-    }
 }

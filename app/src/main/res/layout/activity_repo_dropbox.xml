@@ -86,4 +86,6 @@
         app:layout_anchor="@id/bottomAppBar"
         app:backgroundTint="?attr/bottom_toolbar_bg_color" />
 
+    <include layout="@layout/snackbar_anchor" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

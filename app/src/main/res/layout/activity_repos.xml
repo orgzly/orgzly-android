@@ -90,4 +90,6 @@
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 
+    <include layout="@layout/snackbar_anchor" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

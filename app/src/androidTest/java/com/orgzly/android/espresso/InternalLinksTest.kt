@@ -71,7 +71,7 @@ class InternalLinksTest : OrgzlyTest() {
     fun testDifferentCaseUuidInternalLink() {
         onNoteInBook(1, R.id.item_head_content)
                 .perform(clickClickableSpan("id:bdce923b-C3CD-41ED-B58E-8BDF8BABA54F"))
-        onView(withId(R.id.title_edit)).check(matches(withText("Note [b-2]")))
+        onView(withId(R.id.title)).check(matches(withText("Note [b-2]")))
     }
 
     @Test

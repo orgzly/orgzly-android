@@ -73,8 +73,8 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
                 val result = UseCaseRunner.run(useCase)
 
                 if (result.userData == null) {
-                    CommonActivity.showSnackbar(App.getAppContext(), App.getAppContext().getString(
-                        R.string.no_such_link_target, name, value))
+                    val msg = App.getAppContext().getString(R.string.no_such_link_target, name, value)
+                    errorEvent.postValue(Throwable(msg))
 
                 } else {
                     val noteIdBookId = result.userData as NoteDao.NoteIdBookId

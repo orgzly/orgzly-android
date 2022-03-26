@@ -503,7 +503,7 @@ class NoteFragmentTest : OrgzlyTest() {
     @Test
     fun testBreadcrumbsFollowToNote() {
         onNoteInBook(3).perform(click())
-        onView(withId(R.id.breadcrumbs)).perform(clickClickableSpan("Note #2."))
+        onView(withId(R.id.breadcrumbs_text)).perform(clickClickableSpan("Note #2."))
         onView(withId(R.id.title)).check(matches(withText("Note #2.")))
     }
 

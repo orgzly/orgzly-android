@@ -156,7 +156,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
          * Not working when done in XML.
          * We want imeOptions="actionDone", so we can't use textMultiLine.
          */
-        binding.titleEdit.apply {
+        binding.title.apply {
             setHorizontallyScrolling(false)
 
             maxLines = Integer.MAX_VALUE
@@ -250,7 +250,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         }
 
         // View mode on keyboard back press
-        listOf(binding.contentEdit, binding.titleEdit).forEach { editView ->
+        listOf(binding.contentEdit, binding.title).forEach { editView ->
             editView.setOnImeBackListener {
                 viewModel.toViewMode()
             }
@@ -462,7 +462,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 resources.getQuantityString(R.plurals.notes_deleted, count, count)
             }
 
-            showSnackbar(message)
+            activity?.showSnackbar(message)
         })
 
         viewModel.noteDeleteRequest.observeSingle(viewLifecycleOwner, Observer { count ->
@@ -499,7 +499,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
                 NoteViewModel.ViewEditMode.EDIT_TITLE_WITH_KEYBOARD -> {
                     toEditMode()
-                    ActivityUtils.openSoftKeyboard(activity, binding.titleEdit)
+                    ActivityUtils.openSoftKeyboard(activity, binding.title)
                 }
 
                 NoteViewModel.ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD -> {
@@ -530,17 +530,17 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         }
 
         viewModel.errorEvent.observeSingle(viewLifecycleOwner, Observer { error ->
-            showSnackbar((error.cause ?: error).localizedMessage)
+            activity?.showSnackbar((error.cause ?: error).localizedMessage)
         })
 
         viewModel.snackBarMessage.observeSingle(viewLifecycleOwner, Observer { resId ->
-            showSnackbar(resId)
+            activity?.showSnackbar(resId)
         })
     }
 
     private fun toEditMode() {
         binding.titleView.visibility = View.GONE
-        binding.titleEdit.visibility = View.VISIBLE
+        binding.title.visibility = View.VISIBLE
 
         binding.bodyView.visibility = View.GONE
         binding.contentEdit.visibility = View.VISIBLE
@@ -553,8 +553,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     private fun toViewMode() {
         ActivityUtils.closeSoftKeyboard(activity)
 
-        binding.titleEdit.visibility = View.GONE
-        binding.titleView.setSourceText(binding.titleEdit.text.toString())
+        binding.title.visibility = View.GONE
+        binding.titleView.setSourceText(binding.title.text.toString())
         binding.titleView.visibility = View.VISIBLE
 
         binding.contentEdit.visibility = View.GONE
@@ -580,7 +580,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         setPriorityView(payload.priority)
 
         // Title
-        binding.titleEdit.setText(payload.title)
+        binding.title.setText(payload.title)
         binding.titleView.setSourceText(payload.title)
 
         // Tags
@@ -682,7 +682,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         }
 
         // Replace new lines with spaces, in case multi-line text has been pasted
-        val title = binding.titleEdit.text.toString().replace("\n".toRegex(), " ").trim { it <= ' ' }
+        val title = binding.title.text.toString().replace("\n".toRegex(), " ").trim { it <= ' ' }
 
         val content = binding.contentEdit.text.toString()
 
@@ -1216,14 +1216,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
     fun getNoteId(): Long {
         return viewModel.noteId
-    }
-
-    private fun showSnackbar(message: String?) {
-        CommonActivity.showSnackbar(context, message)
-    }
-
-    private fun showSnackbar(@StringRes resId: Int) {
-        CommonActivity.showSnackbar(context, resId)
     }
 
     interface Listener {

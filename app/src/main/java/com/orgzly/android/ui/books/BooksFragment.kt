@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -30,15 +31,14 @@ import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.ui.AppBar
-import com.orgzly.android.ui.CommonActivity
-import com.orgzly.android.ui.OnViewHolderClickListener
+import com.orgzly.android.ui.*
 import com.orgzly.android.ui.books.BooksViewModel.Companion.APP_BAR_DEFAULT_MODE
 import com.orgzly.android.ui.books.BooksViewModel.Companion.APP_BAR_SELECTION_MODE
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
+import com.orgzly.android.ui.repos.ReposActivity
 import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.setup
@@ -466,16 +466,22 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
         })
 
         viewModel.bookExportedEvent.observeSingle(viewLifecycleOwner, Observer { location ->
-            CommonActivity.showSnackbar(context, resources.getString(R.string.book_exported, location))
+            activity?.showSnackbar(resources.getString(R.string.book_exported, location))
         })
 
         viewModel.bookDeletedEvent.observeSingle(viewLifecycleOwner, Observer {
-            CommonActivity.showSnackbar(context, R.string.message_book_deleted)
+            activity?.showSnackbar(R.string.message_book_deleted)
         })
 
         viewModel.setBookLinkRequestEvent.observeSingle(this) { (book, links, urls, checked) ->
             if (links.isEmpty()) {
-                sharedMainActivityViewModel.showSnackbarWithReposLink(getString(R.string.no_repos))
+                activity?.showSnackbar(getString(R.string.no_repos), R.string.repositories) {
+                    activity?.let {
+                        val intent = Intent(Intent.ACTION_VIEW)
+                        intent.setClass(it, ReposActivity::class.java)
+                        ContextCompat.startActivity(it, intent, null)
+                    }
+                }
 
             } else {
                 dialog = AlertDialog.Builder(context)
@@ -498,11 +504,11 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
 
         viewModel.errorEvent.observeSingle(viewLifecycleOwner, Observer { error ->
             if (error is BookDelete.NotFound) {
-                CommonActivity.showSnackbar(context, resources.getString(
+                activity?.showSnackbar(resources.getString(
                         R.string.message_deleting_book_failed, error.localizedMessage))
 
             } else if (error != null) {
-                CommonActivity.showSnackbar(context, (error.cause ?: error).localizedMessage)
+                activity?.showSnackbar((error.cause ?: error).localizedMessage)
             }
         })
 

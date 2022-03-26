@@ -25,7 +25,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.App;
@@ -40,6 +39,7 @@ import com.orgzly.android.query.Condition;
 import com.orgzly.android.query.Query;
 import com.orgzly.android.query.user.DottedQueryBuilder;
 import com.orgzly.android.sync.AutoSync;
+import com.orgzly.android.ui.AppSnackbarUtils;
 import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.DisplayManager;
 import com.orgzly.android.ui.NotePlace;
@@ -311,18 +311,6 @@ public class MainActivity extends CommonActivity
             }
         });
 
-        sharedMainActivityViewModel.getSnackbarWithReposLink().observeSingle(this, message -> {
-            View view = findViewById(R.id.main_content);
-            if (view != null) {
-                showSnackbar(Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.repositories, v -> {
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setClass(MainActivity.this, ReposActivity.class);
-                            startActivity(intent);
-                        }));
-            }
-        });
-
         viewModel.getNavigationActions().observeSingle(this, action -> {
             if (action instanceof MainNavigationAction.OpenBook) {
                 MainNavigationAction.OpenBook openBookAction =
@@ -360,16 +348,16 @@ public class MainActivity extends CommonActivity
         });
 
         viewModel.getSavedSearchedExportEvent().observeSingle(this, count -> {
-            showSnackbar(getResources().getQuantityString(R.plurals.exported_searches, count, count));
+            AppSnackbarUtils.showSnackbar(this, getResources().getQuantityString(R.plurals.exported_searches, count, count));
         });
 
         viewModel.getSavedSearchedImportEvent().observeSingle(this, count -> {
-            showSnackbar(getResources().getQuantityString(R.plurals.imported_searches, count, count));
+            AppSnackbarUtils.showSnackbar(this, getResources().getQuantityString(R.plurals.imported_searches, count, count));
 
         });
         viewModel.getErrorEvent().observeSingle(this, error -> {
             if (error != null) {
-                showSnackbar(error.getLocalizedMessage());
+                AppSnackbarUtils.showSnackbar(this, error.getLocalizedMessage());
             }
         });
     }
@@ -654,19 +642,16 @@ public class MainActivity extends CommonActivity
         popBackStackAndCloseKeyboard();
 
         // Display Snackbar with an action (create new note below just created one)
-        View view = findViewById(R.id.main_content);
-        if (view != null) {
-            showSnackbar(Snackbar
-                    .make(view, R.string.message_note_created, Snackbar.LENGTH_LONG)
-                    .setAction(R.string.new_below, v -> {
-                        NotePlace notePlace = new NotePlace(
-                                note.getPosition().getBookId(),
-                                note.getId(),
-                                Place.BELOW);
+        AppSnackbarUtils.showSnackbar(this, R.string.message_note_created, R.string.new_below, () -> {
+            NotePlace notePlace = new NotePlace(
+                    note.getPosition().getBookId(),
+                    note.getId(),
+                    Place.BELOW);
 
-                        DisplayManager.displayNewNote(getSupportFragmentManager(), notePlace);
-                    }));
-        }
+            DisplayManager.displayNewNote(getSupportFragmentManager(), notePlace);
+
+            return null;
+        });
     }
 
     @Override
@@ -741,8 +726,13 @@ public class MainActivity extends CommonActivity
     @Override
     public void onSyncFinished(String msg) {
         if (msg != null) {
-            sharedMainActivityViewModel.showSnackbarWithReposLink(
-                    getString(R.string.sync_with_argument, msg));
+            AppSnackbarUtils.showSnackbar(
+                    this, getString(R.string.sync_with_argument, msg), R.string.repositories, () -> {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setClass(this, ReposActivity.class);
+                        startActivity(intent);
+                        return null;
+                    });
         }
     }
 
@@ -908,7 +898,7 @@ public class MainActivity extends CommonActivity
                     message = getResources().getQuantityString(R.plurals.notes_cut, count, count);
                 }
 
-                showSnackbar(message);
+                AppSnackbarUtils.showSnackbar(this, message);
             }
 
         } else if (action instanceof NoteCopy) {
@@ -919,7 +909,7 @@ public class MainActivity extends CommonActivity
 
                 if (count > 0) {
                     String message = getResources().getQuantityString(R.plurals.notes_copied, count, count);
-                    showSnackbar(message);
+                    AppSnackbarUtils.showSnackbar(this, message);
                 }
             }
 
@@ -933,7 +923,7 @@ public class MainActivity extends CommonActivity
                 message = getResources().getString(R.string.no_notes_pasted);
             }
 
-            showSnackbar(message);
+            AppSnackbarUtils.showSnackbar(this, message);
         }
     }
 
@@ -943,14 +933,14 @@ public class MainActivity extends CommonActivity
     @Override
     public void onError(UseCase action, Throwable throwable) {
         if (action instanceof BookExport) {
-            showSnackbar(getString(
+            AppSnackbarUtils.showSnackbar(this, getString(
                     R.string.failed_exporting_book, throwable.getLocalizedMessage()));
 
         } else {
             if (throwable.getCause() != null) {
-                showSnackbar(throwable.getCause().getLocalizedMessage());
+                AppSnackbarUtils.showSnackbar(this, throwable.getCause().getLocalizedMessage());
             } else {
-                showSnackbar(throwable.getLocalizedMessage());
+                AppSnackbarUtils.showSnackbar(this, throwable.getLocalizedMessage());
             }
         }
     }

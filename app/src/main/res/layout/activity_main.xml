@@ -22,13 +22,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:ignore="MergeRootFrame"/>
 
-        <View
-            android:id="@+id/snackbar_anchor"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="?attr/actionBarSize"
-            android:visibility="invisible"/>
+        <include layout="@layout/snackbar_anchor" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -21,13 +21,13 @@ import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.SavedSearch
 import com.orgzly.android.savedsearch.FileSavedSearchStore
-import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.ui.savedsearches.SavedSearchesViewModel.Companion.APP_BAR_DEFAULT_MODE
 import com.orgzly.android.ui.savedsearches.SavedSearchesViewModel.Companion.APP_BAR_SELECTION_MODE
+import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentSavedSearchesBinding
@@ -226,7 +226,7 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
             val file = FileSavedSearchStore(requireContext(), dataRepository).file()
             f(R.string.searches, getString(resId, file))
         } catch (e: IOException) {
-            CommonActivity.showSnackbar(context, e.localizedMessage)
+            activity?.showSnackbar(e.localizedMessage)
         }
     }
 
