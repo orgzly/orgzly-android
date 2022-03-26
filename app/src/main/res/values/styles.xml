@@ -660,4 +660,10 @@
         <item name="android:layout_height">1dp</item>
         <item name="android:background">?android:listDivider</item>
     </style>
+
+    <style name="TitleTextAppearance">
+        <item name="android:textSize">?attr/font_large</item>
+        <item name="android:textColor">?attr/text_primary_color</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 </resources>

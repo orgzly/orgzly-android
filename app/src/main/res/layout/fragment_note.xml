@@ -89,8 +89,9 @@
                             android:imeOptions="actionDone"
                             android:hint="@string/fragment_note_title_hint"
                             tools:text="@string/head_title_sample"
+                            android:textAppearance="@style/TitleTextAppearance"
+                            android:textColor="@null"
                             android:freezesText="true"
-                            android:textSize="?attr/font_large"
                             android:visibility="visible" />
 
                         <com.orgzly.android.ui.views.TextViewWithMarkup
@@ -101,9 +102,10 @@
                             style="@style/Widget.AppCompat.EditText"
                             android:hint="@string/fragment_note_title_hint"
                             tools:text="@string/head_title_sample"
+                            android:textAppearance="@style/TitleTextAppearance"
+                            android:textColor="@null"
                             android:freezesText="true"
                             android:textIsSelectable="true"
-                            android:textSize="?attr/font_large"
                             android:visibility="gone" />
 
                     </LinearLayout>

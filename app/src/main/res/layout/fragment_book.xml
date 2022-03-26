@@ -30,6 +30,7 @@
                     android:layout_height="?attr/actionBarSize"
                     android:background="?attr/top_toolbar_bg_color"
                     android:elevation="4dp" tools:targetApi="lollipop"
+                    app:titleTextAppearance="@style/TitleTextAppearance"
                     android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
