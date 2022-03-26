@@ -435,7 +435,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         // binding.contentHeaderText.visibility = if (isFolded) View.VISIBLE else View.INVISIBLE
     }
 
-
     private fun setMetadataFoldState(isFolded: Boolean) {
         binding.metadata.visibility = visibleOrGone(!isFolded)
         binding.metadataHeaderUpIcon.visibility = visibleOrGone(!isFolded)

@@ -62,4 +62,6 @@
     <dimen name="quick_bar_height">48dp</dimen>
 
     <dimen name="fold_button_width">48dp</dimen>
+
+    <dimen name="horizontal_divider_height">1dp</dimen>
 </resources>

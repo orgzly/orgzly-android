@@ -109,10 +109,7 @@
                     </LinearLayout>
                 </androidx.appcompat.widget.Toolbar>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:listDivider"/>
+                <View style="@style/HorizontalDivider" />
 
                 <!-- Metadata header -->
                 <LinearLayout
@@ -322,10 +319,7 @@
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:listDivider"/>
+                <View style="@style/HorizontalDivider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -414,11 +408,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:listDivider"/>
-
+                <View style="@style/HorizontalDivider" />
             </LinearLayout>
         </ScrollView>
 
