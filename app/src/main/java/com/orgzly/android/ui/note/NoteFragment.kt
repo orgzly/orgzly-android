@@ -331,6 +331,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             setOnMenuItemClickListener { menuItem ->
                 handleActionItemClick(menuItem)
             }
+
+            (requireActivity() as? MainActivity)?.setupSearchView(menu) // FIXME
         }
 
         // binding.fab.hide()
@@ -361,6 +363,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             setOnMenuItemClickListener { menuItem ->
                 handleActionItemClick(menuItem)
             }
+
+            (requireActivity() as? MainActivity)?.setupSearchView(menu) // FIXME
         }
 
         // binding.fab.hide()

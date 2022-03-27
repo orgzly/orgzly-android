@@ -208,8 +208,6 @@ class BookFragment :
 
             this.currentBook = book
 
-            viewModel.setTitle(BookUtils.getFragmentTitleForBook(currentBook))
-
             viewAdapter.setPreface(book)
 
             if (notes != null) {
