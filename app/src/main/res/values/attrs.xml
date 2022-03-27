@@ -52,7 +52,6 @@
         <attr name="drawer_item_background" format="reference"/>
         <attr name="indent_line_color" format="color"/>
         <attr name="item_book_card_bg_color" format="color"/>
-        <attr name="item_head_post_title_color" format="color"/>
         <attr name="item_head_state_done_color" format="color"/>
         <attr name="item_head_state_todo_color" format="color"/>
         <attr name="item_head_state_unknown_color" format="color"/>

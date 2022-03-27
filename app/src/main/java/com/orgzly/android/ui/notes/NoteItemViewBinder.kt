@@ -501,7 +501,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
                                 R.attr.item_head_state_done_color,
                                 R.attr.item_head_state_unknown_color,
                                 R.attr.item_head_post_title_text_size,
-                                R.attr.item_head_post_title_color,
+                                R.attr.text_secondary_color,
                                 R.attr.bullet_state_default,
                                 R.attr.bullet_state_folded)) { typedArray ->
 

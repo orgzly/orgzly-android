@@ -275,96 +275,126 @@
     <style name="AppLightTheme.Light">
 <!--        <item name="colorBackgroundFloating">@color/white</item>-->
 <!--        <item name="android:colorBackgroundFloating" tools:targetApi="23">@color/white</item>-->
+
         <item name="android:colorButtonNormal" tools:targetApi="21">@color/grey_100</item>
+
         <item name="android:itemBackground">?android:itemBackground</item>
         <item name="android:statusBarColor" tools:targetApi="21">@color/light_theme_app_bar</item>
         <item name="android:windowBackground">@color/white</item>
-        <item name="top_toolbar_bg_color">@color/light_theme_app_bar</item>
-        <item name="bottom_toolbar_bg_color">@color/light_theme_app_bar</item>
-        <item name="bullet_state_default">@drawable/bullet_state_default_light</item>
-        <item name="bullet_state_folded">@drawable/bullet_state_folded_light</item>
+
         <item name="colorAccent">@color/blue_grey_600</item>
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/black</item>
+
+        <item name="top_toolbar_bg_color">@color/light_theme_app_bar</item>
+        <item name="bottom_toolbar_bg_color">@color/light_theme_app_bar</item>
+        <item name="snackbar_bg_color">#323232</item> <!-- Default color -->
+
+        <item name="bullet_state_default">@drawable/bullet_state_default_light</item>
+        <item name="bullet_state_folded">@drawable/bullet_state_folded_light</item>
+
         <item name="drawer_item_background">@drawable/drawer_item_background_light</item>
+
         <item name="indent_line_color">#0c000000</item>
+
         <item name="item_book_card_bg_color">@color/light_theme_cards_and_dialogs</item>
-        <item name="item_head_post_title_color">@color/grey_600</item>
+
         <item name="item_head_state_done_color">@color/green_900</item>
         <item name="item_head_state_todo_color">@color/red_900</item>
         <item name="item_head_state_unknown_color">@color/blue_900</item>
+
         <item name="item_selected_bg_color">@color/item_selected_light_bg_color</item>
         <item name="item_spotlighted_bg_color">@color/item_selected_light_bg_color</item>
-        <item name="snackbar_bg_color">#323232</item> <!-- Default color -->
-        <item name="text_disabled_color">@color/dark_text_disabled_color</item>
-        <item name="text_error_color">@color/red_900</item>
-        <item name="text_highlighted_color">@color/black</item>
+
         <item name="text_primary_color">@color/dark_text_primary_color</item>
         <item name="text_secondary_color">@color/dark_text_secondary_color</item>
+        <item name="text_highlighted_color">@color/black</item>
+        <item name="text_disabled_color">@color/dark_text_disabled_color</item>
+        <item name="text_error_color">@color/red_900</item>
     </style>
 
     <!-- Color scheme -->
     <style name="AppDarkTheme.Dark">
 <!--        <item name="colorBackgroundFloating">@color/dark_theme_app_bar</item>-->
 <!--        <item name="android:colorBackgroundFloating" tools:targetApi="23">@color/dark_theme_app_bar</item>-->
+
 <!--        <item name="android:colorButtonNormal" tools:targetApi="21">@color/dark_theme_background</item>-->
+
         <item name="android:itemBackground">?android:itemBackground</item>
         <item name="android:statusBarColor" tools:targetApi="21">@color/dark_theme_app_bar</item>
         <item name="android:windowBackground">@color/dark_theme_background</item>
-        <item name="top_toolbar_bg_color">@color/dark_theme_app_bar</item>
-        <item name="bottom_toolbar_bg_color">@color/dark_theme_app_bar</item>
-        <item name="bullet_state_default">@drawable/bullet_state_default_dark</item>
-        <item name="bullet_state_folded">@drawable/bullet_state_folded_dark</item>
+
         <item name="colorAccent">@color/blue_grey_300</item>
         <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryDark">@color/white</item>
+
+        <item name="top_toolbar_bg_color">@color/dark_theme_app_bar</item>
+        <item name="bottom_toolbar_bg_color">@color/dark_theme_app_bar</item>
+        <item name="snackbar_bg_color">@color/dark_theme_app_bar</item>
+
+        <item name="bullet_state_default">@drawable/bullet_state_default_dark</item>
+        <item name="bullet_state_folded">@drawable/bullet_state_folded_dark</item>
+
         <item name="drawer_item_background">@drawable/drawer_item_background_dark</item>
+
         <item name="indent_line_color">#0cffffff</item>
+
         <item name="item_book_card_bg_color">@color/dark_theme_cards_and_dialogs</item>
-        <item name="item_head_post_title_color">@color/grey_400</item>
+
         <item name="item_head_state_done_color">@color/green_200</item>
         <item name="item_head_state_todo_color">@color/red_200</item>
         <item name="item_head_state_unknown_color">@color/blue_200</item>
+
         <item name="item_selected_bg_color">@color/item_selected_dark_bg_color</item>
         <item name="item_spotlighted_bg_color">@color/item_selected_dark_bg_color</item>
-        <item name="snackbar_bg_color">@color/dark_theme_app_bar</item>
-        <item name="text_disabled_color">#60ffffff</item>
-        <item name="text_error_color">@color/red_200</item>
-        <item name="text_highlighted_color">@color/white_text_primary_color</item>
+
         <item name="text_primary_color">@color/white_text_primary_color</item>
         <item name="text_secondary_color">@color/white_text_secondary_color</item>
+        <item name="text_highlighted_color">@color/white_text_primary_color</item>
+        <item name="text_disabled_color">#60ffffff</item>
+        <item name="text_error_color">@color/red_200</item>
     </style>
 
     <!-- Color scheme -->
     <style name="AppDarkTheme.Black">
         <item name="colorBackgroundFloating">@color/dark_theme_status_bar</item>
         <item name="android:colorBackgroundFloating" tools:targetApi="23">@color/dark_theme_status_bar</item>
+
         <item name="android:colorButtonNormal" tools:targetApi="21">@color/dark_theme_app_bar</item>
+
         <item name="android:itemBackground">@color/dark_theme_status_bar</item>
         <item name="android:statusBarColor" tools:targetApi="21">#000000</item>
         <item name="android:windowBackground">@color/dark_theme_status_bar</item>
-        <item name="top_toolbar_bg_color">@color/dark_theme_status_bar</item>
-        <item name="bottom_toolbar_bg_color">@color/dark_theme_status_bar</item>
-        <item name="bullet_state_default">@drawable/bullet_state_default_black</item>
-        <item name="bullet_state_folded">@drawable/bullet_state_folded_black</item>
+
         <item name="colorAccent">@color/blue_grey_200</item>
         <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryDark">@color/white</item>
+
+        <item name="top_toolbar_bg_color">@color/dark_theme_status_bar</item>
+        <item name="bottom_toolbar_bg_color">@color/dark_theme_status_bar</item>
+        <item name="snackbar_bg_color">@color/dark_theme_status_bar</item>
+
+        <item name="bullet_state_default">@drawable/bullet_state_default_black</item>
+        <item name="bullet_state_folded">@drawable/bullet_state_folded_black</item>
+
         <item name="drawer_item_background">@drawable/drawer_item_background_black</item>
+
         <item name="indent_line_color">#1cffffff</item>
+
         <item name="item_book_card_bg_color">@color/dark_theme_status_bar</item>
-        <item name="item_head_post_title_color">@color/grey_400</item>
+
         <item name="item_head_state_done_color">@color/green_200</item>
         <item name="item_head_state_todo_color">@color/red_200</item>
         <item name="item_head_state_unknown_color">@color/blue_200</item>
+
         <item name="item_selected_bg_color">@color/item_selected_black_bg_color</item>
         <item name="item_spotlighted_bg_color">@color/item_selected_black_bg_color</item>
-        <item name="snackbar_bg_color">@color/dark_theme_status_bar</item>
-        <item name="text_disabled_color">#60ffffff</item>
-        <item name="text_error_color">@color/red_200</item>
-        <item name="text_highlighted_color">@color/white_text_primary_color</item>
+
         <item name="text_primary_color">@color/white_text_primary_color</item>
         <item name="text_secondary_color">@color/white_text_secondary_color</item>
+        <item name="text_highlighted_color">@color/white_text_primary_color</item>
+        <item name="text_disabled_color">#60ffffff</item>
+        <item name="text_error_color">@color/red_200</item>
     </style>
 
     <style name="FontSize"/>

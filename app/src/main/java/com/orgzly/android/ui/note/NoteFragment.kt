@@ -365,7 +365,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 handleActionItemClick(menuItem)
             }
 
-            requireActivity().setupSearchView(menu)
+            // requireActivity().setupSearchView(menu)
         }
 
         // binding.fab.hide()
