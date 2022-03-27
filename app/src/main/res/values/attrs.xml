@@ -59,9 +59,6 @@
         <attr name="item_selected_bg_color" format="color" />
         <attr name="item_spotlighted_bg_color" format="color" />
         <attr name="snackbar_bg_color" format="color"/>
-        <attr name="swipe_label_bg_color" format="color"/>
-        <attr name="swipe_label_border_color" format="color"/>
-        <attr name="swipe_label_text_color" format="color"/>
         <attr name="text_disabled_color" format="color"/>
         <attr name="text_error_color" format="color"/>
         <attr name="text_highlighted_color" format="color"/>

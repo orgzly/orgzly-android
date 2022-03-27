@@ -164,14 +164,6 @@ class BookFragment :
                     }
                 }
             }))
-
-//            val itemTouchHelper = NoteItemTouchHelper(true, object : NoteItemTouchHelper.Listener {
-//                override fun onSwiped(viewHolder: NoteItemViewHolder, direction: Int) {
-//                    listener?.onNoteOpen(viewHolder.itemId)
-//                }
-//            })
-//
-//            itemTouchHelper.attachToRecyclerView(rv)
         }
 
         binding.swipeContainer.setup()

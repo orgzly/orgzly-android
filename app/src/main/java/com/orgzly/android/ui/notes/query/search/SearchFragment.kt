@@ -103,14 +103,6 @@ class SearchFragment :
                     }
                 }
             }))
-
-//            val itemTouchHelper = NoteItemTouchHelper(false, object : NoteItemTouchHelper.Listener {
-//                override fun onSwiped(viewHolder: NoteItemViewHolder, direction: Int) {
-//                    listener?.onNoteFocusInBookRequest(viewHolder.itemId)
-//                }
-//            })
-//
-//            itemTouchHelper.attachToRecyclerView(rv)
         }
 
         binding.swipeContainer.setup()

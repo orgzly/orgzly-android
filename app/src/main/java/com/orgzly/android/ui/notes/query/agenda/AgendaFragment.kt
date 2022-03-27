@@ -105,19 +105,6 @@ class AgendaFragment :
                     }
                 }
             }))
-
-//            val itemTouchHelper = NoteItemTouchHelper(false, object : NoteItemTouchHelper.Listener {
-//                override fun onSwiped(viewHolder: NoteItemViewHolder, direction: Int) {
-//                    val dbId = item2databaseIds[viewHolder.itemId]
-//                    if (dbId != null) {
-//                        listener?.onNoteFocusInBookRequest(dbId)
-//                    } else {
-//                        // Divider
-//                    }
-//                }
-//            })
-//
-//            itemTouchHelper.attachToRecyclerView(rv)
         }
 
         binding.swipeContainer.setup()

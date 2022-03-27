@@ -296,9 +296,6 @@
         <item name="item_selected_bg_color">@color/item_selected_light_bg_color</item>
         <item name="item_spotlighted_bg_color">@color/item_selected_light_bg_color</item>
         <item name="snackbar_bg_color">#323232</item> <!-- Default color -->
-        <item name="swipe_label_bg_color">@color/grey_100</item>
-        <item name="swipe_label_border_color">@color/grey_200</item>
-        <item name="swipe_label_text_color">@color/dark_text_primary_color</item>
         <item name="text_disabled_color">@color/dark_text_disabled_color</item>
         <item name="text_error_color">@color/red_900</item>
         <item name="text_highlighted_color">@color/black</item>
@@ -331,9 +328,6 @@
         <item name="item_selected_bg_color">@color/item_selected_dark_bg_color</item>
         <item name="item_spotlighted_bg_color">@color/item_selected_dark_bg_color</item>
         <item name="snackbar_bg_color">@color/dark_theme_app_bar</item>
-        <item name="swipe_label_bg_color">@color/grey_900</item>
-        <item name="swipe_label_border_color">@color/grey_700</item>
-        <item name="swipe_label_text_color">@color/white_text_primary_color</item>
         <item name="text_disabled_color">#60ffffff</item>
         <item name="text_error_color">@color/red_200</item>
         <item name="text_highlighted_color">@color/white_text_primary_color</item>
@@ -366,9 +360,6 @@
         <item name="item_selected_bg_color">@color/item_selected_black_bg_color</item>
         <item name="item_spotlighted_bg_color">@color/item_selected_black_bg_color</item>
         <item name="snackbar_bg_color">@color/dark_theme_status_bar</item>
-        <item name="swipe_label_bg_color">#1cffffff</item>
-        <item name="swipe_label_border_color">#33FFFFFF</item>
-        <item name="swipe_label_text_color">@color/white_text_primary_color</item>
         <item name="text_disabled_color">#60ffffff</item>
         <item name="text_error_color">@color/red_200</item>
         <item name="text_highlighted_color">@color/white_text_primary_color</item>
