@@ -38,6 +38,7 @@ import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
+import com.orgzly.android.ui.main.setupSearchView
 import com.orgzly.android.ui.repos.ReposActivity
 import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.util.ActivityUtils
@@ -207,7 +208,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
                     true
                 }
 
-                (requireActivity() as? MainActivity)?.setupSearchView(menu) // FIXME
+                requireActivity().setupSearchView(menu)
             }
 
             binding.fab.run {

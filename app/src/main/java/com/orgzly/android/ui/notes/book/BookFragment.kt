@@ -7,7 +7,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,11 +22,13 @@ import com.orgzly.android.db.NotesClipboard
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.ui.*
+import com.orgzly.android.ui.CommonActivity
+import com.orgzly.android.ui.NotePlace
+import com.orgzly.android.ui.Place
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
-import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
+import com.orgzly.android.ui.main.setupSearchView
 import com.orgzly.android.ui.notes.NoteItemViewHolder
 import com.orgzly.android.ui.notes.NotesFragment
 import com.orgzly.android.ui.notes.book.BookViewModel.Companion.APP_BAR_DEFAULT_MODE
@@ -581,7 +586,7 @@ class BookFragment :
                 true
             }
 
-            (requireActivity() as? MainActivity)?.setupSearchView(menu) // FIXME
+            requireActivity().setupSearchView(menu)
         }
 
         binding.fab.run {

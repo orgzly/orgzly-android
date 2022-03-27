@@ -23,8 +23,8 @@ import com.orgzly.android.db.entity.SavedSearch
 import com.orgzly.android.savedsearch.FileSavedSearchStore
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.drawer.DrawerItem
-import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
+import com.orgzly.android.ui.main.setupSearchView
 import com.orgzly.android.ui.savedsearches.SavedSearchesViewModel.Companion.APP_BAR_DEFAULT_MODE
 import com.orgzly.android.ui.savedsearches.SavedSearchesViewModel.Companion.APP_BAR_SELECTION_MODE
 import com.orgzly.android.ui.showSnackbar
@@ -140,7 +140,7 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
                 true
             }
 
-            (requireActivity() as? MainActivity)?.setupSearchView(menu) // FIXME
+            requireActivity().setupSearchView(menu)
         }
 
         viewAdapter.getSelection().clear()

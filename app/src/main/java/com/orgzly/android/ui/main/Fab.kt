@@ -4,7 +4,7 @@ import androidx.fragment.app.FragmentActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.orgzly.R
 
-object MainFab {
+object Fab {
     private fun fab(activity: FragmentActivity): FloatingActionButton? {
         return activity.findViewById(R.id.fab)
     }

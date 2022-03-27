@@ -548,75 +548,6 @@ public class MainActivity extends CommonActivity
         bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_SETTINGS));
     }
 
-    /**
-     * SearchView setup and query text listeners.
-     * TODO: http://developer.android.com/training/search/setup.html
-     */
-    public void setupSearchView(Menu menu) {
-        final MenuItem searchItem = menu.findItem(R.id.search_view);
-
-        // Hide FAB while searching
-        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                MainFab.hide(MainActivity.this);
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                MainFab.show(MainActivity.this);
-                return true;
-            }
-        });
-
-        final SearchView searchView = (SearchView) searchItem.getActionView();
-
-        searchView.setQueryHint(getString(R.string.search_hint));
-
-        /* When user starts the search, fill the search box with text depending on current fragment. */
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /* Make search as wide as possible. */
-                ViewGroup.LayoutParams layoutParams = searchView.getLayoutParams();
-                layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-
-                /* For Query fragment, fill the box with full query. */
-                String q = DisplayManager.getDisplayedQuery(getSupportFragmentManager());
-                if (q != null) {
-                    searchView.setQuery(q + " ", false);
-
-                } else {
-                    /* If searching from book, add book name to query. */
-                    Book book = getActiveFragmentBook();
-                    if (book != null) {
-                        DottedQueryBuilder builder = new DottedQueryBuilder();
-                        String query = builder.build(new Query(new Condition.InBook(book.getName())));
-                        searchView.setQuery(query + " ", false);
-                    }
-                }
-            }
-        });
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextChange(String str) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String str) {
-                /* Close search. */
-                searchItem.collapseActionView();
-
-                DisplayManager.displayQuery(getSupportFragmentManager(), str.trim());
-
-                return true;
-            }
-        });
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -792,17 +723,6 @@ public class MainActivity extends CommonActivity
     @Override
     public void onBookPrefaceEditCancelRequest() {
         popBackStackAndCloseKeyboard();
-    }
-
-    private Book getActiveFragmentBook() {
-        Fragment f = getSupportFragmentManager().findFragmentByTag(BookFragment.FRAGMENT_TAG);
-
-        if (f != null && f.isVisible()) {
-            BookFragment bookFragment = (BookFragment) f;
-            return bookFragment.getCurrentBook();
-        }
-
-        return null;
     }
 
     // TODO: Sync when action mode is destroyed

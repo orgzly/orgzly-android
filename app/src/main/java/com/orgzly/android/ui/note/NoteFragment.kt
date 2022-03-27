@@ -33,6 +33,7 @@ import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
+import com.orgzly.android.ui.main.setupSearchView
 import com.orgzly.android.ui.note.NoteViewModel.Companion.APP_BAR_DEFAULT_MODE
 import com.orgzly.android.ui.note.NoteViewModel.Companion.APP_BAR_EDIT_MODE
 import com.orgzly.android.ui.notes.book.BookFragment
@@ -332,7 +333,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 handleActionItemClick(menuItem)
             }
 
-            (requireActivity() as? MainActivity)?.setupSearchView(menu) // FIXME
+            requireActivity().setupSearchView(menu)
         }
 
         // binding.fab.hide()
@@ -364,7 +365,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 handleActionItemClick(menuItem)
             }
 
-            (requireActivity() as? MainActivity)?.setupSearchView(menu) // FIXME
+            requireActivity().setupSearchView(menu)
         }
 
         // binding.fab.hide()

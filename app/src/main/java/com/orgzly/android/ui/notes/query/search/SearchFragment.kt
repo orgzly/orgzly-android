@@ -14,10 +14,9 @@ import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.ui.AppBar
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
-import com.orgzly.android.ui.main.MainActivity
+import com.orgzly.android.ui.main.setupSearchView
 import com.orgzly.android.ui.notes.NoteItemViewHolder
 import com.orgzly.android.ui.notes.query.QueryFragment
 import com.orgzly.android.ui.notes.query.QueryViewModel
@@ -148,7 +147,7 @@ class SearchFragment :
                 true
             }
 
-            (requireActivity() as? MainActivity)?.setupSearchView(menu) // FIXME
+            requireActivity().setupSearchView(menu)
         }
     }
 
