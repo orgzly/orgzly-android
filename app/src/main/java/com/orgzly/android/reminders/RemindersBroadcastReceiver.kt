@@ -111,18 +111,22 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
 
         if (notes.isNotEmpty()) {
             // Schedule only the first upcoming time
-            val firstNote = notes[0]
+            val firstNote = notes.first()
 
-            // Schedule *in* exactMs
-            var inMs = firstNote.runTime.millis - now.millis
+            val title = firstNote.payload.title
+            val runAt = firstNote.runTime.millis
+            val hasTime = firstNote.payload.orgDateTime.hasTime()
+
+            // Schedule in this many milliseconds
+            var inMs = runAt - now.millis
             if (inMs < 0) {
                 inMs = 1
             }
 
             RemindersScheduler.cancelAll(context)
-            RemindersScheduler.scheduleReminder(context, inMs)
+            RemindersScheduler.scheduleReminder(context, inMs, hasTime)
 
-            logForDebuggingScheduled(inMs, firstNote.payload.title)
+            logForDebuggingScheduled(inMs, title)
 
         } else {
             logAction("No notes found")

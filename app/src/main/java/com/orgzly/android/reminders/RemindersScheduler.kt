@@ -16,25 +16,25 @@ import com.orgzly.android.util.LogUtils
 import org.joda.time.DateTime
 
 object RemindersScheduler {
-    fun notifyDataSetChanged(context: Context) {
-        context.sendBroadcast(dataSetChangedIntent(context))
-    }
-
-    fun scheduleReminder(context: Context, inMs: Long) {
+    fun scheduleReminder(context: Context, inMs: Long, hasTime: Boolean) {
         val intent = reminderTriggeredIntent(context)
-        schedule(context, intent, inMs)
+        schedule(context, intent, inMs, hasTime)
     }
 
     @JvmStatic
-    fun scheduleSnoozeEnd(context: Context, noteId: Long, noteTimeType: Int, timestamp: Long) {
+    fun scheduleSnoozeEnd(context: Context, noteId: Long, noteTimeType: Int, timestamp: Long, hasTime: Boolean) {
         val (inMs, newRunTime) = snoozeEndInMs(context, timestamp) ?: return
         val intent = snoozeEndedIntent(context, noteId, noteTimeType, newRunTime)
-        schedule(context, intent, inMs)
+        schedule(context, intent, inMs, hasTime)
     }
 
     fun cancelAll(context: Context) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
         alarmManager?.cancel(reminderTriggeredIntent(context))
+    }
+
+    fun notifyDataSetChanged(context: Context) {
+        context.sendBroadcast(dataSetChangedIntent(context))
     }
 
     private fun dataSetChangedIntent(context: Context): Intent {
@@ -63,14 +63,14 @@ object RemindersScheduler {
         }
     }
 
-    private fun schedule(context: Context, intent: PendingIntent, inMs: Long) {
+    private fun schedule(context: Context, intent: PendingIntent, inMs: Long, hasTime: Boolean) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
 
         if (alarmManager != null) {
-            val wakeUpDevice = true // AppPreferences.(context)
-
-            if (wakeUpDevice) {
-                // Doesn't always immediately show notifications
+            // Use alarm clock when time part is specified
+            // TODO: AppPreferences.useAlarmClockForReminders(context)
+            if (hasTime) {
+                // Doesn't always immediately show notifications?
                 scheduleAlarmClock(alarmManager, intent, inMs)
             } else {
                 // Does not trigger while dozing
