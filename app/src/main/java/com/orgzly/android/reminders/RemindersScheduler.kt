@@ -92,7 +92,7 @@ object RemindersScheduler {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val info = AlarmManager.AlarmClockInfo(System.currentTimeMillis() + inMs, null)
             alarmManager.setAlarmClock(info, intent)
-            log("setAlarmClock", inMs)
+            logScheduled("setAlarmClock", inMs)
 
         } else {
             scheduleExact(alarmManager, intent, inMs)
@@ -118,18 +118,18 @@ object RemindersScheduler {
                 AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime() + inMs,
                 intent)
-            log("setExact", inMs)
+            logScheduled("setExact", inMs)
 
         } else {
             alarmManager.set(
                 AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime() + inMs,
                 intent)
-            log("set", inMs)
+            logScheduled("set", inMs)
         }
     }
 
-    private fun log(s: String, inMs: Long) {
+    private fun logScheduled(s: String, inMs: Long) {
         if (BuildConfig.LOG_DEBUG) {
             val dateTime = DateTime(System.currentTimeMillis() + inMs).toString()
             LogUtils.d(TAG, "$s in $inMs ms ($dateTime) on API ${Build.VERSION.SDK_INT}")

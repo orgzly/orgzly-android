@@ -2,8 +2,6 @@ package com.orgzly.android.ui.books
 
 import android.content.Context
 import android.graphics.Typeface
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.format.DateUtils
@@ -13,6 +11,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.R
 import com.orgzly.android.db.entity.Book
@@ -22,6 +22,7 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.Selection
+import com.orgzly.android.ui.util.goneUnless
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.databinding.ItemBookBinding
 
@@ -178,14 +179,10 @@ class BooksAdapter(
                 }
             }
 
-            if (bookDetails.detailDisplayed) {
-                binding.itemBookDetailsPadding.visibility = View.VISIBLE
-            } else {
-                binding.itemBookDetailsPadding.visibility = View.GONE
-            }
+            binding.itemBookDetailsPadding.goneUnless(bookDetails.detailDisplayed)
 
             /* If it's a dummy book - change opacity. */
-            itemView.alpha = if (item.book.isDummy == true) 0.4f else 1f
+            itemView.alpha = if (item.book.isDummy) 0.4f else 1f
 
             getSelection().setIsSelectedBackground(binding.itemBookContainer, item.book.id)
         }

@@ -171,10 +171,10 @@ class NoteFragmentTest : OrgzlyTest() {
     fun testStateToDoneShouldAddClosedTime() {
         onNoteInBook(2).perform(click())
 
-        onView(withId(R.id.closed_edit_text)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.closed_button)).check(matches(not(isDisplayed())))
         onView(withId(R.id.state_button)).perform(click())
         onView(withText("DONE")).perform(click())
-        onView(withId(R.id.closed_edit_text))
+        onView(withId(R.id.closed_button))
                 .check(matches(allOf(withText(startsWith(currentUserDate())), isDisplayed())))
     }
 
@@ -199,7 +199,7 @@ class NoteFragmentTest : OrgzlyTest() {
         onView(withId(R.id.state_button)).check(matches(withText("")))
         onView(withId(R.id.scheduled_button))
                 .check(matches(allOf(withText(userDateTime("<2015-01-11 Sun .+1d/2d>")), isDisplayed())))
-        onView(withId(R.id.closed_edit_text)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.closed_button)).check(matches(not(isDisplayed())))
 
         onView(withId(R.id.state_button)).perform(click())
         onView(withText("DONE")).perform(click())
@@ -207,7 +207,7 @@ class NoteFragmentTest : OrgzlyTest() {
         onView(withId(R.id.state_button)).check(matches(withText("")))
         onView(withId(R.id.scheduled_button))
                 .check(matches(not(withText(userDateTime("<2015-01-11 Sun .+1d/2d>")))))
-        onView(withId(R.id.closed_edit_text)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.closed_button)).check(matches(not(isDisplayed())))
     }
 
     @Test
@@ -246,7 +246,7 @@ class NoteFragmentTest : OrgzlyTest() {
     @Test
     fun testClosedTimeInNoteFragmentIsSameAsInList() {
         onNoteInBook(5).perform(click())
-        onView(withId(R.id.closed_edit_text))
+        onView(withId(R.id.closed_button))
                 .check(matches(allOf(withText(userDateTime("[2014-01-01 Wed 20:07]")), isDisplayed())))
     }
 
@@ -330,11 +330,11 @@ class NoteFragmentTest : OrgzlyTest() {
     @Test
     fun testRemovingDoneStateRemovesClosedTime() {
         onNoteInBook(5).perform(click())
-        onView(withId(R.id.closed_edit_text))
+        onView(withId(R.id.closed_button))
                 .check(matches(allOf(withText(userDateTime("[2014-01-01 Wed 20:07]")), isDisplayed())))
         onView(withId(R.id.state_button)).perform(click())
         onView(withText(R.string.clear)).perform(click())
-        onView(withId(R.id.closed_edit_text)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.closed_button)).check(matches(not(isDisplayed())))
     }
 
     @Test

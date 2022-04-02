@@ -15,7 +15,6 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
-import androidx.annotation.StringRes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -39,9 +38,7 @@ import com.orgzly.android.ui.note.NoteViewModel.Companion.APP_BAR_EDIT_MODE
 import com.orgzly.android.ui.notes.book.BookFragment
 import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.share.ShareActivity
-import com.orgzly.android.ui.util.ActivityUtils
-import com.orgzly.android.ui.util.removeBackgroundKeepPadding
-import com.orgzly.android.ui.util.styledAttributes
+import com.orgzly.android.ui.util.*
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.SpaceTokenizer
 import com.orgzly.android.util.UserTimeFormatter
@@ -227,7 +224,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         binding.deadlineButton.setOnClickListener(this)
         binding.deadlineRemove.setOnClickListener(this)
 
-        binding.closedEditText.setOnClickListener(this)
+        binding.closedButton.setOnClickListener(this)
         binding.closedRemove.setOnClickListener(this)
 
         binding.bodyView.addTextChangedListener(object : TextWatcher {
@@ -434,20 +431,18 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     }
 
     private fun setContentFoldState(isFolded: Boolean) {
-        binding.contentViews.visibility = visibleOrGone(!isFolded)
-        binding.contentHeaderUpIcon.visibility = visibleOrGone(!isFolded)
-        binding.contentHeaderDownIcon.visibility = visibleOrGone(isFolded)
-        // binding.contentHeaderText.visibility = if (isFolded) View.VISIBLE else View.INVISIBLE
+        binding.contentViews.goneIf(isFolded)
+        binding.contentHeaderUpIcon.goneIf(isFolded)
+        binding.contentHeaderDownIcon.goneUnless(isFolded)
+        // binding.contentHeaderText.invisibleUnless(isFolded)
     }
 
     private fun setMetadataFoldState(isFolded: Boolean) {
-        binding.metadata.visibility = visibleOrGone(!isFolded)
-        binding.metadataHeaderUpIcon.visibility = visibleOrGone(!isFolded)
-        binding.metadataHeaderDownIcon.visibility = visibleOrGone(isFolded)
-        // binding.metadataHeaderText.visibility = if (isFolded) View.VISIBLE else View.INVISIBLE
+        binding.metadata.goneIf(isFolded)
+        binding.metadataHeaderUpIcon.goneIf(isFolded)
+        binding.metadataHeaderDownIcon.goneUnless(isFolded)
+        // binding.metadataHeaderText.invisibleUnless(isFolded)
     }
-
-    private fun visibleOrGone(visible: Boolean) = if (visible) View.VISIBLE else View.GONE
 
     private fun setupObservers() {
         viewModel.noteCreatedEvent.observe(viewLifecycleOwner, Observer { note ->
@@ -624,6 +619,16 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         val name = propView.findViewById<EditText>(R.id.name)
         val value = propView.findViewById<EditText>(R.id.value)
         val delete = propView.findViewById<View>(R.id.delete)
+
+        // Last property (this one) needs no delete button
+        delete.visibility = View.INVISIBLE
+
+        // Second to last property can now have its delete button
+        if (binding.propertiesContainer.childCount > 1) {
+            binding.propertiesContainer
+                .getChildAt(binding.propertiesContainer.childCount - 2)
+                .findViewById<View>(R.id.delete).visibility = View.VISIBLE
+        }
 
         if (propName != null && propValue != null) { // Existing property
             name.setText(propName)
@@ -834,30 +839,41 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
     private fun updateTimestampView(timeType: TimeType, range: OrgRange?) {
         when (timeType) {
-            TimeType.SCHEDULED -> if (range != null) {
-                binding.scheduledButton.text = mUserTimeFormatter.formatAll(range)
-            } else {
-                binding.scheduledButton.text = null
+            TimeType.SCHEDULED -> {
+                if (range != null) {
+                    binding.scheduledButton.text = mUserTimeFormatter.formatAll(range)
+                } else {
+                    binding.scheduledButton.text = null
+                }
+                binding.scheduledRemove.invisibleUnless(!binding.scheduledButton.text.isNullOrEmpty())
             }
 
-            TimeType.DEADLINE -> if (range != null) {
-                binding.deadlineButton.text = mUserTimeFormatter.formatAll(range)
-                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "deadline button set to ${binding.deadlineButton.text}")
-            } else {
-                binding.deadlineButton.text = null
+            TimeType.DEADLINE -> {
+                if (range != null) {
+                    binding.deadlineButton.text = mUserTimeFormatter.formatAll(range)
+                    if (BuildConfig.LOG_DEBUG) LogUtils.d(
+                        TAG,
+                        "deadline button set to ${binding.deadlineButton.text}"
+                    )
+                } else {
+                    binding.deadlineButton.text = null
+                }
+                binding.deadlineRemove.invisibleUnless(!binding.deadlineButton.text.isNullOrEmpty())
             }
 
-            TimeType.CLOSED ->
+            TimeType.CLOSED -> {
                 /*
                  * Do not display CLOSED button if it's not set.
                  * It will be updated on state change.
                  */
                 if (range != null) {
-                    binding.closedEditText.text = mUserTimeFormatter.formatAll(range)
+                    binding.closedButton.text = mUserTimeFormatter.formatAll(range)
                     binding.closedTimeContainer.visibility = View.VISIBLE
                 } else {
                     binding.closedTimeContainer.visibility = View.GONE
                 }
+                binding.closedRemove.invisibleUnless(!binding.closedButton.text.isNullOrEmpty())
+            }
 
             else -> { }
         }
@@ -971,9 +987,9 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             }
 
             /* Setting closed time. */
-            R.id.closed_edit_text ->
+            R.id.closed_button ->
                 f = TimestampDialogFragment.getInstance(
-                    R.id.closed_edit_text,
+                    R.id.closed_button,
                     TimeType.CLOSED,
                     emptySet(), // Unused
                     OrgRange.parseOrNull(viewModel.notePayload?.closed)?.startTime)
@@ -1025,7 +1041,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 viewModel.updatePayloadDeadlineTime(range)
             }
 
-            R.id.closed_edit_text -> {
+            R.id.closed_button -> {
                 updateTimestampView(TimeType.CLOSED, range)
                 viewModel.updatePayloadClosedTime(range)
             }
@@ -1081,7 +1097,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                     || "selected" == visibility && name != null && selectedMetadata.contains(name)
                     || alwaysShowSet && isSet)
 
-            container.visibility = if (isVisible) View.VISIBLE else View.GONE
+            container.goneUnless(isVisible)
         }
     }
 
@@ -1200,16 +1216,18 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     }
 
     private fun setStateView(state: String?) {
-        this.binding.stateButton.text =
+        binding.stateButton.text =
             if (state == null || NoteStates.NO_STATE_KEYWORD == state) {
                 null
             } else {
                 state
             }
+        binding.stateRemove.invisibleUnless(!binding.stateButton.text.isNullOrEmpty())
     }
 
     private fun setPriorityView(priority: String?) {
-        this.binding.priorityButton.text = priority
+        binding.priorityButton.text = priority
+        binding.priorityRemove.invisibleUnless(!binding.priorityButton.text.isNullOrEmpty())
     }
 
     /**

@@ -19,6 +19,7 @@ import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.ui.Breadcrumbs
 import com.orgzly.android.ui.showSnackbar
+import com.orgzly.android.ui.util.invisibleIf
 import com.orgzly.android.usecase.NoteRefile
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.DialogRefileBinding
@@ -118,11 +119,7 @@ class RefileFragment : DialogFragment() {
             adapter.submitList(list)
 
             // Hide refile-here button in notebook list
-            if (breadcrumbs.size == 1) {
-                refileHereButton.visibility = View.INVISIBLE
-            } else {
-                refileHereButton.visibility = View.VISIBLE
-            }
+            refileHereButton.invisibleIf(breadcrumbs.size == 1)
 
             // Update and scroll breadcrumbs to the end
             binding.dialogRefileBreadcrumbs.text = generateBreadcrumbs(breadcrumbs)

@@ -299,7 +299,7 @@
                             android:src="?attr/ic_outline_check_circle_24dp"
                             android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
-                            android:id="@+id/closed_edit_text"
+                            android:id="@+id/closed_button"
                             style="@style/NoteFragmentListItemSpinnerButton"
                             android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
                             android:hint="@string/closed_button_hint"/>

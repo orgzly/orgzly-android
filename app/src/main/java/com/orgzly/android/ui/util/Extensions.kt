@@ -64,3 +64,15 @@ fun View.removeBackgroundKeepPadding() {
 
     ViewCompat.setPaddingRelative(this, paddingStart, paddingTop, paddingEnd, paddingBottom)
 }
+
+fun View.goneIf(condition: Boolean) {
+    visibility = if (condition) View.GONE else View.VISIBLE
+}
+
+fun View.goneUnless(condition: Boolean) = goneIf(!condition)
+
+fun View.invisibleIf(condition: Boolean) {
+    visibility = if (condition) View.INVISIBLE else View.VISIBLE
+}
+
+fun View.invisibleUnless(condition: Boolean) = invisibleIf(!condition)
