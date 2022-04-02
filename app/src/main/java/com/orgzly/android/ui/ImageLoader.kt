@@ -40,7 +40,7 @@ object ImageLoader {
                 // Storage permission has been granted
                 && AppPermissions.isGranted(context, AppPermissions.Usage.EXTERNAL_FILES_ACCESS)) {
             // Load the associated image for each FileLinkSpan
-            SpanUtils.forEachSpan(textWithMarkup.text as Spannable, FileLinkSpan::class.java) { span ->
+            SpanUtils.forEachSpan(textWithMarkup.text as Spannable, FileLinkSpan::class.java) { span, _, _ ->
                 loadImage(textWithMarkup, span)
             }
         }
