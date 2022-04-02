@@ -33,7 +33,6 @@
     <dimen name="bullet_total_size">16dp</dimen>
 
     <dimen name="content_left_margin_from_icon">32dp</dimen>
-    <dimen name="padded_content_left_margin_from_icon">16dp</dimen>
 
     <dimen name="screen_edge">16dp</dimen>
     <dimen name="screen_edge_minus_2dp">14dp</dimen>
@@ -42,6 +41,7 @@
     <dimen name="space_between_content_areas">8dp</dimen>
 
     <dimen name="fragment_note_field_min_width">200dp</dimen>
+    <dimen name="fragment_note_icon_margin">24dp</dimen>
 
     <dimen name="widget_title_text_size_14">14sp</dimen>
     <dimen name="widget_post_title_text_size_14">12sp</dimen>

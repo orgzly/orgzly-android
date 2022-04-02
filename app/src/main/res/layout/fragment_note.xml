@@ -131,8 +131,8 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/screen_edge"
-                        android:layout_marginStart="@dimen/screen_edge"
+                        android:layout_marginLeft="@dimen/fragment_note_icon_margin"
+                        android:layout_marginStart="@dimen/fragment_note_icon_margin"
                         android:textSize="?attr/fragment_note_content_text_size"
                         android:textColor="?attr/text_secondary_color"
                         android:text=""/>
@@ -182,22 +182,22 @@
                             android:contentDescription="@string/tags"/>
 
                         <MultiAutoCompleteTextView
-                            android:id="@+id/tags"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
-                            android:layout_marginStart="@dimen/padded_content_left_margin_from_icon"
+                            android:id="@+id/tags_button"
+                            style="@style/NoteFragmentListItemSpinnerButton"
                             android:inputType="text"
-                            android:hint="@string/fragment_note_tags_hint"
-                            android:completionThreshold="1"
-                            android:freezesText="true"
-                            android:textAppearance="?android:attr/textAppearanceSmall" />
+                            android:hint="@string/tags"
+                            android:completionThreshold="0"
+                            android:freezesText="true" />
 
                         <ImageButton
-                            android:id="@+id/tags_button"
+                            android:id="@+id/tags_menu"
                             style="@style/NoteFragmentButton"
                             android:src="?attr/ic_more_horiz_24dp" />
+
+                        <ImageButton
+                            android:id="@+id/tags_remove"
+                            style="@style/NoteFragmentButton"
+                            android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
                     <!-- State -->
@@ -213,7 +213,6 @@
                         <TextView
                             android:id="@+id/state_button"
                             style="@style/NoteFragmentListItemSpinnerButton"
-                            android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
                             android:hint="@string/state"
                             tools:text="TODO"/>
                         <ImageButton
@@ -235,7 +234,6 @@
                         <TextView
                             android:id="@+id/priority_button"
                             style="@style/NoteFragmentListItemSpinnerButton"
-                            android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
                             android:hint="@string/priority"
                             tools:text="Priority A"/>
                         <ImageButton
@@ -257,7 +255,6 @@
                         <TextView
                             android:id="@+id/scheduled_button"
                             style="@style/NoteFragmentListItemSpinnerButton"
-                            android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
                             android:hint="@string/schedule_button_hint"/>
                         <ImageButton
                             android:id="@+id/scheduled_remove"
@@ -278,7 +275,6 @@
                         <TextView
                             android:id="@+id/deadline_button"
                             style="@style/NoteFragmentListItemSpinnerButton"
-                            android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
                             android:hint="@string/deadline_button_hint"
                             tools:text="@string/note_deadline_sample"/>
                         <ImageButton
@@ -301,7 +297,6 @@
                         <TextView
                             android:id="@+id/closed_button"
                             style="@style/NoteFragmentListItemSpinnerButton"
-                            android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
                             android:hint="@string/closed_button_hint"/>
                         <ImageButton
                             android:id="@+id/closed_remove"
@@ -346,8 +341,8 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/screen_edge"
-                            android:layout_marginStart="@dimen/screen_edge"
+                            android:layout_marginLeft="@dimen/fragment_note_icon_margin"
+                            android:layout_marginStart="@dimen/fragment_note_icon_margin"
                             android:textSize="?attr/fragment_note_content_text_size"
                             android:textColor="?attr/text_secondary_color"
                             android:text="" />

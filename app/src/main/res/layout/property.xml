@@ -13,14 +13,9 @@
 
     <EditText
         android:id="@+id/name"
+        style="@style/NoteFragmentListItemSpinnerButton"
         android:maxLines="1"
         android:inputType="text"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
-        android:layout_marginStart="@dimen/padded_content_left_margin_from_icon"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:hint="@string/property_name"
         android:saveEnabled="false"
         android:text=""/>
@@ -31,12 +26,11 @@
 
     <EditText
         android:id="@+id/value"
+        style="@style/NoteFragmentListItemSpinnerButton"
+        android:layout_marginLeft="0dp"
+        android:layout_marginStart="0dp"
         android:maxLines="1"
         android:inputType="text"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:hint="@string/property_value"
         android:saveEnabled="false"
         android:text=""/>

@@ -17,6 +17,7 @@ import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
@@ -189,26 +190,22 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         }
 
 
-        /* Hint causes minimum width - when tags' width is smaller then hint's, there is empty space. */
-        binding.tags.addTextChangedListener(object : TextWatcher {
+        // Hide remove button if there are no tags
+        binding.tagsButton.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                binding.tags.apply {
-                    if (!TextUtils.isEmpty(text.toString())) {
-                        hint = ""
-                    } else {
-                        setHint(R.string.fragment_note_tags_hint)
-                    }
-                }
+                binding.tagsRemove.goneIf(TextUtils.isEmpty(binding.tagsButton.text))
             }
 
             override fun afterTextChanged(s: Editable) {}
         })
 
-        binding.tagsButton.setOnClickListener {
-            binding.tags.showDropDown()
+        binding.tagsMenu.setOnClickListener {
+            binding.tagsButton.showDropDown()
         }
+
+        binding.tagsRemove.setOnClickListener(this)
 
         setupTagsViewAdapter()
 
@@ -584,10 +581,10 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         binding.titleView.setSourceText(payload.title)
 
         // Tags
-        if (!payload.tags.isEmpty()) {
-            binding.tags.setText(TextUtils.join(" ", payload.tags))
+        if (payload.tags.isNotEmpty()) {
+            binding.tagsButton.setText(TextUtils.join(" ", payload.tags))
         } else {
-            binding.tags.text = null
+            binding.tagsButton.text = null
         }
 
         // Times
@@ -707,7 +704,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         else
             binding.priorityButton.text.toString()
 
-        val tags = binding.tags.text.toString()
+        val tags = binding.tagsButton.text.toString()
             .split("\\s+".toRegex()).dropLastWhile { it.isEmpty() }
 
         viewModel.updatePayload(title, content, state, priority, tags, properties)
@@ -782,8 +779,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         viewModel.tags.observe(viewLifecycleOwner, Observer { tags ->
             context?.let {
                 val adapter = ArrayAdapter(it, R.layout.dropdown_item, tags)
-                binding.tags.setAdapter(adapter)
-                binding.tags.setTokenizer(SpaceTokenizer())
+                binding.tagsButton.setAdapter(adapter)
+                binding.tagsButton.setTokenizer(SpaceTokenizer())
             }
         })
     }
@@ -795,7 +792,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         sharedMainActivityViewModel.setCurrentFragment(FRAGMENT_TAG)
 
-        sharedMainActivityViewModel.lockDrawer();
+        sharedMainActivityViewModel.lockDrawer()
     }
 
     override fun onPause() {
@@ -806,7 +803,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         ActivityUtils.keepScreenOnClear(activity)
 
-        sharedMainActivityViewModel.unlockDrawer();
+        sharedMainActivityViewModel.unlockDrawer()
     }
 
     override fun onDestroyView() {
@@ -903,6 +900,10 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         when (view.id) {
             R.id.location_button -> {
                 viewModel.requestNoteBookChange()
+            }
+
+            R.id.tags_remove -> {
+                binding.tagsButton.text = null
             }
 
             R.id.state_button -> {
@@ -1056,7 +1057,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         setMetadataViewsVisibility(
             "tags",
             binding.tagsContainer,
-            !TextUtils.isEmpty(binding.tags.text))
+            !TextUtils.isEmpty(binding.tagsButton.text))
 
         setMetadataViewsVisibility(
             "state",

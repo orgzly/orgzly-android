@@ -503,13 +503,16 @@
         <item name="android:focusable">true</item>
     </style>
 
-    <style name="NoteFragmentListItemSpinnerButton" parent="Widget.AppCompat.Spinner.Underlined">
-        <item name="android:focusable">true</item>
-        <item name="android:layout_width">0dp</item>
+    <style name="NoteFragmentListItemSpinnerButton">
         <item name="android:layout_weight">1</item>
-        <item name="android:minWidth">@dimen/fragment_note_field_min_width</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:backgroundTint" tools:targetApi="lollipop">?attr/text_secondary_color</item>
+        <item name="android:minWidth">@dimen/fragment_note_field_min_width</item>
+        <item name="android:layout_marginLeft">@dimen/fragment_note_icon_margin</item>
+        <item name="android:layout_marginStart">@dimen/fragment_note_icon_margin</item>
+        <item name="android:focusable">true</item>
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:background">@null</item>
     </style>
 
     <style name="BookItemInfoIcon">
