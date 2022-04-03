@@ -53,7 +53,7 @@
 
     <dimen name="widget_padding">2dp</dimen>
 
-    <dimen name="bullet_margin">4dp</dimen>
+    <dimen name="bullet_margin">6dp</dimen>
 
     <!-- Duration of animation for opening, closing and switching a quick bar -->
     <integer name="quick_bar_animation_duration">150</integer>

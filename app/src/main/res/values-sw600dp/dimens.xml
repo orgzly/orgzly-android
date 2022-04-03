@@ -16,8 +16,6 @@
 
     <dimen name="widget_padding">4dp</dimen>
 
-    <dimen name="bullet_margin">6dp</dimen>
-
     <dimen name="fold_button_width">60dp</dimen>
 
     <!--
