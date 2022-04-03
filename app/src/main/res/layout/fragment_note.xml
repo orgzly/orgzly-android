@@ -54,8 +54,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="4dp"
-                            android:scrollbars="none"
-                            android:visibility="visible">
+                            android:scrollbars="none">
 
                             <TextView
                                 android:id="@+id/breadcrumbs_text"
@@ -74,11 +73,11 @@
                         <!-- Selectable notebook -->
                         <TextView
                             android:id="@+id/location_button"
-                            style="@style/NoteFragmentListItemSpinnerButton"
+                            android:layout_height="wrap_content"
                             android:layout_width="match_parent"
+                            android:padding="4dp"
                             android:textSize="?attr/fragment_note_content_text_size"
-                            tools:text="GTD"
-                            android:visibility="visible"/>
+                            tools:text="GTD" />
 
                         <!-- Title -->
                         <com.orgzly.android.ui.views.EditTextWithMarkup
