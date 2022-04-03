@@ -5,7 +5,7 @@ import android.text.style.ClickableSpan
 import android.view.View
 import com.orgzly.android.ui.views.TextViewWithMarkup
 
-class FileLinkSpan(val path: String) : ClickableSpan() {
+class FileLinkSpan(override val type: Int, val path: String, override val name: String?) : LinkSpan(type, path, name) {
     override fun onClick(widget: View) {
         if (widget is TextViewWithMarkup) {
             Handler().post { // Run after onClick to prevent Snackbar from closing immediately

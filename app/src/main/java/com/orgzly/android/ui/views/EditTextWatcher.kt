@@ -28,7 +28,7 @@ class EditTextWatcher: TextWatcher {
 
     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
         if (BuildConfig.LOG_DEBUG) {
-            LogUtils.d(TAG, "Within '$s', $count (count) characters beginning at"
+            LogUtils.d(TAG, "$count (count) characters beginning at"
                     + " $start (start) are about to be replaced by new text "
                     + "with length $after (after)")
         }
@@ -73,7 +73,7 @@ class EditTextWatcher: TextWatcher {
 
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
         if (BuildConfig.LOG_DEBUG) {
-            LogUtils.d(TAG, "Within '$s', the $count (count) characters beginning at "
+            LogUtils.d(TAG, "$count (count) characters beginning at "
                     + " $start (start) have just replaced old text that had length $before (before)")
         }
 
@@ -87,8 +87,7 @@ class EditTextWatcher: TextWatcher {
     }
 
     override fun afterTextChanged(s: Editable) {
-        if (BuildConfig.LOG_DEBUG)
-            LogUtils.d(TAG, "Somewhere within '$s', the text has been changed")
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         currentListItem?.let {
             // Remove bullet if content is empty

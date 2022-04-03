@@ -56,7 +56,11 @@ object OrgFormatter {
 
     private const val FLAGS = Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
 
-    data class LinkParts(val all: MatchGroup, val link: MatchGroup, val name: MatchGroup)
+    data class MatchLink(
+        val all: MatchGroup,
+        val url: MatchGroup,
+        val name: MatchGroup,
+        val type: Int)
 
     private data class SpanRegion(
             val start: Int,
@@ -107,18 +111,18 @@ object OrgFormatter {
             LINK_REGEX.findAll(ssb).forEach { match ->
                 val spans = mutableListOf<Any>()
 
-                val link = getLinkFromGroups(match.groups)
+                val matchLink = getLinkFromGroups(match.groups)
 
-                createSpanForLink(config, link.link.value)?.let { span ->
+                createSpanForLink(config, matchLink)?.let { span ->
                     spans.add(span)
                 }
 
                 // Additional spans could be added here
 
                 val spanRegion = SpanRegion(
-                        link.all.range.first,
-                        link.all.range.last + 1,
-                        link.name.value,
+                        matchLink.all.range.first,
+                        matchLink.all.range.last + 1,
+                        matchLink.name.value,
                         spans)
 
                 result.add(spanRegion)
@@ -126,47 +130,60 @@ object OrgFormatter {
         }
     }
 
-    private fun getLinkFromGroups(groups: MatchGroupCollection): LinkParts {
+    private fun getLinkFromGroups(groups: MatchGroupCollection): MatchLink {
         return when {
-            groups[1] != null ->
-                // http://link.com
-                LinkParts(all = groups[1]!!, link = groups[1]!!, name = groups[1]!!)
+            groups[1] != null -> // http://link.com
+                MatchLink(
+                    all = groups[1]!!,
+                    url = groups[1]!!,
+                    name = groups[1]!!,
+                    type = LinkSpan.TYPE_NO_BRACKETS)
 
-            groups[4] != null ->
-                // [[http://link.com][name]]
-                LinkParts(all = groups[2]!!, link = groups[3]!!, name = groups[4]!!)
+            groups[4] != null -> // [[http://link.com][name]]
+                MatchLink(
+                    all = groups[2]!!,
+                    url = groups[3]!!,
+                    name = groups[4]!!,
+                    type = LinkSpan.TYPE_BRACKETS_WITH_NAME)
 
-            groups[2] != null ->
-                // [[http://link.com]]
-                LinkParts(all = groups[2]!!, link = groups[3]!!, name = groups[3]!!)
+            groups[2] != null -> // [[http://link.com]]
+                MatchLink(
+                    all = groups[2]!!,
+                    url = groups[3]!!,
+                    name = groups[3]!!,
+                    type = LinkSpan.TYPE_BRACKETS)
 
             else -> throw IllegalStateException()
         }
     }
 
-    private fun createSpanForLink(config: Config, link: String): Any? {
+    private fun createSpanForLink(config: Config, matchLink: MatchLink): Any? {
         if (!config.linkify) {
             return null
         }
 
+        val linkType = matchLink.type
+        val link = matchLink.url.value
+        val name = matchLink.name.value
+
         return when {
             link.startsWith("file:") ->
-                FileLinkSpan(link.substring(5))
+                FileLinkSpan(linkType, link.substring(5), name)
 
             link.startsWith("id:") ->
-                IdLinkSpan(link.substring(3))
+                IdLinkSpan(linkType, link.substring(3), name)
 
             link.startsWith("#") ->
-                CustomIdLinkSpan(link.substring(1))
+                CustomIdLinkSpan(linkType, link.substring(1), name)
 
             link.matches("^(?:$SYSTEM_LINK_SCHEMES):.+".toRegex()) ->
-                URLSpan(link)
+                UrlLinkSpan(linkType, link, name)
 
             isFile(link) ->
-                FileLinkSpan(link)
+                FileLinkSpan(linkType, link, name)
 
             else ->
-                SearchLinkSpan(link)
+                SearchLinkSpan(linkType, link, name)
         }
     }
 

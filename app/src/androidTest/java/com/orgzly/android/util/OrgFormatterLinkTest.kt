@@ -1,8 +1,8 @@
 package com.orgzly.android.util
 
-import android.text.style.URLSpan
 import com.orgzly.android.ui.views.style.FileLinkSpan
 import com.orgzly.android.ui.views.style.IdLinkSpan
+import com.orgzly.android.ui.views.style.UrlLinkSpan
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.After
 import org.junit.Assert.assertThat
@@ -71,8 +71,8 @@ class OrgFormatterLinkTest(private val param: Parameter) : OrgFormatterTest() {
                 Parameter("id:foo", "id:foo", listOf(Span(0, 6, IdLinkSpan::class.java))),
                 Parameter("[[id:foo]]", "id:foo", listOf(Span(0, 6, IdLinkSpan::class.java))),
 
-                Parameter("mailto:a@b.com", "mailto:a@b.com", listOf(Span(0, 14, URLSpan::class.java))),
-                Parameter("[[mailto:a@b.com]]", "mailto:a@b.com", listOf(Span(0, 14, URLSpan::class.java))),
+                Parameter("mailto:a@b.com", "mailto:a@b.com", listOf(Span(0, 14, UrlLinkSpan::class.java))),
+                Parameter("[[mailto:a@b.com]]", "mailto:a@b.com", listOf(Span(0, 14, UrlLinkSpan::class.java))),
 
                 Parameter("[[id:123][[a] b]]", "[a] b", listOf(Span(0, 5, IdLinkSpan::class.java))),
                 Parameter("[[id:123][[a] b]] [[./456][[c] d]]", "[a] b [c] d", listOf(Span(0, 5, IdLinkSpan::class.java), Span(6, 11, FileLinkSpan::class.java))),

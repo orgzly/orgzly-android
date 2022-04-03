@@ -1,9 +1,9 @@
 package com.orgzly.android.util;
 
 import android.text.SpannableStringBuilder;
-import android.text.style.URLSpan;
 
 import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.ui.views.style.UrlLinkSpan;
 
 import java.util.Arrays;
 
@@ -39,8 +39,8 @@ public class OrgFormatterTest extends OrgzlyTest {
                 spanItem.start = ssb.getSpanStart(span);
                 spanItem.end = ssb.getSpanEnd(span);
 
-                if (span instanceof URLSpan) {
-                    spanItem.url = ((URLSpan) span).getURL();
+                if (span instanceof UrlLinkSpan) {
+                    spanItem.url = ((UrlLinkSpan) span).getUrl();
                 }
 
                 foundSpans[i] = spanItem;
