@@ -4,21 +4,25 @@ package com.orgzly.android.util
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import com.google.android.material.snackbar.Snackbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.view.View
+import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.util.ActivityUtils
 
 object AppPermissions {
+    private val TAG = AppPermissions::class.java.name
+
     @JvmStatic
     fun isGrantedOrRequest(activity: CommonActivity, requestCode: Usage): Boolean {
         val permission = permissionForRequest(requestCode)
         val rationale = rationaleForRequest(requestCode)
 
-        if (!isGranted(activity, requestCode)) {
+        val grantedOrRequested = if (!isGranted(activity, requestCode)) {
             /* Should we show an explanation? */
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
                 val view = activity.findViewById(R.id.main_content) as View
@@ -28,20 +32,37 @@ object AppPermissions {
 
             } else {
                 /* No explanation needed -- request the permission. */
+                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, requestCode, permission, "Requesting...")
                 ActivityCompat.requestPermissions(activity, arrayOf(permission), requestCode.ordinal)
             }
 
-            return false
+            false
 
         } else {
-            return true
+            true
         }
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, requestCode, permission, grantedOrRequested)
+
+        return grantedOrRequested
     }
 
     @JvmStatic
     fun isGranted(context: Context, requestCode: Usage): Boolean {
         val permission = permissionForRequest(requestCode)
-        return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
+
+        // WRITE_EXTERNAL_STORAGE is unused in API 30 and later
+        if (permission == Manifest.permission.WRITE_EXTERNAL_STORAGE && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (BuildConfig.LOG_DEBUG)
+                LogUtils.d(TAG, requestCode, permission, "API " + Build.VERSION.SDK_INT + ", returning true")
+            return true
+        }
+
+        val isGranted = ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, requestCode, permission, isGranted)
+
+        return isGranted
     }
 
     /** Map request code to permission. */

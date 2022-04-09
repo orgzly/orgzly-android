@@ -73,7 +73,7 @@
     </plurals>
     <string name="no_notes_pasted">Nada para colar</string>
     <string name="fragment_note_title_hint">Título</string>
-    <string name="fragment_note_tags_hint" tools:ignore="typos">tag tag</string>
+    <string name="fragment_note_tags_hint" tools:ignore="typos">etiqueta</string>
     <string name="import_org_file">Importar arquivo Org</string>
     <string name="message_dropbox_unlinked">Desassociado do Dropbox</string>
     <string name="message_dropbox_linked">Vinculado com sucesso ao Dropbox</string>
@@ -347,6 +347,7 @@
     <string name="displayed_book_details_used_encoding">Codificação utilizada</string>
     <string name="displayed_book_details_last_action">Última ação</string>
     <string name="displayed_book_details_notes_count">Número de notas</string>
+    <string name="color_scheme_system">Sistema</string>
     <string name="color_scheme_light">Claro</string>
     <string name="color_scheme_dark">Escuro</string>
     <string name="color_scheme_black">Preto</string>
@@ -434,6 +435,7 @@
     <string name="list_widget_nothing_selected">Nenhuma pesquisa selecionada</string>
     <string name="auto_sync">Auto-sincronizar</string>
     <string name="auto_sync_experimental_summary">Usado apenas para repositórios locais</string>
+    <string name="auto_sync_summary">Não suportado para Dropbox</string>
     <string name="auto_sync_warning">Dependendo das opções que você escolher, a sincronização pode ser acionada com frequência. Se o notebook for modificado, todo o conteúdo será transferido do repositório. Certas ações podem ser atrasadas durante a sincronização em andamento.</string>
     <string name="pref_title_sync_after_note_create">Nota criada</string>
     <string name="pref_summary_sync_after_note_create">Sincronizar após criar uma nova nota</string>
@@ -563,4 +565,7 @@
     <string name="content">Content</string>
     <string name="prepend">Prepend</string>
     <string name="insert_new_note_at_beginning">Insert new note at beginning</string>
+    <string name="developer_options">Opções de programador</string>
+    <string name="git_repository_type">Tipo de repositório Git</string>
+    <string name="in_development">Em desenvolvimento</string>
 </resources>

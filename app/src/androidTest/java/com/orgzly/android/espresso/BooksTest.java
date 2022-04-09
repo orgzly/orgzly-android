@@ -1,24 +1,5 @@
 package com.orgzly.android.espresso;
 
-import android.app.Activity;
-import android.app.Instrumentation.ActivityResult;
-import android.content.Intent;
-
-import androidx.documentfile.provider.DocumentFile;
-import androidx.test.core.app.ActivityScenario;
-import androidx.test.espresso.intent.Intents;
-
-import com.orgzly.R;
-import com.orgzly.android.BookFormat;
-import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.ui.main.MainActivity;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import java.io.File;
-import java.io.IOException;
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -44,6 +25,29 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
+import static org.junit.Assume.assumeTrue;
+
+import android.app.Activity;
+import android.app.Instrumentation.ActivityResult;
+import android.content.Intent;
+
+import androidx.documentfile.provider.DocumentFile;
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.intent.Intents;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.uiautomator.UiDevice;
+
+import com.orgzly.R;
+import com.orgzly.android.BookFormat;
+import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.ui.main.MainActivity;
+
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
 
 public class BooksTest extends OrgzlyTest {
     @Before
@@ -130,15 +134,29 @@ public class BooksTest extends OrgzlyTest {
     }
 
     @Test
-    public void testExport() throws IOException {
-//        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//            testExportQ();
-//        } else {
-            testExportPreQ();
-//        }
+    @Ignore("Debugging")
+    public void testJustExport() {
+        onBook(0).perform(longClick());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.export)).perform(click());
+        UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).pressEnter();
     }
 
-    private void testExportQ() {
+    @Test
+    public void testCancelExportFileSelection() {
+        onBook(0).perform(longClick());
+        openContextualToolbarOverflowMenu();
+        onView(withText(R.string.export)).perform(click());
+        for (int i = 1; i < 10; i++) {
+            UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).pressBack();
+        }
+    }
+
+    @Test
+    public void testExportWithFakeResponse() {
+        // Only if DocumentsProvider is supported
+        assumeTrue(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT);
+
         onBook(0).perform(longClick());
         openContextualToolbarOverflowMenu();
 
@@ -166,7 +184,11 @@ public class BooksTest extends OrgzlyTest {
         Intents.release();
     }
 
-    private void testExportPreQ() throws IOException {
+    @Test
+    public void testExport() throws IOException {
+        // Older API versions, when file is saved in Download/
+        assumeTrue(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT);
+
         onBook(0).perform(longClick());
         openContextualToolbarOverflowMenu();
         onView(withText(R.string.export)).perform(click());

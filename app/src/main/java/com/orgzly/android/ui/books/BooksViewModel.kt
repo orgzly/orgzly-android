@@ -1,5 +1,7 @@
 package com.orgzly.android.ui.books
 
+import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.orgzly.BuildConfig
@@ -10,23 +12,25 @@ import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.SingleLiveEvent
-import com.orgzly.android.usecase.BookDelete
-import com.orgzly.android.usecase.BookRename
-import com.orgzly.android.usecase.UseCaseResult
-import com.orgzly.android.usecase.UseCaseRunner
+import com.orgzly.android.usecase.*
 import com.orgzly.android.util.LogUtils
+import java.io.File
+import java.io.OutputStream
+import androidx.documentfile.provider.DocumentFile
+import javax.inject.Inject
 
 
 class BooksViewModel(private val dataRepository: DataRepository) : CommonViewModel() {
     private val booksParams = MutableLiveData<String>()
 
-    val bookDeleteRequestEvent: SingleLiveEvent<BookView> = SingleLiveEvent()
+    // Book being operated on (deleted, renamed, etc.)
+    private var lastBook = MutableLiveData<Pair<Book, BookFormat>>()
 
+    val bookToDeleteEvent: SingleLiveEvent<BookView> = SingleLiveEvent()
     val bookDeletedEvent: SingleLiveEvent<UseCaseResult> = SingleLiveEvent()
-
-    val bookRenameRequestEvent: SingleLiveEvent<BookView> = SingleLiveEvent()
-
-    val bookExportRequestEvent: SingleLiveEvent<Pair<Book, BookFormat>> = SingleLiveEvent()
+    val bookToRenameEvent: SingleLiveEvent<BookView> = SingleLiveEvent()
+    val bookToExportEvent: SingleLiveEvent<Pair<Book, BookFormat>> = SingleLiveEvent()
+    val bookExportedEvent: SingleLiveEvent<String> = SingleLiveEvent()
 
     enum class ViewState {
         LOADING,
@@ -58,7 +62,7 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
 
     fun deleteBookRequest(bookId: Long) {
         App.EXECUTORS.diskIO().execute {
-            bookDeleteRequestEvent.postValue(dataRepository.getBookView(bookId))
+            bookToDeleteEvent.postValue(dataRepository.getBookView(bookId))
         }
     }
 
@@ -73,7 +77,7 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
 
     fun renameBookRequest(bookId: Long) {
         App.EXECUTORS.diskIO().execute {
-            bookRenameRequestEvent.postValue(dataRepository.getBookView(bookId))
+            bookToRenameEvent.postValue(dataRepository.getBookView(bookId))
         }
     }
 
@@ -85,11 +89,42 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
         }
     }
 
+    // User requested notebook export
     fun exportBookRequest(bookId: Long, format: BookFormat) {
         App.EXECUTORS.diskIO().execute {
             catchAndPostError {
                 val book = dataRepository.getBookOrThrow(bookId)
-                bookExportRequestEvent.postValue(book to format)
+                lastBook.postValue(Pair(book, format))
+                bookToExportEvent.postValue(Pair(book, format))
+            }
+        }
+    }
+
+    fun exportBook() {
+        val (book, format) = lastBook.value ?: return
+
+        App.EXECUTORS.diskIO().execute {
+            catchAndPostError {
+                val result = UseCaseRunner.run(BookExport(book.id, format))
+                val file = result.userData as File
+                bookExportedEvent.postValue(file.absolutePath)
+            }
+        }
+    }
+
+    fun exportBook(uri: Uri) {
+        val (book, format) = lastBook.value ?: return
+
+        App.EXECUTORS.diskIO().execute {
+            catchAndPostError {
+                App.getAppContext().contentResolver.openOutputStream(uri).let { stream ->
+                    if (stream != null) {
+                        UseCaseRunner.run(BookExportToUri(book.id, stream, format))
+                        bookExportedEvent.postValue(uri.toString())
+                    } else {
+                        errorEvent.postValue(Throwable("Failed to open output stream"))
+                    }
+                }
             }
         }
     }
