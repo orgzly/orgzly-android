@@ -72,7 +72,15 @@ public class GoogleDriveClient {
     }
 
     public boolean isLinked() {
-        return setService();
+        // Attempt to get the user's existing signed-in account.
+        // If the user is already signed in, the GoogleSignInAccount will be non-null.
+        final lastAccount = GoogleSignIn.getLastSignedInAccount(mContext);
+        if (lastAccount == null) {
+            return false;
+        } else {
+            setDriveService(lastAccount);
+            return true;
+        }
     }
 
     private void linkedOrThrow() throws IOException {
@@ -81,23 +89,20 @@ public class GoogleDriveClient {
         }
     }
 
-    public boolean setService() {
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
+    public void setDriveService(GoogleSignInAccount googleAccount) {
+        assert googleAccount != null;
         if (mDriveService == null) {
-            mGoogleAccount = GoogleSignIn.getLastSignedInAccount(mContext);
-            if (mGoogleAccount != null) {
-                // Use the authenticated account to sign in to the Drive service.
-                GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(mContext, Collections.singleton(DriveScopes.DRIVE));
-                credential.setSelectedAccount(mGoogleAccount.getAccount());
-                mDriveService = new Drive.Builder(AndroidHttp.newCompatibleTransport(),
-                                              new GsonFactory(),
-                                              credential)
-                    .setApplicationName("Orgzly")
-                    .build();
-            }
+            mGoogleAccount = googleAccount;
+            GoogleAccountCredential credential = GoogleAccountCredential
+                .usingOAuth2(mContext, Collections.singleton(DriveScopes.DRIVE));
+            credential.setSelectedAccount(mGoogleAccount.getAccount());
+            mDriveService = new Drive.Builder(AndroidHttp.newCompatibleTransport(),
+                                            new GsonFactory(),
+                                            credential)
+                .setApplicationName("Orgzly")
+                .build();
         }
-        return mDriveService != null;
+        assert mDriveService != null;
     }
 
     private String findId(String path) throws IOException {
@@ -368,5 +373,21 @@ public class GoogleDriveClient {
                 throw new IOException("Failed moving " + from + " to " + to + ": " + e.toString(), e);
             }
         }
+    }
+
+    public String createFolder() throws IOException {
+        // https://github.com/googleworkspace/android-samples/blob/master/drive/deprecation/app/src/main/java/com/google/android/gms/drive/sample/driveapimigration/DriveServiceHelper.java
+        File metadata = new File();
+        metadata.setName("Orgzly Files");
+        metadata.setMimeType("application/vnd.google-apps.folder");
+        File file = mDriveService
+            .files()
+            .create(fileMetadata)
+            .setFields("id")
+            .execute();
+        if (file == null) {
+            throw new IOException("Null result when requesting file creation")
+        }
+        return file.getId();
     }
 }

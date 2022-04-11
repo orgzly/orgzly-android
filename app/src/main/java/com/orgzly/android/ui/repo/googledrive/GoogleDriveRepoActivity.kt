@@ -82,6 +82,13 @@ class GoogleDriveRepoActivity : CommonActivity() {
             }
         }
 
+        /* TODO: Google Drive create folder button. */
+        binding.activityRepoGoogleDriveCreateFolderButton.setOnClickListener {
+            // TODO need a check to see if client is logged in; or hide the button when they're not
+            client.createFolder()
+            showSnackbar("Folder created")
+        }
+
         // binding.activityRepoGoogleDriveLinkButton.setOnLongClickListener {
         //     editAccessToken()
         //     true
