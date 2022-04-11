@@ -90,7 +90,7 @@ public class GoogleDriveClient {
                 // Use the authenticated account to sign in to the Drive service.
                 GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(mContext, Collections.singleton(DriveScopes.DRIVE));
                 credential.setSelectedAccount(mGoogleAccount.getAccount());
-                mDriveService = Drive.Builder(AndroidHttp.newCompatibleTransport(),
+                mDriveService = new Drive.Builder(AndroidHttp.newCompatibleTransport(),
                                               new GsonFactory(),
                                               credential)
                     .setApplicationName("Orgzly")
