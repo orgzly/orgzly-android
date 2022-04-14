@@ -111,6 +111,7 @@ class GoogleDriveRepoActivity : CommonActivity() {
 
         val factory = RepoViewModelFactory.getInstance(dataRepository, repoId)
 
+        // TODO https://stackoverflow.com/questions/57534730/as-viewmodelproviders-of-is-deprecated-how-should-i-create-object-of-viewmode
         viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel::class.java)
 
         if (viewModel.repoId != 0L) { // Editing existing
