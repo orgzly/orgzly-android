@@ -49,7 +49,22 @@
 
                 </LinearLayout>
 
+                <!-- Create new directory -->
+                <Button
+                    android:id="@+id/activity_repo_google_drive_create_directory_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/screen_edge"
+                    android:layout_marginLeft="@dimen/screen_edge"
+                    android:text="Create empty directory" />
+
                 <!-- Input. -->
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Create an empty directory using the button, move it to a preferred location in Google Drive, and enter the path to the directory. The app only has permission to access directories created using this button." />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/activity_repo_google_drive_directory_input_layout"
                     android:layout_width="match_parent"

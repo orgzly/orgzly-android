@@ -1,13 +1,20 @@
 package com.orgzly.android.repos;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.Task;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.FileContent;
@@ -16,24 +23,24 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
-
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.Scope;
 import com.orgzly.android.BookName;
 
 import java.io.BufferedOutputStream;
 // import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
-import android.util.Log;
+
 
 public class GoogleDriveClient {
     private static final String TAG = GoogleDriveClient.class.getName();
@@ -50,8 +57,19 @@ public class GoogleDriveClient {
     private final Context mContext;
     private final long repoId;
 
-    private GoogleSignInAccount mGoogleAccount;
-    private Drive mDriveService;
+    /**
+     * Note: technically, this is the Google Drive service, but we name it "client" for consistency
+     * with the Dropbox code.
+     */
+    private Drive googleDriveClient;
+
+    private boolean tryLinking = false;
+
+    // Used to launch a new activity
+    private static final int REQUEST_CODE_SIGN_IN = 1;
+
+    // Holds the authentication (Google Sign In) client
+    private GoogleSignInClient authClient;
 
     // Make static? Or maybe need to serialize or manage token.
     // SharedPreferences or SQLite
@@ -65,22 +83,37 @@ public class GoogleDriveClient {
         pathIds.put("", "root");
     }
 
+    /**
+     * Requires passing in Activity because it is used to create the authClient.
+     */
     public GoogleDriveClient(Context context, long id) {
         mContext = context;
 
         repoId = id;
+
+        createClient();
+    }
+
+    private void createClient() {
+        // If the user is already signed in, the GoogleSignInAccount will be non-null.
+        final GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(mContext);
+
+        if (account != null) {
+            googleDriveClient = getNewGoogleDriveClient(account);
+        }
+    }
+
+    private GoogleSignInClient createAuthClient(Activity activity) {
+        var signInOptions = new GoogleSignInOptions.Builder(
+                GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestScopes(new Scope(DriveScopes.DRIVE_FILE))
+                .build();
+        return GoogleSignIn.getClient(activity, signInOptions);
     }
 
     public boolean isLinked() {
-        // Attempt to get the user's existing signed-in account.
-        // If the user is already signed in, the GoogleSignInAccount will be non-null.
-        final lastAccount = GoogleSignIn.getLastSignedInAccount(mContext);
-        if (lastAccount == null) {
-            return false;
-        } else {
-            setDriveService(lastAccount);
-            return true;
-        }
+        return googleDriveClient != null;
     }
 
     private void linkedOrThrow() throws IOException {
@@ -89,22 +122,67 @@ public class GoogleDriveClient {
         }
     }
 
-    public void setDriveService(GoogleSignInAccount googleAccount) {
-        assert googleAccount != null;
-        if (mDriveService == null) {
-            mGoogleAccount = googleAccount;
-            GoogleAccountCredential credential = GoogleAccountCredential
-                .usingOAuth2(mContext, Collections.singleton(DriveScopes.DRIVE));
-            credential.setSelectedAccount(mGoogleAccount.getAccount());
-            mDriveService = new Drive.Builder(AndroidHttp.newCompatibleTransport(),
-                                            new GsonFactory(),
-                                            credential)
-                .setApplicationName("Orgzly")
-                .build();
+    /**
+     * Requires activity in order to create authClient if needed.
+     * Return type differs from Dropbox because authClient offers async.
+     */
+    public Task<Void> unlink(Activity activity) {
+        if (authClient == null) {
+            authClient = createAuthClient(activity);
         }
-        assert mDriveService != null;
+        googleDriveClient = null;
+        final Task<Void> task = authClient.revokeAccess();
+        authClient = null;
+        return task;
     }
 
+    /**
+     * Unlike Dropbox, returns an Intent.
+     */
+    public Intent beginAuthentication(Activity activity) {
+        tryLinking = true;
+        var signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestScopes(new Scope(DriveScopes.DRIVE_FILE))
+                .build();
+        authClient = GoogleSignIn.getClient(activity, signInOptions);
+        return authClient.getSignInIntent();
+    }
+
+    /**
+     * The logic is slightly different from Dropbox. Rather than FinishAuthentication being called
+     * on activity resume, it is called when the sign-in activity returns,
+     * when we actually have an account.
+     */
+    public boolean finishAuthentication(GoogleSignInAccount account) {
+        if (googleDriveClient == null && tryLinking) {
+            googleDriveClient = getNewGoogleDriveClient(account);
+            return true;
+        }
+
+        return false;
+    }
+
+    public Drive getNewGoogleDriveClient(GoogleSignInAccount account) {
+        assert account != null;
+        GoogleAccountCredential credential = GoogleAccountCredential
+                .usingOAuth2(mContext, Collections.singleton(DriveScopes.DRIVE_FILE));
+        credential.setSelectedAccount(account.getAccount());
+        return new Drive.Builder(AndroidHttp.newCompatibleTransport(),
+                new GsonFactory(),
+                credential)
+                .setApplicationName("Orgzly")
+                .build();
+    }
+
+    // no need for setToken, saveToken, getToken, deleteToken
+
+    /**
+     * This is unique to Google Drive.
+     * @param path A path in x/y/z form
+     * @return A Google Drive file ID. (Note that in Google Drive, a folder is a type of file.)
+     * @throws IOException On error
+     */
     private String findId(String path) throws IOException {
         if (pathIds.containsKey(path)) {
             return pathIds.get(path);
@@ -116,7 +194,7 @@ public class GoogleDriveClient {
         ids[0] = "root";
 
         for (int i=0; i < parts.length; ++i) {
-            FileList result = mDriveService.files().list()
+            FileList result = googleDriveClient.files().list()
                 .setQ(String.format("name = '%s' and '%s' in parents", parts[i], ids[i]))
                 .setSpaces("drive")
                 .setFields("files(id, name, mimeType)")
@@ -160,7 +238,7 @@ public class GoogleDriveClient {
 
             if (folderId != null) {
 
-                File folder = mDriveService.files().get(folderId)
+                File folder = googleDriveClient.files().get(folderId)
                     .setFields("id, mimeType")
                     .execute();
 
@@ -168,7 +246,7 @@ public class GoogleDriveClient {
 
                     String pageToken = null;
                     do {
-                        FileList result = mDriveService.files().list()
+                        FileList result = googleDriveClient.files().list()
                             .setQ(String.format("mimeType != 'application/vnd.google-apps.folder' " +
                                                 "and '%s' in parents and trashed = false", folderId))
                             .setSpaces("drive")
@@ -225,7 +303,7 @@ public class GoogleDriveClient {
             String fileId = findId(uri.getPath());
 
             if (fileId != null) {
-                File file = mDriveService.files().get(fileId)
+                File file = googleDriveClient.files().get(fileId)
                     .setFields("id, mimeType, version, modifiedDate")
                     .execute();
 
@@ -234,7 +312,7 @@ public class GoogleDriveClient {
                     String rev = Long.toString(file.getVersion());
                     long mtime = file.getModifiedTime().getValue();
 
-                    mDriveService.files().get(fileId).executeMediaAndDownloadTo(out);
+                    googleDriveClient.files().get(fileId).executeMediaAndDownloadTo(out);
 
                     return new VersionedRook(repoId, RepoType.GOOGLE_DRIVE, repoUri, uri, rev, mtime);
 
@@ -285,14 +363,14 @@ public class GoogleDriveClient {
                 String folderId = findId(folderPath);
 
                 fileMetadata.setParents(Collections.singletonList(folderId));
-                fileMetadata = mDriveService.files().create(fileMetadata, mediaContent)
+                fileMetadata = googleDriveClient.files().create(fileMetadata, mediaContent)
                     .setFields("id, parents")
                     .execute();
                 fileId = fileMetadata.getId();
 
                 pathIds.put(filePath, fileId);
             } else {
-                fileMetadata = mDriveService.files().update(fileId, fileMetadata, mediaContent)
+                fileMetadata = googleDriveClient.files().update(fileId, fileMetadata, mediaContent)
                     .setFields("id")
                     .execute();
             }
@@ -318,11 +396,11 @@ public class GoogleDriveClient {
             String fileId = findId(path);
 
             if (fileId != null) {
-                File file = mDriveService.files().get(fileId).setFields("id, mimeType").execute();
+                File file = googleDriveClient.files().get(fileId).setFields("id, mimeType").execute();
                 if (file.getMimeType() != "application/vnd.google-apps.folder") {
                     File fileMetadata = new File();
                     fileMetadata.setTrashed(true);
-                    mDriveService.files().update(fileId, fileMetadata).execute();
+                    googleDriveClient.files().update(fileId, fileMetadata).execute();
                 } else {
                     throw new IOException("Not a file: " + path);
                 }
@@ -349,7 +427,7 @@ public class GoogleDriveClient {
             fileMetadata.setName(to.getPath());
 
             if (fileId != null) {
-                fileMetadata = mDriveService.files().update(fileId, fileMetadata)
+                fileMetadata = googleDriveClient.files().update(fileId, fileMetadata)
                     .setFields("id, mimeType, version, modifiedDate")
                     .execute();
 
@@ -375,18 +453,23 @@ public class GoogleDriveClient {
         }
     }
 
-    public String createFolder() throws IOException {
+    /**
+     * This is unique to Google Drive. A special utility to create an empty directory.
+     * @return The ID of the directory. TODO: maybe I will use this in future code
+     * @throws IOException On error
+     */
+    public String createDirectory() throws IOException {
         // https://github.com/googleworkspace/android-samples/blob/master/drive/deprecation/app/src/main/java/com/google/android/gms/drive/sample/driveapimigration/DriveServiceHelper.java
         File metadata = new File();
         metadata.setName("Orgzly Files");
         metadata.setMimeType("application/vnd.google-apps.folder");
-        File file = mDriveService
+        File file = googleDriveClient
             .files()
-            .create(fileMetadata)
+            .create(metadata)
             .setFields("id")
             .execute();
         if (file == null) {
-            throw new IOException("Null result when requesting file creation")
+            throw new IOException("Null result when requesting file creation");
         }
         return file.getId();
     }
