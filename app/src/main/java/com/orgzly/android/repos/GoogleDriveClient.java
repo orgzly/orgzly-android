@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -15,6 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.FileContent;
@@ -39,7 +41,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 
 public class GoogleDriveClient {
@@ -70,6 +74,9 @@ public class GoogleDriveClient {
 
     // Holds the authentication (Google Sign In) client
     private GoogleSignInClient authClient;
+
+    // Holds an Executor
+    private Executor mExecutor = Executors.newSingleThreadExecutor();
 
     // Make static? Or maybe need to serialize or manage token.
     // SharedPreferences or SQLite
@@ -184,6 +191,15 @@ public class GoogleDriveClient {
      * @throws IOException On error
      */
     private String findId(String path) throws IOException {
+        // TODO testing
+        FileList result1 = googleDriveClient.files().list()
+                .setSpaces("drive")
+                .setFields("files(id, name, mimeType)")
+                .execute();
+        List files1 = result1.getFiles();
+        Log.d(TAG, files1.toString());
+
+
         if (pathIds.containsKey(path)) {
             return pathIds.get(path);
         }
@@ -364,15 +380,15 @@ public class GoogleDriveClient {
 
                 fileMetadata.setParents(Collections.singletonList(folderId));
                 fileMetadata = googleDriveClient.files().create(fileMetadata, mediaContent)
-                    .setFields("id, parents")
-                    .execute();
+                        .setFields("id, parents")
+                        .execute();
                 fileId = fileMetadata.getId();
 
                 pathIds.put(filePath, fileId);
             } else {
                 fileMetadata = googleDriveClient.files().update(fileId, fileMetadata, mediaContent)
-                    .setFields("id")
-                    .execute();
+                        .setFields("id")
+                        .execute();
             }
 
         } catch (Exception e) {
@@ -387,90 +403,98 @@ public class GoogleDriveClient {
         long mtime = fileMetadata.getModifiedTime().getValue();
 
         return new VersionedRook(repoId, RepoType.GOOGLE_DRIVE, repoUri, bookUri, rev, mtime);
+
     }
 
     public void delete(String path) throws IOException {
-        linkedOrThrow();
+            linkedOrThrow();
 
-        try {
-            String fileId = findId(path);
+            try {
+                String fileId = findId(path);
 
-            if (fileId != null) {
-                File file = googleDriveClient.files().get(fileId).setFields("id, mimeType").execute();
-                if (file.getMimeType() != "application/vnd.google-apps.folder") {
-                    File fileMetadata = new File();
-                    fileMetadata.setTrashed(true);
-                    googleDriveClient.files().update(fileId, fileMetadata).execute();
+                if (fileId != null) {
+                    File file = googleDriveClient.files().get(fileId).setFields("id, mimeType").execute();
+                    if (file.getMimeType() != "application/vnd.google-apps.folder") {
+                        File fileMetadata = new File();
+                        fileMetadata.setTrashed(true);
+                        googleDriveClient.files().update(fileId, fileMetadata).execute();
+                    } else {
+                        throw new IOException("Not a file: " + path);
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                if (e.getMessage() != null) {
+                    throw new IOException("Failed deleting " + path + " on Google Drive: " + e.getMessage());
                 } else {
-                    throw new IOException("Not a file: " + path);
+                    throw new IOException("Failed deleting " + path + " on Google Drive: " + e.toString());
                 }
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            if (e.getMessage() != null) {
-                throw new IOException("Failed deleting " + path + " on Google Drive: " + e.getMessage());
-            } else {
-                throw new IOException("Failed deleting " + path + " on Google Drive: " + e.toString());
-            }
-        }
     }
 
     public VersionedRook move(Uri repoUri, Uri from, Uri to) throws IOException {
-        linkedOrThrow();
+            linkedOrThrow();
 
-        try {
-            String fileId = findId(from.getPath());
+            try {
+                String fileId = findId(from.getPath());
 
-            File fileMetadata = new File();
-            fileMetadata.setName(to.getPath());
+                File fileMetadata = new File();
+                fileMetadata.setName(to.getPath());
 
-            if (fileId != null) {
-                fileMetadata = googleDriveClient.files().update(fileId, fileMetadata)
-                    .setFields("id, mimeType, version, modifiedDate")
-                    .execute();
+                if (fileId != null) {
+                    fileMetadata = googleDriveClient.files().update(fileId, fileMetadata)
+                            .setFields("id, mimeType, version, modifiedDate")
+                            .execute();
 
-                if (fileMetadata.getMimeType() == "application/vnd.google-apps.folder") {
-                    throw new IOException("Relocated object not a file?");
+                    if (fileMetadata.getMimeType() == "application/vnd.google-apps.folder") {
+                        throw new IOException("Relocated object not a file?");
+                    }
+
                 }
 
+                String rev = Long.toString(fileMetadata.getVersion());
+                long mtime = fileMetadata.getModifiedTime().getValue();
+
+                return new VersionedRook(repoId, RepoType.DROPBOX, repoUri, to, rev, mtime);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                if (e.getMessage() != null) { // TODO: Move this throwing to utils
+                    throw new IOException("Failed moving " + from + " to " + to + ": " + e.getMessage(), e);
+                } else {
+                    throw new IOException("Failed moving " + from + " to " + to + ": " + e.toString(), e);
+                }
             }
-
-            String rev = Long.toString(fileMetadata.getVersion());
-            long mtime = fileMetadata.getModifiedTime().getValue();
-
-            return new VersionedRook(repoId, RepoType.DROPBOX, repoUri, to, rev, mtime);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            if (e.getMessage() != null) { // TODO: Move this throwing to utils
-                throw new IOException("Failed moving " + from + " to " + to + ": " + e.getMessage(), e);
-            } else {
-                throw new IOException("Failed moving " + from + " to " + to + ": " + e.toString(), e);
-            }
-        }
     }
 
     /**
      * This is unique to Google Drive. A special utility to create an empty directory.
      * @return The ID of the directory. TODO: maybe I will use this in future code
-     * @throws IOException On error
      */
     public String createDirectory() throws IOException {
-        // https://github.com/googleworkspace/android-samples/blob/master/drive/deprecation/app/src/main/java/com/google/android/gms/drive/sample/driveapimigration/DriveServiceHelper.java
-        File metadata = new File();
-        metadata.setName("Orgzly Files");
-        metadata.setMimeType("application/vnd.google-apps.folder");
-        File file = googleDriveClient
-            .files()
-            .create(metadata)
-            .setFields("id")
-            .execute();
-        if (file == null) {
-            throw new IOException("Null result when requesting file creation");
-        }
-        return file.getId();
+            linkedOrThrow();
+            // https://github.com/googleworkspace/android-samples/blob/master/drive/deprecation/app/src/main/java/com/google/android/gms/drive/sample/driveapimigration/DriveServiceHelper.java
+            File metadata = new File();
+            metadata.setName("Orgzly Files");
+            metadata.setMimeType("application/vnd.google-apps.folder");
+            File file = googleDriveClient
+                    .files()
+                    .create(metadata)
+                    .setFields("id")
+                    .execute();
+            if (file == null) {
+                throw new IOException("Null result when requesting file creation");
+            }
+            return file.getId();
+    }
+
+    /**
+     * Unique to Google Drive. A special utility to run an async task.
+     */
+    public <TResult> Task<TResult> runAsTask(Callable<TResult> callable) {
+        return Tasks.call(mExecutor, callable);
     }
 }

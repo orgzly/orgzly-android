@@ -31,20 +31,14 @@ import javax.inject.Inject
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.OnCompleteListener;
-
-import com.google.api.services.drive.DriveScopes;
-
-import androidx.annotation.NonNull;
 
 import android.util.Log;
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 
 class GoogleDriveRepoActivity : CommonActivity() {
+    private lateinit var signInLauncher: ActivityResultLauncher<Intent>
     private lateinit var binding: ActivityRepoGoogleDriveBinding
 
     @Inject
@@ -79,8 +73,8 @@ class GoogleDriveRepoActivity : CommonActivity() {
         /* TODO: Google Drive create folder button. */
         binding.activityRepoGoogleDriveCreateDirectoryButton.setOnClickListener {
             // TODO need a check to see if client is logged in; or hide the button when they're not
-            client.createDirectory()
-            showSnackbar("Folder created")
+            val task = client.runAsTask(({ client.createDirectory() }))
+            task.addOnSuccessListener { showSnackbar("Folder created") }
         }
 
         // No need for editAccessToken() logic
@@ -133,6 +127,18 @@ class GoogleDriveRepoActivity : CommonActivity() {
         ActivityUtils.openSoftKeyboardWithDelay(this, binding.activityRepoGoogleDriveDirectory)
 
         client = GoogleDriveClient(this, repoId)
+
+        signInLauncher = registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult()) { result ->
+            GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                    .addOnSuccessListener { googleAccount ->
+                        Log.d(TAG, "Signed in as " + googleAccount.getEmail())
+                        client.finishAuthentication(googleAccount)
+                        showSnackbar(R.string.message_google_drive_linked)
+                    }
+                    .addOnFailureListener {
+                        exception -> Log.d(TAG, "Unable to sign in." + exception) }
+        }
     }
 
     // TODO remove
@@ -249,15 +255,8 @@ class GoogleDriveRepoActivity : CommonActivity() {
             true
         } else {
             intent = client.beginAuthentication(this)
-            val resultLauncher = registerForActivityResult(
-                    ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    val data = result.data.
-                    data.
-                    showSnackbar(R.string.message_google_drive_linked)
-                }
-            }
-            resultLauncher.launch(intent)
+            // Note that startActivityForResult() is deprecated.
+            signInLauncher.launch(intent)
             false
         }
     }
