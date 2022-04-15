@@ -16,7 +16,7 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/activity_repo_dropbox_container"
+                android:id="@+id/activity_repo_google_drive_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/screen_edge"
@@ -33,36 +33,51 @@
                     android:gravity="center_vertical">
 
                     <ImageView
-                        android:id="@+id/activity_repo_dropbox_icon"
+                        android:id="@+id/activity_repo_google_drive_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="?attr/oic_dropbox_not_linked"
-                        android:contentDescription="@string/dropbox" />
+                        android:contentDescription="@string/google_drive" />
 
                     <Button
-                        android:id="@+id/activity_repo_dropbox_link_button"
+                        android:id="@+id/activity_repo_google_drive_link_button"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/screen_edge"
                         android:layout_marginLeft="@dimen/screen_edge"
-                        android:text="@string/repo_dropbox_button_not_linked" />
+                        android:text="@string/repo_google_drive_button_not_linked" />
 
                 </LinearLayout>
 
+                <!-- Create new directory -->
+                <Button
+                    android:id="@+id/activity_repo_google_drive_create_directory_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/screen_edge"
+                    android:layout_marginLeft="@dimen/screen_edge"
+                    android:text="Create empty directory" />
+
                 <!-- Input. -->
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Create an empty directory using the button, move it to a preferred location in Google Drive, and enter the path to the directory. The app only has permission to access directories created using this button." />
+
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/activity_repo_dropbox_directory_input_layout"
+                    android:id="@+id/activity_repo_google_drive_directory_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_between_content_areas"
                     app:errorEnabled="true">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_repo_dropbox_directory"
+                        android:id="@+id/activity_repo_google_drive_directory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         android:imeOptions="actionDone"
-                        android:hint="@string/fragment_repo_dropbox_directory_desc" />
+                        android:hint="@string/fragment_repo_google_drive_directory_desc" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>

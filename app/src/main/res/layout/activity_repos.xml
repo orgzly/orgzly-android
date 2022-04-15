@@ -48,6 +48,15 @@
                         android:text="@string/dropbox" />
 
                     <Button
+                        android:id="@+id/activity_repos_google_drive"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:drawableTop="?attr/oic_dropbox_not_linked"
+                        android:text="@string/google_drive" />
+
+                    <Button
                         android:id="@+id/activity_repos_git"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
