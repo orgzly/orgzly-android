@@ -2,7 +2,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/NoteFragmentListItem">
+    style="@style/NoteFragmentMetadataItemContainer">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -13,7 +13,7 @@
 
     <EditText
         android:id="@+id/name"
-        style="@style/NoteFragmentListItemSpinnerButton"
+        style="@style/NoteFragmentMetadataItemValueButton"
         android:maxLines="1"
         android:inputType="text"
         android:hint="@string/property_name"
@@ -26,7 +26,7 @@
 
     <EditText
         android:id="@+id/value"
-        style="@style/NoteFragmentListItemSpinnerButton"
+        style="@style/NoteFragmentMetadataItemValueButton"
         android:layout_marginLeft="0dp"
         android:layout_marginStart="0dp"
         android:maxLines="1"
@@ -37,7 +37,7 @@
 
     <ImageButton
         android:id="@+id/delete"
-        style="@style/NoteFragmentButton"
+        style="@style/NoteFragmentMetadataItemButton"
         android:src="?attr/ic_close_24dp" />
 
 </LinearLayout>

@@ -837,39 +837,22 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     private fun updateTimestampView(timeType: TimeType, range: OrgRange?) {
         when (timeType) {
             TimeType.SCHEDULED -> {
-                if (range != null) {
-                    binding.scheduledButton.text = mUserTimeFormatter.formatAll(range)
-                } else {
-                    binding.scheduledButton.text = null
-                }
-                binding.scheduledRemove.invisibleUnless(!binding.scheduledButton.text.isNullOrEmpty())
+                binding.scheduledButton.text = range?.let { mUserTimeFormatter.formatAll(it) }
+                binding.scheduledRemove.invisibleIf(binding.scheduledButton.text.isNullOrEmpty())
             }
 
             TimeType.DEADLINE -> {
-                if (range != null) {
-                    binding.deadlineButton.text = mUserTimeFormatter.formatAll(range)
-                    if (BuildConfig.LOG_DEBUG) LogUtils.d(
-                        TAG,
-                        "deadline button set to ${binding.deadlineButton.text}"
-                    )
-                } else {
-                    binding.deadlineButton.text = null
-                }
-                binding.deadlineRemove.invisibleUnless(!binding.deadlineButton.text.isNullOrEmpty())
+                binding.deadlineButton.text = range?.let { mUserTimeFormatter.formatAll(it) }
+                binding.deadlineRemove.invisibleIf(binding.deadlineButton.text.isNullOrEmpty())
             }
 
             TimeType.CLOSED -> {
-                /*
-                 * Do not display CLOSED button if it's not set.
-                 * It will be updated on state change.
-                 */
-                if (range != null) {
-                    binding.closedButton.text = mUserTimeFormatter.formatAll(range)
-                    binding.closedTimeContainer.visibility = View.VISIBLE
-                } else {
-                    binding.closedTimeContainer.visibility = View.GONE
-                }
-                binding.closedRemove.invisibleUnless(!binding.closedButton.text.isNullOrEmpty())
+                binding.closedButton.text = range?.let { mUserTimeFormatter.formatAll(it) }
+                binding.closedRemove.invisibleIf(binding.closedButton.text.isNullOrEmpty())
+
+                // Do not display CLOSED button if it's not set.
+                binding.closedTimeContainer.goneIf(range == null)
+                binding.closedTimeDivider.goneIf(range == null)
             }
 
             else -> { }

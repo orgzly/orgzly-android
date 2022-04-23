@@ -110,12 +110,10 @@
                     </LinearLayout>
                 </androidx.appcompat.widget.Toolbar>
 
-                <View style="@style/HorizontalDivider" />
-
                 <!-- Metadata header -->
                 <LinearLayout
                     android:id="@+id/metadata_header"
-                    style="@style/NoteFragmentFullWidthButton">
+                    style="@style/NoteFragmentMetadataHeaderContainer">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -160,17 +158,12 @@
                     android:id="@+id/metadata"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="@dimen/space_between_content_areas"
-                    android:layout_marginStart="@dimen/screen_edge"
-                    android:layout_marginLeft="@dimen/screen_edge"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginEnd="4dp">
+                    android:orientation="vertical">
 
                     <!-- Tags. -->
                     <LinearLayout
                         android:id="@+id/tags_container"
-                        style="@style/NoteFragmentListItem">
+                        style="@style/NoteFragmentMetadataItemContainer">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -182,7 +175,7 @@
 
                         <MultiAutoCompleteTextView
                             android:id="@+id/tags_button"
-                            style="@style/NoteFragmentListItemSpinnerButton"
+                            style="@style/NoteFragmentMetadataItemValueButton"
                             android:inputType="text"
                             android:hint="@string/tags"
                             android:completionThreshold="0"
@@ -190,19 +183,21 @@
 
                         <ImageButton
                             android:id="@+id/tags_menu"
-                            style="@style/NoteFragmentButton"
+                            style="@style/NoteFragmentMetadataItemButton"
                             android:src="?attr/ic_more_horiz_24dp" />
 
                         <ImageButton
                             android:id="@+id/tags_remove"
-                            style="@style/NoteFragmentButton"
+                            style="@style/NoteFragmentMetadataItemButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
+
+                    <View style="@style/HorizontalDivider" />
 
                     <!-- State -->
                     <LinearLayout
                         android:id="@+id/state_container"
-                        style="@style/NoteFragmentListItem">
+                        style="@style/NoteFragmentMetadataItemContainer">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -211,19 +206,21 @@
                             android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
                             android:id="@+id/state_button"
-                            style="@style/NoteFragmentListItemSpinnerButton"
+                            style="@style/NoteFragmentMetadataItemValueButton"
                             android:hint="@string/state"
                             tools:text="TODO"/>
                         <ImageButton
                             android:id="@+id/state_remove"
-                            style="@style/NoteFragmentButton"
+                            style="@style/NoteFragmentMetadataItemButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
+
+                    <View style="@style/HorizontalDivider" />
 
                     <!-- Priority -->
                     <LinearLayout
                         android:id="@+id/priority_container"
-                        style="@style/NoteFragmentListItem">
+                        style="@style/NoteFragmentMetadataItemContainer">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -232,19 +229,21 @@
                             android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
                             android:id="@+id/priority_button"
-                            style="@style/NoteFragmentListItemSpinnerButton"
+                            style="@style/NoteFragmentMetadataItemValueButton"
                             android:hint="@string/priority"
                             tools:text="Priority A"/>
                         <ImageButton
                             android:id="@+id/priority_remove"
-                            style="@style/NoteFragmentButton"
+                            style="@style/NoteFragmentMetadataItemButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
+
+                    <View style="@style/HorizontalDivider" />
 
                     <!-- Scheduled time -->
                     <LinearLayout
                         android:id="@+id/scheduled_time_container"
-                        style="@style/NoteFragmentListItem">
+                        style="@style/NoteFragmentMetadataItemContainer">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -253,18 +252,20 @@
                             android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
                             android:id="@+id/scheduled_button"
-                            style="@style/NoteFragmentListItemSpinnerButton"
+                            style="@style/NoteFragmentMetadataItemValueButton"
                             android:hint="@string/schedule_button_hint"/>
                         <ImageButton
                             android:id="@+id/scheduled_remove"
-                            style="@style/NoteFragmentButton"
+                            style="@style/NoteFragmentMetadataItemButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
+
+                    <View style="@style/HorizontalDivider" />
 
                     <!-- Deadline time -->
                     <LinearLayout
                         android:id="@+id/deadline_time_container"
-                        style="@style/NoteFragmentListItem">
+                        style="@style/NoteFragmentMetadataItemContainer">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -273,20 +274,21 @@
                             android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
                             android:id="@+id/deadline_button"
-                            style="@style/NoteFragmentListItemSpinnerButton"
+                            style="@style/NoteFragmentMetadataItemValueButton"
                             android:hint="@string/deadline_button_hint"
                             tools:text="@string/note_deadline_sample"/>
                         <ImageButton
                             android:id="@+id/deadline_remove"
-                            style="@style/NoteFragmentButton"
+                            style="@style/NoteFragmentMetadataItemButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
+
+                    <View style="@style/HorizontalDivider" />
 
                     <!-- Closed time -->
                     <LinearLayout
                         android:id="@+id/closed_time_container"
-                        style="@style/NoteFragmentListItem"
-                        android:visibility="gone">
+                        style="@style/NoteFragmentMetadataItemContainer">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -295,13 +297,15 @@
                             android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
                             android:id="@+id/closed_button"
-                            style="@style/NoteFragmentListItemSpinnerButton"
+                            style="@style/NoteFragmentMetadataItemValueButton"
                             android:hint="@string/closed_button_hint"/>
                         <ImageButton
                             android:id="@+id/closed_remove"
-                            style="@style/NoteFragmentButton"
+                            style="@style/NoteFragmentMetadataItemButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
+
+                    <View android:id="@+id/closed_time_divider" style="@style/HorizontalDivider" />
 
                     <!-- List of properties -->
                     <LinearLayout
@@ -325,7 +329,7 @@
                     <!-- Content header -->
                     <LinearLayout
                         android:id="@+id/content_header"
-                        style="@style/NoteFragmentFullWidthButton">
+                        style="@style/NoteFragmentMetadataHeaderContainer">
 
                         <ImageView
                             android:layout_width="wrap_content"

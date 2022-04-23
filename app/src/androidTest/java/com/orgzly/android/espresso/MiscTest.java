@@ -223,10 +223,6 @@ public class MiscTest extends OrgzlyTest {
         onBook(0).perform(click());
         onView(withId(R.id.fab)).perform(click());
 
-        /* Change state to NOTE to avoid having 1 or more spaces before title after keyword in book fragment. */
-        onView(withId(R.id.state_button)).perform(click());
-        onView(withText(R.string.clear)).perform(click());
-
         onView(withId(R.id.title))
                 .perform(replaceTextCloseKeyboard("    Title with empty spaces all around   "));
         onView(withId(R.id.done)).perform(click()); // Note done

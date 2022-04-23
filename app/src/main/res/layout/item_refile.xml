@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:id="@+id/item_refile_payload"
-        style="@style/NoteFragmentFullWidthButton"
+        style="@style/BorderlessButton"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:paddingStart="@dimen/screen_edge"

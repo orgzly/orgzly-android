@@ -475,21 +475,7 @@
         <item name="android:minWidth">0dp</item>
     </style>
 
-    <style name="NoteFragmentButton" parent="Base.Widget.AppCompat.Button.Borderless">
-        <item name="android:layout_width">48dp</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:alpha">?attr/active_unfocused_icon_alpha</item>
-    </style>
-
-    <style name="NoteFragmentListItem">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:minHeight">48dp</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:orientation">horizontal</item>
-    </style>
-
-    <style name="NoteFragmentFullWidthButton" parent="Base.Widget.AppCompat.Button.Borderless">
+    <style name="NoteFragmentMetadataHeaderContainer" parent="Base.Widget.AppCompat.Button.Borderless">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minWidth">0dp</item>
@@ -499,11 +485,21 @@
         <item name="android:paddingEnd">4dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:clickable">true</item>
-        <item name="android:focusable">true</item>
     </style>
 
-    <style name="NoteFragmentListItemSpinnerButton">
+    <style name="NoteFragmentMetadataItemContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/screen_edge</item>
+        <item name="android:layout_marginStart">@dimen/screen_edge</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="NoteFragmentMetadataItemValueButton">
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
@@ -513,6 +509,12 @@
         <item name="android:focusable">true</item>
         <item name="android:textAppearance">?android:textAppearanceMedium</item>
         <item name="android:background">@null</item>
+    </style>
+
+    <style name="NoteFragmentMetadataItemButton" parent="Base.Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:alpha">?attr/active_unfocused_icon_alpha</item>
     </style>
 
     <style name="BookItemInfoIcon">
@@ -682,7 +684,7 @@
     <style name="HorizontalDivider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">?android:listDivider</item>
+        <item name="android:background">?attr/indent_line_color</item>
     </style>
 
     <style name="TitleTextAppearance">

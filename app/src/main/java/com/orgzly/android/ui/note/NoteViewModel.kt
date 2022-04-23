@@ -20,26 +20,13 @@ import com.orgzly.org.OrgProperties
 import com.orgzly.org.datetime.OrgRange
 import com.orgzly.org.parser.OrgParserWriter
 
-
-
-/** Could be 0 if new note is being created. */
-//var noteId: Long = 0
-
-/** Relative location, used for new notes. */
-//private var place: Place? = null
-
-/** Initial title, used for when sharing. */
-//private var initialTitle: String? = null
-
-/** Initial content, used for when sharing. */
-//private var initialContent: String? = null
-
 data class NoteInitialData(
     val bookId: Long,
-    val noteId: Long,
-    val place: Place? = null,
-    val title: String? = null,
-    val content: String? = null)
+    val noteId: Long, // Could be 0 if new note is being created
+    val place: Place? = null, // Relative location, used for new notes
+    val title: String? = null, // Initial title, used for when sharing
+    val content: String? = null // Initial content, used for when sharing
+)
 
 class NoteViewModel(
     private val dataRepository: DataRepository,
@@ -200,7 +187,7 @@ class NoteViewModel(
         val context = App.getAppContext()
 
         AppPreferences.noteDetailsLastMode(
-                context, if (mode == ViewEditMode.VIEW) "view" else "edit")
+            context, if (mode == ViewEditMode.VIEW) "view" else "edit")
 
     }
 
@@ -215,20 +202,20 @@ class NoteViewModel(
     }
 
     fun updatePayload(
-            title: String,
-            content: String,
-            state: String?,
-            priority: String?,
-            tags: List<String>,
-            properties: OrgProperties) {
+        title: String,
+        content: String,
+        state: String?,
+        priority: String?,
+        tags: List<String>,
+        properties: OrgProperties) {
 
         notePayload = notePayload?.copy(
-                title = title,
-                content = content,
-                state = state,
-                priority = priority,
-                tags = tags,
-                properties = properties)
+            title = title,
+            content = content,
+            state = state,
+            priority = priority,
+            tags = tags,
+            properties = properties)
     }
 
     fun updatePayloadState(state: String?) {
