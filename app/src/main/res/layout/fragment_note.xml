@@ -34,8 +34,6 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/top_toolbar_bg_color"
                     android:elevation="1dp" tools:targetApi="lollipop"
-                    app:contentInsetLeft="@dimen/screen_edge"
-                    app:contentInsetStart="@dimen/screen_edge"
                     app:contentInsetRight="@dimen/screen_edge"
                     app:contentInsetEnd="@dimen/screen_edge"
                     android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
@@ -71,13 +69,22 @@
                         </FrameLayout>
 
                         <!-- Selectable notebook -->
-                        <TextView
-                            android:id="@+id/location_button"
-                            android:layout_height="wrap_content"
-                            android:layout_width="match_parent"
-                            android:padding="4dp"
-                            android:textSize="?attr/fragment_note_content_text_size"
-                            tools:text="GTD" />
+                        <LinearLayout
+                            android:id="@+id/location_container"
+                            style="@style/NoteFragmentMetadataItemContainer"
+                            android:layout_marginLeft="0dp"
+                            android:layout_marginStart="0dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="?attr/ic_folder_open_24dp"
+                                android:alpha="?attr/active_unfocused_icon_alpha"/>
+                            <TextView
+                                android:id="@+id/location_button"
+                                style="@style/NoteFragmentMetadataItemValueButton"
+                                tools:text="Inbox"/>
+                        </LinearLayout>
 
                         <!-- Title -->
                         <com.orgzly.android.ui.views.EditTextWithMarkup
@@ -132,7 +139,8 @@
                         android:layout_marginStart="@dimen/fragment_note_icon_margin"
                         android:textSize="?attr/fragment_note_content_text_size"
                         android:textColor="?attr/text_secondary_color"
-                        android:text=""/>
+                        android:text="@string/metadata"
+                        android:visibility="invisible" />
 
                     <ImageView
                         android:id="@+id/metadata_header_up_icon"
@@ -348,7 +356,8 @@
                             android:layout_marginStart="@dimen/fragment_note_icon_margin"
                             android:textSize="?attr/fragment_note_content_text_size"
                             android:textColor="?attr/text_secondary_color"
-                            android:text="" />
+                            android:text="@string/content"
+                            android:visibility="invisible" />
 
                         <ImageView
                             android:id="@+id/content_header_up_icon"

@@ -179,14 +179,11 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         if (activity is ShareActivity) {
             binding.breadcrumbs.visibility = View.GONE
-
-            binding.locationButton.let {
-                it.visibility = View.VISIBLE
-                it.setOnClickListener(this)
-            }
+            binding.locationContainer.visibility = View.VISIBLE
+            binding.locationButton.setOnClickListener(this)
         } else {
             binding.breadcrumbs.visibility = View.VISIBLE
-            binding.locationButton.visibility = View.GONE
+            binding.locationContainer.visibility = View.GONE
         }
 
 
@@ -431,14 +428,14 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         binding.contentViews.goneIf(isFolded)
         binding.contentHeaderUpIcon.goneIf(isFolded)
         binding.contentHeaderDownIcon.goneUnless(isFolded)
-        // binding.contentHeaderText.invisibleUnless(isFolded)
+        // binding.contentHeaderText.invisibleIf(isFolded)
     }
 
     private fun setMetadataFoldState(isFolded: Boolean) {
         binding.metadata.goneIf(isFolded)
         binding.metadataHeaderUpIcon.goneIf(isFolded)
         binding.metadataHeaderDownIcon.goneUnless(isFolded)
-        // binding.metadataHeaderText.invisibleUnless(isFolded)
+        // binding.metadataHeaderText.invisibleIf(isFolded)
     }
 
     private fun setupObservers() {
