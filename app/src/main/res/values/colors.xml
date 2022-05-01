@@ -47,10 +47,15 @@
     <color name="light_theme_background">@color/grey_50</color>
     <color name="light_theme_cards_and_dialogs">@color/white</color>
 
-    <color name="dark_theme_status_bar">#000000</color>
-    <color name="dark_theme_app_bar">#212121</color>
-    <color name="dark_theme_background">#303030</color>
-    <color name="dark_theme_cards_and_dialogs">#424242</color>
+    <color name="dark_theme_status_bar">#292929</color>
+    <color name="dark_theme_app_bar">#292929</color>
+    <color name="dark_theme_background">#121212</color>
+    <color name="dark_theme_cards_and_dialogs">#242424</color>
+
+    <color name="black_theme_status_bar">#000000</color>
+    <color name="black_theme_app_bar">#000000</color>
+    <color name="black_theme_background">#000000</color>
+    <color name="black_theme_cards_and_dialogs">#242424</color>
 
     <!-- https://material.io/guidelines/style/color.html#color-usability -->
 

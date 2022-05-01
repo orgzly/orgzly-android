@@ -357,22 +357,22 @@
 
     <!-- Color scheme -->
     <style name="AppDarkTheme.Black">
-        <item name="colorBackgroundFloating">@color/dark_theme_status_bar</item>
-        <item name="android:colorBackgroundFloating" tools:targetApi="23">@color/dark_theme_status_bar</item>
+        <item name="colorBackgroundFloating">@color/black_theme_status_bar</item>
+        <item name="android:colorBackgroundFloating" tools:targetApi="23">@color/black_theme_status_bar</item>
 
-        <item name="android:colorButtonNormal" tools:targetApi="21">@color/dark_theme_app_bar</item>
+        <item name="android:colorButtonNormal" tools:targetApi="21">@color/black_theme_cards_and_dialogs</item>
 
-        <item name="android:itemBackground">@color/dark_theme_status_bar</item>
-        <item name="android:statusBarColor" tools:targetApi="21">#000000</item>
-        <item name="android:windowBackground">@color/dark_theme_status_bar</item>
+        <item name="android:itemBackground">@color/black_theme_status_bar</item>
+        <item name="android:statusBarColor" tools:targetApi="21">@color/black_theme_status_bar</item>
+        <item name="android:windowBackground">@color/black_theme_status_bar</item>
 
         <item name="colorAccent">@color/blue_grey_200</item>
         <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryDark">@color/white</item>
 
-        <item name="top_toolbar_bg_color">@color/dark_theme_status_bar</item>
-        <item name="bottom_toolbar_bg_color">@color/dark_theme_status_bar</item>
-        <item name="snackbar_bg_color">@color/dark_theme_status_bar</item>
+        <item name="top_toolbar_bg_color">@color/black_theme_status_bar</item>
+        <item name="bottom_toolbar_bg_color">@color/black_theme_status_bar</item>
+        <item name="snackbar_bg_color">@color/black_theme_status_bar</item>
 
         <item name="bullet_state_default">@drawable/bullet_state_default_black</item>
         <item name="bullet_state_folded">@drawable/bullet_state_folded_black</item>
@@ -381,7 +381,7 @@
 
         <item name="indent_line_color">#1cffffff</item>
 
-        <item name="item_book_card_bg_color">@color/dark_theme_status_bar</item>
+        <item name="item_book_card_bg_color">@color/black_theme_status_bar</item>
 
         <item name="item_head_state_done_color">@color/green_200</item>
         <item name="item_head_state_todo_color">@color/red_200</item>
