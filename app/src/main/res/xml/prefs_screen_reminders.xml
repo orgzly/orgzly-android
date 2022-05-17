@@ -27,6 +27,12 @@
         android:key="@string/pref_key_daily_reminder_time"
         android:title="@string/pref_title_daily_reminder_time" />
 
+    <SwitchPreference
+        android:key="@string/pref_key_use_reminders_for_repeated_notes"
+        android:title="@string/pref_title_reminders_for_repeated_notes"
+        android:summary="@string/pref_title_summary_reminders_for_repeated_notes"
+        android:defaultValue="@bool/pref_default_use_reminders_for_repeated_notes" />
+
     <PreferenceCategory
         android:key="@string/pref_key_reminders_notification_settings"
         android:title="@string/prefs_title_notifications">
