@@ -477,6 +477,9 @@
 
     <string name="pref_title_daily_reminder_time">Daily reminder time</string>
 
+    <string name="pref_title_reminders_for_repeated_notes">Repeated notes</string>
+    <string name="pref_title_summary_reminders_for_repeated_notes">Display notifications for occurrences of repeated notes</string>
+
     <string name="primary_storage">Main storage</string>
 
     <string name="book_exported">Notebook exported to %s</string>

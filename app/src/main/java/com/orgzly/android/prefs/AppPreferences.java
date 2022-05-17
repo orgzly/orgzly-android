@@ -324,6 +324,17 @@ public class AppPreferences {
         getDefaultSharedPreferences(context).edit().putInt(key, value).apply();
     }
 
+    public static boolean remindersForRepeatedNotesEnabled(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_use_reminders_for_repeated_notes),
+                context.getResources().getBoolean(R.bool.pref_default_use_reminders_for_repeated_notes));
+    }
+
+    public static void remindersForRepeatedNotesEnabled(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_use_reminders_for_repeated_notes);
+        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
+    }
+
     public static boolean showSyncNotifications(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_show_sync_notifications),

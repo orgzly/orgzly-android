@@ -266,8 +266,10 @@ class ReminderService : JobIntentService() {
                     } else {
                         null
                     }
-
+                    // ########## This is where it's important
+                    // ########## Have the time here being the time of the next occurence
                     val time = getFirstTime(
+                            context,
                             orgDateTime,
                             interval,
                             AppPreferences.reminderDailyTime(context),
@@ -386,6 +388,7 @@ class ReminderService : JobIntentService() {
         }
 
         private fun getFirstTime(
+                context: Context,
                 orgDateTime: OrgDateTime,
                 interval: Pair<ReadableInstant, ReadableInstant?>,
                 defaultTimeOfDay: Int,
@@ -396,7 +399,7 @@ class ReminderService : JobIntentService() {
                     interval.first,
                     interval.second,
                     defaultTimeOfDay,
-                    false, // Do not use repeater for reminders
+                    AppPreferences.remindersForRepeatedNotesEnabled(context),
                     warningPeriod,
                     1)
 
