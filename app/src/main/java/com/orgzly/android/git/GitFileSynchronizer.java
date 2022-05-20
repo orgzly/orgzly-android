@@ -363,11 +363,7 @@ public class GitFileSynchronizer {
     }
 
     private void commit(String message) throws GitAPIException {
-        Context context = App.getAppContext();
-        git.commit().setCommitter(
-                preferences.getAuthor(),
-                preferences.getEmail()).
-                setMessage(message).call();
+        git.commit().setMessage(message).call();
     }
 
     public RevCommit currentHead() throws IOException {
