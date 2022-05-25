@@ -106,26 +106,7 @@ class DirectoryRepoActivity : CommonActivity() {
         }
 
     private fun startFileBrowser() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            openDocumentTree.launch(null)
-
-        } else {
-            runWithPermission(AppPermissions.Usage.LOCAL_REPO) {
-                startLocalFileBrowser()
-            }
-        }
-    }
-
-    private fun startLocalFileBrowser() {
-        val intent = Intent(Intent.ACTION_VIEW).setClass(this, BrowserActivity::class.java)
-
-        if (!TextUtils.isEmpty(binding.activityRepoDirectory.text)) {
-            val uri = binding.activityRepoDirectory.text.toString()
-            val path = Uri.parse(uri).path
-            intent.putExtra(BrowserActivity.ARG_STARTING_DIRECTORY, path)
-        }
-
-        startActivityForResult(intent, ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION)
+        openDocumentTree.launch(null)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -148,7 +129,7 @@ class DirectoryRepoActivity : CommonActivity() {
     }
 
     private fun persistPermissions(uri: Uri) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && ContentRepo.SCHEME == uri.scheme) {
+        if (ContentRepo.SCHEME == uri.scheme) {
             grantUriPermission(packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
             val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION

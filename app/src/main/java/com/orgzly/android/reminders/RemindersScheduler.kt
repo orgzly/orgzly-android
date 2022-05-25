@@ -89,14 +89,9 @@ object RemindersScheduler {
     }
 
     private fun scheduleAlarmClock(alarmManager: AlarmManager, intent: PendingIntent, inMs: Long) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val info = AlarmManager.AlarmClockInfo(System.currentTimeMillis() + inMs, null)
-            alarmManager.setAlarmClock(info, intent)
-            logScheduled("setAlarmClock", inMs)
-
-        } else {
-            scheduleExact(alarmManager, intent, inMs)
-        }
+        val info = AlarmManager.AlarmClockInfo(System.currentTimeMillis() + inMs, null)
+        alarmManager.setAlarmClock(info, intent)
+        logScheduled("setAlarmClock", inMs)
     }
 
 //        private fun scheduleExactAndAllowWhileIdle(alarmManager: AlarmManager, intent: PendingIntent, inMs: Long) {
@@ -113,20 +108,11 @@ object RemindersScheduler {
 //        }
 
     private fun scheduleExact(alarmManager: AlarmManager, intent: PendingIntent, inMs: Long) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            alarmManager.setExact(
-                AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + inMs,
-                intent)
-            logScheduled("setExact", inMs)
-
-        } else {
-            alarmManager.set(
-                AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + inMs,
-                intent)
-            logScheduled("set", inMs)
-        }
+        alarmManager.setExact(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            SystemClock.elapsedRealtime() + inMs,
+            intent)
+        logScheduled("setExact", inMs)
     }
 
     private fun logScheduled(s: String, inMs: Long) {

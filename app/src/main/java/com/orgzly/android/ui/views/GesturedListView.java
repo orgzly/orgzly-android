@@ -54,7 +54,6 @@ public class GesturedListView extends ListView implements GestureDetector.OnGest
         init(attrs);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public GesturedListView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(attrs);

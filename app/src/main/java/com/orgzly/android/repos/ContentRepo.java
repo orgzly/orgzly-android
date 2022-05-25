@@ -175,22 +175,12 @@ public class ContentRepo implements SyncRepo {
             throw new IOException("File at " + existingFile.getUri() + " already exists");
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Uri newUri = DocumentsContract.renameDocument(context.getContentResolver(), from, newFileName);
+        Uri newUri = DocumentsContract.renameDocument(context.getContentResolver(), from, newFileName);
 
-            long mtime = fromDocFile.lastModified();
-            String rev = String.valueOf(mtime);
+        long mtime = fromDocFile.lastModified();
+        String rev = String.valueOf(mtime);
 
-            return new VersionedRook(repoId, RepoType.DOCUMENT, getUri(), newUri, rev, mtime);
-
-        } else {
-            /*
-             * This should never happen, unless the user downgraded
-             * and uses the same repo uri.
-             */
-            throw new IOException("Renaming notebooks is not supported on your device " +
-                                  "(requires at least Lollipop)");
-        }
+        return new VersionedRook(repoId, RepoType.DOCUMENT, getUri(), newUri, rev, mtime);
     }
 
     @Override

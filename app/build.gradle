@@ -7,7 +7,7 @@ android {
     compileSdkVersion 31
 
     defaultConfig {
-        minSdkVersion 16 // Jelly Bean (4.1)
+        minSdkVersion 21 // Lollipop (5.0)
         targetSdkVersion 31 // Android 12
         applicationId "com.orgzly"
         versionCode 161
