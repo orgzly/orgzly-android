@@ -202,7 +202,7 @@ class BooksAdapter(
 
         if (book.lastAction?.type === BookAction.Type.ERROR) {
             /* Get error color attribute. */
-            val color = context.styledAttributes(intArrayOf(R.attr.text_error_color)) { typedArray ->
+            val color = context.styledAttributes(intArrayOf(R.attr.colorError)) { typedArray ->
                 typedArray.getColor(0, 0)
             }
 

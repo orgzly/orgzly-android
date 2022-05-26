@@ -1,7 +1,8 @@
 package com.orgzly.android.ui.dialogs
 
-import android.app.AlertDialog
 import android.content.Context
+import androidx.appcompat.app.AlertDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.R
 import com.orgzly.android.ui.NoteStates
 
@@ -12,7 +13,7 @@ object NoteStateDialog {
 
         val currentStateIndex = if (currentState != null) states.indexOf(currentState) else -1
 
-        return AlertDialog.Builder(context)
+        return MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.state)
                 .setSingleChoiceItems(states.array, currentStateIndex) { d, which ->
                     onSelection(states[which])

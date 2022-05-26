@@ -16,7 +16,7 @@
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="?attr/actionBarSize"
+            android:paddingBottom="?attr/actionBarSize"
             android:clipToPadding="false"
             android:scrollbarStyle="outsideOverlay">
 
@@ -28,18 +28,19 @@
                 android:orientation="vertical">
 
                 <!-- Breadcrumbs and title -->
-                <androidx.appcompat.widget.Toolbar
+                <com.google.android.material.appbar.AppBarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/toolbar"
+                    android:theme="@style/TopAppBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?attr/top_toolbar_bg_color"
-                    android:elevation="1dp" tools:targetApi="lollipop"
-                    app:contentInsetRight="0dp"
-                    app:contentInsetEnd="0dp"
                     app:contentInsetLeft="0dp"
+                    app:contentInsetRight="0dp"
                     app:contentInsetStart="0dp"
-                    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar">
+                    app:contentInsetEnd="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -66,8 +67,6 @@
                                 android:layout_gravity="center_vertical"
                                 android:gravity="center_vertical"
                                 android:linksClickable="true"
-                                android:textColor="?attr/text_primary_color"
-                                android:textColorLink="?attr/text_primary_color"
                                 android:textSize="?attr/fragment_note_content_text_size"
                                 android:lineSpacingMultiplier="1.25"
                                 tools:text="@string/breadcrumbs_sample" />
@@ -111,7 +110,9 @@
                             android:visibility="gone" />
 
                     </LinearLayout>
-                </androidx.appcompat.widget.Toolbar>
+                </com.google.android.material.appbar.MaterialToolbar>
+
+                </com.google.android.material.appbar.AppBarLayout>
 
                 <!-- Metadata header -->
                 <LinearLayout
@@ -134,7 +135,6 @@
                         android:layout_marginLeft="@dimen/fragment_note_icon_margin"
                         android:layout_marginStart="@dimen/fragment_note_icon_margin"
                         android:textSize="?attr/fragment_note_content_text_size"
-                        android:textColor="?attr/text_secondary_color"
                         android:text="@string/metadata"
                         android:visibility="invisible" />
 
@@ -181,6 +181,7 @@
                             android:id="@+id/tags_button"
                             style="@style/NoteFragmentMetadataItemValueButton"
                             android:inputType="text"
+                            android:popupBackground="?colorSurface"
                             android:hint="@string/tags"
                             android:completionThreshold="0"
                             android:freezesText="true" />
@@ -351,7 +352,6 @@
                             android:layout_marginLeft="@dimen/fragment_note_icon_margin"
                             android:layout_marginStart="@dimen/fragment_note_icon_margin"
                             android:textSize="?attr/fragment_note_content_text_size"
-                            android:textColor="?attr/text_secondary_color"
                             android:text="@string/content"
                             android:visibility="invisible" />
 
@@ -416,13 +416,5 @@
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
         style="@style/BottomAppBar.WithMenu" />
-
-    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-    <!--        android:id="@+id/fab"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:src="?attr/ic_done_24dp"-->
-    <!--        app:layout_anchor="@id/bottomAppBar"-->
-    <!--        app:backgroundTint="?attr/bottom_toolbar_bg_color" />-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

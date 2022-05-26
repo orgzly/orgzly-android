@@ -39,10 +39,10 @@
 
                 <Button
                     android:id="@+id/activity_repo_dropbox_link_button"
+                    style="@style/Button.Repo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/screen_edge"
-                    android:layout_marginLeft="@dimen/screen_edge"
                     android:text="@string/repo_dropbox_button_not_linked" />
 
             </LinearLayout>
@@ -83,8 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="?attr/ic_done_24dp"
-        app:layout_anchor="@id/bottomAppBar"
-        app:backgroundTint="?attr/bottom_toolbar_bg_color" />
+        app:layout_anchor="@id/bottomAppBar" />
 
     <include layout="@layout/snackbar_anchor" />
 

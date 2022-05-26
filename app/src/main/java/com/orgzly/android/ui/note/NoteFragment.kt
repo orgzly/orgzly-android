@@ -1,6 +1,5 @@
 package com.orgzly.android.ui.note
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
@@ -15,11 +14,12 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
@@ -463,7 +463,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             val question = resources.getQuantityString(
                 R.plurals.delete_note_or_notes_with_count_question, count, count)
 
-            dialog = AlertDialog.Builder(context)
+            dialog = MaterialAlertDialogBuilder(requireContext())
                 .setTitle(question)
                 .setPositiveButton(R.string.delete) { _, _ ->
                     viewModel.deleteNote()
@@ -861,7 +861,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         val selected = getSelectedBook(books, viewModel.bookId)
 
-        dialog = AlertDialog.Builder(context)
+        dialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.notebook)
             .setSingleChoiceItems(bookNames, selected) { dialog, which ->
                 val book = books[which]
@@ -897,7 +897,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                     -1
                 }
 
-                dialog = AlertDialog.Builder(context)
+                dialog = MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.state)
                     .setSingleChoiceItems(keywords, currentState) { dialog, which ->
                         // On state change - update state and timestamps
@@ -926,7 +926,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                     currentPriority = priorities.indexOf(binding.priorityButton.text.toString())
                 }
 
-                dialog = AlertDialog.Builder(context)
+                dialog = MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.priority)
                     .setSingleChoiceItems(keywords, currentPriority) { dialog, which ->
                         setPriorityView(priorities[which])
@@ -1096,7 +1096,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         updatePayloadFromViews()
 
         if (viewModel.isNoteModified()) {
-            dialog = AlertDialog.Builder(context)
+            dialog = MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.note_has_been_modified)
                 .setMessage(R.string.discard_or_save_changes)
                 .setPositiveButton(R.string.save) { _, _ ->
@@ -1129,7 +1129,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         updatePayloadFromViews()
 
         if (viewModel.isNoteModified()) {
-            dialog = AlertDialog.Builder(context)
+            dialog = MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.note_has_been_modified)
                 .setMessage(R.string.discard_or_save_changes)
                 .setPositiveButton(R.string.save) { _, _ ->
@@ -1153,7 +1153,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         updatePayloadFromViews()
 
         if (viewModel.isNoteModified()) {
-            dialog = AlertDialog.Builder(context)
+            dialog = MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.note_has_been_modified)
                 .setMessage(R.string.discard_or_save_changes)
                 .setPositiveButton(R.string.save) { _, _ ->

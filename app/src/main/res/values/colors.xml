@@ -4,6 +4,7 @@
     <!-- https://material.io/guidelines/style/color.html#color-color-palette -->
 
     <color name="red_200">#EF9A9A</color>
+    <color name="red_300">#E57373</color>
     <color name="red_900">#B71C1C</color>
 
     <color name="green_200">#A5D6A7</color>

@@ -16,8 +16,9 @@
         android:gravity="start|center_vertical"
         android:text="@string/also_delete_linked_book"
         android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:paddingStart="8dp"
-        android:textColor="?attr/text_primary_color"/>
+        android:paddingEnd="8dp" />
 
     <TextView
         android:id="@+id/delete_linked_url"
@@ -26,7 +27,7 @@
         android:layout_marginTop="4dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:textColor="?attr/text_disabled_color"
-        tools:text="content://com.android.providers.downloads.documents/tree/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg/document/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg%2Fgtd.org"/>
+        tools:text="content://com.android.providers.downloads.documents/tree/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg/document/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg%2Fgtd.org"
+        android:enabled="false" />
 
 </LinearLayout>

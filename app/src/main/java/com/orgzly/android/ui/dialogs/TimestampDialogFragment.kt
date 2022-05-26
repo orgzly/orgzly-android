@@ -1,16 +1,18 @@
 package com.orgzly.android.ui.dialogs
 
-import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.timepicker.MaterialTimePicker
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.ui.TimeType
@@ -111,7 +113,7 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
         binding.nextWeekButton.setOnClickListener(this)
 
 
-        return AlertDialog.Builder(requireContext())
+        return MaterialAlertDialogBuilder(requireContext())
                 .setCustomTitle(titleBinding.root)
                 .setView(binding.root)
                 .setPositiveButton(R.string.set) { _, _ ->
@@ -133,51 +135,51 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.date_picker_button -> {
-                val yearMonthDay = viewModel.getYearMonthDay()
+                val picker = MaterialDatePicker.Builder.datePicker().run {
+                    viewModel.getDateInUtcMs()?.let {
+                        setSelection(it)
+                    }
 
-                val picker = DatePickerDialog(requireContext(), { _, year, monthOfYear, dayOfMonth ->
-                    viewModel.set(year, monthOfYear, dayOfMonth)
-                }, yearMonthDay.first, yearMonthDay.second, yearMonthDay.third)
-
-                picker.setOnDismissListener {
-                    pickerDialog = null
+                    build()
                 }
 
-                pickerDialog = picker.apply {
-                    show()
+                picker.addOnPositiveButtonClickListener { selection ->
+                    viewModel.setDate(selection)
                 }
+
+                picker.show(childFragmentManager, picker.toString())
             }
 
             R.id.time_picker_button -> {
                 val hourMinute = viewModel.getTimeHourMinute()
 
-                val picker = TimePickerDialog(requireContext(), { _, hourOfDay, minute ->
-                    viewModel.setTime(hourOfDay, minute)
-                }, hourMinute.first, hourMinute.second, DateFormat.is24HourFormat(context))
-
-                picker.setOnDismissListener {
-                    pickerDialog = null
+                val picker = MaterialTimePicker.Builder().run {
+                    setHour(hourMinute.first)
+                    setMinute(hourMinute.second)
+                    build()
                 }
 
-                pickerDialog = picker.apply {
-                    show()
+                picker.addOnPositiveButtonClickListener { _ ->
+                    viewModel.setTime(picker.hour, picker.minute)
                 }
+
+                picker.show(childFragmentManager, picker.toString())
             }
 
             R.id.end_time_picker_button -> {
                 val hourMinute = viewModel.getEndTimeHourMinute()
 
-                val picker = TimePickerDialog(requireContext(), { _, hourOfDay, minute ->
-                    viewModel.setEndTime(hourOfDay, minute)
-                }, hourMinute.first, hourMinute.second, DateFormat.is24HourFormat(context))
-
-                picker.setOnDismissListener {
-                    pickerDialog = null
+                val picker = MaterialTimePicker.Builder().run {
+                    setHour(hourMinute.first)
+                    setMinute(hourMinute.second)
+                    build()
                 }
 
-                pickerDialog = picker.apply {
-                    show()
+                picker.addOnPositiveButtonClickListener { _ ->
+                    viewModel.setEndTime(picker.hour, picker.minute)
                 }
+
+                picker.show(childFragmentManager, picker.toString())
             }
 
             R.id.repeater_picker_button -> {

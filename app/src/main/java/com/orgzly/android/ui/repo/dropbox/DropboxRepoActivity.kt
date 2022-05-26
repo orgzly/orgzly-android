@@ -2,7 +2,7 @@ package com.orgzly.android.ui.repo.dropbox
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
@@ -11,6 +11,7 @@ import android.text.TextUtils
 import android.widget.EditText
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
@@ -138,7 +139,7 @@ class DropboxRepoActivity : CommonActivity() {
             }
         }
 
-        alertDialog = AlertDialog.Builder(this)
+        alertDialog = MaterialAlertDialogBuilder(this)
                 .setView(view)
                 .setTitle(R.string.access_token)
                 .setPositiveButton(R.string.set) { _, _ ->
@@ -204,7 +205,7 @@ class DropboxRepoActivity : CommonActivity() {
             }
         }
 
-        alertDialog = AlertDialog.Builder(this)
+        alertDialog = MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.confirm_unlinking_from_dropbox_title)
                 .setMessage(R.string.confirm_unlinking_from_dropbox_message)
                 .setPositiveButton(R.string.unlink, dialogClickListener)

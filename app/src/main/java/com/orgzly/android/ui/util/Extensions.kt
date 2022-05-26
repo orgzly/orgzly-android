@@ -1,5 +1,6 @@
 package com.orgzly.android.ui.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.TypedArray
@@ -31,6 +32,7 @@ fun <R> Context.styledAttributes(set: AttributeSet, @StyleableRes attrs: IntArra
     }
 }
 
+@SuppressLint("ResourceType")
 fun SwipeRefreshLayout.setup() {
     setOnRefreshListener {
         Intent(context, SyncService::class.java).setAction(AppIntent.ACTION_SYNC_START).let {
@@ -40,17 +42,9 @@ fun SwipeRefreshLayout.setup() {
         isRefreshing = false
     }
 
-    context?.styledAttributes(R.styleable.ColorScheme) { typedArray ->
-        setProgressBackgroundColorSchemeColor(
-                typedArray.getColor(R.styleable.ColorScheme_item_book_card_bg_color, 0))
-
-        val color = context.obtainStyledAttributes(intArrayOf(R.attr.colorAccent)).let {
-            val color = it.getColor(0, 0)
-            it.recycle()
-            color
-        }
-
-        setColorSchemeColors(color)
+    context?.styledAttributes(intArrayOf(R.attr.colorPrimary, R.attr.colorOnPrimary)) { typedArray ->
+        setProgressBackgroundColorSchemeColor(typedArray.getColor(0, 0))
+        setColorSchemeColors(typedArray.getColor(1, 0))
     }
 }
 

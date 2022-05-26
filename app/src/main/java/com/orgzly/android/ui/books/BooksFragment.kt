@@ -1,7 +1,5 @@
 package com.orgzly.android.ui.books
 
-
-import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -16,12 +14,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
@@ -36,7 +36,6 @@ import com.orgzly.android.ui.books.BooksViewModel.Companion.APP_BAR_DEFAULT_MODE
 import com.orgzly.android.ui.books.BooksViewModel.Companion.APP_BAR_SELECTION_MODE
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog
 import com.orgzly.android.ui.drawer.DrawerItem
-import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.ui.main.setupSearchView
 import com.orgzly.android.ui.repos.ReposActivity
@@ -257,7 +256,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
                     }
 
                     R.id.books_context_menu_force_save -> {
-                        dialog = AlertDialog.Builder(context)
+                        dialog = MaterialAlertDialogBuilder(context)
                             .setTitle(R.string.books_context_menu_item_force_save)
                             .setMessage(R.string.overwrite_remote_notebook_question)
                             .setPositiveButton(R.string.overwrite) { _, _ ->
@@ -268,7 +267,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
                     }
 
                     R.id.books_context_menu_force_load -> {
-                        dialog = AlertDialog.Builder(context)
+                        dialog = MaterialAlertDialogBuilder(context)
                             .setTitle(R.string.books_context_menu_item_force_load)
                             .setMessage(R.string.overwrite_local_notebook_question)
                             .setPositiveButton(R.string.overwrite) { _, _ ->
@@ -327,18 +326,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
         val dialogBinding = DialogBookDeleteBinding.inflate(LayoutInflater.from(context))
 
         dialogBinding.deleteLinkedCheckbox.setOnCheckedChangeListener { _, isChecked ->
-            activity?.apply {
-                val color = styledAttributes(R.styleable.ColorScheme) { typedArray ->
-                    val index = if (isChecked) {
-                        R.styleable.ColorScheme_text_primary_color
-                    } else {
-                        R.styleable.ColorScheme_text_disabled_color
-                    }
-
-                    typedArray.getColor(index, 0)
-                }
-                dialogBinding.deleteLinkedUrl.setTextColor(color)
-            }
+            dialogBinding.deleteLinkedUrl.isEnabled = isChecked
         }
 
         val dialogClickListener = DialogInterface.OnClickListener { _, which ->
@@ -350,7 +338,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
             }
         }
 
-        val builder = AlertDialog.Builder(context)
+        val builder = MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.delete_with_quoted_argument, book.book.name))
                 .setPositiveButton(R.string.delete, dialogClickListener)
                 .setNegativeButton(R.string.cancel, dialogClickListener)
@@ -386,7 +374,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
             }
         }
 
-        val dialogBuilder = AlertDialog.Builder(context)
+        val dialogBuilder = MaterialAlertDialogBuilder(requireContext())
                 .setTitle(getString(R.string.rename_book, MiscUtils.quotedString(book.book.name)))
                 .setPositiveButton(R.string.rename, dialogClickListener)
                 .setNegativeButton(R.string.cancel, dialogClickListener)
@@ -485,7 +473,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
                 }
 
             } else {
-                dialog = AlertDialog.Builder(context)
+                dialog = MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.book_link)
                     .setSingleChoiceItems(
                         urls.toTypedArray(),

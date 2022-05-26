@@ -47,22 +47,9 @@
     </declare-styleable>
 
     <declare-styleable name="ColorScheme">
-        <attr name="top_toolbar_bg_color" format="color"/>
-        <attr name="bottom_toolbar_bg_color" format="color"/>
-        <attr name="drawer_item_background" format="reference"/>
-        <attr name="indent_line_color" format="color"/>
-        <attr name="item_book_card_bg_color" format="color"/>
         <attr name="item_head_state_done_color" format="color"/>
         <attr name="item_head_state_todo_color" format="color"/>
         <attr name="item_head_state_unknown_color" format="color"/>
-        <attr name="item_selected_bg_color" format="color" />
-        <attr name="item_spotlighted_bg_color" format="color" />
-        <attr name="snackbar_bg_color" format="color"/>
-        <attr name="text_disabled_color" format="color"/>
-        <attr name="text_error_color" format="color"/>
-        <attr name="text_highlighted_color" format="color"/>
-        <attr name="text_primary_color" format="color"/>
-        <attr name="text_secondary_color" format="color"/>
     </declare-styleable>
 
     <declare-styleable name="Icons">
@@ -148,8 +135,5 @@
 
         <attr name="active_focused_icon_alpha" format="float"/>
         <attr name="active_unfocused_icon_alpha" format="float"/>
-
-        <attr name="bullet_state_default" format="reference"/>
-        <attr name="bullet_state_folded" format="reference"/>
     </declare-styleable>
 </resources>

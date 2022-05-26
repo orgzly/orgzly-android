@@ -13,7 +13,7 @@
         android:layout_height="48dp"
         android:orientation="horizontal"
         android:background="@color/widget_light_header_bg_color"
-        android:elevation="1dp" tools:targetApi="21">
+        android:elevation="1dp">
 
         <ImageView
             android:id="@+id/list_widget_header_icon"

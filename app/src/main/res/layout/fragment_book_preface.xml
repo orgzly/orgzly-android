@@ -14,7 +14,6 @@
         android:paddingRight="@dimen/screen_edge"
         android:paddingTop="@dimen/screen_edge"
         android:paddingBottom="@dimen/padding_bottom_for_fab"
-        android:layout_marginBottom="?attr/actionBarSize"
         android:clipToPadding="false"
         android:fadeScrollbars="false">
 

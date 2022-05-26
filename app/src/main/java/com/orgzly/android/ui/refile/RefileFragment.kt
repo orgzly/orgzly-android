@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
@@ -56,17 +57,9 @@ class RefileFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        val dialog = object: Dialog(requireContext(), theme) {
-            override fun onBackPressed() {
-                if (viewModel.locationHasParent()) {
-                    viewModel.openParent()
-                } else {
-                    super.onBackPressed()
-                }
-            }
-        }
+        val dialog = MaterialAlertDialogBuilder(requireContext(), theme)
 
-        return dialog
+        return dialog.show()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

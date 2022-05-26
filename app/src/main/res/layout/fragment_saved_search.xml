@@ -18,7 +18,6 @@
             android:paddingRight="@dimen/screen_edge"
             android:paddingTop="@dimen/screen_edge"
             android:paddingBottom="@dimen/padding_bottom_for_fab"
-            android:layout_marginBottom="?attr/actionBarSize"
             android:clipToPadding="false"
             android:fadeScrollbars="false">
 
@@ -74,7 +73,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="?attr/ic_done_24dp"
-        app:layout_anchor="@id/bottomAppBar"
-        app:backgroundTint="?attr/bottom_toolbar_bg_color" />
+        app:layout_anchor="@id/bottomAppBar" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

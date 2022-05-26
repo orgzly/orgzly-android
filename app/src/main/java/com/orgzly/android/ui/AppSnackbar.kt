@@ -37,10 +37,6 @@ object AppSnackbar {
                 }
             }
 
-            // Set background color from attribute
-            val bgColor = getSnackbarBackgroundColor(activity)
-            snack.view.setBackgroundColor(bgColor)
-
             snack.anchorView = activity.findViewById(R.id.snackbar_anchor)
 
             showSnackbar(activity, snack)
@@ -65,12 +61,6 @@ object AppSnackbar {
         // Show the snackbar
         snackbar = snack.apply {
             show()
-        }
-    }
-
-    private fun getSnackbarBackgroundColor(context: Context): Int {
-        return context.styledAttributes(R.styleable.ColorScheme) { typedArray ->
-            typedArray.getColor(R.styleable.ColorScheme_snackbar_bg_color, 0)
         }
     }
 

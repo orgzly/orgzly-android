@@ -21,12 +21,10 @@
         android:id="@+id/item_browser_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/content_left_margin_from_icon"
-        android:layout_marginStart="@dimen/content_left_margin_from_icon"
+        android:layout_marginStart="@dimen/screen_edge"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
         android:textSize="?attr/font_medium"
-        android:textColor="?attr/text_primary_color"
         tools:text="FileOrDirectory" />
 
 </LinearLayout>

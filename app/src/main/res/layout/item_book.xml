@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_book_card_view"
+    style="?attr/materialCardViewElevatedStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="start|center_vertical"
-    android:layout_margin="@dimen/card_margin"
-    app:cardUseCompatPadding="true"
-    app:cardCornerRadius="0dp"
-    app:cardElevation="2dp"
-    app:cardBackgroundColor="?attr/item_book_card_bg_color"
-    android:foreground="?android:attr/selectableItemBackground">
+    android:layout_marginTop="12dp">
 
     <LinearLayout
         android:id="@+id/item_book_container"
@@ -37,7 +32,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:src="?attr/ic_sync_18dp"
                     android:layout_gravity="center"
@@ -48,7 +42,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:src="?attr/ic_sync_problem_18dp"
                     android:layout_gravity="center"
@@ -59,24 +52,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@id/item_book_sync_needed_icon"
-                    android:layout_toLeftOf="@id/item_book_sync_needed_icon"
                     android:layout_alignBaseline="@id/item_book_sync_needed_icon"
-                    android:layout_marginRight="@dimen/item_book_padding"
                     android:layout_marginEnd="@dimen/item_book_padding"
                     android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
-                    tools:text="@string/book_title_sample"
-                    android:textStyle="bold"
-                    android:textSize="?attr/font_large"
-                    android:textColor="?attr/text_primary_color"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                    tools:text="@string/book_title_sample" />
             </RelativeLayout>
 
             <TextView
                 android:id="@+id/item_book_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="@string/book_name_sample"
-                android:textSize="?attr/item_book_subtitle_text_size"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                tools:text="@string/book_name_sample" />
 
         </LinearLayout>
 
@@ -366,4 +354,4 @@
         </LinearLayout>
 
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

@@ -37,7 +37,6 @@
             android:layout_weight="1"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textColor="?attr/text_primary_color"
             tools:text="Long title that occupies multiple lines used to test wrapping and icon positioning" />
     </LinearLayout>
 

@@ -1,7 +1,7 @@
 package com.orgzly.android.ui.notes.book
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +15,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.BookUtils
@@ -235,7 +236,7 @@ class BookFragment :
             val question = resources.getQuantityString(
                     R.plurals.delete_note_or_notes_with_count_question, count, count)
 
-            dialog = AlertDialog.Builder(context)
+            dialog = MaterialAlertDialogBuilder(requireContext())
                     .setTitle(question)
                     .setPositiveButton(R.string.delete) { _, _ ->
                         listener?.onNotesDeleteRequest(mBookId, ids)
@@ -441,8 +442,8 @@ class BookFragment :
 
     @SuppressLint("ClickableViewAccessibility")
     private fun highlightScrolledToView(view: View) {
-        val selectionBgColor = view.context.styledAttributes(R.styleable.ColorScheme) { typedArray ->
-            typedArray.getColor(R.styleable.ColorScheme_item_spotlighted_bg_color, 0)
+        val selectionBgColor = view.context.styledAttributes(intArrayOf(R.attr.colorSurface)) { typedArray ->
+            typedArray.getColor(0, 0)
         }
 
         view.setBackgroundColor(selectionBgColor)

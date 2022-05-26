@@ -17,14 +17,12 @@
         android:maxLines="1"
         android:ellipsize="end"
         android:textSize="?attr/font_medium"
-        android:textColor="?attr/text_primary_color"
         tools:text="@string/saved_search_name_sample"/>
 
     <TextView
         android:id="@+id/query"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="?attr/text_secondary_color"
         tools:text="@string/saved_search_query_sample_long"/>
 
 </LinearLayout>

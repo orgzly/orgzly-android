@@ -20,7 +20,9 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:paddingBottom="?attr/actionBarSize">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -39,38 +41,26 @@
 
                 <Button
                     android:id="@+id/activity_repos_dropbox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:drawableTop="?attr/oic_dropbox_not_linked"
+                    style="@style/Button.ReposRepo"
+                    app:icon="?attr/oic_dropbox_not_linked"
                     android:text="@string/dropbox" />
 
                 <Button
                     android:id="@+id/activity_repos_git"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:drawableTop="?attr/oic_git_48dp"
+                    style="@style/Button.ReposRepo"
+                    app:icon="?attr/oic_git_48dp"
                     android:text="@string/git" />
 
                 <Button
                     android:id="@+id/activity_repos_webdav"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:drawableTop="?attr/ic_outline_cloud_48dp"
+                    style="@style/Button.ReposRepo"
+                    app:icon="?attr/ic_outline_cloud_48dp"
                     android:text="@string/webdav" />
 
                 <Button
                     android:id="@+id/activity_repos_directory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:drawableTop="?attr/ic_folder_open_48dp"
+                    style="@style/Button.ReposRepo"
+                    app:icon="?attr/ic_folder_open_48dp"
                     android:text="@string/directory" />
 
             </LinearLayout>

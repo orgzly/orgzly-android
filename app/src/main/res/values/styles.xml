@@ -11,7 +11,7 @@
 
          See and try using http://developer.android.com/design/style/typography.html
     -->
-    <style name="AppLightTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+    <style name="AppLightTheme" parent="Theme.Material3.Light.NoActionBar">
         <!-- Avoid white screen appearing briefly. -->
         <item name="android:windowDisablePreview">true</item>
 
@@ -21,11 +21,13 @@
 
         <!-- Theme-specific items stop here -->
 
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">?attr/isLightTheme</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
 
         <item name="actionOverflowButtonStyle">@style/OverFlow</item>
+
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
 
         <!-- Font sizes (defaults) -->
         <item name="font_micro">12sp</item>
@@ -144,12 +146,14 @@
         <item name="active_unfocused_icon_alpha">0.54</item>
     </style>
 
-    <style name="AppDarkTheme" parent="Theme.MaterialComponents.NoActionBar.Bridge">
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+    <style name="AppDarkTheme" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowLightStatusBar" tools:targetApi="m">?attr/isLightTheme</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
 
         <item name="actionOverflowButtonStyle">@style/OverFlow</item>
+
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
 
         <!-- Font sizes (defaults) -->
         <item name="font_micro">12sp</item>
@@ -268,133 +272,65 @@
     </style>
 
     <style name="OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
-        <item name="tint">?attr/text_primary_color</item>
+        <item name="tint">?android:textColorPrimary</item>
     </style>
 
     <!-- Color scheme -->
     <style name="AppLightTheme.Light">
-<!--        <item name="colorBackgroundFloating">@color/white</item>-->
-<!--        <item name="android:colorBackgroundFloating" tools:targetApi="23">@color/white</item>-->
-
-        <item name="android:colorButtonNormal" tools:targetApi="21">@color/grey_100</item>
-
-        <item name="android:itemBackground">?android:itemBackground</item>
-        <item name="android:statusBarColor" tools:targetApi="21">@color/light_theme_app_bar</item>
-        <item name="android:windowBackground">@color/white</item>
-
-        <item name="colorAccent">@color/blue_grey_600</item>
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@color/black</item>
-
-        <item name="top_toolbar_bg_color">@color/light_theme_app_bar</item>
-        <item name="bottom_toolbar_bg_color">@color/light_theme_app_bar</item>
-        <item name="snackbar_bg_color">#323232</item> <!-- Default color -->
-
-        <item name="bullet_state_default">@drawable/bullet_state_default_light</item>
-        <item name="bullet_state_folded">@drawable/bullet_state_folded_light</item>
-
-        <item name="drawer_item_background">@drawable/drawer_item_background_light</item>
-
-        <item name="indent_line_color">#0c000000</item>
-
-        <item name="item_book_card_bg_color">@color/light_theme_cards_and_dialogs</item>
+        <item name="android:colorBackground">@color/white</item>
+        <item name="android:statusBarColor">@color/grey_100</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorPrimary">@color/grey_600</item>
+        <item name="colorOnPrimary">@color/grey_100</item>
+        <item name="colorPrimaryContainer">@color/grey_100</item>
+        <item name="colorOnPrimaryContainer">@color/grey_900</item>
+        <item name="colorPrimaryInverse">@color/grey_100</item>
+        <item name="colorSecondaryContainer">@color/grey_300</item>
+        <item name="colorOnSecondaryContainer">@color/grey_900</item>
+        <item name="android:textColorLink">@color/grey_600</item>
 
         <item name="item_head_state_done_color">@color/green_900</item>
         <item name="item_head_state_todo_color">@color/red_900</item>
         <item name="item_head_state_unknown_color">@color/blue_900</item>
-
-        <item name="item_selected_bg_color">@color/item_selected_light_bg_color</item>
-        <item name="item_spotlighted_bg_color">@color/item_selected_light_bg_color</item>
-
-        <item name="text_primary_color">@color/dark_text_primary_color</item>
-        <item name="text_secondary_color">@color/dark_text_secondary_color</item>
-        <item name="text_highlighted_color">@color/black</item>
-        <item name="text_disabled_color">@color/dark_text_disabled_color</item>
-        <item name="text_error_color">@color/red_900</item>
     </style>
 
     <!-- Color scheme -->
     <style name="AppDarkTheme.Dark">
-<!--        <item name="colorBackgroundFloating">@color/dark_theme_app_bar</item>-->
-<!--        <item name="android:colorBackgroundFloating" tools:targetApi="23">@color/dark_theme_app_bar</item>-->
-
-<!--        <item name="android:colorButtonNormal" tools:targetApi="21">@color/dark_theme_background</item>-->
-
-        <item name="android:itemBackground">?android:itemBackground</item>
-        <item name="android:statusBarColor" tools:targetApi="21">@color/dark_theme_app_bar</item>
-        <item name="android:windowBackground">@color/dark_theme_background</item>
-
-        <item name="colorAccent">@color/blue_grey_300</item>
-        <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryDark">@color/white</item>
-
-        <item name="top_toolbar_bg_color">@color/dark_theme_app_bar</item>
-        <item name="bottom_toolbar_bg_color">@color/dark_theme_app_bar</item>
-        <item name="snackbar_bg_color">@color/dark_theme_app_bar</item>
-
-        <item name="bullet_state_default">@drawable/bullet_state_default_dark</item>
-        <item name="bullet_state_folded">@drawable/bullet_state_folded_dark</item>
-
-        <item name="drawer_item_background">@drawable/drawer_item_background_dark</item>
-
-        <item name="indent_line_color">#0cffffff</item>
-
-        <item name="item_book_card_bg_color">@color/dark_theme_cards_and_dialogs</item>
+        <item name="android:colorBackground">#121212</item>
+        <item name="android:statusBarColor">#1b1b1b</item>
+        <item name="colorSurface">#121212</item>
+        <item name="colorPrimary">@color/grey_500</item>
+        <item name="colorOnPrimary">@color/grey_900</item>
+        <item name="colorPrimaryContainer">@color/grey_900</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorPrimaryInverse">@color/blue_grey_800</item>
+        <item name="colorSecondaryContainer">@color/grey_800</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
+        <item name="colorError">@color/red_200</item>
+        <item name="android:textColorLink">@color/grey_400</item>
 
         <item name="item_head_state_done_color">@color/green_200</item>
         <item name="item_head_state_todo_color">@color/red_200</item>
         <item name="item_head_state_unknown_color">@color/blue_200</item>
-
-        <item name="item_selected_bg_color">@color/item_selected_dark_bg_color</item>
-        <item name="item_spotlighted_bg_color">@color/item_selected_dark_bg_color</item>
-
-        <item name="text_primary_color">@color/white_text_primary_color</item>
-        <item name="text_secondary_color">@color/white_text_secondary_color</item>
-        <item name="text_highlighted_color">@color/white_text_primary_color</item>
-        <item name="text_disabled_color">#60ffffff</item>
-        <item name="text_error_color">@color/red_200</item>
     </style>
 
     <!-- Color scheme -->
     <style name="AppDarkTheme.Black">
-        <item name="colorBackgroundFloating">@color/black_theme_status_bar</item>
-        <item name="android:colorBackgroundFloating" tools:targetApi="23">@color/black_theme_status_bar</item>
-
-        <item name="android:colorButtonNormal" tools:targetApi="21">@color/black_theme_cards_and_dialogs</item>
-
-        <item name="android:itemBackground">@color/black_theme_status_bar</item>
-        <item name="android:statusBarColor" tools:targetApi="21">@color/black_theme_status_bar</item>
-        <item name="android:windowBackground">@color/black_theme_status_bar</item>
-
-        <item name="colorAccent">@color/blue_grey_200</item>
-        <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryDark">@color/white</item>
-
-        <item name="top_toolbar_bg_color">@color/black_theme_status_bar</item>
-        <item name="bottom_toolbar_bg_color">@color/black_theme_status_bar</item>
-        <item name="snackbar_bg_color">@color/black_theme_status_bar</item>
-
-        <item name="bullet_state_default">@drawable/bullet_state_default_black</item>
-        <item name="bullet_state_folded">@drawable/bullet_state_folded_black</item>
-
-        <item name="drawer_item_background">@drawable/drawer_item_background_black</item>
-
-        <item name="indent_line_color">#1cffffff</item>
-
-        <item name="item_book_card_bg_color">@color/black_theme_status_bar</item>
+        <item name="android:colorBackground">#000000</item>
+        <item name="android:statusBarColor">#000000</item>
+        <item name="colorSurface">#000000</item>
+        <item name="colorPrimary">@color/grey_600</item>
+        <item name="colorOnPrimary">@color/grey_300</item>
+        <item name="colorPrimaryContainer">@color/grey_900</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorPrimaryInverse">@color/blue_grey_800</item>
+        <item name="colorSecondaryContainer">@color/grey_900</item>
+        <item name="colorOnSecondaryContainer">@color/grey_200</item>
+        <item name="android:textColorLink">@color/grey_400</item>
 
         <item name="item_head_state_done_color">@color/green_200</item>
         <item name="item_head_state_todo_color">@color/red_200</item>
         <item name="item_head_state_unknown_color">@color/blue_200</item>
-
-        <item name="item_selected_bg_color">@color/item_selected_black_bg_color</item>
-        <item name="item_spotlighted_bg_color">@color/item_selected_black_bg_color</item>
-
-        <item name="text_primary_color">@color/white_text_primary_color</item>
-        <item name="text_secondary_color">@color/white_text_secondary_color</item>
-        <item name="text_highlighted_color">@color/white_text_primary_color</item>
-        <item name="text_disabled_color">#60ffffff</item>
-        <item name="text_error_color">@color/red_200</item>
     </style>
 
     <style name="FontSize"/>
@@ -538,22 +474,6 @@
         <item name="android:layout_marginEnd" tools:targetApi="17">8dp</item>
     </style>
 
-    <style name="HeadItemInfoIcon">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginTop">2dp</item>
-        <item name="android:layout_marginBottom">1dp</item>
-    </style>
-
-    <style name="HeadItemInfo">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">?attr/item_head_sub_title_text</item>
-        <item name="android:textColor">?attr/text_secondary_color</item>
-        <item name="android:layout_marginStart">4dp</item>
-        <item name="android:layout_marginLeft">4dp</item>
-    </style>
-
     <style name="FastScroll">
         <!-- Defined in values-v21/style.xml to be able to use attributes in drawables. -->
     </style>
@@ -575,9 +495,7 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center</item>
 
-        <item name="android:textColor">?attr/text_secondary_color</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">?attr/font_large</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.TitleLarge</item>
     </style>
 
     <style name="LoadingProgressBar">
@@ -620,8 +538,7 @@
         <!--<item name="android:layout_marginLeft">8dp</item>-->
     </style>
 
-    <style name="NavigationViewForDrawer">
-        <item name="android:listDivider">@null</item>
+    <style name="DrawerNavigationView">
         <item name="android:ellipsize">end</item>
     </style>
 
@@ -634,16 +551,12 @@
         <!--<item name="android:alpha">0.0</item>-->
 
         <item name="android:layout_gravity">bottom</item>
-        <item name="android:background">?attr/bottom_toolbar_bg_color</item>
-        <item name="android:elevation" tools:targetApi="lollipop">4dp</item>
-        <item name="android:theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
-        <item name="android:popupTheme" tools:targetApi="lollipop">@style/ThemeOverlay.AppCompat.ActionBar</item>
+        <item name="android:elevation">4dp</item>
 
         <!--<item name="android:contentInsetLeft" tools:targetApi="lollipop">0dp</item>-->
         <!--<item name="android:contentInsetStart" tools:targetApi="lollipop">0dp</item>-->
         <!--<item name="android:contentInsetRight" tools:targetApi="lollipop">0dp</item>-->
         <!--<item name="android:contentInsetEnd" tools:targetApi="lollipop">0dp</item>-->
-
     </style>
 
     <style name="QuickBarButton" parent="Base.Widget.AppCompat.Button.Borderless">
@@ -652,13 +565,20 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="TopAppBar">
+        <item name="android:background">?android:statusBarColor</item>
+
+        <!-- Don't overlay -->
+        <item name="colorPrimary">@android:color/transparent</item>
+    </style>
+
     <style name="BottomAppBar">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">bottom</item>
         <item name="fabCradleMargin">0dp</item>
         <item name="fabCradleRoundedCornerRadius">0dp</item>
-        <item name="backgroundTint">?attr/bottom_toolbar_bg_color</item>
+        <item name="fabCradleVerticalOffset">0dp</item>
     </style>
 
     <style name="BottomAppBar.WithMenu">
@@ -684,8 +604,7 @@
     <style name="BottomAppBarTitle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-<!--        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Widget.ActionBar.Subtitle</item>-->
-        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Widget.ActionBar.Title</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.TitleLarge</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
@@ -694,12 +613,44 @@
     <style name="HorizontalDivider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">?attr/indent_line_color</item>
+        <item name="android:background">?android:statusBarColor</item>
+    </style>
+
+    <style name="VerticalDivider">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">?android:statusBarColor</item>
     </style>
 
     <style name="TitleTextAppearance">
         <item name="android:textSize">?attr/font_large</item>
-        <item name="android:textColor">?attr/text_primary_color</item>
         <item name="android:textStyle">normal</item>
     </style>
+
+    <!-- For dialogs in Settings -->
+    <style name="AlertDialogTheme" parent="ThemeOverlay.Material3.Dialog">
+    </style>
+
+<!--    <style name="Button" parent="Widget.Material3.Button.ElevatedButton">-->
+<!--    </style>-->
+
+    <style name="Button" />
+
+    <style name="Button.TimestampDialog">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Button.ReposRepo">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="iconSize">36dp</item>
+        <item name="iconGravity">top</item>
+    </style>
+
+    <style name="Button.Repo">
+    </style>
+
 </resources>

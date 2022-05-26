@@ -1,6 +1,5 @@
 package com.orgzly.android.ui
 
-import android.app.AlertDialog
 import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -9,10 +8,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.MotionEvent
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.preference.PreferenceManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
@@ -278,10 +279,10 @@ abstract class CommonActivity : AppCompatActivity() {
         }
     }
 
-    fun progressDialogBuilder(title: Int, message: String? = null): AlertDialog.Builder {
+    fun progressDialogBuilder(title: Int, message: String? = null): MaterialAlertDialogBuilder {
         val view = View.inflate(this, R.layout.dialog_progress_bar, null)
 
-        val builder = AlertDialog.Builder(this)
+        val builder = MaterialAlertDialogBuilder(this)
             .setTitle(title)
             .setView(view)
 

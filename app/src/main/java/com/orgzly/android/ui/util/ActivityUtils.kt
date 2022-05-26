@@ -1,7 +1,6 @@
 package com.orgzly.android.ui.util
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
@@ -9,15 +8,15 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ScrollView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.appcompat.widget.Toolbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
@@ -163,7 +162,7 @@ object ActivityUtils {
         activity ?: return null
 
         if (!isKeepScreenOn(activity)) {
-            return AlertDialog.Builder(activity)
+            return MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.keep_screen_on)
                 .setMessage(R.string.keep_screen_on_desc)
                 .setPositiveButton(android.R.string.yes) { dialog, _ ->

@@ -1,13 +1,13 @@
 package com.orgzly.android.ui.repo.webdav
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.WindowManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.repos.RepoFactory
@@ -147,7 +147,7 @@ class WebdavRepoActivity : CommonActivity() {
 
             } else {
                 // Warn about clear-text traffic
-                alertDialog = AlertDialog.Builder(this)
+                alertDialog = MaterialAlertDialogBuilder(this)
                         .setTitle(R.string.cleartext_traffic)
                         .setMessage(R.string.cleartext_traffic_message)
                         .setPositiveButton(R.string.yes) { _, _ ->
@@ -207,7 +207,7 @@ class WebdavRepoActivity : CommonActivity() {
             certificates.setText(viewModel.certificates.value)
         }
 
-        alertDialog = AlertDialog.Builder(this)
+        alertDialog = MaterialAlertDialogBuilder(this)
                 .setTitle(getString(R.string.trusted_certificates))
                 .setPositiveButton(R.string.set) { _, _ ->
                     viewModel.certificates.value = dialogBinding.certificates.text.toString()

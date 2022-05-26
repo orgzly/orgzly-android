@@ -1,6 +1,6 @@
 package com.orgzly.android.ui.dialogs
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
@@ -12,6 +12,7 @@ import android.widget.EditText
 import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.R
 import com.orgzly.android.ui.util.ActivityUtils
 
@@ -54,7 +55,7 @@ class SimpleOneLinerDialog : DialogFragment() {
             input.setText(value)
         }
 
-        val dialog = AlertDialog.Builder(activity)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle(title)
             .setView(view)
             .setPositiveButton(positiveButtonText) { _, _ ->

@@ -114,26 +114,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        /*
-         * Set fragment's background.
-         */
-        val color = view.context.styledAttributes(R.styleable.ColorScheme) { typedArray ->
-            typedArray.getColor(R.styleable.ColorScheme_item_book_card_bg_color, -1)
-        }
-
-        if (color != -1) {
-            view.setBackgroundColor(color)
-        }
-
-        /* Remove dividers. */
-//        view?.findViewById(android.R.id.list)?.let {
-//            (it as? ListView)?.divider = null
-//        }
-    }
-
     /*
      * Display custom preference's dialog.
      */

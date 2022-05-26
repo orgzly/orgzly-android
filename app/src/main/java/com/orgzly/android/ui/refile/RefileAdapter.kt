@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -20,11 +19,7 @@ import com.orgzly.databinding.ItemRefileBinding
 class RefileAdapter(val context: Context, val listener: OnClickListener) :
         ListAdapter<RefileViewModel.Item, RefileAdapter.RefileViewHolder>(DIFF_CALLBACK) {
 
-    data class Icons(
-            @DrawableRes val up: Int,
-            @DrawableRes val book: Int,
-            @DrawableRes val bulletStateDefault: Int,
-            @DrawableRes val bulletStateFolded: Int)
+    data class Icons(@DrawableRes val up: Int, @DrawableRes val book: Int)
 
     var icons: Icons? = null
 
@@ -86,9 +81,9 @@ class RefileAdapter(val context: Context, val listener: OnClickListener) :
 
                 icons?.let {
                     if (payload.position.descendantsCount > 0) {
-                        holder.binding.itemRefileIcon.setImageResource(it.bulletStateFolded)
+                        holder.binding.itemRefileIcon.setImageResource(R.drawable.bullet_folded)
                     } else {
-                        holder.binding.itemRefileIcon.setImageResource(it.bulletStateDefault)
+                        holder.binding.itemRefileIcon.setImageResource(R.drawable.bullet)
                     }
                     holder.binding.itemRefileIcon.visibility = View.VISIBLE
                 }
@@ -100,9 +95,7 @@ class RefileAdapter(val context: Context, val listener: OnClickListener) :
         return context.styledAttributes(R.styleable.Icons) { typedArray ->
             Icons(
                     typedArray.getResourceId(R.styleable.Icons_ic_keyboard_arrow_up_24dp, 0),
-                    typedArray.getResourceId(R.styleable.Icons_ic_library_books_24dp, 0),
-                    typedArray.getResourceId(R.styleable.Icons_bullet_state_default, 0),
-                    typedArray.getResourceId(R.styleable.Icons_bullet_state_folded, 0))
+                    typedArray.getResourceId(R.styleable.Icons_ic_library_books_24dp, 0))
         }
     }
 

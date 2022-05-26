@@ -7,7 +7,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.db.entity.Note
@@ -24,6 +26,7 @@ import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.UserTimeFormatter
 import com.orgzly.databinding.ItemAgendaDividerBinding
 import com.orgzly.databinding.ItemHeadBinding
+import java.lang.IllegalStateException
 
 class NoteItemViewBinder(private val context: Context, private val inBook: Boolean) {
     private val attrs: Attrs = Attrs.obtain(context)
@@ -287,12 +290,12 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
 
         if (note.position.descendantsCount > 0) { // With descendants
             if (note.position.isFolded) { // Folded
-                holder.binding.itemHeadBullet.setImageDrawable(attrs.bulletFolded)
+                holder.binding.itemHeadBullet.setImageResource(R.drawable.bullet_folded)
             } else { // Not folded
-                holder.binding.itemHeadBullet.setImageDrawable(attrs.bulletDefault)
+                holder.binding.itemHeadBullet.setImageResource(R.drawable.bullet)
             }
         } else { // No descendants
-            holder.binding.itemHeadBullet.setImageDrawable(attrs.bulletDefault)
+            holder.binding.itemHeadBullet.setImageResource(R.drawable.bullet)
         }
 
         holder.binding.itemHeadBullet.visibility = View.VISIBLE
@@ -488,31 +491,25 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
         @ColorInt val doneColor: Int,
         @ColorInt val unknownColor: Int,
         val postTitleTextSize: Int,
-        @ColorInt val postTitleTextColor: Int,
-        val bulletDefault: Drawable,
-        val bulletFolded: Drawable
+        @ColorInt val postTitleTextColor: Int
     ) {
         companion object {
             @SuppressWarnings("ResourceType")
             fun obtain(context: Context): Attrs {
                 return context.styledAttributes(
-                        intArrayOf(
-                                R.attr.item_head_state_todo_color,
-                                R.attr.item_head_state_done_color,
-                                R.attr.item_head_state_unknown_color,
-                                R.attr.item_head_post_title_text_size,
-                                R.attr.text_secondary_color,
-                                R.attr.bullet_state_default,
-                                R.attr.bullet_state_folded)) { typedArray ->
+                    intArrayOf(
+                        R.attr.item_head_state_todo_color,
+                        R.attr.item_head_state_done_color,
+                        R.attr.item_head_state_unknown_color,
+                        R.attr.item_head_post_title_text_size,
+                        android.R.attr.textColorTertiary)) { typedArray ->
 
                     Attrs(
-                            typedArray.getColor(0, 0),
-                            typedArray.getColor(1, 0),
-                            typedArray.getColor(2, 0),
-                            typedArray.getDimensionPixelSize(3, 0),
-                            typedArray.getColor(4, 0),
-                            typedArray.getDrawable(5)!!,
-                            typedArray.getDrawable(6)!!)
+                        typedArray.getColor(0, 0),
+                        typedArray.getColor(1, 0),
+                        typedArray.getColor(2, 0),
+                        typedArray.getDimensionPixelSize(3, 0),
+                        typedArray.getColor(4, 0))
                 }
             }
         }

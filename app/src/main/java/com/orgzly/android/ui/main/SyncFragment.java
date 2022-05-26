@@ -1,7 +1,7 @@
 package com.orgzly.android.ui.main;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
@@ -26,6 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.App;
@@ -241,7 +242,7 @@ public class SyncFragment extends Fragment {
                     SyncService.start(getContext(), new Intent(getContext(), SyncService.class)));
 
             buttonContainer.setOnLongClickListener(v -> {
-                Dialog dialog = new AlertDialog.Builder(getContext())
+                Dialog dialog = new MaterialAlertDialogBuilder(getContext())
                         .setPositiveButton(R.string.ok, null)
                         .setNeutralButton(R.string.copy, (d, w) ->
                                 copyToClipboard("Sync output", buttonText.getText()))
@@ -334,7 +335,7 @@ public class SyncFragment extends Fragment {
 
                 case CANCELED:
                 case FAILED:
-                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
 
                     setAnimation(false);
 

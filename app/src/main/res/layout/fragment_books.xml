@@ -23,11 +23,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:paddingLeft="@dimen/cards_margin"
-                android:paddingRight="@dimen/cards_margin"
-                android:paddingTop="@dimen/cards_margin"
-                android:paddingBottom="@dimen/padding_bottom_for_fab"
-                android:layout_marginBottom="?attr/actionBarSize" />
+                android:paddingStart="@dimen/screen_edge"
+                android:paddingEnd="@dimen/screen_edge"
+                android:paddingBottom="@dimen/padding_bottom_for_fab" />
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -50,7 +48,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="?attr/ic_add_24dp"
-        app:layout_anchor="@id/bottomAppBar"
-        app:backgroundTint="?attr/bottom_toolbar_bg_color" />
+        app:layout_anchor="@id/bottomAppBar" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

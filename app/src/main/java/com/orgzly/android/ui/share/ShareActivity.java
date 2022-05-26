@@ -1,6 +1,6 @@
 package com.orgzly.android.ui.share;
 
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;

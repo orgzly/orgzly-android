@@ -1,6 +1,6 @@
 package com.orgzly.android.ui.notes
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View

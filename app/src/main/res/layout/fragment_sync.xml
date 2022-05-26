@@ -6,14 +6,14 @@
     android:id="@+id/fragment_sync_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/windowBackground"
+    android:background="?colorSurface"
     android:orientation="vertical">
 
     <ProgressBar
         android:id="@+id/sync_progress_bar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="16dp"/>
+        android:layout_height="wrap_content"/>
 
     <View
         android:layout_width="match_parent"
@@ -24,9 +24,7 @@
     <LinearLayout
         android:id="@+id/sync_button_container"
         style="@style/BorderlessButton"
-        android:paddingLeft="@dimen/screen_edge"
         android:paddingStart="@dimen/screen_edge"
-        android:paddingRight="@dimen/screen_edge"
         android:paddingEnd="@dimen/screen_edge"
         android:layout_height="48dp"
         android:layout_width="match_parent"
@@ -54,7 +52,6 @@
             android:scrollHorizontally="true"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textStyle="bold"
-            android:textColor="?attr/text_primary_color"/>
+            android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

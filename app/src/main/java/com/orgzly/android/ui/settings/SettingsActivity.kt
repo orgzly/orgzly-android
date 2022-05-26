@@ -1,7 +1,8 @@
 package com.orgzly.android.ui.settings
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.os.Bundle
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.ui.CommonActivity
@@ -19,7 +20,7 @@ class SettingsActivity : CommonActivity(), Listener {
     }
 
     override fun onNotesUpdateRequest(action: UseCase) {
-        alertDialog = AlertDialog.Builder(this)
+        alertDialog = MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.notes_update_needed_dialog_title)
                 .setMessage(R.string.notes_update_needed_dialog_message)
                 .setPositiveButton(R.string.yes) { _, _ ->
@@ -33,7 +34,7 @@ class SettingsActivity : CommonActivity(), Listener {
      * Wipe database, after prompting user for confirmation.
      */
     override fun onDatabaseClearRequest() {
-        alertDialog = AlertDialog.Builder(this)
+        alertDialog = MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.clear_database)
                 .setMessage(R.string.clear_database_dialog_message)
                 .setPositiveButton(R.string.ok) { _, _ ->

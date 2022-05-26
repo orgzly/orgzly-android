@@ -24,15 +24,17 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
+                <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="?attr/top_toolbar_bg_color"
-                    android:elevation="4dp" tools:targetApi="lollipop"
-                    app:titleTextAppearance="@style/TitleTextAppearance"
-                    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar" />
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.appbar.MaterialToolbar
+                        android:id="@+id/toolbar"
+                        android:theme="@style/TopAppBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize" />
+
+                </com.google.android.material.appbar.AppBarLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/fragment_book_recycler_view"
@@ -41,8 +43,7 @@
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
                     android:paddingTop="8dp"
-                    android:paddingBottom="@dimen/padding_bottom_for_fab"
-                    android:layout_marginBottom="?attr/actionBarSize" />
+                    android:paddingBottom="@dimen/padding_bottom_for_fab" />
             </LinearLayout>
 
             <ScrollView
@@ -80,7 +81,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="?attr/ic_add_24dp"
-        app:layout_anchor="@id/bottomAppBar"
-        app:backgroundTint="?attr/bottom_toolbar_bg_color" />
+        app:layout_anchor="@id/bottomAppBar" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
