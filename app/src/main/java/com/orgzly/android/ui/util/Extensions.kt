@@ -42,10 +42,10 @@ fun SwipeRefreshLayout.setup() {
         isRefreshing = false
     }
 
-    context?.styledAttributes(intArrayOf(R.attr.colorPrimary, R.attr.colorOnPrimary)) { typedArray ->
-        setProgressBackgroundColorSchemeColor(typedArray.getColor(0, 0))
-        setColorSchemeColors(typedArray.getColor(1, 0))
-    }
+//    context?.styledAttributes(intArrayOf(R.attr.colorPrimary, R.attr.colorOnPrimary)) { typedArray ->
+//        setProgressBackgroundColorSchemeColor(typedArray.getColor(0, 0))
+//        setColorSchemeColors(typedArray.getColor(1, 0))
+//    }
 }
 
 fun View.removeBackgroundKeepPadding() {

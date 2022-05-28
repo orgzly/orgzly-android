@@ -181,7 +181,6 @@
                             android:id="@+id/tags_button"
                             style="@style/NoteFragmentMetadataItemValueButton"
                             android:inputType="text"
-                            android:popupBackground="?colorSurface"
                             android:hint="@string/tags"
                             android:completionThreshold="0"
                             android:freezesText="true" />
