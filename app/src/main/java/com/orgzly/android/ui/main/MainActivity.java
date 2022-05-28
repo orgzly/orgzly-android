@@ -1,6 +1,5 @@
 package com.orgzly.android.ui.main;
 
-import androidx.appcompat.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,17 +8,14 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -35,9 +31,6 @@ import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.db.entity.Note;
 import com.orgzly.android.db.entity.SavedSearch;
 import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.query.Condition;
-import com.orgzly.android.query.Query;
-import com.orgzly.android.query.user.DottedQueryBuilder;
 import com.orgzly.android.sync.AutoSync;
 import com.orgzly.android.ui.AppSnackbarUtils;
 import com.orgzly.android.ui.CommonActivity;
@@ -72,14 +65,12 @@ import com.orgzly.android.usecase.NoteUpdateState;
 import com.orgzly.android.usecase.NoteUpdateStateToggle;
 import com.orgzly.android.usecase.SavedSearchCreate;
 import com.orgzly.android.usecase.SavedSearchDelete;
-import com.orgzly.android.usecase.SavedSearchExport;
 import com.orgzly.android.usecase.SavedSearchMoveDown;
 import com.orgzly.android.usecase.SavedSearchMoveUp;
 import com.orgzly.android.usecase.SavedSearchUpdate;
 import com.orgzly.android.usecase.UseCase;
 import com.orgzly.android.usecase.UseCaseResult;
 import com.orgzly.android.usecase.UseCaseWorker;
-import com.orgzly.android.util.AppPermissions;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.org.datetime.OrgDateTime;
 
@@ -775,14 +766,7 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onSavedSearchesExportRequest(int title, @NonNull String message) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            activityForResult.startSavedSearchesExportFileChooser();
-
-        } else {
-            runWithPermission(
-                    AppPermissions.Usage.SAVED_SEARCHES_EXPORT_IMPORT,
-                    () -> mSyncFragment.run(new SavedSearchExport()));
-        }
+        activityForResult.startSavedSearchesExportFileChooser();
     }
 
     @Override

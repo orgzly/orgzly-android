@@ -11,7 +11,12 @@
 
          See and try using http://developer.android.com/design/style/typography.html
     -->
-    <style name="AppLightTheme" parent="Theme.Material3.Light.NoActionBar">
+    <style name="AppLightTheme" parent="Theme.Material3.DynamicColors.Light">
+
+        <!-- NoActionBar -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
         <!-- Avoid white screen appearing briefly. -->
         <item name="android:windowDisablePreview">true</item>
 
@@ -146,7 +151,12 @@
         <item name="active_unfocused_icon_alpha">0.54</item>
     </style>
 
-    <style name="AppDarkTheme" parent="Theme.Material3.Dark.NoActionBar">
+    <style name="AppDarkTheme" parent="Theme.Material3.DynamicColors.Dark">
+
+        <!-- NoActionBar -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
         <item name="android:windowLightStatusBar" tools:targetApi="m">?attr/isLightTheme</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
@@ -303,7 +313,7 @@
         <item name="colorOnPrimary">@color/grey_900</item>
         <item name="colorPrimaryContainer">@color/grey_900</item>
         <item name="colorOnPrimaryContainer">@color/white</item>
-        <item name="colorPrimaryInverse">@color/blue_grey_800</item>
+        <item name="colorPrimaryInverse">@color/grey_800</item>
         <item name="colorSecondaryContainer">@color/grey_800</item>
         <item name="colorOnSecondaryContainer">@color/white</item>
         <item name="colorError">@color/red_200</item>
@@ -468,10 +478,8 @@
         <item name="android:layout_height">?attr/item_book_info_icon_size</item>
         <!--<item name="android:paddingTop">1dp</item>-->
 
-        <item name="android:layout_marginLeft">2dp</item>
-        <item name="android:layout_marginStart" tools:targetApi="17">2dp</item>
-        <item name="android:layout_marginRight">8dp</item>
-        <item name="android:layout_marginEnd" tools:targetApi="17">8dp</item>
+        <item name="android:layout_marginStart">2dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
     </style>
 
     <style name="FastScroll">
@@ -553,10 +561,10 @@
         <item name="android:layout_gravity">bottom</item>
         <item name="android:elevation">4dp</item>
 
-        <!--<item name="android:contentInsetLeft" tools:targetApi="lollipop">0dp</item>-->
-        <!--<item name="android:contentInsetStart" tools:targetApi="lollipop">0dp</item>-->
-        <!--<item name="android:contentInsetRight" tools:targetApi="lollipop">0dp</item>-->
-        <!--<item name="android:contentInsetEnd" tools:targetApi="lollipop">0dp</item>-->
+<!--        <item name="android:contentInsetLeft">0dp</item>-->
+<!--        <item name="android:contentInsetStart">0dp</item>-->
+<!--        <item name="android:contentInsetRight">0dp</item>-->
+<!--        <item name="android:contentInsetEnd">0dp</item>-->
     </style>
 
     <style name="QuickBarButton" parent="Base.Widget.AppCompat.Button.Borderless">

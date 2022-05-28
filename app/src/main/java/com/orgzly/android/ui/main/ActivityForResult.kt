@@ -1,10 +1,8 @@
 package com.orgzly.android.ui.main
 
-import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.util.Log
 import androidx.annotation.StringRes
 import androidx.core.app.ComponentActivity
@@ -15,7 +13,6 @@ import com.orgzly.android.util.LogUtils
 
 
 abstract class ActivityForResult(val activity: ComponentActivity) {
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     fun startSavedSearchesExportFileChooser() {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
