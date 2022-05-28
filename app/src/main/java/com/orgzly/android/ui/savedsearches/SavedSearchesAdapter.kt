@@ -76,6 +76,13 @@ class SavedSearchesAdapter(
         return adapterSelection
     }
 
+    fun clearSelection() {
+        if (getSelection().count > 0) {
+            getSelection().clear()
+            notifyDataSetChanged() // FIXME
+        }
+    }
+
     companion object {
         private val TAG = SavedSearchesAdapter::class.java.name
 

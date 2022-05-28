@@ -178,9 +178,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
     }
 
     private fun appBarToDefault() {
-        // Clear selection
-        viewAdapter.getSelection().clear()
-        viewAdapter.notifyDataSetChanged() // FIXME
+        viewAdapter.clearSelection()
 
         if (withActionBar) {
             binding.bottomAppBar.run {
@@ -285,10 +283,6 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
                         viewModel.deleteBookRequest(bookId)
                     }
                 }
-
-                // Clear selection and reset app bar
-                viewAdapter.getSelection().clear()
-                viewAdapter.notifyDataSetChanged() // FIXME
 
                 viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
 
@@ -537,19 +531,6 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
 
         // Re-query if preference changed
         viewModel.refresh(AppPreferences.notebooksSortOrder(context))
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
-
-        // TODO: Needed?
-        // Clear selection and reset app bar
-//        viewAdapter.getSelection().clear()
-//        viewAdapter.notifyDataSetChanged() // FIXME
-
-//        setupAppBarForMain(view)
     }
 
     override fun onDestroyView() {

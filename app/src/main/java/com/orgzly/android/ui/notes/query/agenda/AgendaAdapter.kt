@@ -119,6 +119,13 @@ class AgendaAdapter(
         return adapterSelection
     }
 
+    fun clearSelection() {
+        if (getSelection().count > 0) {
+            getSelection().clear()
+            notifyDataSetChanged() // FIXME
+        }
+    }
+
     override fun isStickyHeader(position: Int): Boolean {
         return if (position < itemCount) {
             return when (getItemViewType(position)) {

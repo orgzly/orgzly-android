@@ -256,6 +256,13 @@ class BooksAdapter(
         return adapterSelection
     }
 
+    fun clearSelection() {
+        if (getSelection().count > 0) {
+            getSelection().clear()
+            notifyDataSetChanged() // FIXME
+        }
+    }
+
     companion object {
         private val TAG = BooksAdapter::class.java.name
 

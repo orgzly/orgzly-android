@@ -393,8 +393,7 @@ class BookFragment :
      * @param place [Place]
      */
     private fun pasteNotes(place: Place, noteId: Long) {
-        viewAdapter.getSelection().clear()
-        viewAdapter.notifyDataSetChanged() // FIXME
+        viewAdapter.clearSelection()
 
         listener?.onNotesPasteRequest(mBookId, noteId, place)
     }
@@ -507,9 +506,9 @@ class BookFragment :
     }
 
     private fun appBarToDefault() {
-        // Clear selection
-        viewAdapter.getSelection().clear()
-        viewAdapter.notifyDataSetChanged() // FIXME
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+
+        viewAdapter.clearSelection()
 
         binding.bottomAppBar.run {
             replaceMenu(R.menu.book_actions)
@@ -595,6 +594,8 @@ class BookFragment :
     }
 
     private fun appBarToMainSelection() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+
         binding.bottomAppBar.run {
             replaceMenu(R.menu.book_cab)
 
@@ -619,6 +620,8 @@ class BookFragment :
     }
 
     private fun appBarToNextSelection() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+
         binding.bottomAppBar.run {
             replaceMenu(R.menu.book_cab)
 

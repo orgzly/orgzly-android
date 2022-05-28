@@ -117,9 +117,7 @@ class AgendaFragment :
     }
 
     private fun appBarToDefault() {
-        // Clear selection
-        viewAdapter.getSelection().clear()
-        viewAdapter.notifyDataSetChanged() // FIXME
+        viewAdapter.clearSelection()
 
         binding.bottomAppBar.run {
             replaceMenu(R.menu.query_actions)

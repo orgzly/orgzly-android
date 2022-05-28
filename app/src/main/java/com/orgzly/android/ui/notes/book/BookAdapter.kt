@@ -151,6 +151,13 @@ class BookAdapter(
         return adapterSelection
     }
 
+    fun clearSelection() {
+        if (getSelection().count > 0) {
+            getSelection().clear()
+            notifyDataSetChanged() // FIXME
+        }
+    }
+
     fun setPreface(book: Book?) {
         currentPreface = book?.preface
         notifyItemChanged(0)

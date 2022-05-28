@@ -67,6 +67,13 @@ class SearchAdapter(
         return adapterSelection
     }
 
+    fun clearSelection() {
+        if (getSelection().count > 0) {
+            getSelection().clear()
+            notifyDataSetChanged() // FIXME
+        }
+    }
+
     companion object {
         private val TAG = SearchAdapter::class.java.name
 

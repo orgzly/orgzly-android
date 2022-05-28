@@ -143,8 +143,7 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
             requireActivity().setupSearchView(menu)
         }
 
-        viewAdapter.getSelection().clear()
-        viewAdapter.notifyDataSetChanged() // FIXME
+        viewAdapter.clearSelection()
 
         binding.fab.run {
             setOnClickListener {

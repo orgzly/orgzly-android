@@ -112,19 +112,8 @@ class TextViewWithMarkup : TextViewFixed {
     fun toggleCheckbox(checkboxSpan: CheckboxSpan) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, checkboxSpan)
 
-        val textSpanned = text as Spanned
-
-        val checkboxStart = textSpanned.getSpanStart(checkboxSpan)
-        val checkboxEnd = textSpanned.getSpanEnd(checkboxSpan)
-
-        val builder = SpannableStringBuilder(text)
-
         val content = if (checkboxSpan.isChecked()) "[ ]" else "[X]"
-
         val replacement = checkboxSpanned(content, checkboxSpan.rawStart, checkboxSpan.rawEnd)
-
-        builder.removeSpan(checkboxSpan)
-        builder.replace(checkboxStart, checkboxEnd, replacement)
 
         setSourceText(sourceText?.replaceRange(checkboxSpan.rawStart, checkboxSpan.rawEnd, replacement))
 
