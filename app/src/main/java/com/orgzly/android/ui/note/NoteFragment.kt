@@ -288,6 +288,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         binding.bottomAppBar.run {
             replaceMenu(R.menu.note_actions)
 
+            ActivityUtils.keepScreenOnUpdateMenuItem(activity, menu)
+
             setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
                 typedArray.getResourceId(R.styleable.Icons_ic_menu_24dp, 0)
             })
@@ -295,12 +297,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             setNavigationOnClickListener {
                 sharedMainActivityViewModel.openDrawer()
             }
-
-            // TODO: Move keep_screen_on to the fun, rename all is to be the same for this item
-            ActivityUtils.keepScreenOnUpdateMenuItem(
-                activity,
-                menu,
-                menu.findItem(R.id.keep_screen_on))
 
             if (viewModel.notePayload == null) {
                 removeMenuItemsForNoData(menu)

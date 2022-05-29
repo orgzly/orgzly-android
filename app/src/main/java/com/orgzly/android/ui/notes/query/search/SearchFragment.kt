@@ -27,6 +27,7 @@ import com.orgzly.android.ui.notes.quickbar.ItemGestureDetector
 import com.orgzly.android.ui.notes.quickbar.QuickBarListener
 import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.ui.settings.SettingsActivity
+import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.setup
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils
@@ -120,6 +121,8 @@ class SearchFragment :
         binding.bottomAppBar.run {
             replaceMenu(R.menu.query_actions)
 
+            ActivityUtils.keepScreenOnUpdateMenuItem(activity, menu)
+
             setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
                 typedArray.getResourceId(R.styleable.Icons_ic_menu_24dp, 0)
             })
@@ -132,6 +135,10 @@ class SearchFragment :
                 when (menuItem.itemId) {
                     R.id.activity_action_settings -> {
                         startActivity(Intent(context, SettingsActivity::class.java))
+                    }
+
+                    R.id.keep_screen_on -> {
+                        dialog = ActivityUtils.keepScreenOnToggle(activity, menuItem)
                     }
                 }
                 true

@@ -513,6 +513,8 @@ class BookFragment :
         binding.bottomAppBar.run {
             replaceMenu(R.menu.book_actions)
 
+            ActivityUtils.keepScreenOnUpdateMenuItem(activity, menu)
+
             setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
                 typedArray.getResourceId(R.styleable.Icons_ic_menu_24dp, 0)
             })
@@ -520,12 +522,6 @@ class BookFragment :
             setNavigationOnClickListener {
                 sharedMainActivityViewModel.openDrawer()
             }
-
-            ActivityUtils.keepScreenOnUpdateMenuItem(
-                activity,
-                menu,
-                menu.findItem(R.id.books_options_keep_screen_on))
-
 
             if (currentBook == null || viewAdapter.getDataItemCount() == 0) {
                 menu.removeItem(R.id.books_options_menu_item_cycle_visibility)
@@ -564,9 +560,8 @@ class BookFragment :
                         onPrefaceClick()
                     }
 
-                    R.id.books_options_keep_screen_on -> {
-                        // TODO: Pass menu, books_options_keep_screen_on should be inside keepScreenOnToggle only
-                        val item = menu.findItem(R.id.books_options_keep_screen_on)
+                    R.id.keep_screen_on -> {
+                        val item = menu.findItem(R.id.keep_screen_on)
                         dialog = ActivityUtils.keepScreenOnToggle(activity, item)
                     }
 

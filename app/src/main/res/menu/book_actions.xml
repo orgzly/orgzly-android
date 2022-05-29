@@ -17,7 +17,7 @@
         android:title="@string/cycle_visibility"/>
 
     <item
-        android:id="@+id/books_options_keep_screen_on"
+        android:id="@+id/keep_screen_on"
         app:showAsAction="never"
         android:checkable="true"
         android:title="@string/keep_screen_on"/>

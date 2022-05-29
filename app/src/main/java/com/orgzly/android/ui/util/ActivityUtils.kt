@@ -181,7 +181,8 @@ object ActivityUtils {
         }
     }
 
-    fun keepScreenOnUpdateMenuItem(activity: Activity?, menu: Menu, item: MenuItem?) {
+    fun keepScreenOnUpdateMenuItem(activity: Activity?, menu: Menu) {
+        val item = menu.findItem(R.id.keep_screen_on)
         if (activity != null && item != null) {
             if (AppPreferences.keepScreenOnMenuItem(activity)) {
                 item.isChecked = isKeepScreenOn(activity)
