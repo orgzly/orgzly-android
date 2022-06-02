@@ -590,4 +590,6 @@
     <string name="developer_options">Možnosti pro vývojáře</string>
     <string name="git_repository_type">Typ Git repozitáře</string>
     <string name="in_development">Ve vývoji</string>
+    <string name="pref_title_sync_deletion">Sync deletion</string>
+    <string name="pref_title_summary_sync_deletion">Delete notebook if its deleted from repo</string>
 </resources>

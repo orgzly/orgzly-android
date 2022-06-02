@@ -568,4 +568,6 @@
     <string name="developer_options">Ontwikkelaarsopties</string>
     <string name="git_repository_type">Git repository type</string>
     <string name="in_development">In ontwikkeling</string>
+    <string name="pref_title_sync_deletion">Sync deletion</string>
+    <string name="pref_title_summary_sync_deletion">Delete notebook if its deleted from repo</string>
 </resources>

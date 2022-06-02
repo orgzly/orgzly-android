@@ -704,4 +704,6 @@
     <string name="developer_options">Developer options</string>
     <string name="git_repository_type">Git repository type</string>
     <string name="in_development">In development</string>
+    <string name="pref_title_sync_deletion">Sync deletion</string>
+    <string name="pref_title_summary_sync_deletion">Delete notebook if linked file is deleted from repo</string>
 </resources>

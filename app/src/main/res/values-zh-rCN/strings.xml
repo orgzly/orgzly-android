@@ -557,4 +557,6 @@
     <string name="developer_options">开发者选项</string>
     <string name="git_repository_type">Git 仓库类型</string>
     <string name="in_development">开发中</string>
+    <string name="pref_title_sync_deletion">Sync deletion</string>
+    <string name="pref_title_summary_sync_deletion">Delete notebook if its deleted from repo</string>
 </resources>

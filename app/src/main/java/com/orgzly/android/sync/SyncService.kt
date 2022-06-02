@@ -307,9 +307,16 @@ class SyncService : Service() {
                             namesake.book.book.id,
                             BookAction.forNow(BookAction.Type.INFO, getString(R.string.canceled)))
 
+                } else if (AppPreferences.syncDeletion(context) &&
+                        namesake.status == BookSyncStatus.ONLY_BOOK_WITH_LINK &&
+                        namesake.rooks.isEmpty()) {
+                    /* Delete book if file backing it does not exist */
+                    dataRepository.deleteBook(namesake.book, false);
                 } else {
                     syncStatus.set(SyncStatus.Type.BOOK_STARTED, namesake.name, curr, namesakes.size)
                     announceActiveSyncStatus()
+
+
 
                     try {
                         val action = syncNamesake(dataRepository, namesake)
