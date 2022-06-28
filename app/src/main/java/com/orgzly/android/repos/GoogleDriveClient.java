@@ -1,12 +1,14 @@
 package com.orgzly.android.repos;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.FileContent;
@@ -20,19 +22,15 @@ import com.orgzly.android.BookName;
 
 import java.io.BufferedOutputStream;
 // import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-
-import android.util.Log;
 
 public class GoogleDriveClient {
     private static final String TAG = GoogleDriveClient.class.getName();
@@ -48,10 +46,10 @@ public class GoogleDriveClient {
 
     private final Context mContext;
     private final long repoId;
-    private Drive mDriveService;
+    private static Drive mDriveService;
 
-    private Map<String, String> pathIds;
-    {
+    private static Map<String, String> pathIds;
+    static {
         pathIds = new HashMap<>();
         pathIds.put("My Drive", "root");
         pathIds.put("", "root");
@@ -61,30 +59,61 @@ public class GoogleDriveClient {
         mContext = context;
 
         repoId = id;
-    }
 
-    public void setService(Drive driveService) {
-        mDriveService = driveService;
+        if (isLinked()) setDriveService();
     }
 
     public boolean isLinked() {
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        return GoogleSignIn.getLastSignedInAccount(mContext) != null;
+        return getGoogleAccount() != null;
+    }
+
+    private GoogleSignInAccount getGoogleAccount() {
+        return GoogleSignIn.getLastSignedInAccount(mContext);
+    }
+
+    public Drive getDriveService(GoogleSignInAccount googleAccount) {
+        GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(
+                mContext, Collections.singleton(DriveScopes.DRIVE));
+        credential.setSelectedAccount(googleAccount.getAccount());
+        return new Drive.Builder(
+                AndroidHttp.newCompatibleTransport(),
+                new GsonFactory(),
+                credential)
+                .setApplicationName("Orgzly")
+                .build();
+    }
+
+    public Drive getDriveService() {
+        if (mDriveService != null) return mDriveService;
+        return getDriveService(getGoogleAccount());
+    }
+
+    public void setDriveService() {
+        if (mDriveService == null) mDriveService = getDriveService();
+    }
+
+    public void setDriveService(GoogleSignInAccount googleAccount) {
+        mDriveService = getDriveService(googleAccount);
     }
 
     private void linkedOrThrow() throws IOException {
         if (! isLinked()) {
             throw new IOException(NOT_LINKED);
+        } else {
+            setDriveService();
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private String findId(String path) throws IOException {
         if (pathIds.containsKey(path)) {
             return pathIds.get(path);
         }
 
         String[] parts = path.split("/");
+        parts = Arrays.stream(parts).filter(s -> !s.isEmpty()).toArray(String[]::new);
         String[] ids = new String[parts.length+1];
 
         ids[0] = "root";
@@ -95,23 +124,21 @@ public class GoogleDriveClient {
                 .setSpaces("drive")
                 .setFields("files(id, name, mimeType)")
                 .execute();
-            List files = result.getFiles();
+            List<File> files = result.getFiles();
             if (!files.isEmpty()) {
                 File file = (File) files.get(0);
                 ids[i+1] = file.getId();
             }
         }
 
-        for (int i = 0; i < ids.length; ++i) {
-            if (ids[i] == null) {
-                break;
-            }
-            pathIds.put(path, ids[i]);
+        if (ids[ids.length-1] != null) {
+            pathIds.put(path, ids[ids.length-1]);
         }
 
         return ids[ids.length-1]; // Returns null if no file is found
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public List<VersionedRook> getBooks(Uri repoUri) throws IOException {
         linkedOrThrow();
 
@@ -129,24 +156,23 @@ public class GoogleDriveClient {
 
         try {
 
-            String folderId = findId(path);
+            String pathId = findId(path);
 
+            if (pathId != null) {
 
-            if (folderId != null) {
-
-                File folder = mDriveService.files().get(folderId)
-                    .setFields("id, mimeType")
+                File folder = mDriveService.files().get(pathId)
+                    .setFields("id, name, mimeType, version, modifiedTime")
                     .execute();
 
-                if (folder.getMimeType() == "application/vnd.google-apps.folder") {
+                if (folder.getMimeType().equals("application/vnd.google-apps.folder")) {
 
                     String pageToken = null;
                     do {
                         FileList result = mDriveService.files().list()
                             .setQ(String.format("mimeType != 'application/vnd.google-apps.folder' " +
-                                                "and '%s' in parents and trashed = false", folderId))
+                                                "and '%s' in parents and trashed = false", pathId))
                             .setSpaces("drive")
-                            .setFields("nextPageToken, files(id, name, mimeType)")
+                            .setFields("nextPageToken, files(id, name, mimeType, version, modifiedTime)")
                             .setPageToken(pageToken)
                             .execute();
                         for (File file : result.getFiles()) {
@@ -170,7 +196,7 @@ public class GoogleDriveClient {
                     throw new IOException("Not a directory: " + repoUri);
                 }
             } else {
-                throw new IOException("Not a directory: " + repoUri);
+                throw new IOException("Path not found: " + repoUri);
             }
 
         } catch (Exception e) {
@@ -187,6 +213,7 @@ public class GoogleDriveClient {
     /**
      * Download file from Google Drive and store it to a local file.
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public VersionedRook download(Uri repoUri, String fileName, java.io.File localFile) throws IOException {
         linkedOrThrow();
 
@@ -200,10 +227,10 @@ public class GoogleDriveClient {
 
             if (fileId != null) {
                 File file = mDriveService.files().get(fileId)
-                    .setFields("id, mimeType, version, modifiedDate")
+                    .setFields("id, mimeType, version, modifiedTime")
                     .execute();
 
-                if (file.getMimeType() != "application/vnd.google-apps.folder") {
+                if (!file.getMimeType().equals("application/vnd.google-apps.folder")) {
 
                     String rev = Long.toString(file.getVersion());
                     long mtime = file.getModifiedTime().getValue();
@@ -231,6 +258,7 @@ public class GoogleDriveClient {
 
 
     /** Upload file to Google Drive. */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public VersionedRook upload(java.io.File file, Uri repoUri, String fileName) throws IOException {
         linkedOrThrow();
 
@@ -267,7 +295,7 @@ public class GoogleDriveClient {
                 pathIds.put(filePath, fileId);
             } else {
                 fileMetadata = mDriveService.files().update(fileId, fileMetadata, mediaContent)
-                    .setFields("id")
+                    .setFields("id, version, modifiedTime")
                     .execute();
             }
 
@@ -285,6 +313,7 @@ public class GoogleDriveClient {
         return new VersionedRook(repoId, RepoType.GOOGLE_DRIVE, repoUri, bookUri, rev, mtime);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void delete(String path) throws IOException {
         linkedOrThrow();
 
@@ -293,7 +322,7 @@ public class GoogleDriveClient {
 
             if (fileId != null) {
                 File file = mDriveService.files().get(fileId).setFields("id, mimeType").execute();
-                if (file.getMimeType() != "application/vnd.google-apps.folder") {
+                if (!file.getMimeType().equals("application/vnd.google-apps.folder")) {
                     File fileMetadata = new File();
                     fileMetadata.setTrashed(true);
                     mDriveService.files().update(fileId, fileMetadata).execute();
@@ -313,6 +342,7 @@ public class GoogleDriveClient {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public VersionedRook move(Uri repoUri, Uri from, Uri to) throws IOException {
         linkedOrThrow();
 
@@ -324,10 +354,10 @@ public class GoogleDriveClient {
 
             if (fileId != null) {
                 fileMetadata = mDriveService.files().update(fileId, fileMetadata)
-                    .setFields("id, mimeType, version, modifiedDate")
+                    .setFields("id, mimeType, version, modifiedTime")
                     .execute();
 
-                if (fileMetadata.getMimeType() == "application/vnd.google-apps.folder") {
+                if (fileMetadata.getMimeType().equals("application/vnd.google-apps.folder")) {
                     throw new IOException("Relocated object not a file?");
                 }
 
@@ -336,7 +366,7 @@ public class GoogleDriveClient {
             String rev = Long.toString(fileMetadata.getVersion());
             long mtime = fileMetadata.getModifiedTime().getValue();
 
-            return new VersionedRook(repoId, RepoType.DROPBOX, repoUri, to, rev, mtime);
+            return new VersionedRook(repoId, RepoType.GOOGLE_DRIVE, repoUri, to, rev, mtime);
 
         } catch (Exception e) {
             e.printStackTrace();
