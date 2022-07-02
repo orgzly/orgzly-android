@@ -86,7 +86,6 @@ public class GoogleDriveClient {
     }
 
     public Drive getDriveService() {
-        if (mDriveService != null) return mDriveService;
         return getDriveService(getGoogleAccount());
     }
 
@@ -249,7 +248,7 @@ public class GoogleDriveClient {
             if (e.getMessage() != null) {
                 throw new IOException("Failed downloading Google Drive file " + uri + ": " + e.getMessage());
             } else {
-                throw new IOException("Failed downloading Google Drive file " + uri + ": " + e.toString());
+                throw new IOException("Failed downloading Google Drive file " + uri + ": " + e);
             }
         } finally {
             out.close();
@@ -303,7 +302,7 @@ public class GoogleDriveClient {
             if (e.getMessage() != null) {
                 throw new IOException("Failed overwriting " + filePath + " on Google Drive: " + e.getMessage());
             } else {
-                throw new IOException("Failed overwriting " + filePath + " on Google Drive: " + e.toString());
+                throw new IOException("Failed overwriting " + filePath + " on Google Drive: " + e);
             }
         }
 
@@ -337,7 +336,7 @@ public class GoogleDriveClient {
             if (e.getMessage() != null) {
                 throw new IOException("Failed deleting " + path + " on Google Drive: " + e.getMessage());
             } else {
-                throw new IOException("Failed deleting " + path + " on Google Drive: " + e.toString());
+                throw new IOException("Failed deleting " + path + " on Google Drive: " + e);
             }
         }
     }
@@ -374,7 +373,7 @@ public class GoogleDriveClient {
             if (e.getMessage() != null) { // TODO: Move this throwing to utils
                 throw new IOException("Failed moving " + from + " to " + to + ": " + e.getMessage(), e);
             } else {
-                throw new IOException("Failed moving " + from + " to " + to + ": " + e.toString(), e);
+                throw new IOException("Failed moving " + from + " to " + to + ": " + e, e);
             }
         }
     }

@@ -92,7 +92,6 @@ android {
     kotlinOptions {
         jvmTarget = 11
     }
-
     packagingOptions {
         resources {
             excludes += ['META-INF/DEPENDENCIES', 'plugin.properties']
@@ -103,6 +102,10 @@ android {
         checkDependencies true
         disable 'MissingTranslation', 'MissingQuantity', 'ImpliedQuantity', 'InvalidPackage'
     }
+    lint {
+        disable 'MissingTranslation', 'MissingQuantity', 'ImpliedQuantity', 'InvalidPackage'
+    }
+
 }
 
 dependencies {

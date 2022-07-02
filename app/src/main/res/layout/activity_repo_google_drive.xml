@@ -36,7 +36,7 @@
                         android:id="@+id/activity_repo_google_drive_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="?attr/oic_dropbox_not_linked"
+                        android:src="?attr/oic_google_drive_not_linked"
                         android:contentDescription="@string/google_drive" />
 
                     <Button

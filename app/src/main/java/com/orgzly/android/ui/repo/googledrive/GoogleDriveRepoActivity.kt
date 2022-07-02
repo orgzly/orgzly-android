@@ -30,18 +30,18 @@ import com.orgzly.android.util.UriUtils
 import com.orgzly.databinding.ActivityRepoGoogleDriveBinding
 import javax.inject.Inject
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.Scope
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.OnCompleteListener
 
-import com.google.api.services.drive.DriveScopes;
+import com.google.api.services.drive.DriveScopes
 
-import androidx.annotation.NonNull;
+import androidx.annotation.NonNull
 
-import android.util.Log;
+import android.util.Log
 
 class GoogleDriveRepoActivity : CommonActivity() {
     private lateinit var binding: ActivityRepoGoogleDriveBinding
@@ -152,7 +152,7 @@ class GoogleDriveRepoActivity : CommonActivity() {
         {
             GoogleSignIn.getSignedInAccountFromIntent(result)
                 .addOnSuccessListener { googleAccount ->
-                    Log.d(TAG, "Signed in as " + googleAccount.getEmail())
+                    Log.d(TAG, "Signed in as " + googleAccount.email)
                     // Use the authenticated account to sign in to the Drive service.
                     client.setDriveService(googleAccount)
                     showSnackbar(R.string.message_google_drive_linked)
@@ -160,48 +160,6 @@ class GoogleDriveRepoActivity : CommonActivity() {
                 .addOnFailureListener { exception -> Log.d(TAG, "Unable to sign in.$exception") }
         }
     }
-
-    // Token stuff is handled by Google sign-in
-    // private fun editAccessToken() {
-    //     @SuppressLint("InflateParams")
-    //     val view = layoutInflater.inflate(R.layout.dialog_simple_one_liner, null, false)
-    //
-    //     val editView = view.findViewById<EditText>(R.id.dialog_input).apply {
-    //         setSelectAllOnFocus(true)
-    //
-    //         setHint(R.string.access_token)
-    //
-    //         client.token?.let {
-    //             setText(it)
-    //         }
-    //     }
-    //
-    //     alertDialog = AlertDialog.Builder(this)
-    //             .setView(view)
-    //             .setTitle(R.string.access_token)
-    //             .setPositiveButton(R.string.set) { _, _ ->
-    //                 editView.text.toString().let { value ->
-    //                     if (TextUtils.isEmpty(value)) {
-    //                         client.unlink(this)
-    //                     } else {
-    //                         client.setToken(value)
-    //                     }
-    //                 }
-    //                 updateGoogleDriveLinkUnlinkButton()
-    //             }
-    //             .setNeutralButton(R.string.clear) { _, _ ->
-    //                 client.unlink(this)
-    //                 updateGoogleDriveLinkUnlinkButton()
-    //             }
-    //             .setNegativeButton(R.string.cancel) { _, _ -> }
-    //             .create().apply {
-    //                 setOnShowListener {
-    //                     ActivityUtils.openSoftKeyboard(this@GoogleDriveRepoActivity, editView)
-    //                 }
-    //
-    //                 show()
-    //             }
-    // }
 
     public override fun onResume() {
         super.onResume()
@@ -296,21 +254,6 @@ class GoogleDriveRepoActivity : CommonActivity() {
         }
     }
 
-    // /**
-    //  * Complete Google Drive linking.
-    //  * After starting Google Drive authentication, user will return to activity.
-    //  * We need to finish the process of authentication.
-    //  */
-    // private fun googleDriveCompleteAuthentication() {
-    //     if (!isGoogleDriveLinked()) {
-    //         if (client.finishAuthentication()) {
-    //             showSnackbar(R.string.message_google_drive_linked)
-    //         }
-    //     } else {
-    //         showSnackbar(R.string.message_google_drive_linked)
-    //     }
-    // }
-
     private fun updateGoogleDriveLinkUnlinkButton() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
@@ -318,11 +261,11 @@ class GoogleDriveRepoActivity : CommonActivity() {
             if (isGoogleDriveLinked()) {
                 Pair(
                         getString(R.string.repo_google_drive_button_linked),
-                        typedArray.getResourceId(R.styleable.Icons_oic_dropbox_linked, 0))
+                        typedArray.getResourceId(R.styleable.Icons_oic_google_drive_linked, 0))
             } else {
                 Pair(
                         getString(R.string.repo_google_drive_button_not_linked),
-                        typedArray.getResourceId(R.styleable.Icons_oic_dropbox_not_linked, 0))
+                        typedArray.getResourceId(R.styleable.Icons_oic_google_drive_not_linked, 0))
             }
         }
 
@@ -345,7 +288,7 @@ class GoogleDriveRepoActivity : CommonActivity() {
 
     private fun unlinkGoogleDrive() {
         gsiClient.revokeAccess()
-            .addOnCompleteListener(this, OnCompleteListener<Void>() {
+            .addOnCompleteListener(this, OnCompleteListener<Void> {
                                        fun onComplete(@NonNull task:Task<Void>) {
                                            Log.d(TAG, "Signed out")
                                        }
