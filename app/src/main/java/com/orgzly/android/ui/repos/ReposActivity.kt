@@ -106,6 +106,10 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
                     newRepos.removeItem(R.id.repos_options_menu_item_new_dropbox)
                 }
 
+                if (!BuildConfig.IS_GOOGLE_DRIVE_ENABLED) {
+                    newRepos.removeItem(R.id.repos_options_menu_item_new_google_drive)
+                }
+
                 if (!AppPreferences.gitIsEnabled(App.getAppContext())) {
                     newRepos.removeItem(R.id.repos_options_menu_item_new_git)
                 }
@@ -120,6 +124,10 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.repos_options_menu_item_new_dropbox -> {
+                        startRepoActivity(menuItem.itemId)
+                    }
+
+                    R.id.repos_options_menu_item_new_google_drive -> {
                         startRepoActivity(menuItem.itemId)
                     }
 

@@ -486,9 +486,10 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                             types[id] = when {
                                 url.startsWith("mock") -> 1
                                 url.startsWith("dropbox") -> 2
-                                url.startsWith("file") -> 3
-                                url.startsWith("content") -> 4
-                                url.matches("^(webdav|dav|http)s?.*".toRegex()) -> 5
+                                url.startsWith("google") -> 3
+                                url.startsWith("file") -> 4
+                                url.startsWith("content") -> 5
+                                url.matches("^(webdav|dav|http)s?.*".toRegex()) -> 6
                                 else -> throw IllegalArgumentException("Unknown repo $url")
                             }
 

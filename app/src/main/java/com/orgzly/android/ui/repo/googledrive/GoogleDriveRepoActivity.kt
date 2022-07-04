@@ -1,17 +1,14 @@
 package com.orgzly.android.ui.repo.googledrive
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.Menu
-import android.view.MenuItem
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
@@ -22,6 +19,7 @@ import com.orgzly.android.repos.RepoType
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.RepoViewModel
 import com.orgzly.android.ui.repo.RepoViewModelFactory
+import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils
@@ -38,9 +36,7 @@ import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.OnCompleteListener
 
 import com.google.api.services.drive.DriveScopes
-
 import androidx.annotation.NonNull
-
 import android.util.Log
 
 class GoogleDriveRepoActivity : CommonActivity() {
@@ -62,9 +58,9 @@ class GoogleDriveRepoActivity : CommonActivity() {
 
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_google_drive)
+        binding = ActivityRepoGoogleDriveBinding.inflate(layoutInflater)
 
-        setupActionBar(R.string.google_drive)
+        setContentView(binding.root)
 
         /* Google Drive link / unlink button. */
         binding.activityRepoGoogleDriveLinkButton.setOnClickListener {
@@ -97,7 +93,7 @@ class GoogleDriveRepoActivity : CommonActivity() {
 
         val factory = RepoViewModelFactory.getInstance(dataRepository, repoId)
 
-        viewModel = ViewModelProviders.of(this, factory).get(RepoViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(RepoViewModel::class.java)
 
         if (viewModel.repoId != 0L) { // Editing existing
             viewModel.loadRepoProperties()?.let { repoWithProps ->
@@ -125,9 +121,19 @@ class GoogleDriveRepoActivity : CommonActivity() {
                 binding.activityRepoGoogleDriveDirectory,
                 binding.activityRepoGoogleDriveDirectoryInputLayout)
 
-        ActivityUtils.openSoftKeyboardWithDelay(this, binding.activityRepoGoogleDriveDirectory)
+        ActivityUtils.openSoftKeyboard(this, binding.activityRepoGoogleDriveDirectory)
 
-        client = GoogleDriveClient(this, repoId)
+        client = GoogleDriveClient(applicationContext, repoId)
+
+        binding.bottomAppBar.run {
+            setNavigationOnClickListener {
+                finish()
+            }
+        }
+
+        binding.fab.setOnClickListener {
+            saveAndFinish()
+        }
 
         createSignInClient()
     }
@@ -167,30 +173,30 @@ class GoogleDriveRepoActivity : CommonActivity() {
         updateGoogleDriveLinkUnlinkButton()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        super.onCreateOptionsMenu(menu)
-
-        menuInflater.inflate(R.menu.done, menu)
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.done -> {
-                saveAndFinish()
-                true
-            }
-
-            android.R.id.home -> {
-                finish()
-                true
-            }
-
-            else ->
-                super.onOptionsItemSelected(item)
-        }
-    }
+    // override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    //     super.onCreateOptionsMenu(menu)
+    //
+    //     menuInflater.inflate(R.menu.done, menu)
+    //
+    //     return true
+    // }
+    //
+    // override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    //     return when (item.itemId) {
+    //         R.id.done -> {
+    //             saveAndFinish()
+    //             true
+    //         }
+    //
+    //         android.R.id.home -> {
+    //             finish()
+    //             true
+    //         }
+    //
+    //         else ->
+    //             super.onOptionsItemSelected(item)
+    //     }
+    // }
 
     private fun saveAndFinish() {
         val directory = binding.activityRepoGoogleDriveDirectory.text.toString().trim { it <= ' ' }
@@ -223,7 +229,7 @@ class GoogleDriveRepoActivity : CommonActivity() {
             }
         }
 
-        alertDialog = AlertDialog.Builder(this)
+        alertDialog = MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.confirm_unlinking_from_google_drive_title)
                 .setMessage(R.string.confirm_unlinking_from_google_drive_message)
                 .setPositiveButton(R.string.unlink, dialogClickListener)
