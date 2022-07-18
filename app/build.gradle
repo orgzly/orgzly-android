@@ -192,7 +192,11 @@ dependencies {
     implementation "io.github.rburgst:okhttp-digest:$versions.okhttp_digest"
 
     implementation "org.eclipse.jgit:org.eclipse.jgit:$versions.jgit"
-    implementation "org.eclipse.jgit:org.eclipse.jgit.ssh.jsch:$versions.jgit"
+    implementation("org.eclipse.jgit:org.eclipse.jgit.ssh.apache:$versions.jgit") {
+        // Resolves DuplicatePlatformClasses lint error
+        exclude group: 'org.apache.sshd', module: 'sshd-osgi'
+    }
+
 }
 
 repositories {
