@@ -19,6 +19,7 @@ object NotificationChannels {
     const val REMINDERS = "reminders"
     const val SYNC_PROGRESS = "sync-progress"
     const val SYNC_FAILED = "sync-failed"
+    const val SYNC_PROMPT = "sync-prompt"
 
     @JvmStatic
     fun createAll(context: Context) {
@@ -27,6 +28,7 @@ object NotificationChannels {
             createForReminders(context)
             createForSyncProgress(context)
             createForSyncFailed(context)
+            createForSyncPrompt(context)
         }
     }
 
@@ -110,6 +112,27 @@ object NotificationChannels {
         channel.description = description
 
         channel.setShowBadge(true)
+
+        val mNotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        mNotificationManager.createNotificationChannel(channel)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createForSyncPrompt(context: Context) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return
+        }
+
+        val id = SYNC_PROMPT
+        val name = "Sync prompt"
+        val description = "Display sync prompt"
+        val importance = NotificationManager.IMPORTANCE_HIGH
+
+        val channel = NotificationChannel(id, name, importance)
+
+        channel.description = description
+
+        channel.setShowBadge(false)
 
         val mNotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         mNotificationManager.createNotificationChannel(channel)
