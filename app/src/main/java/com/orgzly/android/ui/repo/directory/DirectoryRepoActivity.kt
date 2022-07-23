@@ -7,9 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.Menu
-import android.view.MenuItem
-import androidx.databinding.DataBindingUtil
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
@@ -22,6 +20,7 @@ import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.BrowserActivity
 import com.orgzly.android.ui.repo.RepoViewModel
 import com.orgzly.android.ui.repo.RepoViewModelFactory
+import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
@@ -41,9 +40,9 @@ class DirectoryRepoActivity : CommonActivity() {
 
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_directory)
+        binding = ActivityRepoDirectoryBinding.inflate(layoutInflater)
 
-        setupActionBar(R.string.directory)
+        setContentView(binding.root)
 
         // Not working when done in XML
         binding.activityRepoDirectory.apply {
@@ -86,53 +85,28 @@ class DirectoryRepoActivity : CommonActivity() {
                 showSnackbar((error.cause ?: error).localizedMessage)
             }
         })
-    }
 
-    private fun startFileBrowser() {
-        var browserStarted = false
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-            /*
-             * Apparently some devices do not handle this intent.
-             * Fallback to internal browser.
-             */
-            try {
-                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-
-                /*
-                 * Try to show internal storage by default.
-                 * https://stackoverflow.com/a/31334967/2515600
-                 *
-                 * Stopped using it as some devices would still not show
-                 * it *and* would not display the option to do so.
-                 */
-                // intent.putExtra("android.content.extra.SHOW_ADVANCED", true)
-
-                startActivityForResult(intent, ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION)
-
-                browserStarted = true
-
-            } catch (e: ActivityNotFoundException) {
-                e.printStackTrace()
+        binding.bottomAppBar.run {
+            setNavigationOnClickListener {
+                finish()
             }
         }
 
-        if (!browserStarted) {
-            runWithPermission(AppPermissions.Usage.LOCAL_REPO, Runnable { startLocalFileBrowser() })
+        binding.fab.setOnClickListener {
+            saveAndFinish()
         }
     }
 
-    private fun startLocalFileBrowser() {
-        val intent = Intent(Intent.ACTION_VIEW).setClass(this, BrowserActivity::class.java)
-
-        if (!TextUtils.isEmpty(binding.activityRepoDirectory.text)) {
-            val uri = binding.activityRepoDirectory.text.toString()
-            val path = Uri.parse(uri).path
-            intent.putExtra(BrowserActivity.ARG_STARTING_DIRECTORY, path)
+    private val openDocumentTree =
+        registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
+            if (uri != null) {
+                persistPermissions(uri)
+                binding.activityRepoDirectory.setText(uri.toString())
+            }
         }
 
-        startActivityForResult(intent, ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION)
+    private fun startFileBrowser() {
+        openDocumentTree.launch(null)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -155,37 +129,12 @@ class DirectoryRepoActivity : CommonActivity() {
     }
 
     private fun persistPermissions(uri: Uri) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && ContentRepo.SCHEME == uri.scheme) {
+        if (ContentRepo.SCHEME == uri.scheme) {
             grantUriPermission(packageName, uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
             val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
 
             contentResolver.takePersistableUriPermission(uri, takeFlags)
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        super.onCreateOptionsMenu(menu)
-
-        menuInflater.inflate(R.menu.done, menu)
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.done -> {
-                saveAndFinish()
-                true
-            }
-
-            android.R.id.home -> {
-                finish()
-                true
-            }
-
-            else ->
-                super.onOptionsItemSelected(item)
         }
     }
 

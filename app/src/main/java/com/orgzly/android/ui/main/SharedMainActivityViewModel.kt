@@ -2,11 +2,18 @@ package com.orgzly.android.ui.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.orgzly.android.ui.SingleLiveEvent
 
 class SharedMainActivityViewModel : ViewModel() {
-    val drawerLockState: MutableLiveData<Boolean> = MutableLiveData()
+    data class FragmentState(val tag: String)
 
-    val fragmentState: MutableLiveData<FragmentState> = MutableLiveData()
+    val currentFragmentState: MutableLiveData<FragmentState> = MutableLiveData()
+
+    fun setCurrentFragment(tag: String) {
+        currentFragmentState.value = FragmentState(tag)
+    }
+
+    val drawerLockState: MutableLiveData<Boolean> = MutableLiveData()
 
     fun lockDrawer() {
         drawerLockState.value = true
@@ -16,17 +23,8 @@ class SharedMainActivityViewModel : ViewModel() {
         drawerLockState.value = false
     }
 
-    fun setFragment(
-            tag: String,
-            title: CharSequence?,
-            subTitle: CharSequence?,
-            selectionCount: Int) {
-        fragmentState.value = FragmentState(tag, title, subTitle, selectionCount)
+    val openDrawerRequest: SingleLiveEvent<Boolean> = SingleLiveEvent()
+    fun openDrawer() {
+        openDrawerRequest.postValue(true)
     }
-
-    data class FragmentState(
-            val tag: String,
-            val title: CharSequence?,
-            val subTitle: CharSequence?,
-            val selectionCount: Int)
 }

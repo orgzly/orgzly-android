@@ -347,6 +347,7 @@
     <string name="displayed_book_details_used_encoding">Verwendeter Zeichensatz</string>
     <string name="displayed_book_details_last_action">Letzte Aktion</string>
     <string name="displayed_book_details_notes_count">Notizenanzahl</string>
+    <string name="color_scheme_system">System</string>
     <string name="color_scheme_light">Hell</string>
     <string name="color_scheme_dark">Dunkel</string>
     <string name="color_scheme_black">Schwarz</string>
@@ -434,6 +435,7 @@
     <string name="list_widget_nothing_selected">Keine Suche ausgewählt</string>
     <string name="auto_sync">Auto-Synchronisation</string>
     <string name="auto_sync_experimental_summary">Wird nur für lokale Ablageorte verwendet</string>
+    <string name="auto_sync_summary">Not supported for Dropbox</string>
     <string name="auto_sync_warning">Je nach dem welche Optionen gewählt wurden, kann die Synchronisierung sehr oft durchgeführt werden. Nach dem Bearbeiten eines Notizbuches wird der gesamte Inhalt zum Ablageort übertragen. Einige Operationen werden verzögert ausgeführt, wenn gerade ein Synchronisierungs-Vorgang läuft.</string>
     <string name="pref_title_sync_after_note_create">Notiz erstellt</string>
     <string name="pref_summary_sync_after_note_create">Nach Erstellen einer neuen Notiz synchronisieren</string>
@@ -563,4 +565,7 @@
     <string name="content">Inhalt</string>
     <string name="prepend">Voranstellen</string>
     <string name="insert_new_note_at_beginning">Neue Notiz am Anfang einfügen</string>
+    <string name="developer_options">Developer options</string>
+    <string name="git_repository_type">Git repository type</string>
+    <string name="in_development">In development</string>
 </resources>

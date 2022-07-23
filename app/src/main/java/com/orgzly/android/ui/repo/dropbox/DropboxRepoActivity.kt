@@ -2,18 +2,16 @@ package com.orgzly.android.ui.repo.dropbox
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.EditText
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
@@ -24,6 +22,7 @@ import com.orgzly.android.repos.RepoType
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.RepoViewModel
 import com.orgzly.android.ui.repo.RepoViewModelFactory
+import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils
@@ -48,9 +47,9 @@ class DropboxRepoActivity : CommonActivity() {
 
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_dropbox)
+        binding = ActivityRepoDropboxBinding.inflate(layoutInflater)
 
-        setupActionBar(R.string.dropbox)
+        setContentView(binding.root)
 
         /* Dropbox link / unlink button. */
         binding.activityRepoDropboxLinkButton.setOnClickListener {
@@ -111,9 +110,19 @@ class DropboxRepoActivity : CommonActivity() {
                 binding.activityRepoDropboxDirectory,
                 binding.activityRepoDropboxDirectoryInputLayout)
 
-        ActivityUtils.openSoftKeyboardWithDelay(this, binding.activityRepoDropboxDirectory)
+        ActivityUtils.openSoftKeyboard(this, binding.activityRepoDropboxDirectory)
 
         client = DropboxClient(applicationContext, repoId)
+
+        binding.bottomAppBar.run {
+            setNavigationOnClickListener {
+                finish()
+            }
+        }
+
+        binding.fab.setOnClickListener {
+            saveAndFinish()
+        }
     }
 
     private fun editAccessToken() {
@@ -130,7 +139,7 @@ class DropboxRepoActivity : CommonActivity() {
             }
         }
 
-        alertDialog = AlertDialog.Builder(this)
+        alertDialog = MaterialAlertDialogBuilder(this)
                 .setView(view)
                 .setTitle(R.string.access_token)
                 .setPositiveButton(R.string.set) { _, _ ->
@@ -165,31 +174,6 @@ class DropboxRepoActivity : CommonActivity() {
         updateDropboxLinkUnlinkButton()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        super.onCreateOptionsMenu(menu)
-
-        menuInflater.inflate(R.menu.done, menu)
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.done -> {
-                saveAndFinish()
-                true
-            }
-
-            android.R.id.home -> {
-                finish()
-                true
-            }
-
-            else ->
-                super.onOptionsItemSelected(item)
-        }
-    }
-
     private fun saveAndFinish() {
         val directory = binding.activityRepoDropboxDirectory.text.toString().trim { it <= ' ' }
 
@@ -221,7 +205,7 @@ class DropboxRepoActivity : CommonActivity() {
             }
         }
 
-        alertDialog = AlertDialog.Builder(this)
+        alertDialog = MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.confirm_unlinking_from_dropbox_title)
                 .setMessage(R.string.confirm_unlinking_from_dropbox_message)
                 .setPositiveButton(R.string.unlink, dialogClickListener)

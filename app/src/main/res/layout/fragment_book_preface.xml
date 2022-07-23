@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <ScrollView
         android:id="@+id/fragment_book_preface_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/screen_edge"
+        android:paddingLeft="@dimen/screen_edge"
+        android:paddingRight="@dimen/screen_edge"
+        android:paddingTop="@dimen/screen_edge"
+        android:paddingBottom="@dimen/padding_bottom_for_fab"
         android:clipToPadding="false"
-        android:fadeScrollbars="false"
-        android:scrollbarStyle="outsideOverlay">
+        android:fadeScrollbars="false">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,6 +34,10 @@
                 android:inputType="text|textCapSentences|textMultiLine" />
 
         </LinearLayout>
-
     </ScrollView>
-</layout>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        style="@style/BottomAppBar.FabAlignEnd.WithCancel" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -20,7 +20,7 @@ import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.BookAction
 import com.orgzly.android.db.entity.Repo
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.reminders.ReminderService
+import com.orgzly.android.reminders.RemindersScheduler
 import com.orgzly.android.repos.*
 import com.orgzly.android.ui.notifications.Notifications
 import com.orgzly.android.util.AppPermissions
@@ -325,8 +325,9 @@ class SyncService : Service() {
                     }
 
                     // TODO: Call only if book was loaded, move to usecase
-                    ReminderService.notifyForDataChanged(App.getAppContext())
-                    ListWidgetProvider.notifyDataChanged(App.getAppContext())
+                    RemindersScheduler.notifyDataSetChanged(App.getAppContext())
+                    ListWidgetProvider.notifyDataSetChanged(App.getAppContext())
+                    SharingShortcutsManager().replaceDynamicShortcuts(App.getAppContext())
 
                     syncStatus.set(SyncStatus.Type.BOOK_ENDED, namesake.name, curr + 1, namesakes.size)
                     announceActiveSyncStatus()

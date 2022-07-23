@@ -117,7 +117,7 @@ data class Note(
 
         @JvmStatic
         fun dbDeSerializeTags(str: String?): List<String> {
-            return str?.split(" +".toRegex()) ?: emptyList()
+            return str?.split(" +".toRegex())?.filter { it.isNotBlank() } ?: emptyList()
         }
     }
 }

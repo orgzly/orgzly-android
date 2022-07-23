@@ -1,6 +1,5 @@
 package com.orgzly.android.ui
 
-import android.app.AlertDialog
 import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -9,15 +8,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.MotionEvent
 import android.view.View
-import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.FileProvider
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.preference.PreferenceManager
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
@@ -25,7 +21,6 @@ import com.orgzly.android.data.DataRepository
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.sync.AutoSync
 import com.orgzly.android.ui.dialogs.WhatsNewDialog
-import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import java.io.File
@@ -37,8 +32,6 @@ import javax.inject.Inject
  * Inherited by every activity in the app.
  */
 abstract class CommonActivity : AppCompatActivity() {
-
-    private var snackbar: Snackbar? = null
 
     /* Dialogs to be dismissed onPause. */
     private var whatsNewDialog: AlertDialog? = null
@@ -108,51 +101,10 @@ abstract class CommonActivity : AppCompatActivity() {
     open fun recreateActivityForSettingsChange() {
     }
 
-    private val snackbarBackgroundColor: Int
-        get() {
-            return styledAttributes(R.styleable.ColorScheme) { typedArray ->
-                typedArray.getColor(R.styleable.ColorScheme_snackbar_bg_color, 0)
-            }
-        }
-
-    private fun dismissSnackbar() {
-        snackbar?.let {
-            it.dismiss()
-            snackbar = null
-        }
-    }
-
-    fun showSnackbar(resId: Int) {
-        showSnackbar(getString(resId))
-    }
-
-    fun showSnackbar(message: String?) {
-        if (message != null) {
-            findViewById<View>(R.id.main_content)?.let { view ->
-                showSnackbar(Snackbar.make(view, message, Snackbar.LENGTH_LONG))
-            }
-        }
-    }
-
-    fun showSnackbar(s: Snackbar) {
-        dismissSnackbar()
-
-        /* Close drawer before displaying snackbar. */
-        findViewById<DrawerLayout>(R.id.drawer_layout)?.closeDrawer(GravityCompat.START)
-
-        /* Set background color from attribute. */
-        val bgColor = snackbarBackgroundColor
-        s.view.setBackgroundColor(bgColor)
-
-        s.show()
-
-        snackbar = s
-    }
 
     override fun onBackPressed() {
         super.onBackPressed()
-
-        dismissSnackbar()
+        AppSnackbar.dismiss()
     }
 
     var runOnTouchEvent: Runnable? = null
@@ -161,7 +113,7 @@ abstract class CommonActivity : AppCompatActivity() {
         val consumed = super.dispatchTouchEvent(ev)
 
         if (ev.action == MotionEvent.ACTION_UP) {
-            dismissSnackbar()
+            AppSnackbar.dismiss()
 
         } else if (ev.action == MotionEvent.ACTION_DOWN) {
             runOnTouchEvent?.run()
@@ -218,7 +170,7 @@ abstract class CommonActivity : AppCompatActivity() {
         LocalBroadcastManager.getInstance(this).registerReceiver(actionReceiver, intentFilter)
 
         PreferenceManager.getDefaultSharedPreferences(this)
-                .registerOnSharedPreferenceChangeListener(settingsChangeListener)
+            .registerOnSharedPreferenceChangeListener(settingsChangeListener)
     }
 
     override fun onResume() {
@@ -268,7 +220,7 @@ abstract class CommonActivity : AppCompatActivity() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(actionReceiver)
 
         PreferenceManager.getDefaultSharedPreferences(this)
-                .unregisterOnSharedPreferenceChangeListener(settingsChangeListener)
+            .unregisterOnSharedPreferenceChangeListener(settingsChangeListener)
     }
 
     private fun setupTheme() {
@@ -294,22 +246,6 @@ abstract class CommonActivity : AppCompatActivity() {
 
             getString(R.string.pref_value_font_size_small) ->
                 theme.applyStyle(R.style.FontSize_Small, true)
-        }
-    }
-
-    @JvmOverloads
-    fun setupActionBar(title: Int? = null, homeButton: Boolean = true) {
-        val myToolbar = findViewById<Toolbar>(R.id.toolbar)
-
-        setSupportActionBar(myToolbar)
-
-        if (homeButton) {
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setHomeButtonEnabled(true)
-        }
-
-        if (title != null) {
-            supportActionBar?.setTitle(title)
         }
     }
 
@@ -343,12 +279,12 @@ abstract class CommonActivity : AppCompatActivity() {
         }
     }
 
-    fun progressDialogBuilder(title: Int, message: String? = null): AlertDialog.Builder {
+    fun progressDialogBuilder(title: Int, message: String? = null): MaterialAlertDialogBuilder {
         val view = View.inflate(this, R.layout.dialog_progress_bar, null)
 
-        val builder = AlertDialog.Builder(this)
-                .setTitle(title)
-                .setView(view)
+        val builder = MaterialAlertDialogBuilder(this)
+            .setTitle(title)
+            .setView(view)
 
         if (message != null) {
             builder.setMessage(message)
@@ -363,16 +299,16 @@ abstract class CommonActivity : AppCompatActivity() {
 
         if (file.exists()) {
             runWithPermission(
-                    AppPermissions.Usage.EXTERNAL_FILES_ACCESS,
-                    Runnable {
-                        try {
-                            openFile(file)
-                        } catch (e: Exception) {
-                            showSnackbar(getString(
-                                    R.string.failed_to_open_linked_file_with_reason,
-                                    e.localizedMessage))
-                        }
-                    })
+                AppPermissions.Usage.EXTERNAL_FILES_ACCESS,
+                Runnable {
+                    try {
+                        openFile(file)
+                    } catch (e: Exception) {
+                        showSnackbar(getString(
+                            R.string.failed_to_open_linked_file_with_reason,
+                            e.localizedMessage))
+                    }
+                })
         } else {
             showSnackbar(getString(R.string.file_does_not_exist, file.canonicalFile))
         }
@@ -380,7 +316,7 @@ abstract class CommonActivity : AppCompatActivity() {
 
     private fun openFile(file: File) {
         val contentUri = FileProvider.getUriForFile(
-                this, BuildConfig.APPLICATION_ID + ".fileprovider", file)
+            this, BuildConfig.APPLICATION_ID + ".fileprovider", file)
 
         val intent = Intent(Intent.ACTION_VIEW, contentUri)
 
@@ -401,25 +337,9 @@ abstract class CommonActivity : AppCompatActivity() {
         private val TAG = CommonActivity::class.java.name
 
         private val PREFS_REQUIRE_IMMEDIATE_ACTIVITY_RECREATE = listOf(
-                R.string.pref_key_font_size,
-                R.string.pref_key_color_scheme,
-                R.string.pref_key_ignore_system_locale
+            R.string.pref_key_font_size,
+            R.string.pref_key_color_scheme,
+            R.string.pref_key_ignore_system_locale
         )
-
-        @JvmStatic
-        fun showSnackbar(context: Context?, @StringRes id: Int) {
-            if (context != null) {
-                showSnackbar(context, context.getString(id))
-            }
-        }
-
-        @JvmStatic
-        fun showSnackbar(context: Context?, msg: String?) {
-            if (context != null && msg != null) {
-                val intent = Intent(AppIntent.ACTION_SHOW_SNACKBAR)
-                intent.putExtra(AppIntent.EXTRA_MESSAGE, msg)
-                LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
-            }
-        }
     }
 }

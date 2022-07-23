@@ -45,7 +45,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
     @Inject
     DataRepository dataRepository;
 
-    public static void notifyDataChanged(Context context) {
+    public static void notifyDataSetChanged(Context context) {
         Intent intent = new Intent(context, ListWidgetProvider.class);
         intent.setAction(AppIntent.ACTION_UPDATE_LIST_WIDGET);
         context.sendBroadcast(intent);
@@ -94,8 +94,12 @@ public class ListWidgetProvider extends AppWidgetProvider {
                 onClickIntent.setAction(AppIntent.ACTION_CLICK_LIST_WIDGET);
                 onClickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                 onClickIntent.setData(Uri.parse(onClickIntent.toUri(Intent.URI_INTENT_SCHEME)));
-                final PendingIntent onClickPendingIntent = PendingIntent.getBroadcast(context, 0,
-                        onClickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                final PendingIntent onClickPendingIntent = PendingIntent.getBroadcast(
+                        context,
+                        0,
+                        onClickIntent,
+                        ActivityUtils.mutable(PendingIntent.FLAG_UPDATE_CURRENT));
+
                 remoteViews.setPendingIntentTemplate(R.id.list_widget_list_view, onClickPendingIntent);
 
                 // Plus icon - new note
@@ -105,12 +109,23 @@ public class ListWidgetProvider extends AppWidgetProvider {
                 Intent openIntent = Intent.makeRestartActivityTask(new ComponentName(context, MainActivity.class));
                 openIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, savedSearch.getQuery());
                 openIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
-                remoteViews.setOnClickPendingIntent(R.id.list_widget_header_icon, PendingIntent.getActivity(context, 0, openIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+                remoteViews.setOnClickPendingIntent(
+                        R.id.list_widget_header_icon,
+                        PendingIntent.getActivity(
+                                context,
+                                0,
+                                openIntent,
+                                ActivityUtils.immutable(PendingIntent.FLAG_UPDATE_CURRENT)));
 
                 Intent selectionIntent = new Intent(context, ListWidgetSelectionActivity.class);
                 selectionIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                 selectionIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
-                remoteViews.setOnClickPendingIntent(R.id.list_widget_header_bar, PendingIntent.getActivity(context, 0, selectionIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+                remoteViews.setOnClickPendingIntent(
+                        R.id.list_widget_header_bar,
+                        PendingIntent.getActivity(context,
+                                0,
+                                selectionIntent,
+                                ActivityUtils.immutable(PendingIntent.FLAG_UPDATE_CURRENT)));
 
                 remoteViews.setTextViewText(
                         R.id.list_widget_header_selection,
@@ -206,7 +221,11 @@ public class ListWidgetProvider extends AppWidgetProvider {
     private PendingIntent getAlarmIntent(Context context) {
         Intent intent = new Intent(context, ListWidgetProvider.class);
         intent.setAction(AppIntent.ACTION_UPDATE_LIST_WIDGET);
-        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getBroadcast(
+                context,
+                0,
+                intent,
+                ActivityUtils.immutable(PendingIntent.FLAG_UPDATE_CURRENT));
     }
 
     private void setSelectionFromIntent(Context context, Intent intent) {
@@ -271,7 +290,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         App.appComponent.inject(this);
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent, intent.getExtras());
 
         if (AppIntent.ACTION_UPDATE_LIST_WIDGET.equals(intent.getAction())) {
             updateListContents(context);

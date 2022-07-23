@@ -3,7 +3,7 @@
 <resources
     xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppDayNightTheme" parent="AppLightTheme" />
+    <style name="AppDayNightTheme" parent="AppLightTheme.Light" />
 
     <!--
          Custom light themes should inherit from AppLightTheme, dark themes from AppDarkTheme.
@@ -11,13 +11,28 @@
 
          See and try using http://developer.android.com/design/style/typography.html
     -->
-    <style name="AppLightTheme" parent="Theme.Design.Light.NoActionBar">
-        <item name="windowActionModeOverlay">true</item>
+    <style name="AppLightTheme" parent="Theme.Material3.DynamicColors.Light">
+
+        <!-- NoActionBar -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
 
         <!-- Avoid white screen appearing briefly. -->
         <item name="android:windowDisablePreview">true</item>
 
+        <!-- For splash screen background, use logo's background color.
+             Needs shadow removed from the logo first. -->
+        <!-- <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/ic_launcher_background</item> -->
+
+        <!-- Theme-specific items stop here -->
+
+        <item name="android:windowLightStatusBar" tools:targetApi="m">?attr/isLightTheme</item>
+
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
+
+        <item name="actionOverflowButtonStyle">@style/OverFlow</item>
+
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
 
         <!-- Font sizes (defaults) -->
         <item name="font_micro">12sp</item>
@@ -51,62 +66,6 @@
              With this, it's white. -->
         <item name="android:textCursorDrawable">@null</item>
 
-        <!-- Color scheme -->
-
-        <item name="android:windowBackground">@color/white</item>
-
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@color/black</item>
-
-        <item name="colorAccent">@color/blue_grey_600</item>
-
-        <item name="android:statusBarColor" tools:targetApi="21">#e6757575</item>
-
-        <item name="app_bar_bg_color">@color/grey_300</item>
-
-        <item name="bottom_action_bar_bg_color">@color/light_theme_background</item>
-
-        <!-- Make buttons lighter. -->
-        <item name="android:colorButtonNormal" tools:targetApi="21">@color/grey_100</item>
-
-
-        <item name="item_bg">@drawable/item_selector</item>
-
-        <item name="item_selected_bg_color">@color/item_selected_light_bg_color</item>
-        <item name="item_spotlighted_bg_color">@color/item_selected_light_bg_color</item>
-
-        <item name="fragment_books_bg_color">@color/light_theme_app_bar</item>
-        <item name="item_book_card_bg_color">@color/light_theme_cards_and_dialogs</item>
-
-        <item name="drawer_bg">@color/white</item>
-        <item name="drawer_item_bg">@drawable/drawer_item_selector</item>
-
-        <item name="item_head_state_todo_color">@color/red_900</item>
-        <item name="item_head_state_done_color">@color/green_900</item>
-        <item name="item_head_state_unknown_color">@color/blue_900</item>
-
-        <item name="item_head_post_title_color">@color/grey_600</item>
-
-        <item name="text_primary_color">@color/dark_text_primary_color</item>
-        <item name="text_secondary_color">@color/dark_text_secondary_color</item>
-        <item name="text_disabled_color">@color/dark_text_disabled_color</item>
-        <item name="text_highlighted_color">@color/black</item>
-        <item name="text_error_color">@color/red_900</item>
-
-        <item name="indent_line_color">#0c000000</item>
-
-        <item name="snackbar_bg_color">#323232</item> <!-- Default color -->
-
-        <item name="swipe_label_text_color">@color/dark_text_primary_color</item>
-        <item name="swipe_label_bg_color">@color/grey_100</item>
-        <item name="swipe_label_border_color">@color/grey_200</item>
-
-        <item name="switch_thumb_color">@color/grey_100</item>
-        <item name="switch_thumb_icon_tint">@color/grey_800</item>
-        <item name="switch_track_color">@color/grey_500</item>
-
-        <!-- / Color scheme -->
-
         <item name="ic_access_time_18dp">@drawable/ic_access_time_black_18dp</item>
         <item name="ic_access_time_24dp">@drawable/ic_access_time_black_24dp</item>
         <item name="ic_add_24dp">@drawable/ic_add_black_24dp</item>
@@ -117,11 +76,13 @@
         <item name="ic_arrow_forward_24dp">@drawable/ic_arrow_forward_black_24dp</item>
         <item name="ic_arrow_upward_24dp">@drawable/ic_arrow_upward_black_24dp</item>
         <item name="ic_cancel_24dp">@drawable/ic_cancel_black_24dp</item>
+        <item name="ic_cancel_outline_24dp">@drawable/outline_cancel_black_24</item>
         <item name="ic_center_focus_strong_24dp">@drawable/ic_center_focus_strong_black_24dp</item>
         <item name="ic_close_24dp">@drawable/ic_close_black_24dp</item>
         <item name="ic_content_copy_24dp">@drawable/ic_content_copy_black_24dp</item>
         <item name="ic_content_cut_24dp">@drawable/ic_content_cut_black_24dp</item>
         <item name="ic_content_paste_24dp">@drawable/ic_content_paste_black_24dp</item>
+        <item name="ic_create_new_folder_24dp">@drawable/outline_create_new_folder_black_24</item>
         <item name="ic_delete_24dp">@drawable/ic_delete_black_24dp</item>
         <item name="ic_done_18dp">@drawable/ic_done_black_18dp</item>
         <item name="ic_done_24dp">@drawable/ic_done_black_24dp</item>
@@ -147,14 +108,17 @@
         <item name="ic_link_18dp">@drawable/ic_link_black_18dp</item>
         <item name="ic_move_to_inbox_24dp">@drawable/ic_move_to_inbox_black_24dp</item>
         <item name="ic_more_horiz_24dp">@drawable/ic_more_horiz_black_24dp</item>
+        <item name="ic_menu_24dp">@drawable/outline_menu_black_24</item>
         <item name="ic_menu_open_24dp">@drawable/ic_menu_open_black_24dp</item>
         <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_black_24dp</item>
         <item name="ic_open_in_new_24dp">@drawable/ic_open_in_new_black_24dp</item>
+        <item name="ic_outline_abc_24dp">@drawable/outline_abc_black_24</item>
         <item name="ic_outline_check_circle_18dp">@drawable/outline_check_circle_black_18</item>
         <item name="ic_outline_check_circle_24dp">@drawable/outline_check_circle_black_24</item>
         <item name="ic_outline_cloud_48dp">@drawable/outline_cloud_black_48</item>
         <item name="ic_outline_cloud_download_24dp">@drawable/outline_cloud_download_black_24</item>
         <item name="ic_outline_cloud_upload_24dp">@drawable/outline_cloud_upload_black_24</item>
+        <item name="ic_outline_notes_24dp">@drawable/outline_notes_black_24</item>
         <item name="ic_palette_24dp">@drawable/ic_palette_black_24dp</item>
         <item name="ic_remove_red_eye_24dp">@drawable/ic_remove_red_eye_black_24dp</item>
         <item name="ic_repeat_24dp">@drawable/ic_repeat_black_24dp</item>
@@ -185,16 +149,21 @@
         <!-- https://material.io/design/iconography/system-icons.html#color -->
         <item name="active_focused_icon_alpha">0.87</item>
         <item name="active_unfocused_icon_alpha">0.54</item>
-
-        <item name="bullet_default">@drawable/bullet_state_default</item>
-        <item name="bullet_folded">@drawable/bullet_state_folded</item>
-        <item name="bullet_unfolded">@drawable/bullet_state_default</item>
     </style>
 
-    <style name="AppDarkTheme" parent="Theme.Design.NoActionBar">
-        <item name="windowActionModeOverlay">true</item>
+    <style name="AppDarkTheme" parent="Theme.Material3.DynamicColors.Dark">
+
+        <!-- NoActionBar -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="android:windowLightStatusBar" tools:targetApi="m">?attr/isLightTheme</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
+
+        <item name="actionOverflowButtonStyle">@style/OverFlow</item>
+
+        <item name="alertDialogTheme">@style/AlertDialogTheme</item>
 
         <!-- Font sizes (defaults) -->
         <item name="font_micro">12sp</item>
@@ -227,58 +196,6 @@
              With this, it's white. -->
         <item name="android:textCursorDrawable">@null</item>
 
-        <item name="switch_thumb_color">@color/grey_800</item>
-        <item name="switch_thumb_icon_tint">@color/white</item>
-        <item name="switch_track_color">#141414</item> <!-- TODO: Fix dark color scheme -->
-
-        <!-- Color scheme -->
-
-        <item name="android:windowBackground">@color/dark_theme_cards_and_dialogs</item>
-
-        <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryDark">@color/white</item>
-
-        <item name="colorAccent">@color/blue_grey_300</item>
-
-        <item name="android:statusBarColor" tools:targetApi="21">#e6000000</item>
-
-        <item name="app_bar_bg_color">@color/dark_theme_app_bar</item>
-
-        <item name="bottom_action_bar_bg_color">@color/dark_theme_background</item>
-
-        <item name="item_bg">@drawable/item_selector_dark</item>
-
-        <item name="item_selected_bg_color">@color/item_selected_dark_bg_color</item>
-        <item name="item_spotlighted_bg_color">@color/item_selected_dark_bg_color</item>
-
-        <item name="fragment_books_bg_color">@color/dark_theme_background</item>
-        <item name="item_book_card_bg_color">@color/dark_theme_cards_and_dialogs</item>
-
-        <item name="drawer_bg">@color/dark_theme_cards_and_dialogs</item>
-        <item name="drawer_item_bg">@drawable/drawer_item_selector_dark</item>
-
-        <item name="item_head_state_todo_color">@color/red_200</item>
-        <item name="item_head_state_done_color">@color/green_200</item>
-        <item name="item_head_state_unknown_color">@color/blue_200</item>
-
-        <item name="item_head_post_title_color">@color/grey_400</item>
-
-        <item name="text_primary_color">@color/white_text_primary_color</item>
-        <item name="text_secondary_color">@color/white_text_secondary_color</item>
-        <item name="text_disabled_color">#60ffffff</item>
-        <item name="text_highlighted_color">@color/white_text_primary_color</item>
-        <item name="text_error_color">@color/red_200</item>
-
-        <item name="indent_line_color">#0cffffff</item>
-
-        <item name="snackbar_bg_color">@color/dark_theme_app_bar</item>
-
-        <item name="swipe_label_text_color">@color/white_text_primary_color</item>
-        <item name="swipe_label_bg_color">@color/grey_900</item>
-        <item name="swipe_label_border_color">@color/grey_700</item>
-
-        <!-- / Color scheme -->
-
         <item name="ic_access_time_18dp">@drawable/ic_access_time_white_18dp</item>
         <item name="ic_access_time_24dp">@drawable/ic_access_time_white_24dp</item>
         <item name="ic_add_24dp">@drawable/ic_add_white_24dp</item>
@@ -289,11 +206,13 @@
         <item name="ic_arrow_forward_24dp">@drawable/ic_arrow_forward_white_24dp</item>
         <item name="ic_arrow_upward_24dp">@drawable/ic_arrow_upward_white_24dp</item>
         <item name="ic_cancel_24dp">@drawable/ic_cancel_white_24dp</item>
+        <item name="ic_cancel_outline_24dp">@drawable/outline_cancel_white_24</item>
         <item name="ic_center_focus_strong_24dp">@drawable/ic_center_focus_strong_white_24dp</item>
         <item name="ic_close_24dp">@drawable/ic_close_white_24dp</item>
         <item name="ic_content_copy_24dp">@drawable/ic_content_copy_white_24dp</item>
         <item name="ic_content_cut_24dp">@drawable/ic_content_cut_white_24dp</item>
         <item name="ic_content_paste_24dp">@drawable/ic_content_paste_white_24dp</item>
+        <item name="ic_create_new_folder_24dp">@drawable/outline_create_new_folder_white_24</item>
         <item name="ic_delete_24dp">@drawable/ic_delete_white_24dp</item>
         <item name="ic_done_18dp">@drawable/ic_done_white_18dp</item>
         <item name="ic_done_24dp">@drawable/ic_done_white_24dp</item>
@@ -319,14 +238,17 @@
         <item name="ic_link_18dp">@drawable/ic_link_white_18dp</item>
         <item name="ic_move_to_inbox_24dp">@drawable/ic_move_to_inbox_white_24dp</item>
         <item name="ic_more_horiz_24dp">@drawable/ic_more_horiz_white_24dp</item>
+        <item name="ic_menu_24dp">@drawable/outline_menu_white_24</item>
         <item name="ic_menu_open_24dp">@drawable/ic_menu_open_white_24dp</item>
         <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_white_24dp</item>
         <item name="ic_open_in_new_24dp">@drawable/ic_open_in_new_white_24dp</item>
+        <item name="ic_outline_abc_24dp">@drawable/outline_abc_white_24</item>
         <item name="ic_outline_check_circle_18dp">@drawable/outline_check_circle_white_18</item>
         <item name="ic_outline_check_circle_24dp">@drawable/outline_check_circle_white_24</item>
         <item name="ic_outline_cloud_48dp">@drawable/outline_cloud_white_48</item>
         <item name="ic_outline_cloud_download_24dp">@drawable/outline_cloud_download_white_24</item>
         <item name="ic_outline_cloud_upload_24dp">@drawable/outline_cloud_upload_white_24</item>
+        <item name="ic_outline_notes_24dp">@drawable/outline_notes_white_24</item>
         <item name="ic_palette_24dp">@drawable/ic_palette_white_24dp</item>
         <item name="ic_remove_red_eye_24dp">@drawable/ic_remove_red_eye_white_24dp</item>
         <item name="ic_repeat_24dp">@drawable/ic_repeat_white_24dp</item>
@@ -357,59 +279,68 @@
         <!-- https://material.io/design/iconography/system-icons.html#color -->
         <item name="active_focused_icon_alpha">1.00</item>
         <item name="active_unfocused_icon_alpha">0.70</item>
-
-        <item name="bullet_default">@drawable/bullet_state_default_dark</item>
-        <item name="bullet_folded">@drawable/bullet_state_folded_dark</item>
-        <item name="bullet_unfolded">@drawable/bullet_state_default_dark</item>
     </style>
 
-    <!-- Color schemes -->
+    <style name="OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="tint">?android:textColorPrimary</item>
+    </style>
 
+    <!-- Color scheme -->
     <style name="AppLightTheme.Light">
+        <item name="android:colorBackground">@color/white</item>
+        <item name="android:statusBarColor">@color/grey_100</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorPrimary">@color/grey_600</item>
+        <item name="colorOnPrimary">@color/grey_100</item>
+        <item name="colorPrimaryContainer">@color/grey_100</item>
+        <item name="colorOnPrimaryContainer">@color/grey_900</item>
+        <item name="colorPrimaryInverse">@color/grey_100</item>
+        <item name="colorSecondaryContainer">@color/grey_300</item>
+        <item name="colorOnSecondaryContainer">@color/grey_900</item>
+        <item name="android:textColorLink">@color/grey_600</item>
+
+        <item name="item_head_state_done_color">@color/green_900</item>
+        <item name="item_head_state_todo_color">@color/red_900</item>
+        <item name="item_head_state_unknown_color">@color/blue_900</item>
     </style>
 
+    <!-- Color scheme -->
     <style name="AppDarkTheme.Dark">
+        <item name="android:colorBackground">#121212</item>
+        <item name="android:statusBarColor">#1b1b1b</item>
+        <item name="colorSurface">#121212</item>
+        <item name="colorPrimary">@color/grey_500</item>
+        <item name="colorOnPrimary">@color/grey_900</item>
+        <item name="colorPrimaryContainer">@color/grey_900</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorPrimaryInverse">@color/grey_800</item>
+        <item name="colorSecondaryContainer">@color/grey_800</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
+        <item name="colorError">@color/red_200</item>
+        <item name="android:textColorLink">@color/grey_400</item>
+
+        <item name="item_head_state_done_color">@color/green_200</item>
+        <item name="item_head_state_todo_color">@color/red_200</item>
+        <item name="item_head_state_unknown_color">@color/blue_200</item>
     </style>
 
+    <!-- Color scheme -->
     <style name="AppDarkTheme.Black">
-        <item name="android:windowBackground">@color/dark_theme_status_bar</item>
+        <item name="android:colorBackground">#000000</item>
+        <item name="android:statusBarColor">#000000</item>
+        <item name="colorSurface">#000000</item>
+        <item name="colorPrimary">@color/grey_600</item>
+        <item name="colorOnPrimary">@color/grey_300</item>
+        <item name="colorPrimaryContainer">@color/grey_900</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorPrimaryInverse">@color/blue_grey_800</item>
+        <item name="colorSecondaryContainer">@color/grey_900</item>
+        <item name="colorOnSecondaryContainer">@color/grey_200</item>
+        <item name="android:textColorLink">@color/grey_400</item>
 
-        <item name="android:itemBackground">@color/dark_theme_status_bar</item>
-        <item name="android:colorButtonNormal" tools:targetApi="21">@color/dark_theme_app_bar</item>
-
-        <item name="colorAccent">@color/blue_grey_200</item>
-
-        <item name="android:statusBarColor" tools:targetApi="21">#000000</item>
-
-        <item name="app_bar_bg_color">@color/dark_theme_status_bar</item>
-
-        <item name="bottom_action_bar_bg_color">@color/dark_theme_status_bar</item>
-
-        <item name="item_bg">@drawable/item_selector_black</item>
-
-        <item name="item_selected_bg_color">@color/item_selected_black_bg_color</item>
-        <item name="item_spotlighted_bg_color">@color/item_selected_black_bg_color</item>
-
-        <item name="fragment_books_bg_color">@color/dark_theme_status_bar</item>
-        <item name="item_book_card_bg_color">@color/dark_theme_status_bar</item>
-
-        <item name="drawer_bg">@color/dark_theme_status_bar</item>
-        <item name="drawer_item_bg">@drawable/drawer_item_selector_black</item>
-
-        <item name="indent_line_color">#1cffffff</item>
-
-        <item name="snackbar_bg_color">@color/dark_theme_status_bar</item>
-
-        <item name="swipe_label_bg_color">#1cffffff</item>
-        <item name="swipe_label_border_color">#33FFFFFF</item>
-
-        <item name="switch_thumb_color">@color/grey_800</item>
-        <item name="switch_thumb_icon_tint">@color/white</item>
-        <item name="switch_track_color">@color/grey_900</item>
-
-        <item name="bullet_default">@drawable/bullet_state_default_dark</item>
-        <item name="bullet_folded">@drawable/bullet_state_folded_black</item>
-        <item name="bullet_unfolded">@drawable/bullet_state_default_dark</item>
+        <item name="item_head_state_done_color">@color/green_200</item>
+        <item name="item_head_state_todo_color">@color/red_200</item>
+        <item name="item_head_state_unknown_color">@color/blue_200</item>
     </style>
 
     <style name="FontSize"/>
@@ -476,52 +407,12 @@
         <!--<item name="android:textAppearanceMedium">@style/TextAppearance.AppCompat.Large</item>-->
     </style>
 
-
     <style name="WindowAnimation" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/fragment_enter</item>
         <item name="android:activityOpenExitAnimation">@anim/fragment_exit</item>
         <item name="android:activityCloseEnterAnimation">@anim/fragment_enter</item>
         <item name="android:activityCloseExitAnimation">@anim/fragment_exit</item>
     </style>
-
-    <!-- Timestamp dialog. -->
-    <style name="TimestampDialogShortcutButton" parent="android:style/Widget.Holo.Button.Borderless"/>
-    <style name="TimestampDialogButton" parent="android:style/Widget.Holo.Button.Borderless"/>
-
-    <style name="TimestampDialogShortcutButton.Common">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <!--<item name="android:layout_weight">1</item>-->
-        <!--<item name="android:layout_marginLeft">8dp</item>-->
-        <!--<item name="android:layout_marginRight">8dp</item>-->
-        <!--<item name="android:layout_gravity">center_vertical</item>-->
-        <!--<item name="android:padding">8dp</item>-->
-    </style>
-
-    <style name="TimestampDialogButton.Common">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:gravity">center</item>
-
-        <item name="android:minHeight">48dp</item>
-
-        <item name="android:textAppearance">?android:textAppearanceMedium</item>
-        <item name="android:textColor">?attr/text_highlighted_color</item>
-        <!--<item name="android:textStyle">bold</item>-->
-    </style>
-
-    <style name="TimestampDialogLabel">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:gravity">center</item>
-
-        <item name="android:minHeight">48dp</item>
-
-        <item name="android:textAppearance">?android:textAppearanceMedium</item>
-        <item name="android:textColor">?attr/text_highlighted_color</item>
-        <!--<item name="android:textStyle">bold</item>-->
-    </style>
-
 
     <!-- Note fragment. -->
 
@@ -530,21 +421,17 @@
         <item name="android:minWidth">0dp</item>
     </style>
 
-    <style name="NoteFragmentButton" parent="Base.Widget.AppCompat.Button.Borderless">
-        <item name="android:layout_width">48dp</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:alpha">?attr/active_unfocused_icon_alpha</item>
-    </style>
-
-    <style name="NoteFragmentListItem">
+    <style name="NoteFragmentTextContainer" parent="@style/Widget.AppCompat.EditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:minHeight">48dp</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_marginLeft">@dimen/screen_edge_minus_4dp</item>
+        <item name="android:layout_marginStart">@dimen/screen_edge_minus_4dp</item>
+        <item name="android:layout_marginRight">@dimen/screen_edge_minus_4dp</item>
+        <item name="android:layout_marginEnd">@dimen/screen_edge_minus_4dp</item>
+        <item name="android:freezesText">true</item>
     </style>
 
-    <style name="NoteFragmentFullWidthButton" parent="Base.Widget.AppCompat.Button.Borderless">
+    <style name="NoteFragmentMetadataHeaderContainer" parent="Base.Widget.AppCompat.Button.Borderless">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minWidth">0dp</item>
@@ -554,19 +441,36 @@
         <item name="android:paddingEnd">4dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:clickable">true</item>
-        <item name="android:focusable">true</item>
     </style>
 
-    <style name="NoteFragmentListItemSpinnerButton" parent="Widget.AppCompat.Spinner.Underlined">
-        <item name="android:focusable">true</item>
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:minWidth">@dimen/fragment_note_field_min_width</item>
+    <style name="NoteFragmentMetadataItemContainer">
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">@dimen/padded_content_left_margin_from_icon</item>
-        <!--<item name="android:layout_marginRight">@dimen/screen_edge</item>-->
-        <item name="android:backgroundTint" tools:targetApi="lollipop">?attr/text_disabled_color</item>
+        <item name="android:layout_marginLeft">@dimen/screen_edge</item>
+        <item name="android:layout_marginStart">@dimen/screen_edge</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="NoteFragmentMetadataItemValueButton">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">@dimen/fragment_note_field_min_width</item>
+        <item name="android:layout_marginLeft">@dimen/fragment_note_icon_margin</item>
+        <item name="android:layout_marginStart">@dimen/fragment_note_icon_margin</item>
+        <item name="android:focusable">true</item>
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="NoteFragmentMetadataItemButton" parent="Base.Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:alpha">?attr/active_unfocused_icon_alpha</item>
     </style>
 
     <style name="BookItemInfoIcon">
@@ -574,26 +478,8 @@
         <item name="android:layout_height">?attr/item_book_info_icon_size</item>
         <!--<item name="android:paddingTop">1dp</item>-->
 
-        <item name="android:layout_marginLeft">2dp</item>
-        <item name="android:layout_marginStart" tools:targetApi="17">2dp</item>
-        <item name="android:layout_marginRight">8dp</item>
-        <item name="android:layout_marginEnd" tools:targetApi="17">8dp</item>
-    </style>
-
-    <style name="HeadItemInfoIcon">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginTop">2dp</item>
-        <item name="android:layout_marginBottom">1dp</item>
-    </style>
-
-    <style name="HeadItemInfo">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">?attr/item_head_sub_title_text</item>
-        <item name="android:textColor">?attr/text_secondary_color</item>
-        <item name="android:layout_marginStart">4dp</item>
-        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginStart">2dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
     </style>
 
     <style name="FastScroll">
@@ -612,21 +498,19 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">@dimen/screen_edge</item>
+        <item name="android:paddingBottom">?attr/actionBarSize</item>
 
         <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center</item>
 
-        <item name="android:textColor">?attr/text_secondary_color</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">?attr/font_large</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.TitleLarge</item>
     </style>
 
     <style name="LoadingProgressBar">
         <item name="android:indeterminate">true</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">top|center_horizontal</item>
-        <item name="android:paddingTop">@dimen/list_view_with_fab_bottom_padding</item>
+        <item name="android:layout_gravity">center</item>
     </style>
 
     <style name="BottomActionBarButton" parent="android:style/Widget.Holo.Button.Borderless">
@@ -638,6 +522,14 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+
+    <style name="WhatsNewNotice">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginTop">16dp</item>
+    </style>
 
     <style name="WhatsNewVersion">
         <item name="android:layout_width">wrap_content</item>
@@ -654,8 +546,7 @@
         <!--<item name="android:layout_marginLeft">8dp</item>-->
     </style>
 
-    <style name="NavigationViewForDrawer">
-        <item name="android:listDivider">@null</item>
+    <style name="DrawerNavigationView">
         <item name="android:ellipsize">end</item>
     </style>
 
@@ -668,16 +559,12 @@
         <!--<item name="android:alpha">0.0</item>-->
 
         <item name="android:layout_gravity">bottom</item>
-        <item name="android:background">?attr/bottom_action_bar_bg_color</item>
-        <item name="android:elevation" tools:targetApi="lollipop">4dp</item>
-        <item name="android:theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
-        <item name="android:popupTheme" tools:targetApi="lollipop">@style/ThemeOverlay.AppCompat.ActionBar</item>
+        <item name="android:elevation">4dp</item>
 
-        <!--<item name="android:contentInsetLeft" tools:targetApi="lollipop">0dp</item>-->
-        <!--<item name="android:contentInsetStart" tools:targetApi="lollipop">0dp</item>-->
-        <!--<item name="android:contentInsetRight" tools:targetApi="lollipop">0dp</item>-->
-        <!--<item name="android:contentInsetEnd" tools:targetApi="lollipop">0dp</item>-->
-
+<!--        <item name="android:contentInsetLeft">0dp</item>-->
+<!--        <item name="android:contentInsetStart">0dp</item>-->
+<!--        <item name="android:contentInsetRight">0dp</item>-->
+<!--        <item name="android:contentInsetEnd">0dp</item>-->
     </style>
 
     <style name="QuickBarButton" parent="Base.Widget.AppCompat.Button.Borderless">
@@ -685,4 +572,93 @@
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+
+    <style name="TopAppBar">
+        <item name="android:background">?android:statusBarColor</item>
+
+        <!-- Don't overlay -->
+        <item name="colorPrimary">@android:color/transparent</item>
+    </style>
+
+    <style name="BottomAppBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="fabCradleMargin">0dp</item>
+        <item name="fabCradleRoundedCornerRadius">0dp</item>
+        <item name="fabCradleVerticalOffset">0dp</item>
+    </style>
+
+    <style name="BottomAppBar.WithMenu">
+        <item name="navigationIcon">?attr/ic_menu_24dp</item>
+    </style>
+
+    <style name="BottomAppBar.WithCancel">
+        <item name="navigationIcon">?attr/ic_close_24dp</item>
+    </style>
+
+    <style name="BottomAppBar.FabAlignEnd">
+        <item name="fabAlignmentMode">end</item>
+    </style>
+
+    <style name="BottomAppBar.FabAlignEnd.WithBack">
+        <item name="navigationIcon">?attr/ic_arrow_back_24dp</item>
+    </style>
+
+    <style name="BottomAppBar.FabAlignEnd.WithCancel">
+        <item name="navigationIcon">?attr/ic_close_24dp</item>
+    </style>
+
+    <style name="BottomAppBarTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.TitleLarge</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="HorizontalDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">?colorSecondaryContainer</item>
+    </style>
+
+    <style name="VerticalDivider">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">?colorSecondaryContainer</item>
+    </style>
+
+    <style name="TitleTextAppearance">
+        <item name="android:textSize">?attr/font_large</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <!-- For dialogs in Settings -->
+    <style name="AlertDialogTheme" parent="ThemeOverlay.Material3.Dialog">
+    </style>
+
+<!--    <style name="Button" parent="Widget.Material3.Button.ElevatedButton">-->
+<!--    </style>-->
+
+    <style name="Button" />
+
+    <style name="Button.TimestampDialog">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Button.ReposRepo">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="iconSize">36dp</item>
+        <item name="iconGravity">top</item>
+    </style>
+
+    <style name="Button.Repo">
+    </style>
+
 </resources>

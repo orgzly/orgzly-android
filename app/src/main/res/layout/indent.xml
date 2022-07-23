@@ -4,8 +4,7 @@
     android:layout_height="match_parent">
 
     <View
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:background="?attr/indent_line_color"/>
+        style="@style/VerticalDivider"
+        android:layout_gravity="center_horizontal" />
+
 </FrameLayout>

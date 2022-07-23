@@ -1,5 +1,6 @@
 package com.orgzly.android.util
 
+import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 
@@ -44,10 +45,20 @@ object LogUtils {
         for (i in args.indices) {
             val arg = args[i]
 
-            if (arg is Array<*>) {
-                s.append(TextUtils.join("|", arg))
-            } else {
-                s.append(arg)
+            when (arg) {
+                is Bundle -> {
+                    s.append(arg.keySet().joinToString(", ", "Bundle[", "]") { key ->
+                        key + ":" + arg.get(key)
+                    })
+                }
+
+                is Array<*> -> {
+                    s.append(TextUtils.join("|", arg))
+                }
+
+                else -> {
+                    s.append(arg)
+                }
             }
 
             if (i < args.size - 1) {

@@ -51,7 +51,7 @@ import org.junit.runners.Suite
         QueryTokenizerTest::class,
         QueryUtilsTest::class,
 
-        ReminderServiceTest::class,
+        NoteRemindersTest::class,
 
         DataRepositoryTest::class,
         DirectoryRepoTest::class,

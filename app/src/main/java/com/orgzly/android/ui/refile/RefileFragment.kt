@@ -11,7 +11,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
@@ -19,7 +19,8 @@ import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.ui.Breadcrumbs
-import com.orgzly.android.ui.CommonActivity
+import com.orgzly.android.ui.showSnackbar
+import com.orgzly.android.ui.util.invisibleIf
 import com.orgzly.android.usecase.NoteRefile
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.DialogRefileBinding
@@ -56,17 +57,9 @@ class RefileFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        val dialog = object: Dialog(requireContext(), theme) {
-            override fun onBackPressed() {
-                if (viewModel.locationHasParent()) {
-                    viewModel.openParent()
-                } else {
-                    super.onBackPressed()
-                }
-            }
-        }
+        val dialog = MaterialAlertDialogBuilder(requireContext(), theme)
 
-        return dialog
+        return dialog.show()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -119,11 +112,7 @@ class RefileFragment : DialogFragment() {
             adapter.submitList(list)
 
             // Hide refile-here button in notebook list
-            if (breadcrumbs.size == 1) {
-                refileHereButton.visibility = View.INVISIBLE
-            } else {
-                refileHereButton.visibility = View.VISIBLE
-            }
+            refileHereButton.invisibleIf(breadcrumbs.size == 1)
 
             // Update and scroll breadcrumbs to the end
             binding.dialogRefileBreadcrumbs.text = generateBreadcrumbs(breadcrumbs)
@@ -138,15 +127,8 @@ class RefileFragment : DialogFragment() {
             dismiss()
 
             (result.userData as? Note)?.let { firstRefiledNote ->
-                activity?.findViewById<View>(R.id.main_content)?.let { viewForSnackbar ->
-
-                    val snackbar = Snackbar.make(
-                            viewForSnackbar, firstRefiledNote.title, Snackbar.LENGTH_LONG)
-
-                    (activity as CommonActivity).showSnackbar(snackbar
-                            .setAction(R.string.go_to) {
-                                viewModel.goTo(firstRefiledNote.id)
-                            })
+                activity?.showSnackbar(firstRefiledNote.title, R.string.go_to) {
+                    viewModel.goTo(firstRefiledNote.id)
                 }
             }
         })

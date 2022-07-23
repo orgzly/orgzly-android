@@ -5,9 +5,8 @@ import android.app.Application;
 import android.content.Context;
 
 import androidx.multidex.MultiDex;
+import androidx.preference.PreferenceManager;
 
-import com.evernote.android.job.JobConfig;
-import com.evernote.android.job.JobManager;
 import com.orgzly.android.di.AppComponent;
 import com.orgzly.android.di.DaggerAppComponent;
 import com.orgzly.android.di.module.ApplicationModule;
@@ -18,20 +17,7 @@ import com.orgzly.android.ui.settings.SettingsFragment;
 
 import org.jetbrains.annotations.Nullable;
 
-import androidx.preference.PreferenceManager;
-
-import dagger.Component;
-
 public class App extends Application {
-
-    /**
-     * Job IDs for {@link androidx.core.app.JobIntentService#enqueueWork}.
-     */
-    public static final int ACTION_SERVICE_JOB_ID = 1;
-    public static final int REMINDER_SERVICE_JOB_ID = 2;
-    public static final int NOTIFICATION_SERVICE_JOB_ID = 3;
-    public static final int LAST_JOB_ID = 100;
-
     private static Context context;
 
     private static CommonActivity currentActivity;
@@ -69,9 +55,7 @@ public class App extends Application {
 
         App.setDefaultPreferences(this, false);
 
-        JobConfig.setJobIdOffset(LAST_JOB_ID);
         App.context = getApplicationContext();
-        JobManager.create(this).addJobCreator(new AppJobCreator());
 
         NotificationChannels.createAll(this);
     }

@@ -19,13 +19,13 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
-import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onItemInAgenda;
 import static com.orgzly.android.espresso.EspressoUtils.onNotesInAgenda;
 import static com.orgzly.android.espresso.EspressoUtils.recyclerViewItemCount;
@@ -34,6 +34,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
 
 public class AgendaFragmentTest extends OrgzlyTest {
     private ActivityScenario<MainActivity> defaultSetUp() {
@@ -113,7 +114,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
          * 7 Note 2
          */
         onItemInAgenda(1).perform(longClick());
-        onView(withId(R.id.bottom_action_bar_done)).perform(click());
+        onView(withId(R.id.toggle_state)).perform(click());
         onNotesInAgenda().check(matches(recyclerViewItemCount(24)));
     }
 
@@ -122,7 +123,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
         defaultSetUp();
         searchForText(".it.done ad.7");
         onItemInAgenda(2).perform(longClick());
-        onView(withId(R.id.bottom_action_bar_done)).perform(click());
+        onView(withId(R.id.toggle_state)).perform(click());
         onNotesInAgenda().check(matches(recyclerViewItemCount(23)));
     }
 
@@ -131,7 +132,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
         defaultSetUp();
         searchForText(".it.done ad.7");
         onItemInAgenda(3).perform(longClick());
-        onView(withId(R.id.bottom_action_bar_done)).perform(click());
+        onView(withId(R.id.toggle_state)).perform(click());
         onNotesInAgenda().check(matches(recyclerViewItemCount(17)));
     }
 
@@ -142,7 +143,8 @@ public class AgendaFragmentTest extends OrgzlyTest {
         defaultSetUp();
         searchForText(".it.done ad.7");
         onItemInAgenda(2).perform(longClick());
-        onView(withId(R.id.bottom_action_bar_schedule)).perform(click());
+        onActionItemClick(R.id.edit, R.string.edit);
+        onView(withText(R.string.schedule)).perform(click());
         onView(withId(R.id.date_picker_button)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName())))
                 .perform(PickerActions.setDate(
@@ -181,14 +183,15 @@ public class AgendaFragmentTest extends OrgzlyTest {
         onItemInAgenda(1).perform(longClick());
 
         onNotesInAgenda().check(matches(recyclerViewItemCount(12)));
-        onView(withId(R.id.action_bar_title)).check(matches(withText("1")));
+        onView(withId(R.id.bottomAppBarTitle)).check(matches(withText("1")));
 
         // Remove state
-        onView(withId(R.id.bottom_action_bar_state)).perform(click());
+        onActionItemClick(R.id.edit, R.string.edit);
+        onView(withText(R.string.state)).perform(click());
         onView(withText(R.string.clear)).perform(click());
 
         onNotesInAgenda().check(matches(recyclerViewItemCount(8)));
-        onView(withId(R.id.action_bar_title)).check(doesNotExist());
+        onView(withId(R.id.bottomAppBarTitle)).check(matches(not(withText("1"))));
     }
 
     @Ignore("Not implemented yet")
@@ -200,7 +203,8 @@ public class AgendaFragmentTest extends OrgzlyTest {
         searchForText("ad.3");
 
         onItemInAgenda(1).perform(longClick());
-        onView(withId(R.id.bottom_action_bar_state)).perform(click());
+        onActionItemClick(R.id.edit, R.string.edit);
+        onView(withText(R.string.state)).perform(click());
 
         onView(withText("TODO")).check(matches(isChecked()));
     }
@@ -224,8 +228,8 @@ public class AgendaFragmentTest extends OrgzlyTest {
 
         onItemInAgenda(1).perform(click());
 
-        onView(withId(R.id.fragment_note_container)).check(matches(isDisplayed()));
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note A")));
+        onView(withId(R.id.scroll_view)).check(matches(isDisplayed()));
+        onView(withId(R.id.title)).check(matches(withText("Note A")));
     }
 
     @Test
@@ -237,7 +241,8 @@ public class AgendaFragmentTest extends OrgzlyTest {
 
         searchForText(".it.done ad.7");
         onItemInAgenda(1).perform(longClick());
-        onView(withId(R.id.bottom_action_bar_state)).perform(click());
+        onActionItemClick(R.id.edit, R.string.edit);
+        onView(withText(R.string.state)).perform(click());
         onView(withText("NEXT")).perform(click());
     }
 

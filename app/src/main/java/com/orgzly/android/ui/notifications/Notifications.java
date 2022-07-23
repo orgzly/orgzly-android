@@ -22,6 +22,7 @@ import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.main.MainActivity;
 import com.orgzly.android.ui.share.ShareActivity;
+import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 
 import static com.orgzly.android.NewNoteBroadcastReceiver.NOTE_TITLE;
@@ -40,17 +41,16 @@ public class Notifications {
     public static void createNewNoteNotification(Context context) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, context);
 
-        PendingIntent resultPendingIntent = ShareActivity.createNewNoteIntent(context, null);
+        PendingIntent shareNotePendingIntent = ShareActivity.createNewNoteIntent(context, null);
 
-        /* Build notification */
+        // Build notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.ONGOING)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.ic_logo_for_notification)
                 .setContentTitle(context.getString(R.string.new_note))
-                .setContentText(context.getString(R.string.tap_to_create_new_note))
                 .setColor(ContextCompat.getColor(context, R.color.notification))
-                .setContentIntent(resultPendingIntent);
-
+                .setContentText(context.getString(R.string.tap_to_create_new_note))
+                .setContentIntent(shareNotePendingIntent);
 
         builder.setPriority(
                 getNotificationPriority(
@@ -58,13 +58,16 @@ public class Notifications {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             PendingIntent newNotePendingIntent = PendingIntent.getBroadcast(
-                    context, 0, new Intent(context, NewNoteBroadcastReceiver.class), 0);
+                    context,
+                    0,
+                    new Intent(context, NewNoteBroadcastReceiver.class),
+                    ActivityUtils.mutable(0));
 
             RemoteInput remoteInput = new RemoteInput.Builder(NOTE_TITLE)
                     .setLabel(context.getString(R.string.quick_note))
                     .build();
 
-            /* Add new note action */
+            // Add new note action
             NotificationCompat.Action action = new NotificationCompat.Action.Builder(
                     R.drawable.ic_add_white_24dp, context.getString(R.string.quick_note), newNotePendingIntent)
                     .addRemoteInput(remoteInput)
@@ -72,19 +75,25 @@ public class Notifications {
             builder.addAction(action);
         }
 
-        /* Add open action */
+        // Add open action
         PendingIntent openAppPendingIntent = PendingIntent.getActivity(
-                context, 0, new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+                context,
+                0,
+                new Intent(context, MainActivity.class),
+                ActivityUtils.mutable(PendingIntent.FLAG_UPDATE_CURRENT));
         builder.addAction(
                 R.drawable.ic_open_in_new_white_24dp,
                 context.getString(R.string.open),
                 openAppPendingIntent);
 
-        /* Add sync action */
+        // Add sync action
         Intent syncIntent = new Intent(context, SyncService.class);
         syncIntent.setAction(AppIntent.ACTION_SYNC_START);
         PendingIntent syncPendingIntent = PendingIntent.getService(
-                context, 0, syncIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                context,
+                0,
+                syncIntent,
+                ActivityUtils.mutable(PendingIntent.FLAG_UPDATE_CURRENT));
         builder.addAction(
                     R.drawable.ic_sync_white_24dp,
                     context.getString(R.string.sync),
@@ -124,10 +133,14 @@ public class Notifications {
 
     public static Notification createSyncInProgressNotification(Context context) {
         PendingIntent openAppPendingIntent = PendingIntent.getActivity(
-                context, 0, new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+                context,
+                0,
+                new Intent(context, MainActivity.class),
+                ActivityUtils.immutable(PendingIntent.FLAG_UPDATE_CURRENT));
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.SYNC_PROGRESS)
                 .setOngoing(true)
+                .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
                 .setSmallIcon(R.drawable.ic_sync_white_24dp)
                 .setContentTitle(context.getString(R.string.syncing_in_progress))
                 .setColor(ContextCompat.getColor(context, R.color.notification))

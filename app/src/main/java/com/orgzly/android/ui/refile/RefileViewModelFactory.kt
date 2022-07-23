@@ -9,7 +9,7 @@ class RefileViewModelFactory(
         private val noteIds: Set<Long>,
         private val count: Int) : ViewModelProvider.Factory {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return RefileViewModel(dataRepository, noteIds, count) as T
     }

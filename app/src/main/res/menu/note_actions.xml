@@ -5,27 +5,27 @@
     tools:ignore="AlwaysShowAction">
 
     <item
-        android:id="@+id/note_view_edit"
-        android:title=""
-        app:showAsAction="always"
-        app:actionLayout="@layout/note_view_edit_switch">
-    </item>
+        android:id="@+id/search_view"
+        android:title="@string/options_menu_item_search"
+        android:icon="?attr/ic_search_24dp"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="collapseActionView|always" tools:ignore="AlwaysShowAction"/>
+
+    <item
+        android:id="@+id/to_edit_mode"
+        android:title="@string/edit"
+        android:icon="?attr/ic_edit_24dp"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/done"
+        android:title="@string/done"
         android:icon="?attr/ic_done_24dp"
-        app:showAsAction="always"
-        android:title="@string/done" />
-
-    <item
-        android:id="@+id/keep_screen_on"
-        app:showAsAction="never"
-        android:checkable="true"
-        android:title="@string/keep_screen_on"/>
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/metadata"
-        android:icon="?attr/ic_unfold_more_24dp"
+        android:icon="?attr/ic_info_outline_24dp"
         app:showAsAction="never"
         android:title="@string/metadata">
         <menu>
@@ -46,8 +46,19 @@
     </item>
 
     <item
+        android:id="@+id/keep_screen_on"
+        app:showAsAction="never"
+        android:checkable="true"
+        android:title="@string/keep_screen_on"/>
+
+    <item
         android:id="@+id/delete"
         android:icon="?attr/ic_delete_24dp"
         app:showAsAction="never"
         android:title="@string/delete" />
+
+    <item
+        android:id="@+id/activity_action_settings"
+        app:showAsAction="never"
+        android:title="@string/settings"/>
 </menu>

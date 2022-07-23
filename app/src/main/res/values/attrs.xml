@@ -47,44 +47,9 @@
     </declare-styleable>
 
     <declare-styleable name="ColorScheme">
-        <attr name="app_bar_bg_color" format="color"/>
-        <attr name="bottom_action_bar_bg_color" format="color"/>
-
-        <attr name="item_bg" format="reference" />
-
-        <attr name="item_selected_bg_color" format="color" />
-        <attr name="item_spotlighted_bg_color" format="color" />
-
-        <attr name="fragment_books_bg_color" format="color"/>
-        <attr name="item_book_card_bg_color" format="color"/>
-
-        <attr name="drawer_bg" format="color"/>
-        <attr name="drawer_item_bg" format="reference"/>
-
-        <attr name="item_head_state_todo_color" format="color"/>
         <attr name="item_head_state_done_color" format="color"/>
+        <attr name="item_head_state_todo_color" format="color"/>
         <attr name="item_head_state_unknown_color" format="color"/>
-
-        <attr name="item_head_post_title_color" format="color"/>
-
-        <attr name="text_primary_color" format="color"/>
-        <attr name="text_secondary_color" format="color"/>
-        <attr name="text_disabled_color" format="color"/>
-        <attr name="text_highlighted_color" format="color"/>
-        <attr name="text_error_color" format="color"/>
-
-        <attr name="indent_line_color" format="color"/>
-
-        <attr name="snackbar_bg_color" format="color"/>
-
-        <attr name="swipe_label_text_color" format="color"/>
-        <attr name="swipe_label_bg_color" format="color"/>
-        <attr name="swipe_label_border_color" format="color"/>
-
-        <!-- Used for note's view-edit mode Switch -->
-        <attr name="switch_thumb_color" format="color"/>
-        <attr name="switch_thumb_icon_tint" format="color"/>
-        <attr name="switch_track_color" format="color"/>
     </declare-styleable>
 
     <declare-styleable name="Icons">
@@ -98,11 +63,13 @@
         <attr name="ic_arrow_forward_24dp" format="reference"/>
         <attr name="ic_arrow_upward_24dp" format="reference"/>
         <attr name="ic_cancel_24dp" format="reference"/>
+        <attr name="ic_cancel_outline_24dp" format="reference"/>
         <attr name="ic_center_focus_strong_24dp" format="reference"/>
         <attr name="ic_close_24dp" format="reference"/>
         <attr name="ic_content_copy_24dp" format="reference"/>
         <attr name="ic_content_cut_24dp" format="reference"/>
         <attr name="ic_content_paste_24dp" format="reference"/>
+        <attr name="ic_create_new_folder_24dp" format="reference"/>
         <attr name="ic_delete_24dp" format="reference"/>
         <attr name="ic_done_18dp" format="reference"/>
         <attr name="ic_done_24dp" format="reference"/>
@@ -126,16 +93,19 @@
         <attr name="ic_language_18dp" format="reference"/>
         <attr name="ic_library_books_24dp" format="reference"/>
         <attr name="ic_link_18dp" format="reference"/>
+        <attr name="ic_menu_24dp" format="reference"/>
         <attr name="ic_menu_open_24dp" format="reference"/>
         <attr name="ic_more_horiz_24dp" format="reference"/>
         <attr name="ic_move_to_inbox_24dp" format="reference"/>
         <attr name="ic_notifications_none_24dp" format="reference"/>
         <attr name="ic_open_in_new_24dp" format="reference"/>
+        <attr name="ic_outline_abc_24dp" format="reference"/>
         <attr name="ic_outline_check_circle_18dp" format="reference"/>
         <attr name="ic_outline_check_circle_24dp" format="reference"/>
         <attr name="ic_outline_cloud_48dp" format="reference"/>
         <attr name="ic_outline_cloud_download_24dp" format="reference"/>
         <attr name="ic_outline_cloud_upload_24dp" format="reference"/>
+        <attr name="ic_outline_notes_24dp" format="reference"/>
         <attr name="ic_palette_24dp" format="reference"/>
         <attr name="ic_remove_red_eye_24dp" format="reference"/>
         <attr name="ic_repeat_24dp" format="reference"/>
@@ -165,9 +135,5 @@
 
         <attr name="active_focused_icon_alpha" format="float"/>
         <attr name="active_unfocused_icon_alpha" format="float"/>
-
-        <attr name="bullet_default" format="reference"/>
-        <attr name="bullet_folded" format="reference"/>
-        <attr name="bullet_unfolded" format="reference"/>
     </declare-styleable>
 </resources>

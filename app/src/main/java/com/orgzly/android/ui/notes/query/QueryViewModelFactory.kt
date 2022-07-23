@@ -6,7 +6,7 @@ import com.orgzly.android.data.DataRepository
 
 class QueryViewModelFactory(private val dataRepository: DataRepository) : ViewModelProvider.Factory {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return QueryViewModel(dataRepository) as T
     }

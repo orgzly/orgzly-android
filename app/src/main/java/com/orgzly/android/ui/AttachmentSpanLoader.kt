@@ -9,7 +9,7 @@ import com.orgzly.android.usecase.UseCaseRunner
 object AttachmentSpanLoader {
     /** Find all `attachment:` links and set up the prefix directory based on `ID` property. */
     fun loadAttachmentPaths(noteId: Long, textWithMarkup: TextViewWithMarkup) {
-        SpanUtils.forEachSpan(textWithMarkup.text as Spannable, AttachmentLinkSpan::class.java) { span ->
+        SpanUtils.forEachSpan(textWithMarkup.text as Spannable, AttachmentLinkSpan::class.java) { span, _, _ ->
             val prefix = UseCaseRunner.run(FindAttachmentPath(noteId)).userData
             if (prefix != null) {
                 span.prefix = prefix as String

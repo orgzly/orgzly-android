@@ -1,13 +1,15 @@
 package com.orgzly.android.ui.savedsearches
 
-import android.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.*
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.ActionMode
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,11 +21,14 @@ import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.SavedSearch
 import com.orgzly.android.savedsearch.FileSavedSearchStore
-import com.orgzly.android.ui.CommonActivity
-import com.orgzly.android.ui.Fab
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
+import com.orgzly.android.ui.main.setupSearchView
+import com.orgzly.android.ui.savedsearches.SavedSearchesViewModel.Companion.APP_BAR_DEFAULT_MODE
+import com.orgzly.android.ui.savedsearches.SavedSearchesViewModel.Companion.APP_BAR_SELECTION_MODE
+import com.orgzly.android.ui.showSnackbar
+import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentSavedSearchesBinding
 import java.io.IOException
@@ -32,13 +37,10 @@ import javax.inject.Inject
 /**
  * Displays and allows modifying saved searches.
  */
-class SavedSearchesFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickListener<SavedSearch> {
+class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<SavedSearch> {
     private lateinit var binding: FragmentSavedSearchesBinding
 
     private var listener: Listener? = null
-
-    private var actionMode: ActionMode? = null
-    private val actionModeCallback = ActionModeCallback()
 
     private var dialog: AlertDialog? = null
 
@@ -50,6 +52,12 @@ class SavedSearchesFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickList
     private lateinit var viewModel: SavedSearchesViewModel
 
     private lateinit var sharedMainActivityViewModel: SharedMainActivityViewModel
+
+    private val appBarBackPressHandler = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            viewModel.appBar.handleOnBackPressed()
+        }
+    }
 
     override fun getCurrentDrawerItemId() = getDrawerItemId()
 
@@ -70,7 +78,7 @@ class SavedSearchesFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickList
         sharedMainActivityViewModel = ViewModelProvider(requireActivity())
                 .get(SharedMainActivityViewModel::class.java)
 
-        setHasOptionsMenu(true)
+        requireActivity().onBackPressedDispatcher.addCallback(this, appBarBackPressHandler)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -96,11 +104,114 @@ class SavedSearchesFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickList
         }
     }
 
+    private fun appBarToDefault() {
+        binding.bottomAppBar.run {
+            replaceMenu(R.menu.saved_searches_actions)
+
+            setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
+                typedArray.getResourceId(R.styleable.Icons_ic_menu_24dp, 0)
+            })
+
+            setNavigationOnClickListener {
+                sharedMainActivityViewModel.openDrawer()
+            }
+
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.saved_searches_import -> {
+                        listener?.let {
+                            importExport(R.string.import_from, it::onSavedSearchesImportRequest)
+                        }
+                    }
+
+                    R.id.saved_searches_export -> {
+                        listener?.let {
+                            importExport(R.string.export_to, it::onSavedSearchesExportRequest)
+                        }
+                    }
+
+                    R.id.saved_searches_help -> {
+                        val uri = Uri.parse("http://www.orgzly.com/help#search")
+                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                        startActivity(intent)
+                    }
+                }
+
+                true
+            }
+
+            requireActivity().setupSearchView(menu)
+        }
+
+        viewAdapter.clearSelection()
+
+        binding.fab.run {
+            setOnClickListener {
+                listener?.onSavedSearchNewRequest()
+            }
+
+            show()
+        }
+    }
+
+    private fun appBarToMainSelection() {
+        binding.bottomAppBar.run {
+            replaceMenu(R.menu.saved_searches_cab)
+
+            if (viewAdapter.getSelection().count > 1) {
+                menu.findItem(R.id.saved_searches_cab_move_up).isVisible = false
+                menu.findItem(R.id.saved_searches_cab_move_down).isVisible = false
+
+            } else {
+                menu.findItem(R.id.saved_searches_cab_move_up).isVisible = true
+                menu.findItem(R.id.saved_searches_cab_move_up).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+
+                menu.findItem(R.id.saved_searches_cab_move_down).isVisible = true
+                menu.findItem(R.id.saved_searches_cab_move_down).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+            }
+
+            setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
+                typedArray.getResourceId(R.styleable.Icons_ic_arrow_back_24dp, 0)
+            })
+
+            setNavigationOnClickListener {
+                viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
+            }
+
+            setOnMenuItemClickListener { menuItem ->
+                val selection = viewAdapter.getSelection()
+
+                when (menuItem.itemId) {
+                    R.id.saved_searches_cab_move_up ->
+                        selection.getOnly()?.let { id ->
+                            listener?.onSavedSearchMoveUpRequest(id)
+                        }
+
+                    R.id.saved_searches_cab_move_down ->
+                        selection.getOnly()?.let { id ->
+                            listener?.onSavedSearchMoveDownRequest(id)
+                        }
+
+                    R.id.saved_searches_cab_delete -> {
+                        listener?.onSavedSearchDeleteRequest(selection.getIds())
+                        viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
+                    }
+                }
+
+                true
+            }
+        }
+
+        binding.fab.run {
+            hide()
+        }
+
+    }
+
     override fun onPause() {
         super.onPause()
 
         dialog?.dismiss()
-        actionMode?.finish()
     }
 
     override fun onDetach() {
@@ -109,64 +220,24 @@ class SavedSearchesFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickList
         listener = null
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu, inflater)
-
-        inflater.inflate(R.menu.saved_searches_actions, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, item)
-
-        return when (item.itemId) {
-            R.id.saved_searches_import -> {
-                listener?.let {
-                    importExport(R.string.import_from, it::onSavedSearchesImportRequest)
-                }
-
-                true
-            }
-
-            R.id.saved_searches_export -> {
-                listener?.let {
-                    importExport(R.string.export_to, it::onSavedSearchesExportRequest)
-                }
-                true
-            }
-
-            R.id.saved_searches_help -> {
-                val uri = Uri.parse("http://www.orgzly.com/help#search")
-                val intent = Intent(Intent.ACTION_VIEW, uri)
-                startActivity(intent)
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
     private fun importExport(resId: Int, f: (Int, String) -> Any) {
         try {
             val file = FileSavedSearchStore(requireContext(), dataRepository).file()
             f(R.string.searches, getString(resId, file))
         } catch (e: IOException) {
-            CommonActivity.showSnackbar(context, e.localizedMessage)
+            activity?.showSnackbar(e.localizedMessage)
         }
     }
 
     override fun onClick(view: View, position: Int, item: SavedSearch) {
-        if (actionMode == null) {
+        if (viewAdapter.getSelection().count == 0) {
             listener?.onSavedSearchEditRequest(item.id)
 
         } else {
             viewAdapter.getSelection().toggle(item.id)
             viewAdapter.notifyItemChanged(position)
 
-            if (viewAdapter.getSelection().count == 0) {
-                actionMode?.finish()
-            } else {
-                actionMode?.invalidate()
-            }
+            viewModel.appBar.toModeFromSelectionCount(viewAdapter.getSelection().count)
         }
     }
 
@@ -174,18 +245,7 @@ class SavedSearchesFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickList
         viewAdapter.getSelection().toggle(item.id)
         viewAdapter.notifyItemChanged(position)
 
-        if (viewAdapter.getSelection().count > 0) {
-            if (actionMode == null) {
-                actionMode = with(activity as AppCompatActivity) {
-                    startSupportActionMode(actionModeCallback)
-                }
-            } else {
-                actionMode?.invalidate()
-            }
-
-        } else {
-            actionMode?.finish()
-        }
+        viewModel.appBar.toModeFromSelectionCount(viewAdapter.getSelection().count)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -202,18 +262,38 @@ class SavedSearchesFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickList
             }
         })
 
-        viewModel.savedSearches.observe(viewLifecycleOwner, Observer { savedSearches ->
+        viewModel.data.observe(viewLifecycleOwner, Observer { data ->
             if (BuildConfig.LOG_DEBUG)
-                LogUtils.d(TAG, "Observed saved searches: ${savedSearches.count()}")
+                LogUtils.d(TAG, "Observed saved searches: ${data.count()}")
 
-            viewAdapter.submitList(savedSearches)
+            viewAdapter.submitList(data)
 
-            val ids = savedSearches.mapTo(hashSetOf()) { it.id }
+            val ids = data.mapTo(hashSetOf()) { it.id }
 
             viewAdapter.getSelection().removeNonExistent(ids)
 
-            actionMode?.invalidate()
+            viewModel.appBar.toModeFromSelectionCount(viewAdapter.getSelection().count)
         })
+
+        viewModel.appBar.mode.observeSingle(viewLifecycleOwner) { mode ->
+            when (mode) {
+                APP_BAR_DEFAULT_MODE -> {
+                    appBarToDefault()
+
+                    sharedMainActivityViewModel.unlockDrawer()
+
+                    appBarBackPressHandler.isEnabled = false
+                }
+
+                APP_BAR_SELECTION_MODE -> {
+                    appBarToMainSelection()
+
+                    sharedMainActivityViewModel.lockDrawer()
+
+                    appBarBackPressHandler.isEnabled = true
+                }
+            }
+        }
     }
 
     override fun onResume() {
@@ -221,93 +301,7 @@ class SavedSearchesFragment : Fragment(), Fab, DrawerItem, OnViewHolderClickList
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        announceChangesToActivity()
-    }
-
-    override fun getFabAction(): Runnable {
-        return Runnable {
-            listener?.onSavedSearchNewRequest()
-        }
-    }
-
-    private fun announceChangesToActivity() {
-        sharedMainActivityViewModel.setFragment(
-                FRAGMENT_TAG,
-                getString(R.string.searches),
-                null,
-                viewAdapter.getSelection().count)
-    }
-
-    private inner class ActionModeCallback : ActionMode.Callback {
-        override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-            actionMode = mode
-
-            val inflater = mode.menuInflater
-            inflater.inflate(R.menu.saved_searches_cab, menu)
-
-            /* Needed for after orientation change. */
-            mode.title = viewAdapter.getSelection().count.toString()
-
-            sharedMainActivityViewModel.lockDrawer()
-
-            return true
-        }
-
-        override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
-            if (viewAdapter.getSelection().count > 1) {
-                menu.findItem(R.id.saved_searches_cab_move_up).isVisible = false
-                menu.findItem(R.id.saved_searches_cab_move_down).isVisible = false
-
-            } else {
-                menu.findItem(R.id.saved_searches_cab_move_up).isVisible = true
-                menu.findItem(R.id.saved_searches_cab_move_up).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-
-                menu.findItem(R.id.saved_searches_cab_move_down).isVisible = true
-                menu.findItem(R.id.saved_searches_cab_move_down).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-            }
-
-            mode.title = viewAdapter.getSelection().count.toString()
-
-            return true
-        }
-
-        override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
-            val selection = viewAdapter.getSelection()
-
-            when (item.itemId) {
-                R.id.saved_searches_cab_move_up ->
-                    selection.getOnly()?.let { id ->
-                        listener?.onSavedSearchMoveUpRequest(id)
-                    }
-
-                R.id.saved_searches_cab_move_down ->
-                    selection.getOnly()?.let { id ->
-                        listener?.onSavedSearchMoveDownRequest(id)
-                    }
-
-                R.id.saved_searches_cab_delete -> {
-                    listener?.onSavedSearchDeleteRequest(selection.getIds())
-
-                    /* Close action mode. */
-                    mode.finish()
-                }
-
-                else -> return false /* Not handled. */
-            }
-
-            return true /* Handled. */
-        }
-
-        override fun onDestroyActionMode(mode: ActionMode) {
-            viewAdapter.getSelection().clear()
-            viewAdapter.notifyDataSetChanged() // FIXME
-
-            announceChangesToActivity()
-
-            sharedMainActivityViewModel.unlockDrawer()
-
-            actionMode = null
-        }
+        sharedMainActivityViewModel.setCurrentFragment(FRAGMENT_TAG)
     }
 
     interface Listener {

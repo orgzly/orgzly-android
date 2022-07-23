@@ -12,9 +12,21 @@
         android:id="@+id/activity_settings_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="com.orgzly.android.ui.settings.SettingsActivity"/>
+        tools:context="com.orgzly.android.ui.settings.SettingsActivity" />
 
-    <include layout="@layout/app_bar"/>
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        style="@style/BottomAppBar.FabAlignEnd.WithBack">
+
+        <TextView
+            android:id="@+id/bottomAppBarTitle"
+            style="@style/BottomAppBarTitle"
+            android:text="@string/settings" />
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+    <include layout="@layout/snackbar_anchor" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

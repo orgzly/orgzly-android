@@ -1,15 +1,15 @@
 package com.orgzly.android.ui.dialogs;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.text.Html;
-import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.orgzly.R;
 import com.orgzly.android.util.MiscUtils;
 
@@ -26,7 +26,7 @@ public class WhatsNewDialog {
         view.setText(MiscUtils.fromHtml(context.getString(R.string.whats_new_intro)));
         view.setMovementMethod(LinkMovementMethod.getInstance());
 
-        return new AlertDialog.Builder(context)
+        return new MaterialAlertDialogBuilder(context)
                 .setTitle(R.string.whats_new_title)
                 .setPositiveButton(R.string.ok, null)
                 .setView(layoutView)

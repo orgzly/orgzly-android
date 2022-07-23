@@ -1,6 +1,5 @@
 package com.orgzly.android.ui.main;
 
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,53 +8,36 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.view.ActionMode;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.App;
 import com.orgzly.android.AppIntent;
-import com.orgzly.android.BookFormat;
-import com.orgzly.android.BookName;
+import com.orgzly.android.SharingShortcutsManager;
 import com.orgzly.android.db.NotesClipboard;
-import com.orgzly.android.db.dao.NoteDao;
 import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.db.entity.Note;
-import com.orgzly.android.db.entity.Repo;
 import com.orgzly.android.db.entity.SavedSearch;
 import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.query.Condition;
-import com.orgzly.android.query.Query;
-import com.orgzly.android.query.user.DottedQueryBuilder;
 import com.orgzly.android.sync.AutoSync;
-import com.orgzly.android.sync.SyncService;
-import com.orgzly.android.ui.ActionModeListener;
-import com.orgzly.android.ui.BottomActionBar;
+import com.orgzly.android.ui.AppSnackbarUtils;
 import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.DisplayManager;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.ui.Place;
 import com.orgzly.android.ui.books.BooksFragment;
-import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog;
 import com.orgzly.android.ui.drawer.DrawerNavigationView;
 import com.orgzly.android.ui.note.NoteFragment;
 import com.orgzly.android.ui.notes.book.BookFragment;
@@ -66,21 +48,14 @@ import com.orgzly.android.ui.savedsearch.SavedSearchFragment;
 import com.orgzly.android.ui.savedsearches.SavedSearchesFragment;
 import com.orgzly.android.ui.settings.SettingsActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
-import com.orgzly.android.usecase.BookCreate;
 import com.orgzly.android.usecase.BookExport;
-import com.orgzly.android.usecase.BookExportToUri;
-import com.orgzly.android.usecase.BookForceLoad;
-import com.orgzly.android.usecase.BookForceSave;
-import com.orgzly.android.usecase.BookImportFromUri;
 import com.orgzly.android.usecase.BookImportGettingStarted;
-import com.orgzly.android.usecase.BookLinkUpdate;
 import com.orgzly.android.usecase.BookSparseTreeForNote;
 import com.orgzly.android.usecase.BookUpdatePreface;
 import com.orgzly.android.usecase.NoteCopy;
 import com.orgzly.android.usecase.NoteCut;
 import com.orgzly.android.usecase.NoteDelete;
 import com.orgzly.android.usecase.NoteDemote;
-import com.orgzly.android.usecase.NoteFindWithProperty;
 import com.orgzly.android.usecase.NoteMove;
 import com.orgzly.android.usecase.NotePaste;
 import com.orgzly.android.usecase.NotePromote;
@@ -90,42 +65,33 @@ import com.orgzly.android.usecase.NoteUpdateState;
 import com.orgzly.android.usecase.NoteUpdateStateToggle;
 import com.orgzly.android.usecase.SavedSearchCreate;
 import com.orgzly.android.usecase.SavedSearchDelete;
-import com.orgzly.android.usecase.SavedSearchExport;
 import com.orgzly.android.usecase.SavedSearchMoveDown;
 import com.orgzly.android.usecase.SavedSearchMoveUp;
 import com.orgzly.android.usecase.SavedSearchUpdate;
 import com.orgzly.android.usecase.UseCase;
 import com.orgzly.android.usecase.UseCaseResult;
-import com.orgzly.android.usecase.UseCaseRunner;
-import com.orgzly.android.util.AppPermissions;
+import com.orgzly.android.usecase.UseCaseWorker;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.org.datetime.OrgDateTime;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 import java.util.Set;
 
 public class MainActivity extends CommonActivity
         implements
-        ActionModeListener,
         SavedSearchFragment.Listener,
         SavedSearchesFragment.Listener,
         BooksFragment.Listener,
         BookFragment.Listener,
         NoteFragment.Listener,
         SyncFragment.Listener,
-        SimpleOneLinerDialog.Listener,
         BookPrefaceFragment.Listener {
 
     public static final String TAG = MainActivity.class.getName();
-
-    private static final int DIALOG_NEW_BOOK = 1;
-    private static final int DIALOG_IMPORT_BOOK = 2;
 
     // TODO: Stop using SyncFragment, use ViewModel
     public SyncFragment mSyncFragment;
@@ -136,7 +102,6 @@ public class MainActivity extends CommonActivity
 
     private LocalBroadcastManager broadcastManager;
 
-    private ActionMode mActionMode;
     private boolean mPromoteDemoteOrMoveRequested = false;
 
     private Runnable runnableOnResumeFragments;
@@ -169,8 +134,6 @@ public class MainActivity extends CommonActivity
 
         viewModel = new ViewModelProvider(this, factory).get(MainActivityViewModel.class);
 
-        setupActionBar();
-
         broadcastManager = LocalBroadcastManager.getInstance(this);
 
         setupDrawer();
@@ -185,12 +148,6 @@ public class MainActivity extends CommonActivity
 
         activityForResult = new ActivityForResult(this) {
             @Override
-            public void onBookImport(@NotNull Uri uri) {
-                runnableOnResumeFragments = () ->
-                        importChosenBook(uri);
-            }
-
-            @Override
             public void onSearchQueriesImport(@NotNull Uri uri) {
                 viewModel.importSavedSearches(uri);
             }
@@ -200,6 +157,8 @@ public class MainActivity extends CommonActivity
                 viewModel.exportSavedSearches(uri);
             }
         };
+
+        new SharingShortcutsManager().replaceDynamicShortcuts(this);
     }
 
     @NotNull
@@ -327,116 +286,69 @@ public class MainActivity extends CommonActivity
             }
         });
 
-        sharedMainActivityViewModel.getFragmentState().observe(this, state -> {
+        sharedMainActivityViewModel.getOpenDrawerRequest().observeSingle(this, open -> {
+            if (open) {
+                mDrawerLayout.openDrawer(GravityCompat.START);
+            } else {
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+
+        sharedMainActivityViewModel.getCurrentFragmentState().observe(this, state -> {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed fragment state: " + state);
 
             if (state != null) {
-                getSupportActionBar().setTitle(state.getTitle());
-
-                // Clean up whitespace for multi-line query
-                CharSequence subTitle = state.getSubTitle();
-                if (subTitle != null) {
-                    subTitle = subTitle.toString().replaceAll("\\s{2,}", " ");
-                }
-
-                getSupportActionBar().setSubtitle(subTitle);
-
                 drawerNavigationView.updateActiveFragment(state.getTag());
-
-                /* Update floating action button. */
-                MainFab.updateFab(this, state.getTag(), state.getSelectionCount());
             }
         });
 
-        viewModel.getOpenNoteWithPropertyRequestEvent().observeSingle(this, pair -> {
-            if (pair != null) {
-                UseCase action = pair.getFirst();
-                UseCaseResult result = pair.getSecond();
+        viewModel.getNavigationActions().observeSingle(this, action -> {
+            if (action instanceof MainNavigationAction.OpenBook) {
+                MainNavigationAction.OpenBook openBookAction =
+                        (MainNavigationAction.OpenBook) action;
 
-                if (action instanceof NoteFindWithProperty) {
-                    NoteFindWithProperty thisAction = (NoteFindWithProperty) action;
+                DisplayManager.displayBook(
+                        getSupportFragmentManager(),
+                        openBookAction.getBookId(),
+                        0);
 
-                    if (result.getUserData() != null) {
-                        NoteDao.NoteIdBookId note = (NoteDao.NoteIdBookId) result.getUserData();
-                        DisplayManager.displayExistingNote(
-                                getSupportFragmentManager(), note.getBookId(), note.getNoteId());
+            } else if (action instanceof MainNavigationAction.OpenBookFocusNote) {
+                MainNavigationAction.OpenBookFocusNote openBookFocusNoteAction =
+                        (MainNavigationAction.OpenBookFocusNote) action;
 
-                    } else {
-                        showSnackbar(getString(
-                                R.string.no_such_link_target,
-                                thisAction.getName(),
-                                thisAction.getValue()));
-                    }
-                }
-            }
-        });
+                DisplayManager.displayBook(
+                        getSupportFragmentManager(),
+                        openBookFocusNoteAction.getBookId(),
+                        openBookFocusNoteAction.getNoteId());
 
-        viewModel.getOpenFileLinkRequestEvent().observeSingle(this, result -> {
-            if (result != null && result.getUserData() != null) {
-                Object userData = result.getUserData();
+            } else if (action instanceof MainNavigationAction.OpenNote) {
+                MainNavigationAction.OpenNote openNoteAction =
+                        (MainNavigationAction.OpenNote) action;
 
-                if (userData instanceof Book) {
-                    Book book = (Book) userData;
-                    Intent intent = new Intent(AppIntent.ACTION_OPEN_BOOK);
-                    intent.putExtra(AppIntent.EXTRA_BOOK_ID, book.getId());
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+                DisplayManager.displayExistingNote(
+                        getSupportFragmentManager(),
+                        openNoteAction.getBookId(),
+                        openNoteAction.getNoteId());
 
-                    if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "sending intent", intent);
+            } else if (action instanceof MainNavigationAction.OpenFile) {
+                MainNavigationAction.OpenFile openFileAction =
+                        (MainNavigationAction.OpenFile) action;
 
-                } else if (userData instanceof File) {
-                    File file = (File) userData;
-                    openFileIfExists(file);
-                }
-            }
-        });
-
-        viewModel.getOpenNoteRequestEvent().observeSingle(this, note ->
-                MainActivity.openSpecificNote(note.getPosition().getBookId(), note.getId()));
-
-        viewModel.getSetBookLinkRequestEvent().observeSingle(this, result -> {
-            Book book = result.getBook();
-            List<Repo> links = result.getLinks();
-            CharSequence[] urls = result.getUrls();
-            int checked = result.getSelected();
-
-            if (links.isEmpty()) {
-                showSnackbarWithReposLink(getString(R.string.no_repos));
-
-            } else {
-                ArrayAdapter<Repo> adapter = new ArrayAdapter<>(
-                        this, R.layout.item_repo, R.id.item_repo_url);
-                adapter.addAll(links);
-
-
-
-                dialog = new AlertDialog.Builder(this)
-                        .setTitle(R.string.book_link)
-                        .setSingleChoiceItems(
-                                urls, checked, (d, which) -> {
-                                    mSyncFragment.run(new BookLinkUpdate(book.getId(), links.get(which)));
-                                    dialog.dismiss();
-                                    dialog = null;
-                                })
-
-                        .setNeutralButton(R.string.remove_notebook_link, (dialog, which) -> {
-                            mSyncFragment.run(new BookLinkUpdate(book.getId()));
-                        })
-                        .setNegativeButton(R.string.cancel, null)
-                        .show();
+                openFileIfExists(openFileAction.getFile());
             }
         });
 
         viewModel.getSavedSearchedExportEvent().observeSingle(this, count -> {
-            showSnackbar(getResources().getQuantityString(R.plurals.exported_searches, count, count));
+            AppSnackbarUtils.showSnackbar(this, getResources().getQuantityString(R.plurals.exported_searches, count, count));
         });
 
         viewModel.getSavedSearchedImportEvent().observeSingle(this, count -> {
-            showSnackbar(getResources().getQuantityString(R.plurals.imported_searches, count, count));
+            AppSnackbarUtils.showSnackbar(this, getResources().getQuantityString(R.plurals.imported_searches, count, count));
 
         });
         viewModel.getErrorEvent().observeSingle(this, error -> {
             if (error != null) {
-                showSnackbar(error.getLocalizedMessage());
+                AppSnackbarUtils.showSnackbar(this, error.getLocalizedMessage());
             }
         });
     }
@@ -520,7 +432,7 @@ public class MainActivity extends CommonActivity
         if (isNewVersion) {
             /* Import Getting Started notebook. */
             if (!AppPreferences.isGettingStartedNotebookLoaded(this)) {
-                UseCaseRunner.enqueue(new BookImportGettingStarted());
+                UseCaseWorker.schedule(this, new BookImportGettingStarted());
             }
 
             /* Open drawer for the first time user. */
@@ -579,11 +491,23 @@ public class MainActivity extends CommonActivity
     public void onBackPressed() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
-        /* Close drawer if opened. */
+        // Close drawer if opened
         if (mDrawerLayout != null) {
             if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
                 mDrawerLayout.closeDrawer(GravityCompat.START);
                 return;
+            }
+        }
+
+        // Collapse search view if expanded
+        BottomAppBar bottomAppBar = findViewById(R.id.bottomAppBar);
+        if (bottomAppBar != null) {
+            MenuItem menuItem = bottomAppBar.getMenu().findItem(R.id.search_view);
+            if (menuItem != null) {
+                if (menuItem.isActionViewExpanded()) {
+                    menuItem.collapseActionView();
+                    return;
+                }
             }
         }
 
@@ -615,104 +539,6 @@ public class MainActivity extends CommonActivity
         bm.registerReceiver(receiver, new IntentFilter(AppIntent.ACTION_OPEN_SETTINGS));
     }
 
-    /**
-     * Callback for options menu.
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, menu);
-
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_actions, menu);
-
-        setupSearchView(menu);
-
-        return true;
-    }
-
-    /**
-     * SearchView setup and query text listeners.
-     * TODO: http://developer.android.com/training/search/setup.html
-     */
-    private void setupSearchView(Menu menu) {
-        final MenuItem searchItem = menu.findItem(R.id.activity_action_search);
-
-        final SearchView searchView = (SearchView) searchItem.getActionView();
-
-        searchView.setQueryHint(getString(R.string.search_hint));
-
-        /* When user starts the search, fill the search box with text depending on current fragment. */
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                /* Make search as wide as possible. */
-                ViewGroup.LayoutParams layoutParams = searchView.getLayoutParams();
-                layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-
-                /* For Query fragment, fill the box with full query. */
-                String q = DisplayManager.getDisplayedQuery(getSupportFragmentManager());
-                if (q != null) {
-                    searchView.setQuery(q + " ", false);
-
-                } else {
-                    /* If searching from book, add book name to query. */
-                    Book book = getActiveFragmentBook();
-                    if (book != null) {
-                        DottedQueryBuilder builder = new DottedQueryBuilder();
-                        String query = builder.build(new Query(new Condition.InBook(book.getName())));
-                        searchView.setQuery(query + " ", false);
-                    }
-                }
-            }
-        });
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextChange(String str) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String str) {
-                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, str);
-
-                /* Close search. */
-                searchItem.collapseActionView();
-
-                DisplayManager.displayQuery(getSupportFragmentManager(), str.trim());
-
-                return true;
-            }
-        });
-    }
-
-    /**
-     * Callback for options menu.
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-        if (mDrawerToggle != null && mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        switch (item.getItemId()) {
-            case R.id.activity_action_sync:
-                SyncService.start(this, new Intent(this, SyncService.class));
-                return true;
-
-            case R.id.activity_action_settings:
-                openSettings();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -720,35 +546,6 @@ public class MainActivity extends CommonActivity
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         activityForResult.onResult(requestCode, resultCode, data);
-    }
-
-    /**
-     * Display a dialog for user to enter notebook's name.
-     */
-    private void importChosenBook(Uri uri) {
-        String guessedBookName = guessBookNameFromUri(uri);
-
-        Bundle bundle = new Bundle();
-        bundle.putString("uri", uri.toString());
-
-        SimpleOneLinerDialog
-                .getInstance(DIALOG_IMPORT_BOOK, R.string.import_as, R.string.name, R.string.import_, R.string.cancel, guessedBookName, bundle)
-                .show(getSupportFragmentManager(), SimpleOneLinerDialog.FRAGMENT_TAG);
-    }
-
-    /**
-     * @return Guessed book name or {@code null} if it couldn't be guessed
-     */
-    private String guessBookNameFromUri(Uri uri) {
-        String fileName = BookName.getFileName(this, uri);
-
-        if (fileName != null && BookName.isSupportedFormatFileName(fileName)) {
-            BookName bookName = BookName.fromFileName(fileName);
-            return bookName.getName();
-
-        } else {
-            return null;
-        }
     }
 
     @Override
@@ -759,30 +556,24 @@ public class MainActivity extends CommonActivity
     /* Open note fragment to create a new note. */
     @Override
     public void onNoteNewRequest(NotePlace target) {
-        finishActionMode();
-
         DisplayManager.displayNewNote(getSupportFragmentManager(), target);
     }
 
     @Override
     public void onNoteCreated(Note note) {
-        finishActionMode();
         popBackStackAndCloseKeyboard();
 
         // Display Snackbar with an action (create new note below just created one)
-        View view = findViewById(R.id.main_content);
-        if (view != null) {
-            showSnackbar(Snackbar
-                    .make(view, R.string.message_note_created, Snackbar.LENGTH_LONG)
-                    .setAction(R.string.new_below, v -> {
-                        NotePlace notePlace = new NotePlace(
-                                note.getPosition().getBookId(),
-                                note.getId(),
-                                Place.BELOW);
+        AppSnackbarUtils.showSnackbar(this, R.string.message_note_created, R.string.new_below, () -> {
+            NotePlace notePlace = new NotePlace(
+                    note.getPosition().getBookId(),
+                    note.getId(),
+                    Place.BELOW);
 
-                        DisplayManager.displayNewNote(getSupportFragmentManager(), notePlace);
-                    }));
-        }
+            DisplayManager.displayNewNote(getSupportFragmentManager(), notePlace);
+
+            return null;
+        });
     }
 
     @Override
@@ -819,8 +610,6 @@ public class MainActivity extends CommonActivity
     public void onBookPrefaceEditRequest(Book book) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
-        finishActionMode();
-
         DisplayManager.displayEditor(getSupportFragmentManager(), book);
     }
 
@@ -849,48 +638,6 @@ public class MainActivity extends CommonActivity
         mSyncFragment.run(new NotePaste(bookId, noteId, place));
     }
 
-    @Override
-    public void onBookLinkSetRequest(final long bookId) {
-        viewModel.setBookLink(bookId);
-    }
-
-    @Override
-    public void onForceSaveRequest(long bookId) {
-        dialog = new AlertDialog.Builder(this)
-                .setTitle(R.string.books_context_menu_item_force_save)
-                .setMessage(R.string.overwrite_remote_notebook_question)
-                .setPositiveButton(R.string.overwrite, (dialog, which) ->
-                        mSyncFragment.run(new BookForceSave(bookId)))
-                .setNegativeButton(R.string.cancel, null)
-                .show();
-    }
-
-    @Override
-    public void onForceLoadRequest(long bookId) {
-        dialog = new AlertDialog.Builder(this)
-                .setTitle(R.string.books_context_menu_item_force_load)
-                .setMessage(R.string.overwrite_local_notebook_question)
-                .setPositiveButton(R.string.overwrite, (dialog, which) ->
-                        mSyncFragment.run(new BookForceLoad(bookId)))
-                .setNegativeButton(R.string.cancel, null)
-                .show();
-    }
-
-    @Override
-    public void onBookImportRequest() {
-        activityForResult.startBookImportFileChooser();
-    }
-
-    /**
-     * Prompt user for book name and then create it.
-     */
-    @Override
-    public void onBookCreateRequest() {
-        SimpleOneLinerDialog
-                .getInstance(DIALOG_NEW_BOOK, R.string.new_notebook, R.string.name, R.string.create, R.string.cancel, null, null)
-                .show(getSupportFragmentManager(), SimpleOneLinerDialog.FRAGMENT_TAG);
-    }
-
     /**
      * Sync finished.
      *
@@ -901,23 +648,13 @@ public class MainActivity extends CommonActivity
     @Override
     public void onSyncFinished(String msg) {
         if (msg != null) {
-            showSnackbarWithReposLink(getString(R.string.sync_with_argument, msg));
-        }
-    }
-
-    /**
-     * Display snackbar and include link to repositories.
-     */
-    private void showSnackbarWithReposLink(String msg) {
-        View view = findViewById(R.id.main_content);
-
-        if (view != null) {
-            showSnackbar(Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
-                    .setAction(R.string.repositories, v -> {
+            AppSnackbarUtils.showSnackbar(
+                    this, getString(R.string.sync_with_argument, msg), R.string.repositories, () -> {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setClass(MainActivity.this, ReposActivity.class);
+                        intent.setClass(this, ReposActivity.class);
                         startActivity(intent);
-                    }));
+                        return null;
+                    });
         }
     }
 
@@ -979,100 +716,11 @@ public class MainActivity extends CommonActivity
         popBackStackAndCloseKeyboard();
     }
 
-    // TODO: Implement handlers when dialog is created
-    @Override
-    public void onSimpleOneLinerDialogValue(int id, String value, Bundle userData) {
-        switch (id) {
-            case DIALOG_NEW_BOOK:
-                mSyncFragment.run(new BookCreate(value));
-                break;
-
-            case DIALOG_IMPORT_BOOK:
-                Uri uri = Uri.parse(userData.getString("uri"));
-                /* We are assuming it's an Org file. */
-                mSyncFragment.run(new BookImportFromUri(value, BookFormat.ORG, uri));
-                break;
-        }
-    }
-
-    private Book getActiveFragmentBook() {
-        Fragment f = getSupportFragmentManager().findFragmentByTag(BookFragment.FRAGMENT_TAG);
-
-        if (f != null && f.isVisible()) {
-            BookFragment bookFragment = (BookFragment) f;
-            return bookFragment.getCurrentBook();
-        }
-
-        return null;
-    }
-
-    /*
-     * Action mode
-     */
-
-    @Override
-    public void updateActionModeForSelection(int selectedCount, Fragment fragment) {
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, selectedCount, fragment);
-
-        if (mActionMode != null) { /* Action menu is already activated. */
-            /* Finish action mode if there are no more selected items. */
-            if (selectedCount == 0) {
-                mActionMode.finish();
-            } else {
-                mActionMode.invalidate();
-            }
-
-        } else { /* No action menu activated - started it. */
-            if (selectedCount > 0) {
-                /* Start new action mode. */
-                mActionMode = startSupportActionMode((ActionMode.Callback) fragment);
-            }
-        }
-
-        Toolbar bottomToolBar = findViewById(R.id.bottom_action_bar);
-
-        if (bottomToolBar != null) {
-            if (fragment instanceof BottomActionBar.Callback) {
-                BottomActionBar.Callback callback = (BottomActionBar.Callback) fragment;
-
-                if (selectedCount == 0) {
-                    BottomActionBar.hideBottomBar(bottomToolBar);
-                } else {
-                    BottomActionBar.showBottomBar(bottomToolBar, callback);
-                }
-
-            } else {
-                BottomActionBar.hideBottomBar(bottomToolBar);
-            }
-        }
-
-    }
-
-    @Override
-    public ActionMode getActionMode() {
-        return mActionMode;
-    }
-
-    @Override
-    public void actionModeDestroyed() {
-        if (mActionMode != null) {
-            if ("M".equals(mActionMode.getTag()) && mPromoteDemoteOrMoveRequested) {
-                // TODO: Remove this from here if possible
-                autoSync.trigger(AutoSync.Type.DATA_MODIFIED);
-            }
-        }
-        mPromoteDemoteOrMoveRequested = false;
-        mActionMode = null;
-
-        BottomActionBar.hideBottomBar(findViewById(R.id.bottom_action_bar));
-    }
-
-    private void finishActionMode() {
-        if (mActionMode != null) {
-            mActionMode.finish();
-        }
-    }
+    // TODO: Sync when action mode is destroyed
+    // autoSync.trigger(AutoSync.Type.DATA_MODIFIED);
+    // TODO: When action mode is destroyed
+//    mPromoteDemoteOrMoveRequested = false;
+//        BottomActionBar.hideBottomBar(findViewById(R.id.bottom_action_bar));
 
     @Override
     public void onSavedSearchNewRequest() {
@@ -1118,14 +766,7 @@ public class MainActivity extends CommonActivity
 
     @Override
     public void onSavedSearchesExportRequest(int title, @NonNull String message) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            activityForResult.startSavedSearchesExportFileChooser();
-
-        } else {
-            runWithPermission(
-                    AppPermissions.Usage.SAVED_SEARCHES_EXPORT_IMPORT,
-                    () -> mSyncFragment.run(new SavedSearchExport()));
-        }
+        activityForResult.startSavedSearchesExportFileChooser();
     }
 
     @Override
@@ -1161,7 +802,7 @@ public class MainActivity extends CommonActivity
                     message = getResources().getQuantityString(R.plurals.notes_cut, count, count);
                 }
 
-                showSnackbar(message);
+                AppSnackbarUtils.showSnackbar(this, message);
             }
 
         } else if (action instanceof NoteCopy) {
@@ -1172,7 +813,7 @@ public class MainActivity extends CommonActivity
 
                 if (count > 0) {
                     String message = getResources().getQuantityString(R.plurals.notes_copied, count, count);
-                    showSnackbar(message);
+                    AppSnackbarUtils.showSnackbar(this, message);
                 }
             }
 
@@ -1186,7 +827,7 @@ public class MainActivity extends CommonActivity
                 message = getResources().getString(R.string.no_notes_pasted);
             }
 
-            showSnackbar(message);
+            AppSnackbarUtils.showSnackbar(this, message);
         }
     }
 
@@ -1196,22 +837,20 @@ public class MainActivity extends CommonActivity
     @Override
     public void onError(UseCase action, Throwable throwable) {
         if (action instanceof BookExport) {
-            showSnackbar(getString(
+            AppSnackbarUtils.showSnackbar(this, getString(
                     R.string.failed_exporting_book, throwable.getLocalizedMessage()));
 
         } else {
             if (throwable.getCause() != null) {
-                showSnackbar(throwable.getCause().getLocalizedMessage());
+                AppSnackbarUtils.showSnackbar(this, throwable.getCause().getLocalizedMessage());
             } else {
-                showSnackbar(throwable.getLocalizedMessage());
+                AppSnackbarUtils.showSnackbar(this, throwable.getLocalizedMessage());
             }
         }
     }
 
     @Override
     public void onNoteOpen(long noteId) {
-        finishActionMode();
-
         viewModel.openNote(noteId);
     }
 

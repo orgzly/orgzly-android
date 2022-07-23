@@ -26,6 +26,9 @@
     <!-- For sync -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
+    <!-- For reminders -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+
     <application
         android:name=".android.App"
         android:allowBackup="true"
@@ -38,7 +41,7 @@
         android:fullBackupContent="@xml/backup_config"
         android:requestLegacyExternalStorage="true">
 
-        <activity android:name=".android.ui.LauncherActivity">
+        <activity android:name=".android.ui.LauncherActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -57,6 +60,7 @@
 
         <activity
             android:name=".android.ui.share.ShareActivity"
+            android:exported="true"
             android:windowSoftInputMode="stateUnchanged"
             android:excludeFromRecents="true"
             android:taskAffinity="">
@@ -77,7 +81,7 @@
 
             <meta-data
                 android:name="android.service.chooser.chooser_target_service"
-                android:value=".android.ChooserShareTargetService" />
+                android:value="androidx.sharetarget.ChooserTargetServiceCompat" />
         </activity>
 
         <activity
@@ -97,6 +101,7 @@
 
         <activity
             android:name="com.dropbox.core.android.AuthActivity"
+            android:exported="true"
             android:configChanges="orientation|keyboard"
             android:launchMode="singleTask">
             <intent-filter>
@@ -132,7 +137,8 @@
         <activity
             android:name=".android.ui.BookChooserActivity"
             android:label="@string/book_shortcut_label"
-            android:icon="@mipmap/cic_shortcut_notebook">
+            android:icon="@mipmap/cic_shortcut_notebook"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
@@ -143,7 +149,8 @@
         <activity
             android:name=".android.ui.TemplateChooserActivity"
             android:label="@string/new_note_shortcut_label"
-            android:icon="@mipmap/cic_shortcut_new_note">
+            android:icon="@mipmap/cic_shortcut_new_note"
+            android:exported="false">
 
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
@@ -170,27 +177,6 @@
             android:name=".android.sync.SyncService"
             android:exported="true" />
 
-        <service
-            android:name=".android.NotificationActionService"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
-
-        <service
-            android:name=".android.reminders.ReminderService"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
-
-        <service
-            android:name=".android.usecase.UseCaseService"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
-
-        <service
-            android:name=".android.ChooserShareTargetService"
-            android:label="@string/share_target_service"
-            android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE">
-            <intent-filter>
-                <action android:name="android.service.chooser.ChooserTargetService" />
-            </intent-filter>
-        </service>
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -203,7 +189,8 @@
 
         <receiver
             android:name=".android.widgets.ListWidgetProvider"
-            android:label="@string/list_widget_name">
+            android:label="@string/list_widget_name"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -214,7 +201,13 @@
                 android:resource="@xml/list_widget_info" />
         </receiver>
 
-        <receiver android:name=".android.BootCompletedReceiver">
+        <receiver android:name=".android.BootCompletedReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".android.reminders.RemindersBroadcastReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
@@ -224,9 +217,9 @@
 
         <receiver android:name=".android.NewNoteBroadcastReceiver"/>
 
-        <receiver android:name=".android.TimeChangeBroadcastReceiver">
+        <receiver android:name=".android.TimeChangeBroadcastReceiver" android:exported="false">
             <intent-filter>
-                <!--<action android:name="android.intent.action.TIME_SET"/>-->
+                <action android:name="android.intent.action.TIME_SET"/>
                 <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
             </intent-filter>
         </receiver>

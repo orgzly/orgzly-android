@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.os.Environment
 import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
 import android.text.Spannable
@@ -42,11 +41,11 @@ object ImageLoader {
                 // Storage permission has been granted
                 && AppPermissions.isGranted(context, AppPermissions.Usage.EXTERNAL_FILES_ACCESS)) {
             // Load the associated image for each FileLinkSpan
-            SpanUtils.forEachSpan(textWithMarkup.text as Spannable, FileLinkSpan::class.java) { span ->
+            SpanUtils.forEachSpan(textWithMarkup.text as Spannable, FileLinkSpan::class.java) { span, _, _ ->
                 loadImage(textWithMarkup, span, span.path)
             }
             // Load the associated image for each AttachmentLinkSpan
-            SpanUtils.forEachSpan(textWithMarkup.text as Spannable, AttachmentLinkSpan::class.java) { span ->
+            SpanUtils.forEachSpan(textWithMarkup.text as Spannable, AttachmentLinkSpan::class.java) { span, _, _ ->
                 loadImage(textWithMarkup, span, span.getPrefixedPath())
             }
         }

@@ -1,10 +1,13 @@
 package com.orgzly.android.ui;
 
+import android.util.Log;
+
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import android.util.Log;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -12,15 +15,15 @@ import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.query.Query;
 import com.orgzly.android.query.QueryParser;
 import com.orgzly.android.query.user.InternalQueryParser;
-import com.orgzly.android.ui.savedsearch.SavedSearchFragment;
+import com.orgzly.android.ui.books.BooksFragment;
 import com.orgzly.android.ui.main.MainActivity;
+import com.orgzly.android.ui.note.NoteFragment;
 import com.orgzly.android.ui.notes.book.BookFragment;
 import com.orgzly.android.ui.notes.book.BookPrefaceFragment;
-import com.orgzly.android.ui.books.BooksFragment;
 import com.orgzly.android.ui.notes.query.agenda.AgendaFragment;
 import com.orgzly.android.ui.notes.query.search.SearchFragment;
+import com.orgzly.android.ui.savedsearch.SavedSearchFragment;
 import com.orgzly.android.ui.savedsearches.SavedSearchesFragment;
-import com.orgzly.android.ui.note.NoteFragment;
 import com.orgzly.android.util.LogUtils;
 
 /**
@@ -29,40 +32,50 @@ import com.orgzly.android.util.LogUtils;
 public class DisplayManager {
     private static final String TAG = DisplayManager.class.getName();
 
-    // private static final int FRAGMENT_TRANSITION = FragmentTransaction.TRANSIT_FRAGMENT_OPEN;
-    // private static final int FRAGMENT_TRANSITION = FragmentTransaction.TRANSIT_NONE;
-    // private static final int FRAGMENT_TRANSITION = FragmentTransaction.TRANSIT_FRAGMENT_FADE;
+    private static void replaceFragment(
+            FragmentManager fragmentManager,
+            @IdRes int containerViewId,
+            @NonNull Fragment fragment,
+            @Nullable String tag,
+            boolean addToBackStack) {
 
+        FragmentTransaction t = fragmentManager
+                .beginTransaction()
+                // .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
+                .replace(containerViewId, fragment, tag);
+
+        if (addToBackStack) {
+            t.addToBackStack(null);
+        }
+
+        t.commit();
+    }
     /**
      * Displays fragment for a new saved search.
      */
     public static void onSavedSearchNewRequest(FragmentManager fragmentManager) {
-        /* Create fragment. */
         Fragment fragment = SavedSearchFragment.getInstance();
 
-        /* Add fragment. */
-        fragmentManager
-                .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
-                .addToBackStack(null)
-                .replace(R.id.single_pane_container, fragment, SavedSearchFragment.FRAGMENT_TAG)
-                .commit();
+        replaceFragment(
+                fragmentManager,
+                R.id.single_pane_container,
+                fragment,
+                SavedSearchFragment.FRAGMENT_TAG,
+                true);
     }
 
     /**
      * Displays fragment for existing saved search.
      */
     public static void onSavedSearchEditRequest(FragmentManager fragmentManager, long id) {
-        /* Create fragment. */
         Fragment fragment = SavedSearchFragment.getInstance(id);
 
-        /* Add fragment. */
-        fragmentManager
-                .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
-                .addToBackStack(null)
-                .replace(R.id.single_pane_container, fragment, SavedSearchFragment.FRAGMENT_TAG)
-                .commit();
+        replaceFragment(
+                fragmentManager,
+                R.id.single_pane_container,
+                fragment,
+                SavedSearchFragment.FRAGMENT_TAG,
+                true);
     }
 
     /**
@@ -70,7 +83,6 @@ public class DisplayManager {
      * Removes all fragments except for the last one, displaying books.
      */
     public static void clear(FragmentManager fragmentManager) {
-        /* Clear the back stack. */
         fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
@@ -81,14 +93,12 @@ public class DisplayManager {
 
         Fragment fragment = SavedSearchesFragment.getInstance();
 
-        FragmentTransaction t = fragmentManager
-                .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
-                .addToBackStack(null)
-                .replace(R.id.single_pane_container, fragment, SavedSearchesFragment.getFRAGMENT_TAG());
-
-
-        t.commit();
+        replaceFragment(
+                fragmentManager,
+                R.id.single_pane_container,
+                fragment,
+                SavedSearchesFragment.getFRAGMENT_TAG(),
+                true);
     }
 
     /**
@@ -102,16 +112,12 @@ public class DisplayManager {
 
         Fragment fragment = BooksFragment.Companion.getInstance();
 
-        FragmentTransaction t = fragmentManager
-                .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
-                .replace(R.id.single_pane_container, fragment, BooksFragment.Companion.getFRAGMENT_TAG());
-
-        if (addToBackStack) {
-            t.addToBackStack(null);
-        }
-
-        t.commit();
+        replaceFragment(
+                fragmentManager,
+                R.id.single_pane_container,
+                fragment,
+                BooksFragment.Companion.getFRAGMENT_TAG(),
+                addToBackStack);
     }
 
     /**
@@ -121,16 +127,15 @@ public class DisplayManager {
         BookFragment existingFragment = getFragmentDisplayingBook(fragmentManager, bookId);
 
         if (existingFragment == null) {
-            /* Create fragment. */
             Fragment fragment = BookFragment.getInstance(bookId, noteId);
 
-            /* Add fragment. */
-            fragmentManager
-                    .beginTransaction()
-                    .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
-                    .addToBackStack(null)
-                    .replace(R.id.single_pane_container, fragment, BookFragment.FRAGMENT_TAG)
-                    .commit();
+            replaceFragment(
+                    fragmentManager,
+                    R.id.single_pane_container,
+                    fragment,
+                    BookFragment.FRAGMENT_TAG,
+                    true);
+
         } else {
             if (noteId > 0) {
                 Log.w(TAG, "Fragment displaying book " + bookId + " already exists, jumping to note");
@@ -160,12 +165,12 @@ public class DisplayManager {
     }
 
     private static void displayNoteFragment(FragmentManager fragmentManager, Fragment fragment) {
-        fragmentManager
-                .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
-                .addToBackStack(null)
-                .replace(R.id.single_pane_container, fragment, NoteFragment.FRAGMENT_TAG)
-                .commit();
+        replaceFragment(
+                fragmentManager,
+                R.id.single_pane_container,
+                fragment,
+                NoteFragment.FRAGMENT_TAG,
+                true);
     }
 
     public static void displayQuery(FragmentManager fragmentManager, @NonNull String queryString) {
@@ -192,26 +197,23 @@ public class DisplayManager {
             tag = SearchFragment.FRAGMENT_TAG;
         }
 
-        // Add fragment.
-        fragmentManager
-                .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
-                .addToBackStack(null)
-                .replace(R.id.single_pane_container, fragment, tag)
-                .commit();
+        replaceFragment(
+                fragmentManager,
+                R.id.single_pane_container,
+                fragment,
+                tag,
+                true);
     }
 
     public static void displayEditor(FragmentManager fragmentManager, Book book) {
-        /* Create fragment. */
         Fragment fragment = BookPrefaceFragment.Companion.getInstance(book.getId(), book.getPreface());
 
-        /* Add fragment. */
-        fragmentManager
-                .beginTransaction()
-                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.fragment_enter, R.anim.fragment_exit)
-                .addToBackStack(null)
-                .replace(R.id.single_pane_container, fragment, BookPrefaceFragment.Companion.getFRAGMENT_TAG())
-                .commit();
+        replaceFragment(
+                fragmentManager,
+                R.id.single_pane_container,
+                fragment,
+                BookPrefaceFragment.Companion.getFRAGMENT_TAG(),
+                true);
     }
 
     public static String getDisplayedQuery(FragmentManager fragmentManager) {

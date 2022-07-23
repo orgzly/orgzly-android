@@ -1,29 +1,29 @@
 package com.orgzly.android.ui.settings
 
-import android.app.AlertDialog
 import android.os.Bundle
-import android.view.MenuItem
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.settings.SettingsFragment.Listener
-import com.orgzly.android.usecase.BookImportGettingStarted
-import com.orgzly.android.usecase.DatabaseClear
-import com.orgzly.android.usecase.UseCase
-import com.orgzly.android.usecase.UseCaseRunner
+import com.orgzly.android.ui.showSnackbar
+import com.orgzly.android.usecase.*
+import com.orgzly.databinding.ActivitySettingsBinding
 
 
 class SettingsActivity : CommonActivity(), Listener {
+    private lateinit var binding: ActivitySettingsBinding
+
     override fun onWhatsNewDisplayRequest() {
         displayWhatsNewDialog()
     }
 
     override fun onNotesUpdateRequest(action: UseCase) {
-        alertDialog = AlertDialog.Builder(this)
+        alertDialog = MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.notes_update_needed_dialog_title)
                 .setMessage(R.string.notes_update_needed_dialog_message)
                 .setPositiveButton(R.string.yes) { _, _ ->
-                    UseCaseRunner.enqueue(action)
+                    UseCaseWorker.schedule(this, action)
                 }
                 .setNegativeButton(R.string.not_now, null)
                 .show()
@@ -33,7 +33,7 @@ class SettingsActivity : CommonActivity(), Listener {
      * Wipe database, after prompting user for confirmation.
      */
     override fun onDatabaseClearRequest() {
-        alertDialog = AlertDialog.Builder(this)
+        alertDialog = MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.clear_database)
                 .setMessage(R.string.clear_database_dialog_message)
                 .setPositiveButton(R.string.ok) { _, _ ->
@@ -50,7 +50,7 @@ class SettingsActivity : CommonActivity(), Listener {
     }
 
     override fun onGettingStartedNotebookReloadRequest() {
-        UseCaseRunner.enqueue(BookImportGettingStarted())
+        UseCaseWorker.schedule(this, BookImportGettingStarted())
     }
 
     override fun onPreferenceScreen(resource: String) {
@@ -65,7 +65,7 @@ class SettingsActivity : CommonActivity(), Listener {
     }
 
     override fun onTitleChange(title: CharSequence?) {
-        supportActionBar?.title = title ?: getText(R.string.settings)
+        binding.bottomAppBarTitle.text = title ?: getText(R.string.settings)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,9 +73,9 @@ class SettingsActivity : CommonActivity(), Listener {
 
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_settings)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
 
-        setupActionBar(R.string.settings)
+        setContentView(binding.root)
 
         if (savedInstanceState == null) {
             val fragment = SettingsFragment.getInstance()
@@ -85,14 +85,11 @@ class SettingsActivity : CommonActivity(), Listener {
                     .add(R.id.activity_settings_container, fragment)
                     .commit()
         }
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == android.R.id.home) {
-            onBackPressed()
-            true
-        } else {
-            super.onOptionsItemSelected(item)
+        binding.bottomAppBar.run {
+            setNavigationOnClickListener {
+                onBackPressed()
+            }
         }
     }
 

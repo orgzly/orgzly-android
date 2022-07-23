@@ -4,15 +4,31 @@ import android.text.Spanned
 
 object SpanUtils {
     @JvmStatic
-    fun <T>forEachSpan(text: Spanned, type: Class<T>, action: (span: T) -> Any) {
-        var next: Int
-        var i = 0
-        while (i < text.length) {
-            next = text.nextSpanTransition(i, text.length, type)
+    fun <T>forEachSpan(
+        spanned: Spanned,
+        type: Class<T>,
+        action: (span: T, start: Int, end: Int) -> Any) {
 
-            text.getSpans(i, next, type).forEach { span ->
-                action(span)
+        forEachTransition(spanned, type) { spans, start, end ->
+            spans.forEach { span ->
+                action(span, start, end)
             }
+        }
+    }
+
+    @JvmStatic
+    fun <T>forEachTransition(
+        spanned: Spanned,
+        type: Class<T>,
+        action: (spans: Array<T>, start: Int, end: Int) -> Any) {
+
+        var i = 0
+        while (i < spanned.length) {
+            val next = spanned.nextSpanTransition(i, spanned.length, type)
+
+            val spans = spanned.getSpans(i, next, type)
+
+            action(spans, i, next)
 
             i = next
         }
@@ -20,18 +36,10 @@ object SpanUtils {
 
     @JvmStatic
     fun <T>getSpans(text: Spanned, type: Class<T>): List<T> {
-        val list = mutableListOf<T>()
-        var next: Int
-        var i = 0
-        while (i < text.length) {
-            next = text.nextSpanTransition(i, text.length, type)
-
-            text.getSpans(i, next, type).forEach { span ->
-                list.add(span)
+        return mutableListOf<T>().apply {
+            forEachTransition(text, type) { spans, _, _ ->
+                addAll(spans)
             }
-
-            i = next
         }
-        return list
     }
 }

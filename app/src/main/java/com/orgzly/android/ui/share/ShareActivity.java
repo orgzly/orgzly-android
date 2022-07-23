@@ -1,6 +1,6 @@
 package com.orgzly.android.ui.share;
 
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.core.app.TaskStackBuilder;
+import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.documentfile.provider.DocumentFile;
 
 import com.orgzly.BuildConfig;
@@ -27,10 +28,13 @@ import com.orgzly.android.query.Query;
 import com.orgzly.android.query.QueryUtils;
 import com.orgzly.android.query.user.DottedQueryParser;
 import com.orgzly.android.sync.AutoSync;
+import com.orgzly.android.ui.AppSnackbarUtils;
 import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.NotePlace;
+import com.orgzly.android.SharingShortcutsManager;
 import com.orgzly.android.ui.main.SyncFragment;
 import com.orgzly.android.ui.note.NoteFragment;
+import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.usecase.UseCase;
 import com.orgzly.android.usecase.UseCaseResult;
 import com.orgzly.android.util.LogUtils;
@@ -82,8 +86,6 @@ public class ShareActivity extends CommonActivity
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
 
         setContentView(R.layout.activity_share);
-
-        setupActionBar(R.string.new_note, false);
 
         Data data = getDataFromIntent(getIntent());
 
@@ -151,6 +153,7 @@ public class ShareActivity extends CommonActivity
                     data.title = intent.getStringExtra(Intent.EXTRA_SUBJECT);
                 }
 
+                // TODO: Was used for direct share shortcuts to pass the book name. Used someplace else?
                 if (intent.hasExtra(AppIntent.EXTRA_QUERY_STRING)) {
                     Query query = new DottedQueryParser().parse(intent.getStringExtra(AppIntent.EXTRA_QUERY_STRING));
                     String bookName = QueryUtils.extractFirstBookNameFromQuery(query.getCondition());
@@ -165,6 +168,12 @@ public class ShareActivity extends CommonActivity
 
                 if (intent.hasExtra(AppIntent.EXTRA_BOOK_ID)) {
                     data.bookId = intent.getLongExtra(AppIntent.EXTRA_BOOK_ID, 0L);
+                }
+
+                // Coming from Direct Share shortcut
+                if (intent.hasExtra(Intent.EXTRA_SHORTCUT_ID)) {
+                    String shortcutId = intent.getStringExtra(ShortcutManagerCompat.EXTRA_SHORTCUT_ID);
+                    data.bookId = SharingShortcutsManager.bookIdFromShortcutId(shortcutId);
                 }
 
             } else if (ATTACH_METHOD_COPY_DIR.equals(AppPreferences.attachMethod(this))) {
@@ -240,7 +249,7 @@ public class ShareActivity extends CommonActivity
         autoSync.trigger(AutoSync.Type.APP_RESUMED);
 
         if (mError != null) {
-            showSnackbar(mError);
+            AppSnackbarUtils.showSnackbar(this, mError);
             mError = null;
         }
     }
@@ -248,7 +257,7 @@ public class ShareActivity extends CommonActivity
     public static PendingIntent createNewNoteIntent(Context context, SavedSearch savedSearch) {
         Intent resultIntent = createNewNoteInNotebookIntent(context, null);
 
-        if (savedSearch != null && savedSearch.getQuery() != null) {
+        if (savedSearch != null) {
             resultIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, savedSearch.getQuery());
         }
 
@@ -262,8 +271,9 @@ public class ShareActivity extends CommonActivity
         // Adds the Intent that starts the Activity to the top of the stack
         stackBuilder.addNextIntent(resultIntent);
 
-        // return PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        return stackBuilder.getPendingIntent(
+                0,
+                ActivityUtils.immutable(PendingIntent.FLAG_UPDATE_CURRENT));
     }
 
     /**
@@ -310,7 +320,7 @@ public class ShareActivity extends CommonActivity
      */
     @Override
     public void onError(UseCase action, Throwable throwable) {
-        showSnackbar(throwable.getLocalizedMessage());
+        AppSnackbarUtils.showSnackbar(this, throwable.getLocalizedMessage());
     }
 
     private class Data {

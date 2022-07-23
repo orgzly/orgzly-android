@@ -347,6 +347,7 @@
     <string name="displayed_book_details_used_encoding">Codificación usada</string>
     <string name="displayed_book_details_last_action">Ultima acción</string>
     <string name="displayed_book_details_notes_count">Contador de notas</string>
+    <string name="color_scheme_system">Sistema</string>
     <string name="color_scheme_light">Claro</string>
     <string name="color_scheme_dark">Oscuro</string>
     <string name="color_scheme_black">Negro</string>
@@ -434,6 +435,7 @@
     <string name="list_widget_nothing_selected">Ninguna búsqueda seleccionada</string>
     <string name="auto_sync">Auto-sincronización</string>
     <string name="auto_sync_experimental_summary">Utilizado solo para repositorios locales</string>
+    <string name="auto_sync_summary">No soportado para Dropbox</string>
     <string name="auto_sync_warning">Dependiendo de que opción elijas, la sincronización podría activarse a menudo. Si la nota es modificada, todo su contenido es transferido a o desde el repositorio. Ciertas acciones podrian retrasare mientras que la sincronización esta en curso.</string>
     <string name="pref_title_sync_after_note_create">Nota creada</string>
     <string name="pref_summary_sync_after_note_create">Sincronizar después de crear una nueva nota</string>
@@ -563,4 +565,7 @@
     <string name="content">Contenido</string>
     <string name="prepend">Anteponer</string>
     <string name="insert_new_note_at_beginning">Insertar nueva nota al principio</string>
+    <string name="developer_options">Opciones de desarrollador</string>
+    <string name="git_repository_type">Tipo de repositorio Git</string>
+    <string name="in_development">En desarrollo</string>
 </resources>

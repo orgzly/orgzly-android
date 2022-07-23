@@ -67,7 +67,7 @@ public class BookUtils {
 
             /* Get error color attribute. */
             int color = ExtensionsKt.styledAttributes(
-                    context, new int[] { R.attr.text_error_color }, arr -> arr.getColor(0, 0));
+                    context, new int[] { R.attr.colorError }, arr -> arr.getColor(0, 0));
 
             /* Set error color. */
             builder.setSpan(new ForegroundColorSpan(color), 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

@@ -67,8 +67,6 @@ public class ActionModeTest extends OrgzlyTest {
 
     @Test
     public void testQueryFragmentCabShouldBeOpenedOnNoteLongClick() {
-        onView(allOf(withText("book-one"), isDisplayed())).perform(click());
-
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(allOf(withText("Scheduled"), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
 
@@ -85,7 +83,7 @@ public class ActionModeTest extends OrgzlyTest {
         scenario.onActivity(activity ->
                 activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
 
-        onView(withId(R.id.book_cab_cut)).check(matches(isDisplayed()));
+        onView(withId(R.id.toggle_state)).check(matches(isDisplayed()));
 
         // TODO: Check *the same* note is selected.
     }
@@ -108,7 +106,7 @@ public class ActionModeTest extends OrgzlyTest {
         scenario.onActivity(activity ->
                 activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
 
-        onView(withId(R.id.bottom_action_bar_done)).check(matches(isDisplayed()));
+        onView(withId(R.id.toggle_state)).check(matches(isDisplayed()));
     }
 
     @Test

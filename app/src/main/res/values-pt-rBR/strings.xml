@@ -347,6 +347,7 @@
     <string name="displayed_book_details_used_encoding">Codificação utilizada</string>
     <string name="displayed_book_details_last_action">Última ação</string>
     <string name="displayed_book_details_notes_count">Contagem das notas</string>
+    <string name="color_scheme_system">System</string>
     <string name="color_scheme_light">Claro</string>
     <string name="color_scheme_dark">Escuro</string>
     <string name="color_scheme_black">Preto</string>
@@ -434,6 +435,7 @@
     <string name="list_widget_nothing_selected">Nenhuma pesquisa selecionada</string>
     <string name="auto_sync">Auto-sincronizar</string>
     <string name="auto_sync_experimental_summary">Usado para repositórios locais apenas</string>
+    <string name="auto_sync_summary">Not supported for Dropbox</string>
     <string name="auto_sync_warning">Dependendo das opções que você escolher, a sincronização pode ser acionada com frequência. Se o caderno for modificado, todo o conteúdo será transferido para o repositório. Certas ações podem ser atrasadas enquanto a sincronização estiver em andamento.</string>
     <string name="pref_title_sync_after_note_create">Nota criada</string>
     <string name="pref_summary_sync_after_note_create">Sincronizar após criar uma nova nota</string>
@@ -563,4 +565,7 @@
     <string name="content">Conteúdo</string>
     <string name="prepend">Fixar ao topo</string>
     <string name="insert_new_note_at_beginning">Inserir nova nota no início</string>
+    <string name="developer_options">Developer options</string>
+    <string name="git_repository_type">Git repository type</string>
+    <string name="in_development">In development</string>
 </resources>

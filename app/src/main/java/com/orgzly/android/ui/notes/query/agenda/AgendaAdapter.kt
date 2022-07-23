@@ -43,8 +43,6 @@ class AgendaAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
-
         return when (viewType) {
             OVERDUE_ITEM_TYPE, DAY_ITEM_TYPE -> {
                 val binding = ItemAgendaDividerBinding.inflate(
@@ -119,6 +117,13 @@ class AgendaAdapter(
 
     override fun getSelection(): Selection {
         return adapterSelection
+    }
+
+    fun clearSelection() {
+        if (getSelection().count > 0) {
+            getSelection().clear()
+            notifyDataSetChanged() // FIXME
+        }
     }
 
     override fun isStickyHeader(position: Int): Boolean {

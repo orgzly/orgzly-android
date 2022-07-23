@@ -17,12 +17,7 @@
     <!-- Reasoning - "Spacing between each UI element is 8dp."
          (http://developer.android.com/design/style/metrics-grids.html) -->
 
-    <dimen name="list_view_with_fab_bottom_padding">88dp</dimen>
-
-    <dimen name="card_margin">2dp</dimen>
-    <dimen name="cards_margin">6dp</dimen>
-
-    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="padding_bottom_for_fab">104dp</dimen>
 
     <!-- Padding for sync button -->
     <dimen name="design_navigation_padding_bottom" tools:override="true">64dp</dimen>
@@ -34,9 +29,6 @@
     <dimen name="bullet_outer_inset">4dp</dimen>
     <dimen name="bullet_total_size">16dp</dimen>
 
-    <dimen name="content_left_margin_from_icon">32dp</dimen>
-    <dimen name="padded_content_left_margin_from_icon">16dp</dimen>
-
     <dimen name="screen_edge">16dp</dimen>
     <dimen name="screen_edge_minus_2dp">14dp</dimen>
     <dimen name="screen_edge_minus_4dp">12dp</dimen>
@@ -44,6 +36,7 @@
     <dimen name="space_between_content_areas">8dp</dimen>
 
     <dimen name="fragment_note_field_min_width">200dp</dimen>
+    <dimen name="fragment_note_icon_margin">24dp</dimen>
 
     <dimen name="widget_title_text_size_14">14sp</dimen>
     <dimen name="widget_post_title_text_size_14">12sp</dimen>
@@ -55,7 +48,7 @@
 
     <dimen name="widget_padding">2dp</dimen>
 
-    <dimen name="bullet_margin">4dp</dimen>
+    <dimen name="bullet_margin">6dp</dimen>
 
     <!-- Duration of animation for opening, closing and switching a quick bar -->
     <integer name="quick_bar_animation_duration">150</integer>
@@ -64,4 +57,6 @@
     <dimen name="quick_bar_height">48dp</dimen>
 
     <dimen name="fold_button_width">48dp</dimen>
+
+    <dimen name="horizontal_divider_height">1dp</dimen>
 </resources>

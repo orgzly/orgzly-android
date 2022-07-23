@@ -9,7 +9,11 @@ public class AppIntent {
     public static final String ACTION_UPDATING_NOTES_ENDED = "com.orgzly.intent.action.UPDATING_NOTES_ENDED";
 
     public static final String ACTION_NOTE_MARK_AS_DONE = "com.orgzly.intent.action.NOTE_MARK_AS_DONE";
-    public static final String ACTION_REMINDER_SNOOZE_REQUEST = "com.orgzly.intent.action.REMINDER_SNOOZE_REQUEST";
+
+    public static final String ACTION_REMINDER_DATA_CHANGED = "com.orgzly.intent.action.REMINDER_DATA_CHANGED";
+    public static final String ACTION_REMINDER_TRIGGERED = "com.orgzly.intent.action.REMINDER_TRIGGERED";
+    public static final String ACTION_REMINDER_SNOOZE_REQUESTED = "com.orgzly.intent.action.REMINDER_SNOOZE_REQUESTED";
+    public static final String ACTION_REMINDER_SNOOZE_ENDED = "com.orgzly.intent.action.REMINDER_SNOOZE_ENDED";
 
     public static final String ACTION_SYNC_STATUS = "com.orgzly.intent.action.SYNC_STATUS";
     public static final String ACTION_SYNC_START = "com.orgzly.intent.action.SYNC_START";
@@ -23,6 +27,7 @@ public class AppIntent {
     public static final String ACTION_IMPORT_GETTING_STARTED_NOTEBOOK = "com.orgzly.intent.action.IMPORT_GETTING_STARTED_NOTEBOOK";
     public static final String ACTION_REPARSE_NOTES = "com.orgzly.intent.action.REPARSE_NOTES";
     public static final String ACTION_SYNC_CREATED_AT_WITH_PROPERTY = "com.orgzly.intent.action.SYNC_CREATED_AT_WITH_PROPERTY";
+    public static final String ACTION_UPDATE_TIMESTAMPS = "com.orgzly.intent.action.UPDATE_TIMESTAMPS";
 
     public static final String ACTION_OPEN_NOTE = "com.orgzly.intent.action.OPEN_NOTE";
     public static final String ACTION_FOLLOW_LINK_TO_NOTE_WITH_PROPERTY = "com.orgzly.intent.action.FOLLOW_LINK_TO_NOTE_WITH_PROPERTY";

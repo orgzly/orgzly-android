@@ -36,6 +36,9 @@ class InternalLinksTest : OrgzlyTest() {
 
                     * Note [a-5]
                     file:./book-b.org
+
+                    * Note [a-6]
+                    [[id:note-with-this-id-does-not-exist]]
                 """.trimIndent()
         )
 
@@ -68,21 +71,29 @@ class InternalLinksTest : OrgzlyTest() {
     fun testDifferentCaseUuidInternalLink() {
         onNoteInBook(1, R.id.item_head_content)
                 .perform(clickClickableSpan("id:bdce923b-C3CD-41ED-B58E-8BDF8BABA54F"))
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-2]")))
+        onView(withId(R.id.title)).check(matches(withText("Note [b-2]")))
+    }
+
+    @Test
+    fun testNonExistentId() {
+        onNoteInBook(6, R.id.item_head_content)
+            .perform(clickClickableSpan("id:note-with-this-id-does-not-exist"))
+        onSnackbar()
+            .check(matches(withText("Note with “ID” property set to “note-with-this-id-does-not-exist” not found")))
     }
 
     @Test
     fun testDifferentCaseCustomIdInternalLink() {
         onNoteInBook(2, R.id.item_head_content)
                 .perform(clickClickableSpan("#Different case custom id"))
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-1]")))
+        onView(withId(R.id.title)).check(matches(withText("Note [b-1]")))
     }
 
     @Test
     fun testCustomIdLink() {
         onNoteInBook(3, R.id.item_head_content)
                 .perform(clickClickableSpan("#Link to note in a different book"))
-        onView(withId(R.id.fragment_note_title)).check(matches(withText("Note [b-3]")))
+        onView(withId(R.id.title)).check(matches(withText("Note [b-3]")))
     }
 
     @Test

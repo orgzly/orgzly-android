@@ -1,9 +1,11 @@
 package com.orgzly.android.ui.notes.query.agenda
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.*
-import androidx.appcompat.view.ActionMode
-import androidx.appcompat.widget.Toolbar
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -11,18 +13,25 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.ui.AppBar
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
+import com.orgzly.android.ui.main.MainActivity
+import com.orgzly.android.ui.main.setupSearchView
 import com.orgzly.android.ui.notes.NoteItemViewHolder
 import com.orgzly.android.ui.notes.query.QueryFragment
 import com.orgzly.android.ui.notes.query.QueryViewModel
+import com.orgzly.android.ui.notes.query.QueryViewModel.Companion.APP_BAR_DEFAULT_MODE
+import com.orgzly.android.ui.notes.query.QueryViewModel.Companion.APP_BAR_SELECTION_MODE
 import com.orgzly.android.ui.notes.query.QueryViewModelFactory
 import com.orgzly.android.ui.notes.quickbar.ItemGestureDetector
 import com.orgzly.android.ui.notes.quickbar.QuickBarListener
 import com.orgzly.android.ui.notes.quickbar.QuickBars
+import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.stickyheaders.StickyHeadersLinearLayoutManager
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.setup
+import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentQueryAgendaBinding
 
@@ -33,7 +42,6 @@ import com.orgzly.databinding.FragmentQueryAgendaBinding
 class AgendaFragment :
         QueryFragment(),
         OnViewHolderClickListener<AgendaItem>,
-        ActionMode.Callback,
         QuickBarListener {
 
     private lateinit var binding: FragmentQueryAgendaBinding
@@ -42,9 +50,20 @@ class AgendaFragment :
 
     lateinit var viewAdapter: AgendaAdapter
 
+    private val appBarBackPressHandler = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            viewModel.appBar.handleOnBackPressed()
+        }
+    }
 
     override fun getAdapter(): SelectableItemAdapter? {
         return if (::viewAdapter.isInitialized) viewAdapter else null
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        requireActivity().onBackPressedDispatcher.addCallback(this, appBarBackPressHandler)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -87,27 +106,77 @@ class AgendaFragment :
                     }
                 }
             }))
-
-//            val itemTouchHelper = NoteItemTouchHelper(false, object : NoteItemTouchHelper.Listener {
-//                override fun onSwiped(viewHolder: NoteItemViewHolder, direction: Int) {
-//                    val dbId = item2databaseIds[viewHolder.itemId]
-//                    if (dbId != null) {
-//                        listener?.onNoteFocusInBookRequest(dbId)
-//                    } else {
-//                        // Divider
-//                    }
-//                }
-//            })
-//
-//            itemTouchHelper.attachToRecyclerView(rv)
         }
 
         binding.swipeContainer.setup()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        sharedMainActivityViewModel.setCurrentFragment(FRAGMENT_TAG)
+    }
+
+    private fun appBarToDefault() {
+        viewAdapter.clearSelection()
+
+        binding.bottomAppBar.run {
+            replaceMenu(R.menu.query_actions)
+
+            ActivityUtils.keepScreenOnUpdateMenuItem(activity, menu)
+
+            setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
+                typedArray.getResourceId(R.styleable.Icons_ic_menu_24dp, 0)
+            })
+
+            setNavigationOnClickListener {
+                sharedMainActivityViewModel.openDrawer()
+            }
+
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.activity_action_settings -> {
+                        startActivity(Intent(context, SettingsActivity::class.java))
+                    }
+
+                    R.id.keep_screen_on -> {
+                        dialog = ActivityUtils.keepScreenOnToggle(activity, menuItem)
+                    }
+                }
+                true
+            }
+
+            requireActivity().setupSearchView(menu)
+        }
+    }
+
+    private fun appBarToMainSelection() {
+        binding.bottomAppBar.run {
+            replaceMenu(R.menu.query_cab)
+
+            // Hide buttons that can't be used when multiple notes are selected
+            listOf(R.id.focus).forEach { id ->
+                menu.findItem(id)?.isVisible = viewAdapter.getSelection().count == 1
+            }
+
+            setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
+                typedArray.getResourceId(R.styleable.Icons_ic_arrow_back_24dp, 0)
+            })
+
+            setNavigationOnClickListener {
+                viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
+            }
+
+            setOnMenuItemClickListener { menuItem ->
+                handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
+                true
+            }
+        }
+    }
+
     override fun onQuickBarButtonClick(buttonId: Int, itemId: Long) {
         item2databaseIds[itemId]?.let {
-            handleActionItemClick(buttonId, actionModeListener?.actionMode, setOf(it))
+            handleActionItemClick(buttonId, setOf(it))
         }
     }
 
@@ -130,7 +199,7 @@ class AgendaFragment :
             }
         })
 
-        viewModel.notes().observe(viewLifecycleOwner, Observer { notes ->
+        viewModel.data.observe(viewLifecycleOwner, Observer { notes ->
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed notes: ${notes.size}")
 
             val items = AgendaItems.getList(notes, currentQuery, item2databaseIds)
@@ -146,11 +215,37 @@ class AgendaFragment :
 
             viewAdapter.getSelection().setMap(item2databaseIds)
 
-            activity?.invalidateOptionsMenu()
-
-            actionModeListener?.updateActionModeForSelection(
-                    viewAdapter.getSelection().count, this)
+            viewModel.appBar.toModeFromSelectionCount(viewAdapter.getSelection().count)
         })
+
+        viewModel.appBar.mode.observeSingle(viewLifecycleOwner) { mode ->
+            when (mode) {
+                APP_BAR_DEFAULT_MODE -> {
+                    appBarToDefault()
+                    sharedMainActivityViewModel.unlockDrawer()
+                    appBarBackPressHandler.isEnabled = false
+
+                    // Active query as a title, clickable
+                    binding.bottomAppBarTitle.run {
+                        text = currentQuery
+                    }
+                    binding.bottomAppBarTitle.setOnClickListener {
+                        binding.bottomAppBar.menu.findItem(R.id.search_view)?.expandActionView()
+                    }
+                }
+
+                APP_BAR_SELECTION_MODE -> {
+                    appBarToMainSelection()
+                    sharedMainActivityViewModel.lockDrawer()
+                    appBarBackPressHandler.isEnabled = true
+
+                    // Number of selected notes as a title
+                    binding.bottomAppBarTitle.run {
+                        text = viewAdapter.getSelection().count.toString()
+                    }
+                }
+            }
+        }
 
         viewModel.refresh(currentQuery, AppPreferences.defaultPriority(context))
     }
@@ -184,71 +279,12 @@ class AgendaFragment :
     }
 
     private fun toggleNoteSelection(position: Int, item: AgendaItem) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
-
         if (item is AgendaItem.Note) {
             viewAdapter.getSelection().toggle(item.id)
             viewAdapter.notifyItemChanged(position)
 
-            actionModeListener?.updateActionModeForSelection(
-                    viewAdapter.getSelection().count, this)
+            viewModel.appBar.toModeFromSelectionCount(viewAdapter.getSelection().count)
         }
-    }
-
-    override fun onBottomActionItemClicked(id: Int) {
-        handleActionItemClick(id, actionModeListener?.actionMode, viewAdapter.getSelection().getIds())
-    }
-
-    override fun onActionItemClicked(actionMode: ActionMode, menuItem: MenuItem): Boolean {
-        handleActionItemClick(menuItem.itemId, actionMode, viewAdapter.getSelection().getIds())
-
-        return true
-    }
-
-    override fun onCreateActionMode(actionMode: ActionMode, menu: Menu): Boolean {
-//        val inflater = actionMode.menuInflater
-//
-//        inflater.inflate(R.menu.query_cab, menu)
-
-        sharedMainActivityViewModel.lockDrawer()
-
-        return true
-    }
-
-    override fun onPrepareActionMode(actionMode: ActionMode, menu: Menu): Boolean {
-        /* Update action mode with number of selected items. */
-        actionMode.title = viewAdapter.getSelection().count.toString()
-
-        return true
-    }
-
-    override fun onDestroyActionMode(actionMode: ActionMode) {
-        viewAdapter.getSelection().clear()
-        viewAdapter.notifyDataSetChanged() // FIXME
-
-        actionModeListener?.actionModeDestroyed()
-
-        sharedMainActivityViewModel.unlockDrawer()
-    }
-
-    override fun onInflateBottomActionMode(toolbar: Toolbar) {
-        toolbar.inflateMenu(R.menu.bottom_action_bar_query)
-
-        // Hide buttons that can't be used when multiple notes are selected
-        listOf(R.id.bottom_action_bar_focus).forEach { id ->
-
-            toolbar.menu.findItem(id)?.isVisible = viewAdapter.getSelection().count <= 1
-        }
-
-        ActivityUtils.distributeToolbarItems(activity, toolbar)
-    }
-
-    override fun announceChangesToActivity() {
-        sharedMainActivityViewModel.setFragment(
-                FRAGMENT_TAG,
-                getString(R.string.agenda),
-                currentQuery,
-                viewAdapter.getSelection().count)
     }
 
     companion object {

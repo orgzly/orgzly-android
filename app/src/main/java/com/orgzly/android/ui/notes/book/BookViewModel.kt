@@ -9,6 +9,7 @@ import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.SingleLiveEvent
+import com.orgzly.android.ui.AppBar
 import com.orgzly.android.usecase.BookCycleVisibility
 import com.orgzly.android.usecase.UseCaseRunner
 
@@ -18,17 +19,17 @@ class BookViewModel(private val dataRepository: DataRepository, val bookId: Long
 
     private val params = MutableLiveData<Params>(Params())
 
-    enum class ViewState {
+    enum class FlipperDisplayedChild {
         LOADING,
         LOADED,
         EMPTY,
         DOES_NOT_EXIST
     }
 
-    val viewState = MutableLiveData<ViewState>(ViewState.LOADING)
+    val flipperDisplayedChild = MutableLiveData(FlipperDisplayedChild.LOADING)
 
-    fun setViewState(state: ViewState) {
-        viewState.value = state
+    fun setFlipperDisplayedChild(child: FlipperDisplayedChild) {
+        flipperDisplayedChild.value = child
     }
 
     data class Data(val book: Book?, val notes: List<NoteView>?)
@@ -43,6 +44,18 @@ class BookViewModel(private val dataRepository: DataRepository, val bookId: Long
             }
         }
     }
+
+    companion object {
+        const val APP_BAR_DEFAULT_MODE = 0
+        const val APP_BAR_SELECTION_MODE = 1
+        const val APP_BAR_SELECTION_MOVE_MODE = 2
+    }
+
+    val appBar = AppBar(mapOf(
+        APP_BAR_DEFAULT_MODE to null,
+        APP_BAR_SELECTION_MODE to APP_BAR_DEFAULT_MODE,
+        APP_BAR_SELECTION_MOVE_MODE to APP_BAR_SELECTION_MODE))
+
 
     fun cycleVisibility() {
         data.value?.book?.let { book ->
@@ -73,5 +86,15 @@ class BookViewModel(private val dataRepository: DataRepository, val bookId: Long
             val count = dataRepository.getNotesAndSubtreesCount(ids)
             notesDeleteRequest.postValue(Pair(ids, count))
         }
+    }
+
+    val title = MutableLiveData<String?>(null)
+
+    fun setTitle(str: String?) {
+        title.postValue(str)
+    }
+
+    fun hideTitle() {
+        title.postValue(null)
     }
 }

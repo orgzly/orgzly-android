@@ -1,5 +1,6 @@
 package com.orgzly.android.ui.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.res.TypedArray
@@ -31,6 +32,7 @@ fun <R> Context.styledAttributes(set: AttributeSet, @StyleableRes attrs: IntArra
     }
 }
 
+@SuppressLint("ResourceType")
 fun SwipeRefreshLayout.setup() {
     setOnRefreshListener {
         Intent(context, SyncService::class.java).setAction(AppIntent.ACTION_SYNC_START).let {
@@ -40,18 +42,10 @@ fun SwipeRefreshLayout.setup() {
         isRefreshing = false
     }
 
-    context?.styledAttributes(R.styleable.ColorScheme) { typedArray ->
-        setProgressBackgroundColorSchemeColor(
-                typedArray.getColor(R.styleable.ColorScheme_item_book_card_bg_color, 0))
-
-        val color = context.obtainStyledAttributes(intArrayOf(R.attr.colorAccent)).let {
-            val color = it.getColor(0, 0)
-            it.recycle()
-            color
-        }
-
-        setColorSchemeColors(color)
-    }
+//    context?.styledAttributes(intArrayOf(R.attr.colorPrimary, R.attr.colorOnPrimary)) { typedArray ->
+//        setProgressBackgroundColorSchemeColor(typedArray.getColor(0, 0))
+//        setColorSchemeColors(typedArray.getColor(1, 0))
+//    }
 }
 
 fun View.removeBackgroundKeepPadding() {
@@ -64,3 +58,15 @@ fun View.removeBackgroundKeepPadding() {
 
     ViewCompat.setPaddingRelative(this, paddingStart, paddingTop, paddingEnd, paddingBottom)
 }
+
+fun View.goneIf(condition: Boolean) {
+    visibility = if (condition) View.GONE else View.VISIBLE
+}
+
+fun View.goneUnless(condition: Boolean) = goneIf(!condition)
+
+fun View.invisibleIf(condition: Boolean) {
+    visibility = if (condition) View.INVISIBLE else View.VISIBLE
+}
+
+fun View.invisibleUnless(condition: Boolean) = invisibleIf(!condition)

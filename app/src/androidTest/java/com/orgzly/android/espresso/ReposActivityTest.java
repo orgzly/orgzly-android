@@ -32,7 +32,7 @@ public class ReposActivityTest extends OrgzlyTest {
         onView(withId(R.id.activity_repos_flipper)).check(matches(isDisplayed()));
         onView(withId(R.id.activity_repos_directory)).perform(scrollTo(), click());
         onView(withId(R.id.activity_repo_directory)).perform(replaceTextCloseKeyboard("non-existent-directory"));
-        onView(withId(R.id.done)).perform(click());
+        onView(withId(R.id.fab)).perform(click()); // Repo done
     }
 
     @Test
@@ -48,7 +48,7 @@ public class ReposActivityTest extends OrgzlyTest {
         onView(withId(R.id.activity_repos_flipper)).check(matches(isDisplayed()));
         onView(withId(R.id.activity_repos_directory)).perform(scrollTo(), click());
         onView(withId(R.id.activity_repo_directory)).perform(replaceTextCloseKeyboard(repoUri));
-        onView(withId(R.id.done)).perform(click());
+        onView(withId(R.id.fab)).perform(click()); // Repo done
         onView(withId(R.id.activity_repos_flipper)).check(matches(isDisplayed()));
 
         onListItem(0).onChildView(withId(R.id.item_repo_url)).check(matches(withText(repoUri)));
@@ -68,7 +68,7 @@ public class ReposActivityTest extends OrgzlyTest {
         onView(withId(R.id.activity_repos_flipper)).check(matches(isDisplayed()));
         onView(withId(R.id.activity_repos_dropbox)).perform(click());
         onView(withId(R.id.activity_repo_dropbox_directory)).perform(replaceTextCloseKeyboard(localDir));
-        onView(withId(R.id.done)).perform(click());
+        onView(withId(R.id.fab)).perform(click()); // Repo done
         onView(withId(R.id.activity_repos_flipper)).check(matches(isDisplayed()));
 
         onListItem(0).onChildView(withId(R.id.item_repo_url)).check(matches(withText("dropbox:/Documents/user%40host%252Fdir")));
@@ -87,12 +87,12 @@ public class ReposActivityTest extends OrgzlyTest {
 
         onView(withId(R.id.activity_repos_directory)).perform(scrollTo(), click());
         onView(withId(R.id.activity_repo_directory)).perform(replaceTextCloseKeyboard(url));
-        onView(withId(R.id.done)).perform(click());
+        onView(withId(R.id.fab)).perform(click()); // Repo done
 
         onView(withId(R.id.repos_options_menu_item_new)).perform(click());
         onView(withText(R.string.directory)).perform(click());
         onView(withId(R.id.activity_repo_directory)).perform(replaceTextCloseKeyboard(url));
-        onView(withId(R.id.done)).perform(click());
+        onView(withId(R.id.fab)).perform(click()); // Repo done
 
         onSnackbar().check(matches(withText(R.string.repository_url_already_exists)));
     }

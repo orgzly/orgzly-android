@@ -347,6 +347,7 @@
     <string name="displayed_book_details_used_encoding">Használt kódolás</string>
     <string name="displayed_book_details_last_action">Utolsó művelet</string>
     <string name="displayed_book_details_notes_count">Bejegyzések száma</string>
+    <string name="color_scheme_system">Rendszer</string>
     <string name="color_scheme_light">Világos</string>
     <string name="color_scheme_dark">Sötét</string>
     <string name="color_scheme_black">Fekete</string>
@@ -434,6 +435,7 @@
     <string name="list_widget_nothing_selected">Nincs kiválasztott keresés</string>
     <string name="auto_sync">Automatikus szinkronizálás</string>
     <string name="auto_sync_experimental_summary">Csak helyi tárolók esetén</string>
+    <string name="auto_sync_summary">Dropbox esetében nem támogatott</string>
     <string name="auto_sync_warning">Attól függően, hogy melyik lehetőséget választja, szinkronizálás gyakran indulhat. Ha a jegyzetfüzet módosul, annak teljes tartalmát menti vagy betölti. Bizonyos műveletek késhetnek, amíg szinkronizálás van folyamatban.</string>
     <string name="pref_title_sync_after_note_create">Bejegyzés létrehozva</string>
     <string name="pref_summary_sync_after_note_create">Szinkronizálás egy új bejegyzés létrehozásakor</string>
@@ -563,4 +565,7 @@
     <string name="content">Tartalom</string>
     <string name="prepend">Hozzákapcsol</string>
     <string name="insert_new_note_at_beginning">Új jegyzet beszúrása az elejére</string>
+    <string name="developer_options">Fejlesztői beállítások</string>
+    <string name="git_repository_type">Git adattároló típusa</string>
+    <string name="in_development">Fejlesztés alatt</string>
 </resources>

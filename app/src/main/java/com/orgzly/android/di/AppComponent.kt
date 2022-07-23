@@ -1,18 +1,18 @@
 package com.orgzly.android.di
 
-import com.orgzly.android.ChooserShareTargetService
 import com.orgzly.android.NewNoteBroadcastReceiver
 import com.orgzly.android.TimeChangeBroadcastReceiver
-import com.orgzly.android.data.DataRepository
 import com.orgzly.android.di.module.ApplicationModule
 import com.orgzly.android.di.module.DataModule
 import com.orgzly.android.di.module.DatabaseModule
-import com.orgzly.android.reminders.ReminderService
+import com.orgzly.android.reminders.RemindersBroadcastReceiver
+import com.orgzly.android.reminders.NoteReminders
 import com.orgzly.android.sync.SyncService
 import com.orgzly.android.ui.BookChooserActivity
 import com.orgzly.android.ui.TemplateChooserActivity
 import com.orgzly.android.ui.books.BooksFragment
 import com.orgzly.android.ui.main.MainActivity
+import com.orgzly.android.SharingShortcutsManager
 import com.orgzly.android.ui.note.NoteFragment
 import com.orgzly.android.ui.notes.NotesFragment
 import com.orgzly.android.ui.notes.book.BookFragment
@@ -32,7 +32,7 @@ import com.orgzly.android.ui.savedsearches.SavedSearchesFragment
 import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.share.ShareActivity
 import com.orgzly.android.usecase.UseCaseRunner
-import com.orgzly.android.usecase.UseCaseService
+import com.orgzly.android.usecase.UseCaseWorker
 import com.orgzly.android.widgets.ListWidgetProvider
 import com.orgzly.android.widgets.ListWidgetSelectionActivity
 import com.orgzly.android.widgets.ListWidgetService
@@ -75,12 +75,13 @@ interface AppComponent {
 
     fun inject(arg: SyncService)
     fun inject(arg: SyncStatusBroadcastReceiver)
-    fun inject(arg: ReminderService)
+    fun inject(arg: NoteReminders)
     fun inject(arg: UseCaseRunner.Factory)
-    fun inject(arg: ChooserShareTargetService)
-    fun inject(arg: UseCaseService)
+    fun inject(arg: UseCaseWorker)
     fun inject(arg: ListWidgetService)
     fun inject(arg: ListWidgetProvider)
     fun inject(arg: NewNoteBroadcastReceiver)
     fun inject(arg: TimeChangeBroadcastReceiver)
+    fun inject(arg: RemindersBroadcastReceiver)
+    fun inject(arg: SharingShortcutsManager)
 }

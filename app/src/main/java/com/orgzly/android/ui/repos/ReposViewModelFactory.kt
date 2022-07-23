@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.orgzly.android.data.DataRepository
 
 class ReposViewModelFactory(private val dataRepository: DataRepository) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return ReposViewModel(dataRepository) as T
     }

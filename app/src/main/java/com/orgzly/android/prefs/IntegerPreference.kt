@@ -27,15 +27,15 @@ class IntegerPreference : EditTextPreference {
         }
     }
 
-    override fun setText(text: String) {
+    override fun setText(text: String?) {
         validateIntegerValue(text)?.let {
             super.setText(it)
             summary = it
         }
     }
 
-    private fun validateIntegerValue(s: String): String? {
-        if (s.isNotEmpty()) {
+    private fun validateIntegerValue(s: String?): String? {
+        if (!s.isNullOrEmpty()) {
             try {
                 val n = Integer.parseInt(s)
                 if (n in min..max) {

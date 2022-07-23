@@ -2,16 +2,15 @@ package com.orgzly.android.ui.repos
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.ContextMenu
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
@@ -26,6 +25,7 @@ import com.orgzly.android.ui.repo.directory.DirectoryRepoActivity
 import com.orgzly.android.ui.repo.dropbox.DropboxRepoActivity
 import com.orgzly.android.ui.repo.git.GitRepoActivity
 import com.orgzly.android.ui.repo.webdav.WebdavRepoActivity
+import com.orgzly.android.ui.showSnackbar
 import com.orgzly.databinding.ActivityReposBinding
 import javax.inject.Inject
 
@@ -47,9 +47,9 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
 
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_repos)
+        binding = ActivityReposBinding.inflate(layoutInflater)
 
-        setupActionBar(R.string.repositories)
+        setContentView(binding.root)
 
         setupNoReposButtons()
 
@@ -70,7 +70,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             binding.activityReposFlipper.displayedChild =
                     if (repos != null && repos.isNotEmpty()) 0 else 1
 
-            invalidateOptionsMenu()
+            appBarToDefault()
         })
 
         viewModel.openRepoRequestEvent.observeSingle(this, Observer { repo ->
@@ -89,6 +89,55 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             it.onItemClickListener = this
             it.adapter = listAdapter
             registerForContextMenu(it)
+        }
+
+        appBarToDefault()
+    }
+
+    private fun appBarToDefault() {
+        binding.bottomAppBar.run {
+            if (listAdapter.count > 0) {
+                replaceMenu(R.menu.repos_actions)
+
+                val newRepos = menu.findItem(R.id.repos_options_menu_item_new).subMenu
+
+                if (!BuildConfig.IS_DROPBOX_ENABLED) {
+                    newRepos.removeItem(R.id.repos_options_menu_item_new_dropbox)
+                }
+
+                if (!AppPreferences.gitIsEnabled(App.getAppContext())) {
+                    newRepos.removeItem(R.id.repos_options_menu_item_new_git)
+                }
+            } else {
+                menu.clear()
+            }
+
+            setNavigationOnClickListener {
+                finish()
+            }
+
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.repos_options_menu_item_new_dropbox -> {
+                        startRepoActivity(menuItem.itemId)
+                    }
+
+                    R.id.repos_options_menu_item_new_git -> {
+                        startRepoActivity(menuItem.itemId)
+                    }
+
+                    R.id.repos_options_menu_item_new_webdav -> {
+                        startRepoActivity(menuItem.itemId)
+                    }
+
+                    R.id.repos_options_menu_item_new_directory -> {
+                        startRepoActivity(menuItem.itemId)
+                    }
+                }
+
+                true
+            }
+
         }
     }
 
@@ -127,7 +176,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
     }
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
-        menuInflater.inflate(R.menu.repos_context, menu)
+        menuInflater.inflate(R.menu.repos_cab, menu)
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
@@ -147,63 +196,13 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
         viewModel.deleteRepo(id)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Do not display add icon if there are no repositories - large repo buttons will be shown
-        if (listAdapter.count > 0) {
-            menuInflater.inflate(R.menu.repos_actions, menu)
-
-            val newRepos = menu.findItem(R.id.repos_options_menu_item_new).subMenu
-
-            if (!BuildConfig.IS_DROPBOX_ENABLED) {
-                newRepos.removeItem(R.id.repos_options_menu_item_new_dropbox)
-            }
-
-            if (!AppPreferences.gitIsEnabled(App.getAppContext())) {
-                newRepos.removeItem(R.id.repos_options_menu_item_new_git)
-            }
-        }
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.repos_options_menu_item_new_dropbox -> {
-                startRepoActivity(item.itemId)
-                return true
-            }
-
-            R.id.repos_options_menu_item_new_git -> {
-                startRepoActivity(item.itemId)
-                return true
-            }
-
-            R.id.repos_options_menu_item_new_webdav -> {
-                startRepoActivity(item.itemId)
-                return true
-            }
-
-            R.id.repos_options_menu_item_new_directory -> {
-                startRepoActivity(item.itemId)
-                return true
-            }
-
-            android.R.id.home -> {
-                finish()
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         when (requestCode) {
             ACTIVITY_REQUEST_CODE_FOR_READ_WRITE_EXTERNAL_STORAGE -> {
                 val granted = grantResults.zip(permissions)
-                        .find { (_, perm) -> perm == READ_WRITE_EXTERNAL_STORAGE }
+                        .find { (_, perm) -> perm == Manifest.permission.WRITE_EXTERNAL_STORAGE }
                         ?.let { (grantResult, _) -> grantResult == PackageManager.PERMISSION_GRANTED }
                 if (granted == true) {
                     GitRepoActivity.start(this)
@@ -220,11 +219,14 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             }
 
             R.id.repos_options_menu_item_new_git -> {
-                if (ContextCompat.checkSelfPermission(this, READ_WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     GitRepoActivity.start(this)
                 } else {
                     // TODO: Show explanation why possibly, if ActivityCompat.shouldShowRequestPermissionRationale() says so?
-                    ActivityCompat.requestPermissions(this, arrayOf(READ_WRITE_EXTERNAL_STORAGE), ACTIVITY_REQUEST_CODE_FOR_READ_WRITE_EXTERNAL_STORAGE)
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                        ACTIVITY_REQUEST_CODE_FOR_READ_WRITE_EXTERNAL_STORAGE)
                 }
                 return
             }
@@ -277,7 +279,6 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
     companion object {
         val TAG: String = ReposActivity::class.java.name
 
-        const val READ_WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE
         const val ACTIVITY_REQUEST_CODE_FOR_READ_WRITE_EXTERNAL_STORAGE = 0
     }
 }

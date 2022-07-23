@@ -6,19 +6,18 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.view.View
 import androidx.annotation.StringRes
 import androidx.preference.*
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
+import com.orgzly.android.SharingShortcutsManager
 import com.orgzly.android.prefs.*
-import com.orgzly.android.reminders.ReminderService
+import com.orgzly.android.reminders.RemindersScheduler
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.NoteStates
 import com.orgzly.android.ui.notifications.Notifications
 import com.orgzly.android.ui.util.ActivityUtils
-import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.usecase.NoteReparseStateAndTitles
 import com.orgzly.android.usecase.NoteSyncCreatedAtTimeWithProperty
 import com.orgzly.android.usecase.UseCase
@@ -86,6 +85,16 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             }
         }
 
+        preference(R.string.pref_key_file_absolute_root)?.let {
+            val pref = it as EditTextPreference
+            pref.text = AppPreferences.fileAbsoluteRoot(context)
+        }
+
+        preference(R.string.pref_key_file_relative_root)?.let {
+            val pref = it as EditTextPreference
+            pref.text = AppPreferences.fileRelativeRoot(context)
+        }
+
         /* Update preferences which depend on multiple others. */
         updateRemindersScreen()
     }
@@ -103,30 +112,10 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        /*
-         * Set fragment's background.
-         */
-        val color = view.context.styledAttributes(R.styleable.ColorScheme) { typedArray ->
-            typedArray.getColor(R.styleable.ColorScheme_item_book_card_bg_color, -1)
-        }
-
-        if (color != -1) {
-            view.setBackgroundColor(color)
-        }
-
-        /* Remove dividers. */
-//        view?.findViewById(android.R.id.list)?.let {
-//            (it as? ListView)?.divider = null
-//        }
-    }
-
     /*
      * Display custom preference's dialog.
      */
-    override fun onDisplayPreferenceDialog(preference: Preference?) {
+    override fun onDisplayPreferenceDialog(preference: Preference) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, preference)
 
         when (preference) {
@@ -165,7 +154,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         listener?.onTitleChange(preferenceScreen?.title)
 
         /* Start to listen for any preference changes. */
-        PreferenceManager.getDefaultSharedPreferences(activity)
+        PreferenceManager.getDefaultSharedPreferences(requireActivity())
                 .registerOnSharedPreferenceChangeListener(this)
     }
 
@@ -173,7 +162,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         super.onPause()
 
         /* Stop listening for preference changed. */
-        PreferenceManager.getDefaultSharedPreferences(activity)
+        PreferenceManager.getDefaultSharedPreferences(requireActivity())
                 .unregisterOnSharedPreferenceChangeListener(this)
     }
 
@@ -297,8 +286,9 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
          * - Changing states or priorities can affect the displayed data
          * - Enabling or disabling reminders needs to trigger reminder service notification
          */
-        ReminderService.notifyForDataChanged(requireContext())
-        ListWidgetProvider.notifyDataChanged(requireContext())
+        RemindersScheduler.notifyDataSetChanged(requireContext())
+        ListWidgetProvider.notifyDataSetChanged(requireContext())
+        SharingShortcutsManager().replaceDynamicShortcuts(requireContext())
     }
 
     private fun updateRemindersScreen() {
@@ -353,8 +343,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         }
     }
 
-    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
-        if (preference != null && preference is PreferenceScreen) {
+    override fun onPreferenceTreeClick(preference: Preference): Boolean {
+        if (preference is PreferenceScreen) {
             preference.key?.let { key ->
                 if (key in PREFS_RESOURCES) {
                     listener?.onPreferenceScreen(key)

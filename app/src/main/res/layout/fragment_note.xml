@@ -1,127 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ViewFlipper
-        android:id="@+id/fragment_note_view_flipper"
+        android:id="@+id/view_flipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ScrollView
-            android:id="@+id/fragment_note_container"
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingBottom="?attr/actionBarSize"
             android:clipToPadding="false"
-            android:fadeScrollbars="false"
             android:scrollbarStyle="outsideOverlay">
 
             <!-- Entire note -->
             <LinearLayout
-                android:id="@+id/fragment_note_content"
+                android:id="@+id/note"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/screen_edge"
                 android:orientation="vertical">
 
                 <!-- Breadcrumbs and title -->
-                <LinearLayout
+                <com.google.android.material.appbar.AppBarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/toolbar"
+                    android:theme="@style/TopAppBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingTop="@dimen/screen_edge">
+                    app:contentInsetLeft="0dp"
+                    app:contentInsetRight="0dp"
+                    app:contentInsetStart="0dp"
+                    app:contentInsetEnd="0dp">
 
-                    <!-- Breadcrumbs -->
-                    <FrameLayout
-                        android:id="@+id/fragment_note_breadcrumbs"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/screen_edge"
-                        android:layout_marginStart="@dimen/screen_edge"
-                        android:layout_marginRight="@dimen/screen_edge"
-                        android:layout_marginEnd="@dimen/screen_edge"
-                        android:scrollbars="none"
-                        android:visibility="visible">
-
-                        <TextView
-                            android:id="@+id/fragment_note_breadcrumbs_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:gravity="center_vertical"
-                            android:linksClickable="true"
-                            android:textColor="?attr/text_secondary_color"
-                            android:textSize="?attr/fragment_note_content_text_size"
-                            android:lineSpacingMultiplier="1.25"
-                            tools:text="@string/breadcrumbs_sample" />
-                    </FrameLayout>
-
-                    <!-- Selectable notebook -->
-                    <TextView
-                        android:id="@+id/fragment_note_location_button"
-                        style="@style/NoteFragmentListItemSpinnerButton"
-                        android:layout_width="match_parent"
-                        android:layout_marginLeft="@dimen/screen_edge_minus_4dp"
-                        android:layout_marginStart="@dimen/screen_edge_minus_4dp"
-                        android:layout_marginRight="@dimen/screen_edge_minus_4dp"
-                        android:layout_marginEnd="@dimen/screen_edge_minus_4dp"
-                        android:textSize="?attr/fragment_note_content_text_size"
-                        tools:text="GTD"
-                        android:visibility="visible"/>
-
-                    <!-- Title -->
-                    <com.orgzly.android.ui.views.EditTextWithMarkup
-                        android:id="@+id/fragment_note_title"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/screen_edge_minus_4dp"
-                        android:layout_marginStart="@dimen/screen_edge_minus_4dp"
-                        android:layout_marginRight="@dimen/screen_edge_minus_4dp"
-                        android:layout_marginEnd="@dimen/screen_edge_minus_4dp"
-                        android:layout_marginTop="@dimen/space_between_content_areas"
-                        android:layout_marginBottom="@dimen/space_between_content_areas"
-                        android:inputType="text|textCapSentences"
-                        android:imeOptions="actionDone"
-                        android:hint="@string/fragment_note_title_hint"
-                        tools:text="@string/head_title_sample"
-                        android:freezesText="true"
-                        android:textSize="?attr/font_large"
-                        android:visibility="visible" />
+                        android:orientation="vertical"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp">
 
-                    <com.orgzly.android.ui.views.TextViewWithMarkup
-                        app:parse_checkboxes="false"
-                        android:id="@+id/fragment_note_title_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/screen_edge_minus_4dp"
-                        android:layout_marginStart="@dimen/screen_edge_minus_4dp"
-                        android:layout_marginRight="@dimen/screen_edge_minus_4dp"
-                        android:layout_marginEnd="@dimen/screen_edge_minus_4dp"
-                        android:layout_marginTop="@dimen/space_between_content_areas"
-                        android:layout_marginBottom="@dimen/space_between_content_areas"
-                        style="@style/Widget.AppCompat.EditText"
-                        android:hint="@string/fragment_note_title_hint"
-                        tools:text="@string/head_title_sample"
-                        android:freezesText="true"
-                        android:textIsSelectable="true"
-                        android:textSize="?attr/font_large"
-                        android:visibility="gone" />
+                        <!-- Breadcrumbs -->
+                        <FrameLayout
+                            android:id="@+id/breadcrumbs"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/screen_edge"
+                            android:layout_marginEnd="@dimen/screen_edge"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
+                            android:scrollbars="none">
 
-                </LinearLayout>
+                            <TextView
+                                android:id="@+id/breadcrumbs_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:gravity="center_vertical"
+                                android:linksClickable="true"
+                                android:textSize="?attr/fragment_note_content_text_size"
+                                android:lineSpacingMultiplier="1.25"
+                                tools:text="@string/breadcrumbs_sample" />
+                        </FrameLayout>
 
-                <!--
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/dividerHorizontal" />
-                    -->
+                        <!-- Selectable notebook -->
+                        <LinearLayout
+                            android:id="@+id/location_container"
+                            style="@style/NoteFragmentMetadataItemContainer">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="?attr/ic_folder_open_24dp"
+                                android:alpha="?attr/active_unfocused_icon_alpha"/>
+                            <TextView
+                                android:id="@+id/location_button"
+                                style="@style/NoteFragmentMetadataItemValueButton"
+                                tools:text="Inbox"/>
+                        </LinearLayout>
+
+                        <!-- Title -->
+                        <com.orgzly.android.ui.views.EditTextWithMarkup
+                            android:id="@+id/title"
+                            style="@style/NoteFragmentTextContainer"
+                            android:inputType="text|textCapSentences"
+                            android:imeOptions="actionDone"
+                            android:hint="@string/fragment_note_title_hint"
+                            tools:text="@string/head_title_sample"
+                            android:textAppearance="@style/TitleTextAppearance"
+                            android:visibility="visible" />
+
+                        <com.orgzly.android.ui.views.TextViewWithMarkup
+                            app:parse_checkboxes="false"
+                            android:id="@+id/title_view"
+                            style="@style/NoteFragmentTextContainer"
+                            android:hint="@string/fragment_note_title_hint"
+                            tools:text="@string/head_title_sample"
+                            android:textAppearance="@style/TitleTextAppearance"
+                            android:textIsSelectable="true"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+                </com.google.android.material.appbar.MaterialToolbar>
+
+                </com.google.android.material.appbar.AppBarLayout>
 
                 <!-- Metadata header -->
                 <LinearLayout
-                    android:id="@+id/fragment_note_metadata_header"
-                    style="@style/NoteFragmentFullWidthButton">
+                    android:id="@+id/metadata_header"
+                    style="@style/NoteFragmentMetadataHeaderContainer">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -132,28 +128,29 @@
                         android:alpha="?attr/active_unfocused_icon_alpha"/>
 
                     <TextView
+                        android:id="@+id/metadata_header_text"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/screen_edge"
-                        android:layout_marginStart="@dimen/screen_edge"
+                        android:layout_marginLeft="@dimen/fragment_note_icon_margin"
+                        android:layout_marginStart="@dimen/fragment_note_icon_margin"
                         android:textSize="?attr/fragment_note_content_text_size"
-                        android:textColor="?attr/text_primary_color"
-                        android:text="@string/metadata"/>
+                        android:text="@string/metadata"
+                        android:visibility="invisible" />
 
                     <ImageView
-                        android:id="@+id/fragment_note_metadata_header_up_icon"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:padding="12dp"
+                        android:id="@+id/metadata_header_up_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="12dp"
                         android:src="?attr/ic_keyboard_arrow_up_24dp"
                         android:alpha="?attr/active_unfocused_icon_alpha"/>
 
                     <ImageView
-                        android:id="@+id/fragment_note_metadata_header_down_icon"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:padding="12dp"
+                        android:id="@+id/metadata_header_down_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="12dp"
                         android:src="?attr/ic_keyboard_arrow_down_24dp"
                         android:alpha="?attr/active_unfocused_icon_alpha"
                         android:visibility="gone"/>
@@ -162,20 +159,15 @@
 
                 <!-- Metadata -->
                 <LinearLayout
-                    android:id="@+id/fragment_note_metadata"
+                    android:id="@+id/metadata"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="@dimen/space_between_content_areas"
-                    android:layout_marginStart="@dimen/screen_edge"
-                    android:layout_marginLeft="@dimen/screen_edge"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginEnd="4dp">
+                    android:orientation="vertical">
 
                     <!-- Tags. -->
                     <LinearLayout
-                        android:id="@+id/fragment_note_tags_container"
-                        style="@style/NoteFragmentListItem">
+                        android:id="@+id/tags_container"
+                        style="@style/NoteFragmentMetadataItemContainer">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -186,28 +178,30 @@
                             android:contentDescription="@string/tags"/>
 
                         <MultiAutoCompleteTextView
-                            android:id="@+id/fragment_note_tags"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/padded_content_left_margin_from_icon"
-                            android:layout_marginStart="@dimen/padded_content_left_margin_from_icon"
+                            android:id="@+id/tags_button"
+                            style="@style/NoteFragmentMetadataItemValueButton"
                             android:inputType="text"
-                            android:hint="@string/fragment_note_tags_hint"
-                            android:completionThreshold="1"
-                            android:freezesText="true"
-                            android:textAppearance="?android:attr/textAppearanceSmall" />
+                            android:hint="@string/tags"
+                            android:completionThreshold="0"
+                            android:freezesText="true" />
 
                         <ImageButton
-                            android:id="@+id/fragment_note_tags_button"
-                            style="@style/NoteFragmentButton"
+                            android:id="@+id/tags_menu"
+                            style="@style/NoteFragmentMetadataItemButton"
                             android:src="?attr/ic_more_horiz_24dp" />
+
+                        <ImageButton
+                            android:id="@+id/tags_remove"
+                            style="@style/NoteFragmentMetadataItemButton"
+                            android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
+
+                    <View style="@style/HorizontalDivider" />
 
                     <!-- State -->
                     <LinearLayout
-                        android:id="@+id/fragment_note_state_container"
-                        style="@style/NoteFragmentListItem">
+                        android:id="@+id/state_container"
+                        style="@style/NoteFragmentMetadataItemContainer">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -215,20 +209,22 @@
                             android:src="?attr/ic_flag_24dp"
                             android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
-                            android:id="@+id/fragment_note_state_button"
-                            style="@style/NoteFragmentListItemSpinnerButton"
+                            android:id="@+id/state_button"
+                            style="@style/NoteFragmentMetadataItemValueButton"
                             android:hint="@string/state"
                             tools:text="TODO"/>
                         <ImageButton
-                            android:id="@+id/fragment_note_state_remove"
-                            style="@style/NoteFragmentButton"
+                            android:id="@+id/state_remove"
+                            style="@style/NoteFragmentMetadataItemButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
+                    <View style="@style/HorizontalDivider" />
+
                     <!-- Priority -->
                     <LinearLayout
-                        android:id="@+id/fragment_note_priority_container"
-                        style="@style/NoteFragmentListItem">
+                        android:id="@+id/priority_container"
+                        style="@style/NoteFragmentMetadataItemContainer">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -236,20 +232,22 @@
                             android:src="?attr/ic_star_border_24dp"
                             android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
-                            android:id="@+id/fragment_note_priority_button"
-                            style="@style/NoteFragmentListItemSpinnerButton"
+                            android:id="@+id/priority_button"
+                            style="@style/NoteFragmentMetadataItemValueButton"
                             android:hint="@string/priority"
                             tools:text="Priority A"/>
                         <ImageButton
-                            android:id="@+id/fragment_note_priority_remove"
-                            style="@style/NoteFragmentButton"
+                            android:id="@+id/priority_remove"
+                            style="@style/NoteFragmentMetadataItemButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
+                    <View style="@style/HorizontalDivider" />
+
                     <!-- Scheduled time -->
                     <LinearLayout
-                        android:id="@+id/fragment_note_scheduled_time_container"
-                        style="@style/NoteFragmentListItem">
+                        android:id="@+id/scheduled_time_container"
+                        style="@style/NoteFragmentMetadataItemContainer">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -257,19 +255,21 @@
                             android:src="?attr/ic_today_24dp"
                             android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
-                            android:id="@+id/fragment_note_scheduled_button"
-                            style="@style/NoteFragmentListItemSpinnerButton"
+                            android:id="@+id/scheduled_button"
+                            style="@style/NoteFragmentMetadataItemValueButton"
                             android:hint="@string/schedule_button_hint"/>
                         <ImageButton
-                            android:id="@+id/fragment_note_scheduled_remove"
-                            style="@style/NoteFragmentButton"
+                            android:id="@+id/scheduled_remove"
+                            style="@style/NoteFragmentMetadataItemButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
+                    <View style="@style/HorizontalDivider" />
+
                     <!-- Deadline time -->
                     <LinearLayout
-                        android:id="@+id/fragment_note_deadline_time_container"
-                        style="@style/NoteFragmentListItem">
+                        android:id="@+id/deadline_time_container"
+                        style="@style/NoteFragmentMetadataItemContainer">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -277,20 +277,22 @@
                             android:src="?attr/ic_alarm_24dp"
                             android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
-                            android:id="@+id/fragment_note_deadline_button"
-                            style="@style/NoteFragmentListItemSpinnerButton"
+                            android:id="@+id/deadline_button"
+                            style="@style/NoteFragmentMetadataItemValueButton"
                             android:hint="@string/deadline_button_hint"
                             tools:text="@string/note_deadline_sample"/>
                         <ImageButton
-                            android:id="@+id/fragment_note_deadline_remove"
-                            style="@style/NoteFragmentButton"
+                            android:id="@+id/deadline_remove"
+                            style="@style/NoteFragmentMetadataItemButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
+                    <View style="@style/HorizontalDivider" />
+
                     <!-- Closed time -->
                     <LinearLayout
-                        android:id="@+id/fragment_note_closed_time_container"
-                        style="@style/NoteFragmentListItem">
+                        android:id="@+id/closed_time_container"
+                        style="@style/NoteFragmentMetadataItemContainer">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -298,113 +300,120 @@
                             android:src="?attr/ic_outline_check_circle_24dp"
                             android:alpha="?attr/active_unfocused_icon_alpha"/>
                         <TextView
-                            android:id="@+id/fragment_note_closed_edit_text"
-                            style="@style/NoteFragmentListItemSpinnerButton"
+                            android:id="@+id/closed_button"
+                            style="@style/NoteFragmentMetadataItemValueButton"
                             android:hint="@string/closed_button_hint"/>
                         <ImageButton
-                            android:id="@+id/fragment_note_closed_remove"
-                            style="@style/NoteFragmentButton"
+                            android:id="@+id/closed_remove"
+                            style="@style/NoteFragmentMetadataItemButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
+                    <View android:id="@+id/closed_time_divider" style="@style/HorizontalDivider" />
+
                     <!-- List of properties -->
                     <LinearLayout
-                        android:id="@+id/fragment_note_properties_container"
+                        android:id="@+id/properties_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <include layout="@layout/fragment_note_property"/>
+                        <include layout="@layout/property"/>
                     </LinearLayout>
 
                 </LinearLayout>
 
-                <!--
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="@dimen/space_between_content_areas"
-                    android:background="?android:attr/dividerHorizontal" />
-                    -->
-
-                <!-- Content header -->
-                <LinearLayout
-                    android:id="@+id/fragment_note_content_header"
-                    style="@style/NoteFragmentFullWidthButton"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/screen_edge"
-                        android:layout_marginStart="@dimen/screen_edge"
-                        android:textSize="?attr/fragment_note_content_text_size"
-                        android:textColor="?attr/text_primary_color"
-                        android:text="@string/content"/>
-
-                    <ImageView
-                        android:id="@+id/fragment_note_content_header_up_icon"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:padding="12dp"
-                        android:src="?attr/ic_keyboard_arrow_up_24dp"
-                        android:alpha="?attr/active_unfocused_icon_alpha"/>
-
-                    <ImageView
-                        android:id="@+id/fragment_note_content_header_down_icon"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:padding="12dp"
-                        android:src="?attr/ic_keyboard_arrow_down_24dp"
-                        android:alpha="?attr/active_unfocused_icon_alpha"
-                        android:visibility="gone"/>
-
-                </LinearLayout>
+                <View style="@style/HorizontalDivider" />
 
                 <LinearLayout
-                    android:id="@+id/fragment_note_content_views"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <com.orgzly.android.ui.views.EditTextWithMarkup
-                        android:id="@+id/body_edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/screen_edge_minus_4dp"
-                        android:layout_marginStart="@dimen/screen_edge_minus_4dp"
-                        android:layout_marginRight="@dimen/screen_edge_minus_4dp"
-                        android:layout_marginEnd="@dimen/screen_edge_minus_4dp"
-                        android:inputType="text|textCapSentences|textMultiLine"
-                        android:hint="@string/content"
-                        android:gravity="start|top"
-                        android:freezesText="true"
-                        android:textSize="?attr/fragment_note_content_text_size"
-                        android:visibility="visible"  />
+                    <!-- Content header -->
+                    <LinearLayout
+                        android:id="@+id/content_header"
+                        style="@style/NoteFragmentMetadataHeaderContainer">
 
-                    <com.orgzly.android.ui.views.TextViewWithMarkup
-                        android:id="@+id/body_view"
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/screen_edge"
+                            android:layout_marginLeft="@dimen/screen_edge"
+                            android:src="?attr/ic_outline_notes_24dp"
+                            android:alpha="?attr/active_unfocused_icon_alpha"/>
+
+                        <TextView
+                            android:id="@+id/content_header_text"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/fragment_note_icon_margin"
+                            android:layout_marginStart="@dimen/fragment_note_icon_margin"
+                            android:textSize="?attr/fragment_note_content_text_size"
+                            android:text="@string/content"
+                            android:visibility="invisible" />
+
+                        <ImageView
+                            android:id="@+id/content_header_up_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="12dp"
+                            android:src="?attr/ic_keyboard_arrow_up_24dp"
+                            android:alpha="?attr/active_unfocused_icon_alpha"/>
+
+                        <ImageView
+                            android:id="@+id/content_header_down_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="12dp"
+                            android:src="?attr/ic_keyboard_arrow_down_24dp"
+                            android:alpha="?attr/active_unfocused_icon_alpha"
+                            android:visibility="gone"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/content_views"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/screen_edge_minus_4dp"
-                        android:layout_marginStart="@dimen/screen_edge_minus_4dp"
-                        android:layout_marginRight="@dimen/screen_edge_minus_4dp"
-                        android:layout_marginEnd="@dimen/screen_edge_minus_4dp"
-                        android:freezesText="true"
-                        android:gravity="start|top"
-                        style="@style/Widget.AppCompat.EditText"
-                        android:textIsSelectable="true"
-                        android:textSize="?attr/fragment_note_content_text_size"
-                        android:hint="@string/content"
-                        android:visibility="gone" />
+                        android:orientation="vertical">
+
+                        <com.orgzly.android.ui.views.EditTextWithMarkup
+                            android:id="@+id/content_edit"
+                            style="@style/NoteFragmentTextContainer"
+                            android:inputType="text|textCapSentences|textMultiLine"
+                            android:hint="@string/content"
+                            android:gravity="start|top"
+                            android:textSize="?attr/fragment_note_content_text_size"
+                            android:visibility="visible"  />
+
+                        <com.orgzly.android.ui.views.TextViewWithMarkup
+                            android:id="@+id/body_view"
+                            style="@style/NoteFragmentTextContainer"
+                            android:gravity="start|top"
+                            android:textIsSelectable="true"
+                            android:textSize="?attr/fragment_note_content_text_size"
+                            android:hint="@string/content"
+                            android:visibility="gone" />
+                    </LinearLayout>
                 </LinearLayout>
 
+                <View style="@style/HorizontalDivider" />
             </LinearLayout>
         </ScrollView>
 
-        <TextView
-            style="@style/BigCenteredText"
-            android:text="@string/note_does_not_exist_anymore"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                style="@style/BigCenteredText"
+                android:text="@string/note_does_not_exist_anymore" />
+        </ScrollView>
     </ViewFlipper>
-</layout>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        style="@style/BottomAppBar.WithMenu" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

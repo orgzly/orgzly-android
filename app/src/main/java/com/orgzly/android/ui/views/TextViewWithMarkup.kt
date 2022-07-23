@@ -24,19 +24,23 @@ import com.orgzly.android.util.OrgFormatter
  * Used for title, content and preface text.
  */
 class TextViewWithMarkup : TextViewFixed {
-    constructor(context: Context) : super(context)
+    constructor(context: Context) : super(context) {
+        // addTextChangedListener(EditTextWatcher())
+    }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+        // addTextChangedListener(EditTextWatcher())
         parseAttrs(attrs)
     }
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        // addTextChangedListener(EditTextWatcher())
         parseAttrs(attrs)
     }
 
     var onUserTextChangeListener: Runnable? = null
 
-    private var rawText: CharSequence? = null
+    private var sourceText: CharSequence? = null
 
     private var parseCheckboxes = true
 
@@ -48,17 +52,21 @@ class TextViewWithMarkup : TextViewFixed {
         }
     }
 
-    fun setRawText(text: CharSequence) {
-        rawText = text
+    fun setSourceText(text: CharSequence?) {
+        sourceText = text
 
-        setText(OrgFormatter.parse(text, context, true, parseCheckboxes), BufferType.SPANNABLE)
+        if (text != null) {
+            setText(OrgFormatter.parse(text, context, true, parseCheckboxes), BufferType.SPANNABLE)
+        } else {
+            setText(null)
+        }
     }
 
-    fun getRawText() : CharSequence? {
-        return rawText
+    fun getSourceText() : CharSequence? {
+        return sourceText
     }
 
-    // TODO: Consider getting MainActivity's *VieWModel* here instead
+    // TODO: Consider getting MainActivity's *ViewModel* here instead
     fun followLinkToNoteWithProperty(name: String, value: String) {
         MainActivity.followLinkToNoteWithProperty(name, value)
     }
@@ -104,23 +112,10 @@ class TextViewWithMarkup : TextViewFixed {
     fun toggleCheckbox(checkboxSpan: CheckboxSpan) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, checkboxSpan)
 
-        val textSpanned = text as Spanned
-
-        val checkboxStart = textSpanned.getSpanStart(checkboxSpan)
-        val checkboxEnd = textSpanned.getSpanEnd(checkboxSpan)
-
-        val builder = SpannableStringBuilder(text)
-
         val content = if (checkboxSpan.isChecked()) "[ ]" else "[X]"
-
         val replacement = checkboxSpanned(content, checkboxSpan.rawStart, checkboxSpan.rawEnd)
 
-        builder.removeSpan(checkboxSpan)
-        builder.replace(checkboxStart, checkboxEnd, replacement)
-
-        var newRawText = rawText as CharSequence
-        newRawText = newRawText.replaceRange(checkboxSpan.rawStart, checkboxSpan.rawEnd, replacement)
-        setRawText(newRawText)
+        setSourceText(sourceText?.replaceRange(checkboxSpan.rawStart, checkboxSpan.rawEnd, replacement))
 
         onUserTextChangeListener?.run()
     }

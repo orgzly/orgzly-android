@@ -13,10 +13,7 @@ import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.ui.CommonViewModel
-import com.orgzly.android.ui.NotePlace
-import com.orgzly.android.ui.Place
-import com.orgzly.android.ui.SingleLiveEvent
+import com.orgzly.android.ui.*
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.share.ShareActivity
 import com.orgzly.android.usecase.*
@@ -26,15 +23,25 @@ import com.orgzly.org.datetime.OrgRange
 import com.orgzly.org.parser.OrgParserWriter
 import java.util.*
 
+data class NoteInitialData(
+    val bookId: Long,
+    val noteId: Long, // Could be 0 if new note is being created
+    val place: Place? = null, // Relative location, used for new notes
+    val title: String? = null, // Initial title, used for when sharing
+    val content: String? = null, // Initial content, used for when sharing
+    val attachmentUri: Uri? = null // Initial attachment Uri, used for when sharing
+)
+
 class NoteViewModel(
-        private val dataRepository: DataRepository,
-        var bookId: Long,
-        private var noteId: Long,
-        private val place: Place?,
-        private val title: String?,
-        private val content: String?,
-        private val attachmentUri: Uri?
-) : CommonViewModel() {
+    private val dataRepository: DataRepository,
+    private val initialData: NoteInitialData) : CommonViewModel() {
+
+    var bookId = initialData.bookId
+    var noteId = initialData.noteId
+    private val place = initialData.place
+    private val title = initialData.title
+    private val content = initialData.content
+    private val attachmentUri = initialData.attachmentUri
 
     enum class ViewEditMode {
         VIEW,
@@ -67,6 +74,15 @@ class NoteViewModel(
     var notePayload: NotePayload? = null
 
     private var originalHash: Long = 0L
+
+    companion object {
+        const val APP_BAR_DEFAULT_MODE = 0
+        const val APP_BAR_EDIT_MODE = 1
+    }
+
+    val appBar: AppBar = AppBar(mapOf(
+        APP_BAR_DEFAULT_MODE to null,
+        APP_BAR_EDIT_MODE to APP_BAR_DEFAULT_MODE))
 
     fun loadData() {
         App.EXECUTORS.diskIO().execute {
@@ -132,7 +148,7 @@ class NoteViewModel(
     private fun startMode(): ViewEditMode {
         // Always start new notes in edit mode
         if (isNew()) {
-            return ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD
+            return ViewEditMode.EDIT_TITLE_WITH_KEYBOARD
         }
 
         return when (AppPreferences.noteDetailsOpeningMode(App.getAppContext())) {
@@ -148,56 +164,39 @@ class NoteViewModel(
         }
     }
 
-    /**
-     * Toggle view/edit mode.
-     */
-    fun toggleViewEditMode() {
-        val mode = when (viewEditMode.value) {
-            ViewEditMode.VIEW ->
-                ViewEditMode.EDIT
-
-            ViewEditMode.EDIT,
-            ViewEditMode.EDIT_TITLE_WITH_KEYBOARD,
-            ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD ->
-                ViewEditMode.VIEW
-
-            null ->
-                ViewEditMode.EDIT
-        }
-
-        viewEditMode.postValue(mode)
-
-        // Only remember last mode when opening existing notes
-        if (!isNew()) {
-            saveCurrentMode(mode)
+    fun toEditTitleMode(saveMode: Boolean = true) {
+        viewEditMode.postValue(ViewEditMode.EDIT_TITLE_WITH_KEYBOARD)
+        if (saveMode) {
+            saveCurrentMode(ViewEditMode.EDIT_TITLE_WITH_KEYBOARD)
         }
     }
 
-    fun editTitle(saveMode: Boolean = true) {
-        ViewEditMode.EDIT_TITLE_WITH_KEYBOARD.let { mode ->
-            viewEditMode.postValue(mode)
-            if (saveMode) {
-                saveCurrentMode(mode)
-            }
-        }
+    fun toEditContentMode() {
+        viewEditMode.postValue(ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD)
+        saveCurrentMode(ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD)
     }
 
-    fun editContent() {
-        ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD.let { mode ->
-            viewEditMode.postValue(mode)
-            saveCurrentMode(mode)
-        }
+    fun toViewMode() {
+        viewEditMode.postValue(ViewEditMode.VIEW)
+        saveCurrentMode(ViewEditMode.VIEW)
+
     }
 
-    fun isInEditMode(): Boolean {
-        return viewEditMode.value != ViewEditMode.VIEW
+    fun toEditMode() {
+        viewEditMode.postValue(ViewEditMode.EDIT)
+        saveCurrentMode(ViewEditMode.EDIT)
     }
 
     private fun saveCurrentMode(mode: ViewEditMode) {
+        // Only remember last mode when opening existing notes
+        if (isNew()) {
+            return
+        }
+
         val context = App.getAppContext()
 
         AppPreferences.noteDetailsLastMode(
-                context, if (mode == ViewEditMode.VIEW) "view" else "edit")
+            context, if (mode == ViewEditMode.VIEW) "view" else "edit")
 
     }
 
@@ -212,20 +211,20 @@ class NoteViewModel(
     }
 
     fun updatePayload(
-            title: String,
-            content: String,
-            state: String?,
-            priority: String?,
-            tags: List<String>,
-            properties: OrgProperties) {
+        title: String,
+        content: String,
+        state: String?,
+        priority: String?,
+        tags: List<String>,
+        properties: OrgProperties) {
 
         notePayload = notePayload?.copy(
-                title = title,
-                content = content,
-                state = state,
-                priority = priority,
-                tags = tags,
-                properties = properties)
+            title = title,
+            content = content,
+            state = state,
+            priority = priority,
+            tags = tags,
+            properties = properties)
     }
 
     fun updatePayloadState(state: String?) {
@@ -246,12 +245,12 @@ class NoteViewModel(
         notePayload = notePayload?.copy(closed = range?.toString())
     }
 
-    fun updatePayloadCreateIdProperty() {
+    private fun updatePayloadCreateIdProperty() {
         if (notePayload?.properties!!.containsKey("ID")) {
             return
         }
         notePayload = notePayload?.copy()
-        val idStr = UUID.randomUUID().toString().toUpperCase()
+        val idStr = UUID.randomUUID().toString().uppercase()
         notePayload?.properties!!.put("ID", idStr)
     }
 
@@ -322,6 +321,10 @@ class NoteViewModel(
 
     fun isNew(): Boolean {
         return place != null
+    }
+
+    fun hasInitialData(): Boolean {
+        return !TextUtils.isEmpty(initialData.title) || !TextUtils.isEmpty(initialData.content)
     }
 
     fun setBook(b: BookView) {

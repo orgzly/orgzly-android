@@ -15,7 +15,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
@@ -33,6 +32,7 @@ import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.BrowserActivity
 import com.orgzly.android.ui.repo.RepoViewModel
 import com.orgzly.android.ui.repo.RepoViewModelFactory
+import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.databinding.ActivityRepoGitBinding
@@ -58,9 +58,9 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_repo_git)
+        binding = ActivityRepoGitBinding.inflate(layoutInflater)
 
-        setupActionBar(R.string.git)
+        setContentView(binding.root)
 
         fields = arrayOf(
                 Field(
@@ -150,6 +150,16 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         }
 
         updateAuthVisibility()
+
+        binding.bottomAppBar.run {
+            setNavigationOnClickListener {
+                finish()
+            }
+        }
+
+        binding.fab.setOnClickListener {
+            saveAndFinish()
+        }
     }
 
     private fun getRepoScheme(): String {
@@ -254,7 +264,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     }
 
     override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
-        menuInflater.inflate(R.menu.repos_context, menu)
+        menuInflater.inflate(R.menu.repos_cab, menu)
     }
 
     private fun saveAndFinish() {

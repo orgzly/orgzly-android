@@ -1,36 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/screen_edge"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <CheckBox
+        android:id="@+id/delete_linked_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center_vertical"
+        android:gravity="start|center_vertical"
+        android:text="@string/also_delete_linked_book"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp" />
+
+    <TextView
+        android:id="@+id/delete_linked_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/screen_edge"
-        android:orientation="vertical">
+        android:layout_marginTop="4dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        tools:text="content://com.android.providers.downloads.documents/tree/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg/document/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg%2Fgtd.org"
+        android:enabled="false" />
 
-        <CheckBox
-            android:id="@+id/delete_linked_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"
-            android:gravity="start|center_vertical"
-            android:text="@string/also_delete_linked_book"
-            android:paddingLeft="8dp"
-            android:paddingStart="8dp"
-            android:textColor="?attr/text_primary_color"/>
-
-        <TextView
-            android:id="@+id/delete_linked_url"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:textColor="?attr/text_disabled_color"
-            tools:text="content://com.android.providers.downloads.documents/tree/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg/document/raw%3A%2Fstorage%2Femulated%2F0%2FDownload%2Forg%2Fgtd.org"/>
-
-    </LinearLayout>
-
-</layout>
+</LinearLayout>

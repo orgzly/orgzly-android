@@ -344,6 +344,7 @@
     <string name="displayed_book_details_used_encoding">Pengkodean digunakan</string>
     <string name="displayed_book_details_last_action">Tindakan terakhir</string>
     <string name="displayed_book_details_notes_count">Hitungan catatan</string>
+    <string name="color_scheme_system">System</string>
     <string name="color_scheme_light">Terang</string>
     <string name="color_scheme_dark">Gelap</string>
     <string name="color_scheme_black">Hitam</string>
@@ -429,6 +430,7 @@
     <string name="list_widget_nothing_selected">No search selected</string>
     <string name="auto_sync">Sinkron otomatis</string>
     <string name="auto_sync_experimental_summary">Digunakan untuk repositori lokal saja</string>
+    <string name="auto_sync_summary">Not supported for Dropbox</string>
     <string name="auto_sync_warning">Tergantung pada pilihan yang Anda pilih, sync bisa dipicu sering. Jika notebook dimodifikasi, isinya seluruh ditransfer ke atau dari repositori. Tindakan tertentu mungkin tertunda saat sinkronisasi berlangsung.</string>
     <string name="pref_title_sync_after_note_create">Membuat catatan</string>
     <string name="pref_summary_sync_after_note_create">Sync setelah membuat catatan baru</string>
@@ -552,4 +554,7 @@
     <string name="content">Content</string>
     <string name="prepend">Prepend</string>
     <string name="insert_new_note_at_beginning">Insert new note at beginning</string>
+    <string name="developer_options">Developer options</string>
+    <string name="git_repository_type">Git repository type</string>
+    <string name="in_development">In development</string>
 </resources>

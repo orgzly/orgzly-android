@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/NoteFragmentMetadataItemContainer">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/property"
+        android:src="?attr/ic_outline_abc_24dp"
+        android:alpha="?attr/active_unfocused_icon_alpha"/>
+
+    <EditText
+        android:id="@+id/name"
+        style="@style/NoteFragmentMetadataItemValueButton"
+        android:maxLines="1"
+        android:inputType="text"
+        android:hint="@string/property_name"
+        android:saveEnabled="false"
+        android:text=""/>
+
+    <Space
+        android:layout_width="8dp"
+        android:layout_height="0dp"/>
+
+    <EditText
+        android:id="@+id/value"
+        style="@style/NoteFragmentMetadataItemValueButton"
+        android:layout_marginLeft="0dp"
+        android:layout_marginStart="0dp"
+        android:maxLines="1"
+        android:inputType="text"
+        android:hint="@string/property_value"
+        android:saveEnabled="false"
+        android:text=""/>
+
+    <ImageButton
+        android:id="@+id/delete"
+        style="@style/NoteFragmentMetadataItemButton"
+        android:src="?attr/ic_close_24dp" />
+
+</LinearLayout>

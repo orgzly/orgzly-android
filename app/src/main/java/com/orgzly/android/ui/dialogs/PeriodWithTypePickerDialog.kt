@@ -1,6 +1,5 @@
 package com.orgzly.android.ui.dialogs
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
@@ -8,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.ArrayRes
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import com.orgzly.R
 import com.orgzly.databinding.DialogPeriodWithTypeBinding
 import com.orgzly.org.datetime.OrgInterval

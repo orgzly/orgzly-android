@@ -3,17 +3,19 @@ package com.orgzly.android.ui.repo
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.*
-import androidx.databinding.DataBindingUtil
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
+import com.orgzly.android.LocalStorage
 import com.orgzly.android.repos.DirectoryRepo
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog
+import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
@@ -23,10 +25,10 @@ import java.io.File
 import java.io.FilenameFilter
 import java.util.*
 
+// TODO: Rewrite or remove
 class BrowserActivity :
         CommonActivity(),
-        AdapterView.OnItemClickListener,
-        SimpleOneLinerDialog.Listener {
+        AdapterView.OnItemClickListener {
 
     private lateinit var binding: ActivityBrowserBinding
 
@@ -44,9 +46,9 @@ class BrowserActivity :
 
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_browser)
+        binding = ActivityBrowserBinding.inflate(layoutInflater)
 
-        setupActionBar()
+        setContentView(binding.root)
 
         setupViews()
 
@@ -55,43 +57,53 @@ class BrowserActivity :
         isFileSelectable = intent.getBooleanExtra(ARG_IS_FILE_SELECTABLE, false)
 
         loadFileListFromNext(true)
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        super.onCreateOptionsMenu(menu)
+        supportFragmentManager.setFragmentResultListener("name-new-folder", this) { _, result ->
+            val value = result.getString("value", "")
 
-        menuInflater.inflate(R.menu.browser, menu)
+            val file = File(currentItem, value)
 
-        return true
-    }
+            if (file.mkdir()) {
+                refresh()
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
+            } else {
+                val message =
+                    resources.getString(R.string.failed_creating_directory, file.toString())
+                showSnackbar(message)
+            }
+        }
+
+        binding.bottomAppBar.run {
+            replaceMenu(R.menu.browser)
+
+            setNavigationOnClickListener {
+                this@BrowserActivity.finish()
+            }
+
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.open_home -> {
+                        nextItem = defaultPath()
+                        loadFileListFromNext(true)
+                    }
+
+                    R.id.new_folder -> {
+                        create()
+                    }
+                }
+
                 true
             }
-            R.id.home -> {
-                nextItem = defaultPath()
-                loadFileListFromNext(true)
-                true
-            }
-            else ->
-                super.onOptionsItemSelected(item)
+        }
+
+        binding.fab.setOnClickListener {
+            useAndFinish(currentItem)
         }
     }
 
     private fun setupViews() {
         listView = binding.list
         listView.onItemClickListener = this
-
-        binding.activityBrowserButtonCreate.setOnClickListener {
-            create()
-        }
-
-        binding.activityBrowserButtonUse.setOnClickListener {
-            useAndFinish(currentItem)
-        }
     }
 
     private fun setNextItemFromArguments(savedInstanceState: Bundle?) {
@@ -118,29 +130,22 @@ class BrowserActivity :
         AppPermissions.isGrantedOrRequest(this, AppPermissions.Usage.LOCAL_REPO)
     }
 
-    private fun create() {
-        SimpleOneLinerDialog
-                .getInstance(
-                        0,
-                        R.string.new_folder,
-                        R.string.name,
-                        R.string.create,
-                        R.string.cancel,
-                        null,
-                        null)
-                .show(supportFragmentManager, SimpleOneLinerDialog.FRAGMENT_TAG)
+    override fun onBackPressed() {
+        // super.onBackPressed()
+
+        // Up
+        currentItem?.let {
+            File(it).parentFile?.let { parentFile ->
+                nextItem = parentFile.absolutePath
+                loadFileListFromNext(false)
+            }
+        }
     }
 
-    override fun onSimpleOneLinerDialogValue(id: Int, value: String, bundle: Bundle?) {
-        val file = File(currentItem, value)
-
-        if (file.mkdir()) {
-            refresh()
-
-        } else {
-            val message = resources.getString(R.string.failed_creating_directory, file.toString())
-            showSnackbar(message)
-        }
+    private fun create() {
+        SimpleOneLinerDialog
+            .getInstance("name-new-folder", R.string.new_folder, R.string.create, null)
+            .show(supportFragmentManager, SimpleOneLinerDialog.FRAGMENT_TAG)
     }
 
     private fun refresh() {
@@ -157,11 +162,7 @@ class BrowserActivity :
     }
 
     private fun defaultPath(): String? {
-        return if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()) {
-            Environment.getExternalStorageDirectory().absolutePath
-        } else {
-            null
-        }
+        return LocalStorage.storage(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -286,7 +287,7 @@ class BrowserActivity :
 
             currentItem = it
 
-            supportActionBar?.title = nextPath.name
+            binding.toolbar.title = nextPath.absolutePath
         }
     }
 

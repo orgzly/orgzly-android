@@ -2,8 +2,6 @@ package com.orgzly.android.ui.books
 
 import android.content.Context
 import android.graphics.Typeface
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.format.DateUtils
@@ -13,6 +11,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.R
 import com.orgzly.android.db.entity.Book
@@ -22,6 +22,7 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.Selection
+import com.orgzly.android.ui.util.goneUnless
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.databinding.ItemBookBinding
 
@@ -56,7 +57,7 @@ class BooksAdapter(
         }
 
         override fun onClick(v: View) {
-            adapterPosition.let { position ->
+            bindingAdapterPosition.let { position ->
                 if (position != RecyclerView.NO_POSITION) {
                     clickListener.onClick(v, position, getItem(position))
                 } else {
@@ -66,7 +67,7 @@ class BooksAdapter(
         }
 
         override fun onLongClick(v: View): Boolean {
-            adapterPosition.let { position ->
+            bindingAdapterPosition.let { position ->
                 return if (position != RecyclerView.NO_POSITION) {
                     clickListener.onLongClick(v, position, getItem(position))
                     true
@@ -178,14 +179,10 @@ class BooksAdapter(
                 }
             }
 
-            if (bookDetails.detailDisplayed) {
-                binding.itemBookDetailsPadding.visibility = View.VISIBLE
-            } else {
-                binding.itemBookDetailsPadding.visibility = View.GONE
-            }
+            binding.itemBookDetailsPadding.goneUnless(bookDetails.detailDisplayed)
 
             /* If it's a dummy book - change opacity. */
-            itemView.alpha = if (item.book.isDummy == true) 0.4f else 1f
+            itemView.alpha = if (item.book.isDummy) 0.4f else 1f
 
             getSelection().setIsSelectedBackground(binding.itemBookContainer, item.book.id)
         }
@@ -205,7 +202,7 @@ class BooksAdapter(
 
         if (book.lastAction?.type === BookAction.Type.ERROR) {
             /* Get error color attribute. */
-            val color = context.styledAttributes(intArrayOf(R.attr.text_error_color)) { typedArray ->
+            val color = context.styledAttributes(intArrayOf(R.attr.colorError)) { typedArray ->
                 typedArray.getColor(0, 0)
             }
 
@@ -257,6 +254,13 @@ class BooksAdapter(
 
     override fun getSelection(): Selection {
         return adapterSelection
+    }
+
+    fun clearSelection() {
+        if (getSelection().count > 0) {
+            getSelection().clear()
+            notifyDataSetChanged() // FIXME
+        }
     }
 
     companion object {
