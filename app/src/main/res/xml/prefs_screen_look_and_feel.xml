@@ -11,6 +11,12 @@
         android:summary="@string/reversed_note_click_action_summary"
         android:defaultValue="@bool/pref_default_is_reverse_click_action"/>
 
+    <SwitchPreference
+        android:key="@string/pref_key_is_remove_indent"
+        android:title="@string/remove_note_indent"
+        android:summary="@string/remove_mote_indent_summary"
+        android:defaultValue="@bool/pref_default_is_remove_indent"/>
+
     <ListPreference
         android:key="@string/pref_key_color_scheme"
         android:title="@string/color_scheme"

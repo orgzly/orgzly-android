@@ -423,6 +423,17 @@ public class AppPreferences {
         getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
     }
 
+    public static boolean isRemoveNoteIndent(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_is_remove_indent),
+                context.getResources().getBoolean(R.bool.pref_default_is_remove_indent));
+    }
+
+    public static void isRemoveNoteIndent(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_is_remove_indent);
+        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
+    }
+
     /*
      * Schedule new note.
      */

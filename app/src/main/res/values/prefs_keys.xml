@@ -25,6 +25,9 @@
     <string name="pref_key_is_reverse_click_action" translatable="false">pref_key_is_reverse_click_action</string>
     <bool name="pref_default_is_reverse_click_action" translatable="false">false</bool>
 
+    <string name="pref_key_is_remove_indent" translatable="false">pref_key_is_remove_indent</string>
+    <bool name="pref_default_is_remove_indent" translatable="false">false</bool>
+
     <string name="pref_key_is_notes_content_displayed_in_list" translatable="false">pref_key_is_notes_content_displayed_in_list</string>
     <bool name="pref_default_is_notes_content_displayed_in_list" translatable="false">true</bool>
 
