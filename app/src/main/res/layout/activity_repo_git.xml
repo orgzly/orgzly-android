@@ -70,38 +70,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/activity_repo_git_ssh_auth_info"
-                android:layout_marginTop="@dimen/space_between_content_areas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/activity_repo_git_ssh_key_browse"
-                    style="@style/Button.Repo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/screen_edge"
-                    android:text="@string/browse" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/activity_repo_git_ssh_key_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:errorEnabled="true">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_repo_git_ssh_key"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/git_ssh_key_hint"
-                        android:inputType="text" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/activity_repo_git_https_auth_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

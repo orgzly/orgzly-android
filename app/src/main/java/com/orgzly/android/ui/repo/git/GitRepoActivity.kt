@@ -21,7 +21,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.git.GitPreferences
-import com.orgzly.android.git.GitSSHKeyTransportSetter
+import com.orgzly.android.git.GitSshKeyTransportSetter
 import com.orgzly.android.git.GitTransportSetter
 import com.orgzly.android.git.HTTPSTransportSetter
 import com.orgzly.android.prefs.AppPreferences
@@ -80,10 +80,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
                         true
                 ),
                 Field(
-                        binding.activityRepoGitSshKey,
-                        binding.activityRepoGitSshKeyLayout,
-                        R.string.pref_key_git_ssh_key_path),
-                Field(
                         binding.activityRepoGitAuthor,
                         binding.activityRepoGitAuthorLayout,
                         R.string.pref_key_git_author),
@@ -104,10 +100,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
         binding.activityRepoGitDirectoryBrowse.setOnClickListener {
             startLocalFileBrowser(binding.activityRepoGitDirectory, ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION)
-        }
-
-        binding.activityRepoGitSshKeyBrowse.setOnClickListener {
-            startLocalFileBrowser(binding.activityRepoGitSshKey, ACTIVITY_REQUEST_CODE_FOR_SSH_KEY_SELECTION, true)
         }
 
         val repoId = intent.getLongExtra(ARG_REPO_ID, 0)
@@ -190,14 +182,10 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     private fun updateAuthVisibility() {
         val repoScheme = getRepoScheme()
         if ("https" == repoScheme) {
-            binding.activityRepoGitSshAuthInfo.visibility = View.GONE
-            binding.activityRepoGitSshKeyLayout.visibility = View.GONE
             binding.activityRepoGitHttpsAuthInfo.visibility = View.VISIBLE
             binding.activityRepoGitHttpsUsernameLayout.visibility = View.VISIBLE
             binding.activityRepoGitHttpsPasswordLayout.visibility = View.VISIBLE
         } else {
-            binding.activityRepoGitSshAuthInfo.visibility = View.VISIBLE
-            binding.activityRepoGitSshKeyLayout.visibility = View.VISIBLE
             binding.activityRepoGitHttpsAuthInfo.visibility = View.GONE
             binding.activityRepoGitHttpsUsernameLayout.visibility = View.GONE
             binding.activityRepoGitHttpsPasswordLayout.visibility = View.GONE
@@ -368,8 +356,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             val password = withDefault(binding.activityRepoGitHttpsPassword.text.toString(), R.string.pref_key_git_https_password)
             return HTTPSTransportSetter(username, password)
         } else {
-            val sshKeyPath = withDefault(binding.activityRepoGitSshKey.text.toString(), R.string.pref_key_git_ssh_key_path)
-            return GitSSHKeyTransportSetter(sshKeyPath)
+            return GitSshKeyTransportSetter()
         }
     }
 
@@ -428,11 +415,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val uri = data.data
                     binding.activityRepoGitDirectory.setText(uri?.path)
-                }
-            ACTIVITY_REQUEST_CODE_FOR_SSH_KEY_SELECTION ->
-                if (resultCode == Activity.RESULT_OK && data != null) {
-                    val uri = data.data
-                    binding.activityRepoGitSshKey.setText(uri?.path)
                 }
         }
     }
@@ -507,7 +489,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         private const val ARG_REPO_ID = "repo_id"
 
         const val ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION = 0
-        const val ACTIVITY_REQUEST_CODE_FOR_SSH_KEY_SELECTION = 1
 
         @JvmStatic
         @JvmOverloads

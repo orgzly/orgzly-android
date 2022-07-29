@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.orgzly.R;
 import com.orgzly.android.App;
 import com.orgzly.android.util.MiscUtils;
 
@@ -16,6 +17,7 @@ import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.TransportCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
@@ -37,10 +39,12 @@ public class GitFileSynchronizer {
 
     private Git git;
     private GitPreferences preferences;
+    private Context context;
 
     public GitFileSynchronizer(Git g, GitPreferences prefs) {
         git = g;
         preferences = prefs;
+        context = App.getAppContext();
     }
 
     private GitTransportSetter transportSetter() {
@@ -67,12 +71,20 @@ public class GitFileSynchronizer {
         MiscUtils.copyFile(repoDirectoryFile(repositoryPath), destination);
     }
 
-    private void fetch() throws GitAPIException {
-        transportSetter()
-                .setTransport(git.fetch()
-                        .setRemote(preferences.remoteName())
-                        .setRemoveDeletedRefs(true))
-                .call();
+    private void fetch() throws IOException {
+        try {
+            transportSetter()
+                    .setTransport(git.fetch()
+                            .setRemote(preferences.remoteName())
+                            .setRemoveDeletedRefs(true))
+                    .call();
+        } catch (GitAPIException e) {
+            throw new IOException(String.format(
+                    "Failed to fetch repo %s: %s", // TODO: move to strings.xml
+                    preferences.remoteUri().toString(),
+                    e.getMessage()
+            ));
+        }
     }
 
     public void checkoutSelected() throws GitAPIException {
@@ -246,9 +258,21 @@ public class GitFileSynchronizer {
             try {
                 pushCommand.call();
             } catch (GitAPIException e) {
-                e.printStackTrace();
+                if (currentActivity != null) {
+                    showSnackbar(
+                            currentActivity,
+                            String.format("Failed to push to remote: %s", e.getMessage())
+                    );
+                }
             }
         });
+        synchronized (monitor) {
+            try {
+                monitor.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        };
     }
 
     private void gitResetMerge() throws IOException, GitAPIException {
@@ -274,7 +298,11 @@ public class GitFileSynchronizer {
             // Point a "marker" branch to the current head, so that we know a good starting commit
             // for merge conflict branches.
             git.branchCreate().setName("orgzly-pre-sync-marker").setForce(true).call();
-            fetch();
+        } catch (GitAPIException e) {
+            throw new IOException(context.getString(R.string.git_sync_error_failed_set_marker_branch));
+        }
+        fetch();
+        try {
             RevCommit current = currentHead();
             RevCommit mergeTarget = getCommit(
                     String.format("%s/%s", preferences.remoteName(), git.getRepository().getBranch()));
@@ -290,8 +318,7 @@ public class GitFileSynchronizer {
                 }
             }
         } catch (GitAPIException e) {
-            e.printStackTrace();
-            throw new IOException("Failed to update from remote");
+            throw new IOException(e.getMessage());
         }
     }
 

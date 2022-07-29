@@ -123,6 +123,11 @@
         </activity>
 
         <activity
+            android:name=".android.ui.SshKeygenActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
+
+        <activity
             android:name=".android.ui.repo.webdav.WebdavRepoActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
         </activity>

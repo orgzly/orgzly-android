@@ -175,7 +175,6 @@
     <string name="git_verifying_settings">Kontrollerar att lagringsplatsens inställningar fungerar.</string>
     <string name="git_url_hint">Fjärradress (t.ex. git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">Mappens plats (t.ex. ”file:/sdcard/orgzly”)</string>
-    <string name="git_ssh_key_hint">SSH-nyckelns plats (t.ex. ”file:/sdcard/id_rsa”)</string>
     <string name="git_https_username_hint">Användarnamn</string>
     <string name="git_https_password_hint">Lösenord</string>
     <string name="git_author_hint">Författare (t.ex. John Doe)</string>

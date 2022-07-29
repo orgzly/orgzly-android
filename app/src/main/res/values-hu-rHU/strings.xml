@@ -175,7 +175,6 @@
     <string name="git_verifying_settings">Biztosítsa, hogy a beállított tároló működni fog.</string>
     <string name="git_url_hint">Távoli cím (pl. git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">Könyvtár helye (pl. “file:/sdcard/orgzly”)</string>
-    <string name="git_ssh_key_hint">SSH kulcs helye (pl. “file:/sdcard/id_rsa”)</string>
     <string name="git_https_username_hint">Felhasználónév</string>
     <string name="git_https_password_hint">Jelszó</string>
     <string name="git_author_hint">Szerző (pl. Kovács Jenő)</string>
