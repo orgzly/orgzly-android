@@ -1,8 +1,12 @@
 package com.orgzly.android.ui.notifications;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import static com.orgzly.android.AppIntent.ACTION_ACCEPT_AND_STORE_REMOTE_HOST_KEY;
+import static com.orgzly.android.AppIntent.ACTION_ACCEPT_REMOTE_HOST_KEY;
+import static com.orgzly.android.AppIntent.ACTION_REJECT_REMOTE_HOST_KEY;
+import static com.orgzly.android.NewNoteBroadcastReceiver.NOTE_TITLE;
+import static com.orgzly.android.git.SshCredentialsProvider.ALLOW;
+import static com.orgzly.android.git.SshCredentialsProvider.ALLOW_AND_STORE;
+import static com.orgzly.android.git.SshCredentialsProvider.DENY;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -12,15 +16,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
-import androidx.annotation.RequiresApi;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.RemoteInput;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import org.eclipse.jgit.internal.transport.sshd.SshdText;
-import org.eclipse.jgit.transport.CredentialItem;
-import org.eclipse.jgit.transport.URIish;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -34,13 +34,13 @@ import com.orgzly.android.ui.share.ShareActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
 
-import static com.orgzly.android.AppIntent.ACTION_ACCEPT_AND_STORE_REMOTE_HOST_KEY;
-import static com.orgzly.android.AppIntent.ACTION_ACCEPT_REMOTE_HOST_KEY;
-import static com.orgzly.android.AppIntent.ACTION_REJECT_REMOTE_HOST_KEY;
-import static com.orgzly.android.NewNoteBroadcastReceiver.NOTE_TITLE;
-import static com.orgzly.android.git.SshCredentialsProvider.ALLOW;
-import static com.orgzly.android.git.SshCredentialsProvider.ALLOW_AND_STORE;
-import static com.orgzly.android.git.SshCredentialsProvider.DENY;
+import org.eclipse.jgit.internal.transport.sshd.SshdText;
+import org.eclipse.jgit.transport.CredentialItem;
+import org.eclipse.jgit.transport.URIish;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Notifications {
     public static final String TAG = Notifications.class.getName();
@@ -171,7 +171,6 @@ public class Notifications {
     Presents either two or three choices to the user. The selected action
     is passed back to the SshCredentialsProvider via a broadcast receiver.
     */
-    @RequiresApi(api = Build.VERSION_CODES.M)
     public static void showSshRemoteHostKeyPrompt(Context context, URIish uri, CredentialItem... items) {
         // Parse CredentialItems
         List<String> messages = new ArrayList<>();
@@ -197,7 +196,7 @@ public class Notifications {
                 .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
                 .setSmallIcon(R.drawable.ic_logo_for_notification)
                 .setColor(ContextCompat.getColor(context, R.color.notification))
-                .setContentTitle(String.format("Accept public key for %s?", uri.getHost()))
+                .setContentTitle(String.format("Accept public key for %s?", uri.getHost())) // TODO: strings.xml
                 .setCategory(NotificationCompat.CATEGORY_ERROR)
                 .setContentText(messages.get(0))
                 .setStyle(new NotificationCompat.BigTextStyle()

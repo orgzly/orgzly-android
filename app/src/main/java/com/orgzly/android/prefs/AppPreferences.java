@@ -820,6 +820,15 @@ public class AppPreferences {
      * Git Sync
      */
 
+    public static String gitSshKeyType(Context context) {
+        return getDefaultSharedPreferences(context).getString(
+                "pref_key_git_ssh_key_type", null);
+    }
+
+    public static void gitSshKeyType(Context context, String value) {
+        getDefaultSharedPreferences(context).edit().putString("pref_key_git_ssh_key_type", value).apply();
+    }
+
     public static boolean gitIsEnabled(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_git_is_enabled),

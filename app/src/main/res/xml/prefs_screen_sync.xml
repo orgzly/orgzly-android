@@ -21,6 +21,21 @@
         android:summary="@string/auto_sync_summary">
     </androidx.preference.PreferenceScreen>
 
+    <Preference
+        android:key="@string/pref_key_ssh_keygen"
+        android:title="@string/ssh_keygen_preference_title"
+        android:summary="@string/ssh_keygen_preference_summary">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.orgzly"
+            android:targetClass="com.orgzly.android.ui.SshKeygenActivity"/>
+    </Preference>
+
+    <Preference
+        android:key="@string/pref_key_ssh_show_public_key"
+        android:title="@string/ssh_show_public_key_preference_title">
+    </Preference>
+
     <PreferenceCategory android:title="@string/notebook_files">
         <SwitchPreference
             android:key="@string/pref_key_is_created_at_added"
