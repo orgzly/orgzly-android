@@ -1,5 +1,8 @@
 package com.orgzly.android.git;
 
+import static com.orgzly.android.ui.AppSnackbarUtils.showSnackbar;
+
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
@@ -15,15 +18,14 @@ import org.eclipse.jgit.api.ListBranchCommand;
 import org.eclipse.jgit.api.MergeResult;
 import org.eclipse.jgit.api.ResetCommand;
 import org.eclipse.jgit.api.Status;
-import org.eclipse.jgit.api.TransportCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
 import java.io.File;
@@ -35,11 +37,13 @@ import java.util.List;
 import java.util.TimeZone;
 
 public class GitFileSynchronizer {
-    private static String TAG = GitFileSynchronizer.class.getSimpleName();
+    private final static String TAG = GitFileSynchronizer.class.getSimpleName();
 
-    private Git git;
-    private GitPreferences preferences;
-    private Context context;
+    private final Git git;
+    private final GitPreferences preferences;
+    private final Context context;
+    private final Activity currentActivity = App.getCurrentActivity();
+
 
     public GitFileSynchronizer(Git g, GitPreferences prefs) {
         git = g;
@@ -79,11 +83,8 @@ public class GitFileSynchronizer {
                             .setRemoveDeletedRefs(true))
                     .call();
         } catch (GitAPIException e) {
-            throw new IOException(String.format(
-                    "Failed to fetch repo %s: %s", // TODO: move to strings.xml
-                    preferences.remoteUri().toString(),
-                    e.getMessage()
-            ));
+            e.printStackTrace();
+            throw new IOException(e.getMessage());
         }
     }
 
@@ -103,22 +104,6 @@ public class GitFileSynchronizer {
             e.printStackTrace();
         }
         return false;
-    }
-
-    public boolean mergeAndPushToRemote() throws IOException {
-        boolean success = mergeWithRemote();
-        if (success) try {
-            transportSetter().setTransport(git.push().setRemote(preferences.remoteName())).call();
-        } catch (GitAPIException e) {}
-        return success;
-    }
-
-    public void updateAndCommitFileFromRevision(
-            File sourceFile, String repositoryPath,
-            ObjectId fileRevision, RevCommit revision) throws IOException {
-        ensureRepoIsClean();
-        if (updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision))
-            return;
     }
 
     private String getShortHash(ObjectId hash) {
@@ -152,8 +137,8 @@ public class GitFileSynchronizer {
         try {
             git.branchDelete().setBranchNames(mergeBranch).call();
         } catch (GitAPIException e) {}
-        Boolean mergeSucceeded = true;
-        Boolean doCleanup = false;
+        boolean mergeSucceeded = true;
+        boolean doCleanup = false;
         try {
             RevCommit mergeTarget = currentHead();
             // Try to use the branch "orgzly-pre-sync-marker" to find a good point for branching off.
@@ -251,12 +236,22 @@ public class GitFileSynchronizer {
     }
 
     public void tryPush() {
-        final TransportCommand pushCommand = transportSetter().setTransport(
+        final var pushCommand = transportSetter().setTransport(
                 git.push().setRemote(preferences.remoteName()));
+        final Object monitor = new Object();
 
         App.EXECUTORS.diskIO().execute(() -> {
             try {
-                pushCommand.call();
+                Iterable<PushResult> results = (Iterable<PushResult>) pushCommand.call();
+                // org.eclipse.jgit.api.PushCommand swallows some errors without throwing exceptions.
+                if (!results.iterator().next().getMessages().isEmpty()) {
+                    if (currentActivity != null) {
+                        showSnackbar(currentActivity, results.iterator().next().getMessages());
+                    }
+                }
+                synchronized (monitor) {
+                    monitor.notify();
+                }
             } catch (GitAPIException e) {
                 if (currentActivity != null) {
                     showSnackbar(
@@ -272,7 +267,7 @@ public class GitFileSynchronizer {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        };
+        }
     }
 
     private void gitResetMerge() throws IOException, GitAPIException {
@@ -375,7 +370,7 @@ public class GitFileSynchronizer {
         updateAndCommitFile(sourceFile, repositoryPath);
     }
 
-    private RevCommit updateAndCommitFile(
+    private void updateAndCommitFile(
             File sourceFile, String repositoryPath) throws IOException {
         File destinationFile = repoDirectoryFile(repositoryPath);
         MiscUtils.copyFile(sourceFile, destinationFile);
@@ -386,7 +381,6 @@ public class GitFileSynchronizer {
         } catch (GitAPIException e) {
             throw new IOException("Failed to commit changes.");
         }
-        return currentHead();
     }
 
     private void commit(String message) throws GitAPIException {
@@ -441,9 +435,8 @@ public class GitFileSynchronizer {
     }
 
     public ObjectId getFileRevision(String pathString, RevCommit commit) throws IOException {
-        ObjectId objectId = TreeWalk.forPath(
+        return TreeWalk.forPath(
                 git.getRepository(), pathString, commit.getTree()).getObjectId(0);
-        return objectId;
     }
 
     public boolean fileMatchesInRevisions(String pathString, RevCommit start, RevCommit end)
