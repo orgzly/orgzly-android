@@ -845,7 +845,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
                 // Do not display CLOSED button if it's not set.
                 binding.closedTimeContainer.goneIf(range == null)
-                binding.closedTimeDivider.goneIf(range == null)
             }
 
             else -> { }

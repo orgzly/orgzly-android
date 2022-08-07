@@ -114,6 +114,8 @@
 
                 </com.google.android.material.appbar.AppBarLayout>
 
+                <View style="@style/HorizontalDivider" />
+
                 <!-- Metadata header -->
                 <LinearLayout
                     android:id="@+id/metadata_header"
@@ -196,8 +198,6 @@
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
-                    <View style="@style/HorizontalDivider" />
-
                     <!-- State -->
                     <LinearLayout
                         android:id="@+id/state_container"
@@ -218,8 +218,6 @@
                             style="@style/NoteFragmentMetadataItemButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
-
-                    <View style="@style/HorizontalDivider" />
 
                     <!-- Priority -->
                     <LinearLayout
@@ -242,8 +240,6 @@
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
-                    <View style="@style/HorizontalDivider" />
-
                     <!-- Scheduled time -->
                     <LinearLayout
                         android:id="@+id/scheduled_time_container"
@@ -263,8 +259,6 @@
                             style="@style/NoteFragmentMetadataItemButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
-
-                    <View style="@style/HorizontalDivider" />
 
                     <!-- Deadline time -->
                     <LinearLayout
@@ -287,8 +281,6 @@
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
 
-                    <View style="@style/HorizontalDivider" />
-
                     <!-- Closed time -->
                     <LinearLayout
                         android:id="@+id/closed_time_container"
@@ -308,8 +300,6 @@
                             style="@style/NoteFragmentMetadataItemButton"
                             android:src="?attr/ic_close_24dp" />
                     </LinearLayout>
-
-                    <View android:id="@+id/closed_time_divider" style="@style/HorizontalDivider" />
 
                     <!-- List of properties -->
                     <LinearLayout
