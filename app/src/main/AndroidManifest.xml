@@ -150,7 +150,7 @@
             android:name=".android.ui.TemplateChooserActivity"
             android:label="@string/new_note_shortcut_label"
             android:icon="@mipmap/cic_shortcut_new_note"
-            android:exported="false">
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
