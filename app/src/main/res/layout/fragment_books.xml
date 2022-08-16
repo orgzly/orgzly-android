@@ -25,6 +25,7 @@
                 android:clipToPadding="false"
                 android:paddingStart="@dimen/screen_edge"
                 android:paddingEnd="@dimen/screen_edge"
+                android:paddingTop="?attr/actionBarSize"
                 android:paddingBottom="@dimen/padding_bottom_for_fab" />
 
             <ScrollView
@@ -39,15 +40,22 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
-        style="@style/BottomAppBar.WithMenu" />
+    <!-- Top toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_toolbar"
+            app:title="@string/notebooks"
+            style="@style/TopAndBottomToolbar"
+            app:menu="@menu/books_actions"
+            app:navigationIcon="?attr/ic_menu_24dp" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="?attr/ic_add_24dp"
-        app:layout_anchor="@id/bottomAppBar" />
+        style="@style/Fab.Add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

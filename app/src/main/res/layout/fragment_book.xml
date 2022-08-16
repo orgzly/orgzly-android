@@ -3,7 +3,6 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -19,32 +18,15 @@
 
             <ProgressBar style="@style/LoadingProgressBar" />
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fragment_book_recycler_view"
+                style="@style/FastScroll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <com.google.android.material.appbar.AppBarLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.google.android.material.appbar.MaterialToolbar
-                        android:id="@+id/toolbar"
-                        android:theme="@style/TopAppBar"
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize" />
-
-                </com.google.android.material.appbar.AppBarLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/fragment_book_recycler_view"
-                    style="@style/FastScroll"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="@dimen/padding_bottom_for_fab" />
-            </LinearLayout>
+                android:layout_marginTop="?attr/actionBarSize"
+                android:paddingTop="8dp"
+                android:paddingBottom="@dimen/padding_bottom_for_fab"
+                android:clipToPadding="false" />
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -66,21 +48,28 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
-        style="@style/BottomAppBar.WithMenu">
+    <!-- Top toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/bottomAppBarTitle"
-            style="@style/BottomAppBarTitle" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_toolbar"
+            style="@style/TopAndBottomToolbar"
+            app:menu="@menu/book_actions"
+            app:navigationIcon="?attr/ic_menu_24dp" />
 
-    </com.google.android.material.bottomappbar.BottomAppBar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Bottom toolbar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/bottom_toolbar"
+        style="@style/TopAndBottomToolbar"
+        android:layout_gravity="bottom"
+        android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="?attr/ic_add_24dp"
-        app:layout_anchor="@id/bottomAppBar" />
+        style="@style/Fab.Add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

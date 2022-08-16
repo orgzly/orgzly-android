@@ -115,11 +115,12 @@ class SearchFragment :
         sharedMainActivityViewModel.setCurrentFragment(FRAGMENT_TAG)
     }
 
-    private fun appBarToDefault() {
+    private fun topToolbarToDefault() {
         viewAdapter.clearSelection()
 
-        binding.bottomAppBar.run {
-            replaceMenu(R.menu.query_actions)
+        binding.topToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.query_actions)
 
             ActivityUtils.keepScreenOnUpdateMenuItem(activity, menu)
 
@@ -145,12 +146,23 @@ class SearchFragment :
             }
 
             requireActivity().setupSearchView(menu)
+
+            setOnClickListener {
+                binding.topToolbar.menu.findItem(R.id.search_view)?.expandActionView()
+            }
+
+            title = getString(R.string.search)
+            subtitle = currentQuery
         }
     }
 
-    private fun appBarToMainSelection() {
-        binding.bottomAppBar.run {
-            replaceMenu(R.menu.query_cab)
+    private fun bottomToolbarToDefault() {
+        binding.bottomToolbar.visibility = View.GONE
+    }
+
+    private fun topToolbarToMainSelection() {
+        binding.topToolbar.run {
+            menu.clear()
 
             // Hide buttons that can't be used when multiple notes are selected
             listOf(R.id.focus).forEach { id ->
@@ -165,10 +177,19 @@ class SearchFragment :
                 viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
+            // Number of selected notes as a title
+            title = viewAdapter.getSelection().count.toString()
+        }
+    }
+
+    private fun bottomToolbarToMainSelection() {
+        binding.bottomToolbar.run {
             setOnMenuItemClickListener { menuItem ->
                 handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
                 true
             }
+
+            visibility = View.VISIBLE
         }
     }
 
@@ -211,28 +232,21 @@ class SearchFragment :
         viewModel.appBar.mode.observeSingle(viewLifecycleOwner) { mode ->
             when (mode) {
                 APP_BAR_DEFAULT_MODE, null -> {
-                    appBarToDefault()
-                    sharedMainActivityViewModel.unlockDrawer()
-                    appBarBackPressHandler.isEnabled = false
+                    topToolbarToDefault()
+                    bottomToolbarToDefault()
 
-                    // Active query as a title, clickable
-                    binding.bottomAppBarTitle.run {
-                        text = currentQuery
-                    }
-                    binding.bottomAppBarTitle.setOnClickListener {
-                        binding.bottomAppBar.menu.findItem(R.id.search_view)?.expandActionView()
-                    }
+                    sharedMainActivityViewModel.unlockDrawer()
+
+                    appBarBackPressHandler.isEnabled = false
                 }
 
                 APP_BAR_SELECTION_MODE -> {
-                    appBarToMainSelection()
-                    sharedMainActivityViewModel.lockDrawer()
-                    appBarBackPressHandler.isEnabled = true
+                    topToolbarToMainSelection()
+                    bottomToolbarToMainSelection()
 
-                    // Number of selected notes as a title
-                    binding.bottomAppBarTitle.run {
-                        text = viewAdapter.getSelection().count.toString()
-                    }
+                    sharedMainActivityViewModel.lockDrawer()
+
+                    appBarBackPressHandler.isEnabled = true
                 }
             }
         }

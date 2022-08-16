@@ -151,7 +151,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
         updateAuthVisibility()
 
-        binding.bottomAppBar.run {
+        binding.topToolbar.run {
             setNavigationOnClickListener {
                 finish()
             }

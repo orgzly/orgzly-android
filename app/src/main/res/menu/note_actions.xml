@@ -5,13 +5,6 @@
     tools:ignore="AlwaysShowAction">
 
     <item
-        android:id="@+id/search_view"
-        android:title="@string/options_menu_item_search"
-        android:icon="?attr/ic_search_24dp"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="collapseActionView|always" tools:ignore="AlwaysShowAction"/>
-
-    <item
         android:id="@+id/to_edit_mode"
         android:title="@string/edit"
         android:icon="?attr/ic_edit_24dp"

@@ -27,6 +27,7 @@ import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.ui.main.setupSearchView
 import com.orgzly.android.ui.savedsearches.SavedSearchesViewModel.Companion.APP_BAR_DEFAULT_MODE
 import com.orgzly.android.ui.savedsearches.SavedSearchesViewModel.Companion.APP_BAR_SELECTION_MODE
+import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils
@@ -105,8 +106,9 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
     }
 
     private fun appBarToDefault() {
-        binding.bottomAppBar.run {
-            replaceMenu(R.menu.saved_searches_actions)
+        binding.topToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.saved_searches_actions)
 
             setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
                 typedArray.getResourceId(R.styleable.Icons_ic_menu_24dp, 0)
@@ -135,6 +137,10 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
                         val intent = Intent(Intent.ACTION_VIEW, uri)
                         startActivity(intent)
                     }
+
+                    R.id.activity_action_settings -> {
+                        startActivity(Intent(context, SettingsActivity::class.java))
+                    }
                 }
 
                 true
@@ -155,8 +161,9 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
     }
 
     private fun appBarToMainSelection() {
-        binding.bottomAppBar.run {
-            replaceMenu(R.menu.saved_searches_cab)
+        binding.topToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.saved_searches_cab)
 
             if (viewAdapter.getSelection().count > 1) {
                 menu.findItem(R.id.saved_searches_cab_move_up).isVisible = false

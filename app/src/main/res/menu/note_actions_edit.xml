@@ -5,12 +5,6 @@
     tools:ignore="AlwaysShowAction">
 
     <item
-        android:id="@+id/to_view_mode"
-        android:title="@string/view"
-        android:icon="?attr/ic_remove_red_eye_24dp"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/done"
         android:title="@string/done"
         android:icon="?attr/ic_done_24dp"

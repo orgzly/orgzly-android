@@ -14,12 +14,12 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.navigation.NavigationView;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -500,9 +500,9 @@ public class MainActivity extends CommonActivity
         }
 
         // Collapse search view if expanded
-        BottomAppBar bottomAppBar = findViewById(R.id.bottomAppBar);
-        if (bottomAppBar != null) {
-            MenuItem menuItem = bottomAppBar.getMenu().findItem(R.id.search_view);
+        Toolbar toolbar = findViewById(R.id.top_toolbar);
+        if (toolbar != null) {
+            MenuItem menuItem = toolbar.getMenu().findItem(R.id.search_view);
             if (menuItem != null) {
                 if (menuItem.isActionViewExpanded()) {
                     menuItem.collapseActionView();

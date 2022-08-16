@@ -1,7 +1,37 @@
 package com.orgzly.android.espresso;
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.longClick;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.contrib.DrawerActions.close;
+import static androidx.test.espresso.contrib.DrawerActions.open;
+import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.clickSetting;
+import static com.orgzly.android.espresso.EspressoUtils.contextualToolbarOverflowMenu;
+import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
+import static com.orgzly.android.espresso.EspressoUtils.onBook;
+import static com.orgzly.android.espresso.EspressoUtils.onListItem;
+import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
+import static com.orgzly.android.espresso.EspressoUtils.onNotesInBook;
+import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
+import static com.orgzly.android.espresso.EspressoUtils.recyclerViewItemCount;
+import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
+import static com.orgzly.android.espresso.EspressoUtils.settingsSetTodoKeywords;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.not;
+
 import android.content.Intent;
 import android.net.Uri;
+import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
 
@@ -20,33 +50,6 @@ import org.junit.Assume;
 import org.junit.Test;
 
 import java.io.IOException;
-
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.pressBack;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.longClick;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.contrib.DrawerActions.close;
-import static androidx.test.espresso.contrib.DrawerActions.open;
-import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.clickSetting;
-import static com.orgzly.android.espresso.EspressoUtils.contextualToolbarOverflowMenu;
-import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
-import static com.orgzly.android.espresso.EspressoUtils.onBook;
-import static com.orgzly.android.espresso.EspressoUtils.onListItem;
-import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
-import static com.orgzly.android.espresso.EspressoUtils.onNotesInBook;
-import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
-import static com.orgzly.android.espresso.EspressoUtils.recyclerViewItemCount;
-import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
-import static com.orgzly.android.espresso.EspressoUtils.settingsSetTodoKeywords;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.not;
 
 @SuppressWarnings("unchecked")
 public class SyncingTest extends OrgzlyTest {
@@ -748,7 +751,8 @@ public class SyncingTest extends OrgzlyTest {
 
         onNoteInBook(1).perform(longClick());
 
-        onView(withId(R.id.bottomAppBarTitle)).check(matches(withText("1")));
+        onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_toolbar))))
+                .check(matches(withText("1")));
 
         testUtils.setupRook(
                 repo,
@@ -764,7 +768,9 @@ public class SyncingTest extends OrgzlyTest {
         // SystemClock.sleep(1000);
 
         onNotesInBook().check(matches(recyclerViewItemCount(2)));
-        onView(withId(R.id.bottomAppBarTitle)).check(matches(not(isDisplayed())));
+
+        onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_toolbar))))
+                .check(matches(withText("book-a")));
     }
 
     @Test

@@ -87,14 +87,4 @@ class BookViewModel(private val dataRepository: DataRepository, val bookId: Long
             notesDeleteRequest.postValue(Pair(ids, count))
         }
     }
-
-    val title = MutableLiveData<String?>(null)
-
-    fun setTitle(str: String?) {
-        title.postValue(str)
-    }
-
-    fun hideTitle() {
-        title.postValue(null)
-    }
 }

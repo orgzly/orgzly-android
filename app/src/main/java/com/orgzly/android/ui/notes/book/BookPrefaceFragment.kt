@@ -90,13 +90,11 @@ class BookPrefaceFragment : Fragment() {
 
         book = dataRepository.getBook(bookId)
 
-        appBarToDefault()
+        topToolbarToDefault()
     }
 
-    private fun appBarToDefault() {
-        binding.bottomAppBar.run {
-            replaceMenu(R.menu.preface_actions)
-
+    private fun topToolbarToDefault() {
+        binding.topToolbar.run {
             setNavigationOnClickListener {
                 listener?.onBookPrefaceEditCancelRequest()
             }

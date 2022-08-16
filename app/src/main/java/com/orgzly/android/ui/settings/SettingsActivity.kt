@@ -1,6 +1,5 @@
 package com.orgzly.android.ui.settings
 
-import androidx.appcompat.app.AlertDialog
 import android.os.Bundle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.R
@@ -10,7 +9,6 @@ import com.orgzly.android.ui.settings.SettingsFragment.Listener
 import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.usecase.*
 import com.orgzly.databinding.ActivitySettingsBinding
-
 
 class SettingsActivity : CommonActivity(), Listener {
     private lateinit var binding: ActivitySettingsBinding
@@ -66,7 +64,7 @@ class SettingsActivity : CommonActivity(), Listener {
     }
 
     override fun onTitleChange(title: CharSequence?) {
-        binding.bottomAppBarTitle.text = title ?: getText(R.string.settings)
+        binding.topToolbar.title = title ?: getText(R.string.settings)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,7 +85,7 @@ class SettingsActivity : CommonActivity(), Listener {
                     .commit()
         }
 
-        binding.bottomAppBar.run {
+        binding.topToolbar.run {
             setNavigationOnClickListener {
                 onBackPressed()
             }

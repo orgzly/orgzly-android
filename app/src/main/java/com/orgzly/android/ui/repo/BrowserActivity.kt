@@ -73,8 +73,9 @@ class BrowserActivity :
             }
         }
 
-        binding.bottomAppBar.run {
-            replaceMenu(R.menu.browser)
+        binding.topToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.browser)
 
             setNavigationOnClickListener {
                 this@BrowserActivity.finish()
@@ -287,7 +288,7 @@ class BrowserActivity :
 
             currentItem = it
 
-            binding.toolbar.title = nextPath.absolutePath
+            binding.topToolbar.title = nextPath.absolutePath
         }
     }
 

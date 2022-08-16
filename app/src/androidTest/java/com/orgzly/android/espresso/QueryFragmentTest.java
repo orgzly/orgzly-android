@@ -1,21 +1,5 @@
 package com.orgzly.android.espresso;
 
-import android.widget.DatePicker;
-import android.widget.TimePicker;
-
-import androidx.test.core.app.ActivityScenario;
-
-import com.orgzly.R;
-import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.ui.main.MainActivity;
-import com.orgzly.org.datetime.OrgDateTime;
-
-import org.junit.Ignore;
-import org.junit.Test;
-
-import java.io.IOException;
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -29,6 +13,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.EspressoUtils.contextualToolbarOverflowMenu;
 import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
@@ -44,8 +29,25 @@ import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.startsWith;
+
+import android.widget.DatePicker;
+import android.widget.TextView;
+import android.widget.TimePicker;
+
+import androidx.test.core.app.ActivityScenario;
+
+import com.orgzly.R;
+import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.prefs.AppPreferences;
+import com.orgzly.android.ui.main.MainActivity;
+import com.orgzly.org.datetime.OrgDateTime;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+import java.io.IOException;
 
 public class QueryFragmentTest extends OrgzlyTest {
     private void defaultSetUp() {
@@ -202,8 +204,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(withText("To Do")).perform(click());
         onNotesInSearch().check(matches(recyclerViewItemCount(3)));
         onView(allOf(withText(endsWith("Note C.")), isDisplayed())).perform(longClick());
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.state)).perform(click());
+        onView(withId(R.id.state)).perform(click());
         onView(withText(R.string.clear)).perform(click());
         onNotesInSearch().check(matches(recyclerViewItemCount(2)));
     }
@@ -244,8 +245,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onNotesInSearch().check(matches(recyclerViewItemCount(2)));
 
         onView(allOf(withText(endsWith("Note C.")), isDisplayed())).perform(longClick());
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.schedule)).perform(click());
+        onView(withId(R.id.schedule)).perform(click());
         onView(withId(R.id.date_picker_button)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
         onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
@@ -737,15 +737,18 @@ public class QueryFragmentTest extends OrgzlyTest {
         onNoteInSearch(0).perform(longClick());
 
         onNotesInSearch().check(matches(recyclerViewItemCount(2)));
-        onView(withId(R.id.bottomAppBarTitle)).check(matches(withText("1")));
+
+        onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_toolbar))))
+                .check(matches(withText("1")));
 
         // Remove state from selected note
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.state)).perform(click());
+        onView(withId(R.id.state)).perform(click());
         onView(withText(R.string.clear)).perform(click());
 
         onNotesInSearch().check(matches(recyclerViewItemCount(1)));
-        onView(withId(R.id.bottomAppBarTitle)).check(matches(not(withText("1"))));
+
+        onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_toolbar))))
+                .check(matches(withText("i.todo")));
     }
 
     @Test
@@ -765,8 +768,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onNoteInSearch(1).perform(longClick());
 
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.state)).perform(click());
+        onView(withId(R.id.state)).perform(click());
 
         onView(withText("TODO")).check(matches(isChecked()));
     }
@@ -795,6 +797,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         onNotesInSearch().check(matches(recyclerViewItemCount(0)));
     }
 
+    // FIXME: Fails at an hour (or less) from midnight
     @Test
     public void testScheduledTimestamp() {
         String inOneHour = new OrgDateTime.Builder()
@@ -812,8 +815,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         // Remove time usage
         onView(allOf(withText(endsWith("Note A")), isDisplayed())).perform(longClick());
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.schedule)).perform(click());
+        onView(withId(R.id.schedule)).perform(click());
         onView(withId(R.id.time_used_checkbox)).perform(click());
         onView(withText(R.string.set)).perform(click());
         pressBack();

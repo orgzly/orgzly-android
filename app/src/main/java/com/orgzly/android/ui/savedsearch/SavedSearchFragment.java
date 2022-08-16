@@ -5,9 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -126,11 +123,17 @@ public class SavedSearchFragment extends Fragment implements DrawerItem {
     }
 
     private void appBarToDefault() {
-        binding.bottomAppBar.getMenu().clear();
+        binding.topToolbar.setNavigationOnClickListener(v -> close());
 
-        binding.bottomAppBar.setNavigationOnClickListener(v -> close());
+        binding.topToolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.done:
+                    save();
+                    return true;
+            }
 
-        binding.fab.setOnClickListener(v -> save());
+            return false;
+        });
     }
 
     @Override

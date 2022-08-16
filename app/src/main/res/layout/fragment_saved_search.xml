@@ -4,22 +4,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <ViewFlipper
         android:id="@+id/fragment_saved_search_flipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="@dimen/screen_edge"
-            android:paddingRight="@dimen/screen_edge"
-            android:paddingTop="@dimen/screen_edge"
-            android:paddingBottom="@dimen/padding_bottom_for_fab"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:padding="@dimen/screen_edge"
             android:clipToPadding="false"
-            android:fadeScrollbars="false">
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -52,27 +52,30 @@
                         android:hint="@string/query"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
                 style="@style/BigCenteredText"
                 android:text="@string/search_does_not_exist_anymore" />
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </ViewFlipper>
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
-        style="@style/BottomAppBar.FabAlignEnd.WithCancel" />
+    <!-- Top toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="?attr/ic_done_24dp"
-        app:layout_anchor="@id/bottomAppBar" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_toolbar"
+            app:title="@string/search"
+            style="@style/TopAndBottomToolbar"
+            app:menu="@menu/done"
+            app:navigationIcon="?attr/ic_arrow_back_24dp" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

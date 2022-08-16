@@ -95,9 +95,10 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
     }
 
     private fun appBarToDefault() {
-        binding.bottomAppBar.run {
+        binding.topToolbar.run {
             if (listAdapter.count > 0) {
-                replaceMenu(R.menu.repos_actions)
+                menu.clear()
+                inflateMenu(R.menu.repos_actions)
 
                 val newRepos = menu.findItem(R.id.repos_options_menu_item_new).subMenu
 

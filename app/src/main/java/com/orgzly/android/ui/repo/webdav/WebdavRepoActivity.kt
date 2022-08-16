@@ -116,7 +116,7 @@ class WebdavRepoActivity : CommonActivity() {
             }
         }
 
-        binding.bottomAppBar.run {
+        binding.topToolbar.run {
             setNavigationOnClickListener {
                 finish()
             }

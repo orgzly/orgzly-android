@@ -12,20 +12,21 @@
         android:id="@+id/activity_settings_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="?attr/actionBarSize"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="com.orgzly.android.ui.settings.SettingsActivity" />
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
-        style="@style/BottomAppBar.FabAlignEnd.WithBack">
+    <!-- Top toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/bottomAppBarTitle"
-            style="@style/BottomAppBarTitle"
-            android:text="@string/settings" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_toolbar"
+            app:title="@string/settings"
+            style="@style/TopAndBottomToolbar"
+            app:navigationIcon="?attr/ic_arrow_back_24dp"/>
 
-    </com.google.android.material.bottomappbar.BottomAppBar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/snackbar_anchor" />
 

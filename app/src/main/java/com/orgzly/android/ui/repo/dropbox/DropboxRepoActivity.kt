@@ -114,7 +114,7 @@ class DropboxRepoActivity : CommonActivity() {
 
         client = DropboxClient(applicationContext, repoId)
 
-        binding.bottomAppBar.run {
+        binding.topToolbar.run {
             setNavigationOnClickListener {
                 finish()
             }

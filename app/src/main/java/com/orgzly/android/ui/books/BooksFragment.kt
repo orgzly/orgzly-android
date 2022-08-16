@@ -177,12 +177,13 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
         viewModel.appBar.toModeFromSelectionCount(viewAdapter.getSelection().count)
     }
 
-    private fun appBarToDefault() {
+    private fun topToolbarToDefault() {
         viewAdapter.clearSelection()
 
         if (withActionBar) {
-            binding.bottomAppBar.run {
-                replaceMenu(R.menu.books_actions)
+            binding.topToolbar.run {
+                menu.clear()
+                inflateMenu(R.menu.books_actions)
 
                 setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
                     typedArray.getResourceId(R.styleable.Icons_ic_menu_24dp, 0)
@@ -219,14 +220,15 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
             }
 
         } else {
-            binding.bottomAppBar.visibility = View.GONE
+            binding.topToolbar.visibility = View.GONE
             binding.fab.visibility = View.GONE
         }
     }
 
-    private fun appBarToMainSelection() {
-        binding.bottomAppBar.run {
-            replaceMenu(R.menu.books_cab)
+    private fun topToolbarToMainSelection() {
+        binding.topToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.books_cab)
 
             setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
                 typedArray.getResourceId(R.styleable.Icons_ic_arrow_back_24dp, 0)
@@ -305,15 +307,8 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
         }
 
     private fun exportBook(book: Book, format: BookFormat) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            val defaultFileName = BookName.fileName(book.name, format)
-            pickFileForBookExport.launch(defaultFileName)
-
-        } else {
-            (requireActivity() as CommonActivity).runWithPermission(AppPermissions.Usage.BOOK_EXPORT) {
-                viewModel.exportBook()
-            }
-        }
+        val defaultFileName = BookName.fileName(book.name, format)
+        pickFileForBookExport.launch(defaultFileName)
     }
 
     private fun deleteBookDialog(book: BookView) {
@@ -498,7 +493,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
         viewModel.appBar.mode.observeSingle(viewLifecycleOwner) { mode ->
             when (mode) {
                 APP_BAR_DEFAULT_MODE -> {
-                    appBarToDefault()
+                    topToolbarToDefault()
 
                     sharedMainActivityViewModel.unlockDrawer()
 
@@ -506,7 +501,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
                 }
 
                 APP_BAR_SELECTION_MODE -> {
-                    appBarToMainSelection()
+                    topToolbarToMainSelection()
 
                     sharedMainActivityViewModel.lockDrawer()
 

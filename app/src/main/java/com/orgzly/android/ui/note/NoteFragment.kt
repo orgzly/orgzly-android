@@ -33,7 +33,6 @@ import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
-import com.orgzly.android.ui.main.setupSearchView
 import com.orgzly.android.ui.note.NoteViewModel.Companion.APP_BAR_DEFAULT_MODE
 import com.orgzly.android.ui.note.NoteViewModel.Companion.APP_BAR_EDIT_MODE
 import com.orgzly.android.ui.notes.book.BookFragment
@@ -284,9 +283,10 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         setContentFoldState(AppPreferences.isNoteContentFolded(context))
     }
 
-    private fun appBarToDefault() {
-        binding.bottomAppBar.run {
-            replaceMenu(R.menu.note_actions)
+    private fun appBarToViewMode() {
+        binding.topToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.note_actions)
 
             ActivityUtils.keepScreenOnUpdateMenuItem(activity, menu)
 
@@ -319,29 +319,20 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             setOnMenuItemClickListener { menuItem ->
                 handleActionItemClick(menuItem)
             }
-
-            requireActivity().setupSearchView(menu)
         }
-
-        // binding.fab.hide()
-//        binding.fab.run {
-//            setOnClickListener {
-//                userSave()
-//            }
-//            show()
-//        }
     }
 
-    private fun appBarToEdit() {
-        binding.bottomAppBar.run {
-            replaceMenu(R.menu.note_actions_edit)
+    private fun appBarToEditMode() {
+        binding.topToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.note_actions_edit)
 
             setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
-                typedArray.getResourceId(R.styleable.Icons_ic_close_24dp, 0)
+                typedArray.getResourceId(R.styleable.Icons_ic_remove_red_eye_24dp, 0)
             })
 
             setNavigationOnClickListener {
-                userCancel()
+                viewModel.toViewMode()
             }
 
             if (viewModel.notePayload == null) {
@@ -351,17 +342,12 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             setOnMenuItemClickListener { menuItem ->
                 handleActionItemClick(menuItem)
             }
-
-            // requireActivity().setupSearchView(menu)
         }
-
-        // binding.fab.hide()
     }
 
     // Displaying a non-existent note, remove some menu items
     private fun removeMenuItemsForNoData(menu: Menu) {
         menu.removeItem(R.id.to_edit_mode)
-        menu.removeItem(R.id.to_view_mode)
         menu.removeItem(R.id.done)
         menu.removeItem(R.id.metadata)
         menu.removeItem(R.id.delete)
@@ -369,10 +355,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
     private fun handleActionItemClick(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.to_view_mode -> {
-                viewModel.toViewMode()
-            }
-
             R.id.to_edit_mode -> {
                 viewModel.toEditMode()
             }
@@ -504,14 +486,14 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         viewModel.appBar.mode.observeSingle(viewLifecycleOwner) { mode ->
             when (mode) {
                 APP_BAR_DEFAULT_MODE -> {
-                    appBarToDefault()
+                    appBarToViewMode()
                     sharedMainActivityViewModel.unlockDrawer()
                     userCancelBackPressHandler.isEnabled = true
                     toViewModeBackPressHandler.isEnabled = false
                 }
 
                 APP_BAR_EDIT_MODE -> {
-                    appBarToEdit()
+                    appBarToEditMode()
                     sharedMainActivityViewModel.lockDrawer()
                     userCancelBackPressHandler.isEnabled = false
                     toViewModeBackPressHandler.isEnabled = true
@@ -741,7 +723,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                     binding.viewFlipper.displayedChild = 0
                 } else {
                     binding.viewFlipper.displayedChild = 1
-                    removeMenuItemsForNoData(binding.bottomAppBar.menu)
+                    removeMenuItemsForNoData(binding.topToolbar.menu)
                 }
             }
 

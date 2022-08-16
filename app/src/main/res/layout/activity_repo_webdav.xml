@@ -95,23 +95,22 @@
 
     </ScrollView>
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
-        style="@style/BottomAppBar.FabAlignEnd.WithCancel">
+    <!-- Top toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/bottomAppBarTitle"
-            style="@style/BottomAppBarTitle"
-            android:text="@string/webdav" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_toolbar"
+            app:title="@string/webdav"
+            style="@style/TopAndBottomToolbar"
+            app:navigationIcon="?attr/ic_arrow_back_24dp"/>
 
-    </com.google.android.material.bottomappbar.BottomAppBar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="?attr/ic_done_24dp"
-        app:layout_anchor="@id/bottomAppBar" />
+        style="@style/Fab.Done" />
 
     <include layout="@layout/snackbar_anchor" />
 

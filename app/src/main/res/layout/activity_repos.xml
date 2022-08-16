@@ -69,16 +69,18 @@
 
     </ViewFlipper>
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
-        style="@style/BottomAppBar.FabAlignEnd.WithBack">
+    <!-- Top toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/bottomAppBarTitle"
-            style="@style/BottomAppBarTitle"
-            android:text="@string/repositories" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_toolbar"
+            app:title="@string/repositories"
+            style="@style/TopAndBottomToolbar"
+            app:navigationIcon="?attr/ic_arrow_back_24dp"/>
 
-    </com.google.android.material.bottomappbar.BottomAppBar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/snackbar_anchor" />
 

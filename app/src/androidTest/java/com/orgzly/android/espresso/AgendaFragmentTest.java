@@ -1,7 +1,30 @@
 package com.orgzly.android.espresso;
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.longClick;
+import static androidx.test.espresso.action.ViewActions.swipeLeft;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
+import static com.orgzly.android.espresso.EspressoUtils.onItemInAgenda;
+import static com.orgzly.android.espresso.EspressoUtils.onNotesInAgenda;
+import static com.orgzly.android.espresso.EspressoUtils.recyclerViewItemCount;
+import static com.orgzly.android.espresso.EspressoUtils.searchForText;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
+
 import android.content.pm.ActivityInfo;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.contrib.PickerActions;
@@ -14,27 +37,6 @@ import com.orgzly.android.ui.main.MainActivity;
 import org.joda.time.DateTime;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.longClick;
-import static androidx.test.espresso.action.ViewActions.swipeLeft;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
-import static com.orgzly.android.espresso.EspressoUtils.onItemInAgenda;
-import static com.orgzly.android.espresso.EspressoUtils.onNotesInAgenda;
-import static com.orgzly.android.espresso.EspressoUtils.recyclerViewItemCount;
-import static com.orgzly.android.espresso.EspressoUtils.searchForText;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anyOf;
-import static org.hamcrest.Matchers.endsWith;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.not;
 
 public class AgendaFragmentTest extends OrgzlyTest {
     private ActivityScenario<MainActivity> defaultSetUp() {
@@ -143,8 +145,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
         defaultSetUp();
         searchForText(".it.done ad.7");
         onItemInAgenda(2).perform(longClick());
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.schedule)).perform(click());
+        onView(withId(R.id.schedule)).perform(click());
         onView(withId(R.id.date_picker_button)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName())))
                 .perform(PickerActions.setDate(
@@ -183,15 +184,18 @@ public class AgendaFragmentTest extends OrgzlyTest {
         onItemInAgenda(1).perform(longClick());
 
         onNotesInAgenda().check(matches(recyclerViewItemCount(12)));
-        onView(withId(R.id.bottomAppBarTitle)).check(matches(withText("1")));
+
+        onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_toolbar))))
+                .check(matches(withText("1")));
 
         // Remove state
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.state)).perform(click());
+        onView(withId(R.id.state)).perform(click());
         onView(withText(R.string.clear)).perform(click());
 
         onNotesInAgenda().check(matches(recyclerViewItemCount(8)));
-        onView(withId(R.id.bottomAppBarTitle)).check(matches(not(withText("1"))));
+
+        onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_toolbar))))
+                .check(matches(withText("i.todo ad.3")));
     }
 
     @Ignore("Not implemented yet")
@@ -203,8 +207,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
         searchForText("ad.3");
 
         onItemInAgenda(1).perform(longClick());
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.state)).perform(click());
+        onView(withId(R.id.state)).perform(click());
 
         onView(withText("TODO")).check(matches(isChecked()));
     }
@@ -241,8 +244,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
 
         searchForText(".it.done ad.7");
         onItemInAgenda(1).perform(longClick());
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.state)).perform(click());
+        onView(withId(R.id.state)).perform(click());
         onView(withText("NEXT")).perform(click());
     }
 

@@ -573,49 +573,30 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="TopAppBar">
+    <style name="TopAndBottomToolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:background">?android:statusBarColor</item>
 
         <!-- Don't overlay -->
-        <item name="colorPrimary">@android:color/transparent</item>
+<!--        <item name="colorPrimary">@android:color/transparent</item>-->
     </style>
 
-    <style name="BottomAppBar">
-        <item name="android:layout_width">match_parent</item>
+    <style name="Fab">
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">bottom</item>
-        <item name="fabCradleMargin">0dp</item>
+        <item name="android:layout_gravity">bottom|end</item>
+        <item name="android:layout_margin">@dimen/screen_edge</item>
         <item name="fabCradleRoundedCornerRadius">0dp</item>
         <item name="fabCradleVerticalOffset">0dp</item>
     </style>
 
-    <style name="BottomAppBar.WithMenu">
-        <item name="navigationIcon">?attr/ic_menu_24dp</item>
+    <style name="Fab.Done">
+        <item name="android:src">?attr/ic_done_24dp</item>
     </style>
 
-    <style name="BottomAppBar.WithCancel">
-        <item name="navigationIcon">?attr/ic_close_24dp</item>
-    </style>
-
-    <style name="BottomAppBar.FabAlignEnd">
-        <item name="fabAlignmentMode">end</item>
-    </style>
-
-    <style name="BottomAppBar.FabAlignEnd.WithBack">
-        <item name="navigationIcon">?attr/ic_arrow_back_24dp</item>
-    </style>
-
-    <style name="BottomAppBar.FabAlignEnd.WithCancel">
-        <item name="navigationIcon">?attr/ic_close_24dp</item>
-    </style>
-
-    <style name="BottomAppBarTitle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:textAppearance">@style/TextAppearance.Material3.TitleLarge</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">end</item>
+    <style name="Fab.Add">
+        <item name="android:src">?attr/ic_add_24dp</item>
     </style>
 
     <style name="HorizontalDivider">

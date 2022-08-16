@@ -1,16 +1,12 @@
 package com.orgzly.android.ui.notes.book
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -171,7 +167,7 @@ class BookFragment :
     }
 
     override fun onQuickBarButtonClick(buttonId: Int, itemId: Long) {
-        handleActionItemClick(buttonId, setOf(itemId))
+        handleActionItemClick(setOf(itemId), buttonId)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -191,10 +187,6 @@ class BookFragment :
                     else -> 1
                 }
             }
-        })
-
-        viewModel.title.observe(viewLifecycleOwner, Observer { title ->
-            binding.toolbar.title = title
         })
 
         viewModel.data.observe(viewLifecycleOwner, Observer { data ->
@@ -248,66 +240,47 @@ class BookFragment :
         viewModel.appBar.mode.observeSingle(viewLifecycleOwner) { mode ->
             when (mode) {
                 APP_BAR_DEFAULT_MODE -> {
-                    appBarToDefault()
+                    viewAdapter.clearSelection()
+
+                    topToolbarToDefault()
+                    bottomToolbarToDefault()
+
+                    binding.fab.run {
+                        if (currentBook != null) {
+                            setOnClickListener {
+                                listener?.onNoteNewRequest(NotePlace(mBookId))
+                            }
+                            show()
+                        } else {
+                            hide()
+                        }
+                    }
 
                     sharedMainActivityViewModel.unlockDrawer()
 
                     appBarBackPressHandler.isEnabled = false
-
-                    // Hide bar's title
-                    binding.bottomAppBarTitle.visibility = View.GONE
-
-                    binding.toolbar.menu.clear()
-
-                    viewModel.setTitle(BookUtils.getFragmentTitleForBook(currentBook))
                 }
 
                 APP_BAR_SELECTION_MODE -> {
-                    appBarToMainSelection()
+                    topToolbarToMainSelection()
+                    bottomToolbarToMainSelection()
+
+                    binding.fab.hide()
 
                     sharedMainActivityViewModel.lockDrawer()
 
                     appBarBackPressHandler.isEnabled = true
-
-                    // Set bar's title
-                    binding.bottomAppBarTitle.run {
-                        text = viewAdapter.getSelection().count.toString()
-                        visibility = View.VISIBLE
-                    }
-
-                    binding.toolbar.menu.clear()
-                    binding.toolbar.inflateMenu(R.menu.book_cab_top)
-                    hideMenuItemsBasedOnSelection(binding.toolbar.menu)
-                    binding.toolbar.setOnMenuItemClickListener { menuItem ->
-                        handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
-                        true
-                    }
-
-                    viewModel.hideTitle()
                 }
 
                 APP_BAR_SELECTION_MOVE_MODE -> {
-                    appBarToNextSelection()
+                    topToolbarToNextSelection()
+                    bottomToolbarToNextSelection()
+
+                    binding.fab.hide()
 
                     sharedMainActivityViewModel.lockDrawer()
 
                     appBarBackPressHandler.isEnabled = true
-
-                    // Set bar's title
-                    binding.bottomAppBarTitle.run {
-                        text = viewAdapter.getSelection().count.toString()
-                        visibility = View.VISIBLE
-                    }
-
-                    binding.toolbar.menu.clear()
-                    binding.toolbar.inflateMenu(R.menu.book_cab_moving)
-                    hideMenuItemsBasedOnSelection(binding.toolbar.menu)
-                    binding.toolbar.setOnMenuItemClickListener { menuItem ->
-                        handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
-                        true
-                    }
-
-                    viewModel.hideTitle()
                 }
             }
         }
@@ -505,13 +478,12 @@ class BookFragment :
         }
     }
 
-    private fun appBarToDefault() {
+    private fun topToolbarToDefault() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        viewAdapter.clearSelection()
-
-        binding.bottomAppBar.run {
-            replaceMenu(R.menu.book_actions)
+        binding.topToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.book_actions)
 
             ActivityUtils.keepScreenOnUpdateMenuItem(activity, menu)
 
@@ -546,54 +518,29 @@ class BookFragment :
                 }
             }
 
-            setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.books_options_menu_item_cycle_visibility -> {
-                        viewModel.cycleVisibility()
-                    }
-
-                    R.id.book_actions_paste -> {
-                        pasteNotes(Place.UNDER, 0)
-                    }
-
-                    R.id.books_options_menu_book_preface -> {
-                        onPrefaceClick()
-                    }
-
-                    R.id.keep_screen_on -> {
-                        val item = menu.findItem(R.id.keep_screen_on)
-                        dialog = ActivityUtils.keepScreenOnToggle(activity, item)
-                    }
-
-                    R.id.activity_action_settings -> {
-                        startActivity(Intent(context, SettingsActivity::class.java))
-                    }
-                }
-
+            binding.topToolbar.setOnMenuItemClickListener { menuItem ->
+                handleActionItemClick(menuItem.itemId, menuItem)
                 true
             }
 
             requireActivity().setupSearchView(menu)
-        }
 
-        binding.fab.run {
-            if (currentBook != null) {
-                setOnClickListener {
-                    listener?.onNoteNewRequest(NotePlace(mBookId))
-                }
-                show()
-            } else {
-                hide()
-            }
+            title = BookUtils.getFragmentTitleForBook(currentBook)
         }
     }
 
-    private fun appBarToMainSelection() {
+    private fun bottomToolbarToDefault() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        binding.bottomAppBar.run {
-            replaceMenu(R.menu.book_cab)
+        binding.bottomToolbar.visibility = View.GONE
+    }
 
+    private fun topToolbarToMainSelection() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+
+        binding.topToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.book_cab_top)
             hideMenuItemsBasedOnSelection(menu)
 
             setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
@@ -601,25 +548,41 @@ class BookFragment :
             })
 
             setNavigationOnClickListener {
-                viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
+                viewModel.appBar.handleOnBackPressed()
             }
 
             setOnMenuItemClickListener { menuItem ->
-                handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
+                handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId, menuItem)
+                true
+            }
 
+            title = viewAdapter.getSelection().count.toString()
+        }
+    }
+
+    private fun bottomToolbarToMainSelection() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+
+        binding.bottomToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.book_cab_bottom)
+            hideMenuItemsBasedOnSelection(menu)
+
+            setOnMenuItemClickListener { menuItem ->
+                handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId, menuItem)
                 true
             }
         }
 
-        binding.fab.hide()
+        binding.bottomToolbar.visibility = View.VISIBLE
     }
 
-    private fun appBarToNextSelection() {
+    private fun topToolbarToNextSelection() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        binding.bottomAppBar.run {
-            replaceMenu(R.menu.book_cab)
-
+        binding.topToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.book_cab_moving)
             hideMenuItemsBasedOnSelection(menu)
 
             setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
@@ -627,16 +590,37 @@ class BookFragment :
             })
 
             setNavigationOnClickListener {
-                viewModel.appBar.toMode(APP_BAR_SELECTION_MODE)
+                viewModel.appBar.handleOnBackPressed()
             }
 
             setOnMenuItemClickListener { menuItem ->
-                handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
+                handleActionItemClick(
+                    viewAdapter.getSelection().getIds(),
+                    menuItem.itemId,
+                    menuItem
+                )
+                true
+            }
+
+            title = viewAdapter.getSelection().count.toString()
+        }
+    }
+
+    private fun bottomToolbarToNextSelection() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+
+        binding.bottomToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.book_cab_bottom)
+            hideMenuItemsBasedOnSelection(menu)
+
+            setOnMenuItemClickListener { menuItem ->
+                handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId, menuItem)
                 false
             }
         }
 
-        binding.fab.hide()
+        binding.bottomToolbar.visibility = View.VISIBLE
     }
 
     private fun hideMenuItemsBasedOnSelection(menu: Menu) {
@@ -646,8 +630,8 @@ class BookFragment :
         }
     }
 
-    private fun handleActionItemClick(actionId: Int, ids: Set<Long>) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, actionId, ids)
+    private fun handleActionItemClick(ids: Set<Long>, itemId: Int, item: MenuItem? = null) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, ids, itemId, item)
 
         if (ids.isEmpty()) {
             Log.e(TAG, "Cannot handle action when there are no items selected")
@@ -655,7 +639,7 @@ class BookFragment :
             return
         }
 
-        when (actionId) {
+        when (itemId) {
             R.id.quick_bar_open -> {
                 openNote(ids.first())
             }
@@ -684,7 +668,7 @@ class BookFragment :
 
             in scheduledTimeButtonIds(),
             in deadlineTimeButtonIds() ->
-                displayTimestampDialog(actionId, ids)
+                displayTimestampDialog(itemId, ids)
 
             R.id.quick_bar_delete,
             R.id.delete_note -> {
@@ -750,6 +734,34 @@ class BookFragment :
             R.id.quick_bar_focus,
             R.id.focus ->
                 listener?.onNoteFocusInBookRequest(ids.first())
+        }
+    }
+
+    private fun handleActionItemClick(itemId: Int, item: MenuItem? = null) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, itemId, item)
+
+        when (itemId) {
+            R.id.books_options_menu_item_cycle_visibility -> {
+                viewModel.cycleVisibility()
+            }
+
+            R.id.book_actions_paste -> {
+                pasteNotes(Place.UNDER, 0)
+            }
+
+            R.id.books_options_menu_book_preface -> {
+                onPrefaceClick()
+            }
+
+            R.id.keep_screen_on -> {
+                if (item != null) {
+                    dialog = ActivityUtils.keepScreenOnToggle(activity, item)
+                }
+            }
+
+            R.id.activity_action_settings -> {
+                startActivity(Intent(context, SettingsActivity::class.java))
+            }
         }
     }
 
