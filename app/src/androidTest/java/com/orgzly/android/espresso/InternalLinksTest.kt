@@ -1,5 +1,6 @@
 package com.orgzly.android.espresso
 
+import android.widget.TextView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -9,7 +10,10 @@ import com.orgzly.R
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.espresso.EspressoUtils.*
 import com.orgzly.android.ui.main.MainActivity
+import org.hamcrest.CoreMatchers.allOf
+import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 
 
@@ -22,6 +26,10 @@ class InternalLinksTest : OrgzlyTest() {
         testUtils.setupBook(
                 "book-a",
                 """
+                    :PROPERTIES:
+                    :ID: 019ae998-1439-4a28-988a-291ee8428245
+                    :END:
+
                     * Note [a-1]
                     [[id:bdce923b-C3CD-41ED-B58E-8BDF8BABA54F]]
 
@@ -39,12 +47,19 @@ class InternalLinksTest : OrgzlyTest() {
 
                     * Note [a-6]
                     [[id:note-with-this-id-does-not-exist]]
+
+                    * Note [a-7]
+                    [[id:dd791937-3fb6-4018-8d5d-b278e0e52c80][Link to book-b by id]]
                 """.trimIndent()
         )
 
         testUtils.setupBook(
                 "book-b",
                 """
+                    :PROPERTIES:
+                    dd791937-3fb6-4018-8d5d-b278e0e52c80
+                    :END:
+
                     * Note [b-1]
                     :PROPERTIES:
                     :CUSTOM_ID: DIFFERENT case CUSTOM id
@@ -75,14 +90,6 @@ class InternalLinksTest : OrgzlyTest() {
     }
 
     @Test
-    fun testNonExistentId() {
-        onNoteInBook(6, R.id.item_head_content)
-            .perform(clickClickableSpan("id:note-with-this-id-does-not-exist"))
-        onSnackbar()
-            .check(matches(withText("Note with “ID” property set to “note-with-this-id-does-not-exist” not found")))
-    }
-
-    @Test
     fun testDifferentCaseCustomIdInternalLink() {
         onNoteInBook(2, R.id.item_head_content)
                 .perform(clickClickableSpan("#Different case custom id"))
@@ -110,5 +117,30 @@ class InternalLinksTest : OrgzlyTest() {
                 .perform(clickClickableSpan("file:./book-b.org"))
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()))
         onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note [b-1]")))
+    }
+
+    @Test
+    fun testNonExistentId() {
+        onNoteInBook(6, R.id.item_head_content)
+            .perform(clickClickableSpan("id:note-with-this-id-does-not-exist"))
+        onSnackbar()
+            .check(matches(withText("Note with “ID” property set to “note-with-this-id-does-not-exist” not found")))
+    }
+
+    @Test
+    @Ignore("Parsing PROPERTIES drawer from book preface is not supported yet")
+    fun testLinkToBookById() {
+        onNoteInBook(7, R.id.item_head_content)
+            .perform(clickClickableSpan("Link to book-b by id"))
+
+//        onSnackbar()
+//            .check(matches(withText("Note with “ID” property set to “dd791937-3fb6-4018-8d5d-b278e0e52c80” not found")))
+
+        // In book
+        onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()))
+
+        // In book-b
+        onView(allOf(instanceOf(TextView::class.java), withParent(withId(R.id.top_toolbar))))
+            .check(matches(withText("book-b")))
     }
 }
