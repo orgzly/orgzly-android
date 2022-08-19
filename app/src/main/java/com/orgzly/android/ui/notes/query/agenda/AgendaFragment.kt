@@ -179,6 +179,7 @@ class AgendaFragment :
 
             // Number of selected notes as a title
             title = viewAdapter.getSelection().count.toString()
+            subtitle = null
         }
     }
 

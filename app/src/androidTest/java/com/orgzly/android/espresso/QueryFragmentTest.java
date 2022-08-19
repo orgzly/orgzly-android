@@ -30,6 +30,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
 
 import android.widget.DatePicker;
@@ -738,6 +739,7 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onNotesInSearch().check(matches(recyclerViewItemCount(2)));
 
+        // Check title for number of selected notes
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_toolbar))))
                 .check(matches(withText("1")));
 
@@ -747,7 +749,8 @@ public class QueryFragmentTest extends OrgzlyTest {
 
         onNotesInSearch().check(matches(recyclerViewItemCount(1)));
 
-        onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_toolbar))))
+        // Check subtitle for search query
+        onView(allOf(instanceOf(TextView.class), not(withText(R.string.search)), withParent(withId(R.id.top_toolbar))))
                 .check(matches(withText("i.todo")));
     }
 

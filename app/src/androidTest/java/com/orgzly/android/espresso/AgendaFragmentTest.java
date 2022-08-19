@@ -11,7 +11,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.EspressoUtils.onItemInAgenda;
 import static com.orgzly.android.espresso.EspressoUtils.onNotesInAgenda;
 import static com.orgzly.android.espresso.EspressoUtils.recyclerViewItemCount;
@@ -21,6 +20,7 @@ import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.not;
 
 import android.content.pm.ActivityInfo;
 import android.widget.DatePicker;
@@ -181,10 +181,11 @@ public class AgendaFragmentTest extends OrgzlyTest {
 
         searchForText("i.todo ad.3");
 
-        onItemInAgenda(1).perform(longClick());
-
         onNotesInAgenda().check(matches(recyclerViewItemCount(12)));
 
+        onItemInAgenda(1).perform(longClick());
+
+        // Check title for number of selected notes
         onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_toolbar))))
                 .check(matches(withText("1")));
 
@@ -194,7 +195,8 @@ public class AgendaFragmentTest extends OrgzlyTest {
 
         onNotesInAgenda().check(matches(recyclerViewItemCount(8)));
 
-        onView(allOf(instanceOf(TextView.class), withParent(withId(R.id.top_toolbar))))
+        // Check subtitle for search query
+        onView(allOf(instanceOf(TextView.class), not(withText(R.string.agenda)), withParent(withId(R.id.top_toolbar))))
                 .check(matches(withText("i.todo ad.3")));
     }
 
