@@ -178,8 +178,6 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
     }
 
     private fun topToolbarToDefault() {
-        viewAdapter.clearSelection()
-
         if (withActionBar) {
             binding.topToolbar.run {
                 menu.clear()
@@ -215,19 +213,12 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
                 requireActivity().setupSearchView(menu)
             }
 
-            binding.fab.run {
-                setOnClickListener {
-                    SimpleOneLinerDialog
-                        .getInstance("name-new-book", R.string.new_notebook, R.string.create, null)
-                        .show(childFragmentManager, SimpleOneLinerDialog.FRAGMENT_TAG);
-                }
-
-                show()
-            }
-
         } else {
-            binding.topToolbar.visibility = View.GONE
-            binding.fab.visibility = View.GONE
+            binding.topToolbar.run {
+                menu.clear()
+                navigationIcon = null
+                title = getString(R.string.select_notebook)
+            }
         }
     }
 
@@ -499,7 +490,23 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
         viewModel.appBar.mode.observeSingle(viewLifecycleOwner) { mode ->
             when (mode) {
                 APP_BAR_DEFAULT_MODE -> {
+                    viewAdapter.clearSelection()
+
                     topToolbarToDefault()
+
+                    if (withActionBar) {
+                        binding.fab.run {
+                            setOnClickListener {
+                                SimpleOneLinerDialog
+                                    .getInstance("name-new-book", R.string.new_notebook, R.string.create, null)
+                                    .show(childFragmentManager, SimpleOneLinerDialog.FRAGMENT_TAG);
+                            }
+
+                            show()
+                        }
+                    } else {
+                        binding.fab.visibility = View.GONE
+                    }
 
                     sharedMainActivityViewModel.unlockDrawer()
 
