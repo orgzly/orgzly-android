@@ -17,8 +17,8 @@ import com.orgzly.android.ui.Selection
 import com.orgzly.android.ui.notes.NoteItemViewBinder
 import com.orgzly.android.ui.notes.NoteItemViewHolder
 import com.orgzly.android.ui.notes.quickbar.QuickBars
-import com.orgzly.databinding.ItemHeadBookPrefaceBinding
 import com.orgzly.databinding.ItemHeadBinding
+import com.orgzly.databinding.ItemHeadBookPrefaceBinding
 
 class BookAdapter(
         private val context: Context,
@@ -34,6 +34,7 @@ class BookAdapter(
     private val adapterSelection = Selection()
 
     private val noteItemViewBinder = NoteItemViewBinder(context, inBook)
+    private val prefaceItemViewBinder = PrefaceItemViewBinder(context)
 
     private val noteViewHolderListener = object: NoteItemViewHolder.ClickListener {
         override fun onClick(view: View, position: Int) {
@@ -95,27 +96,7 @@ class BookAdapter(
             position == 0 -> {
                 val holder = h as PrefaceViewHolder
 
-                if (!isPrefaceDisplayed()) {
-                    holder.binding.fragmentBookHeaderText.visibility = View.GONE
-
-                } else {
-                    if (context.getString(R.string.pref_value_preface_in_book_few_lines) ==
-                            AppPreferences.prefaceDisplay(context)) {
-
-                        holder.binding.fragmentBookHeaderText.maxLines = 3
-                        holder.binding.fragmentBookHeaderText.ellipsize = TextUtils. TruncateAt.END
-
-                    } else {
-                        holder.binding.fragmentBookHeaderText.maxLines = Integer.MAX_VALUE
-                        holder.binding.fragmentBookHeaderText.ellipsize = null
-                    }
-
-                    currentPreface?.let {
-                        holder.binding.fragmentBookHeaderText.setSourceText(it)
-                    }
-
-                    holder.binding.fragmentBookHeaderText.visibility = View.VISIBLE
-                }
+                prefaceItemViewBinder.bind(holder, currentPreface, isPrefaceDisplayed())
             }
 
             h.itemViewType == HIDDEN_ITEM_TYPE -> {
@@ -125,9 +106,7 @@ class BookAdapter(
 
             else -> {
                 val holder = h as NoteItemViewHolder
-
                 val noteView = getItem(position)
-
                 val note = noteView.note
 
                 noteItemViewBinder.bind(holder, noteView)
