@@ -150,17 +150,9 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
                 binding.fragmentSavedSearchesRecyclerView.scrollToPosition(0)
             }
 
+            title = getString(R.string.searches)
+
             requireActivity().setupSearchView(menu)
-        }
-
-        viewAdapter.clearSelection()
-
-        binding.fab.run {
-            setOnClickListener {
-                listener?.onSavedSearchNewRequest()
-            }
-
-            show()
         }
     }
 
@@ -213,12 +205,9 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
             }
 
             setOnClickListener(null)
-        }
 
-        binding.fab.run {
-            hide()
+            title = viewAdapter.getSelection().count.toString()
         }
-
     }
 
     override fun onPause() {
@@ -293,6 +282,16 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
                 APP_BAR_DEFAULT_MODE -> {
                     topToolbarToDefault()
 
+                    viewAdapter.clearSelection()
+
+                    binding.fab.run {
+                        setOnClickListener {
+                            listener?.onSavedSearchNewRequest()
+                        }
+
+                        show()
+                    }
+
                     sharedMainActivityViewModel.unlockDrawer()
 
                     appBarBackPressHandler.isEnabled = false
@@ -300,6 +299,10 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
 
                 APP_BAR_SELECTION_MODE -> {
                     topToolbarToMainSelection()
+
+                    binding.fab.run {
+                        hide()
+                    }
 
                     sharedMainActivityViewModel.lockDrawer()
 
