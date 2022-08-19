@@ -13,8 +13,6 @@
         style="@style/BorderlessButton"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:paddingStart="@dimen/screen_edge"
-        android:paddingEnd="@dimen/screen_edge"
         android:gravity="center_vertical"
         android:minHeight="36dp"
         android:orientation="horizontal"
@@ -27,8 +25,7 @@
             android:id="@+id/item_refile_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp" />
+            android:layout_marginEnd="16dp" />
 
         <TextView
             android:id="@+id/item_refile_name"
@@ -37,6 +34,7 @@
             android:layout_weight="1"
             android:ellipsize="end"
             android:singleLine="true"
+            android:textColor="?android:textColorPrimary"
             tools:text="Long title that occupies multiple lines used to test wrapping and icon positioning" />
     </LinearLayout>
 

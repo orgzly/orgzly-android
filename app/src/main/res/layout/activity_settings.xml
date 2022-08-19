@@ -6,7 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?android:colorBackground">
 
     <FrameLayout
         android:id="@+id/activity_settings_container"
@@ -23,6 +24,7 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_toolbar"
             app:title="@string/settings"
+            app:contentInsetStart="70dp"
             style="@style/TopAndBottomToolbar"
             app:navigationIcon="?attr/ic_arrow_back_24dp"/>
 

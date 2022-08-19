@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Environment;
-import android.util.Log;
 
 import com.orgzly.R;
 import com.orgzly.android.App;
@@ -304,7 +303,7 @@ public class AppPreferences {
     }
 
     public static int remindersSnoozeTime(Context context) {
-        return Integer.valueOf(getDefaultSharedPreferences(context).getString(
+        return Integer.parseInt(getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_snooze_time),
                 context.getResources().getString(R.string.pref_default_snooze_time)));
     }
@@ -629,7 +628,7 @@ public class AppPreferences {
     }
 
     public static int imagesScaleDownToWidthValue(Context context) {
-        return Integer.valueOf(getDefaultSharedPreferences(context).getString(
+        return Integer.parseInt(getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_images_scale_down_to_width_value),
                 context.getResources().getString(R.string.pref_default_images_scale_down_to_width_value)));
     }
@@ -758,13 +757,13 @@ public class AppPreferences {
     }
 
     public static int widgetOpacity(Context context) {
-        return Integer.valueOf(getDefaultSharedPreferences(context).getString(
+        return Integer.parseInt(getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_widget_opacity),
                 context.getResources().getString(R.string.pref_default_widget_opacity)));
     }
 
     public static int widgetFontSize(Context context) {
-        return Integer.valueOf(getDefaultSharedPreferences(context).getString(
+        return Integer.parseInt(getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_widget_font_size),
                 context.getResources().getString(R.string.pref_default_widget_font_size)));
     }
@@ -776,7 +775,7 @@ public class AppPreferences {
     }
 
     public static int widgetUpdateFrequency(Context context) {
-        return Integer.valueOf(getDefaultSharedPreferences(context).getString(
+        return Integer.parseInt(getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_widget_update_frequency),
                 context.getResources().getString(R.string.pref_default_widget_update_frequency)));
     }

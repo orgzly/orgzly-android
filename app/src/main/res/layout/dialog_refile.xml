@@ -42,6 +42,7 @@
                 android:scrollHorizontally="true"
                 android:gravity="center_vertical"
                 android:linksClickable="true"
+                android:textColor="?android:textColorPrimary"
                 tools:text="@string/breadcrumbs_sample" />
         </HorizontalScrollView>
 
@@ -63,14 +64,13 @@
 
     <View style="@style/HorizontalDivider" />
 
-
     <!-- List of targets -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/dialog_refile_targets"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="8dp"
-        android:paddingRight="8dp"
+        android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:clipToPadding="false" />
 

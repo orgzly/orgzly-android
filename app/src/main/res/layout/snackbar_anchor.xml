@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/snackbar_anchor"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="@dimen/screen_edge"
     android:layout_gravity="bottom"
     android:layout_marginBottom="?attr/actionBarSize"
     android:visibility="invisible" />

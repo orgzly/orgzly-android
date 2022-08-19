@@ -525,8 +525,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         binding.bodyView.visibility = View.GONE
         binding.contentEdit.visibility = View.VISIBLE
 
-        // binding.toolbar.visibility = View.GONE
-
         viewModel.appBar.toMode(APP_BAR_EDIT_MODE)
     }
 
@@ -544,8 +542,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         ImageLoader.loadImages(binding.bodyView)
 
         binding.bodyView.visibility = View.VISIBLE
-
-        // binding.toolbar.visibility = View.VISIBLE
 
         viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
     }

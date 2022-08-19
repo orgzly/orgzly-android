@@ -297,6 +297,8 @@
         <item name="colorPrimaryInverse">@color/grey_100</item>
         <item name="colorSecondaryContainer">@color/grey_300</item>
         <item name="colorOnSecondaryContainer">@color/grey_900</item>
+        <item name="colorTertiaryContainer">@color/grey_300</item>
+        <item name="colorOnTertiaryContainer">@color/grey_700</item>
         <item name="android:textColorLink">@color/grey_600</item>
 
         <item name="item_head_state_done_color">@color/green_900</item>
@@ -316,6 +318,8 @@
         <item name="colorPrimaryInverse">@color/grey_800</item>
         <item name="colorSecondaryContainer">@color/grey_800</item>
         <item name="colorOnSecondaryContainer">@color/white</item>
+        <item name="colorTertiaryContainer">@color/grey_800</item>
+        <item name="colorOnTertiaryContainer">@color/grey_400</item>
         <item name="colorError">@color/red_200</item>
         <item name="android:textColorLink">@color/grey_400</item>
 
@@ -336,6 +340,8 @@
         <item name="colorPrimaryInverse">@color/blue_grey_800</item>
         <item name="colorSecondaryContainer">@color/grey_900</item>
         <item name="colorOnSecondaryContainer">@color/grey_200</item>
+        <item name="colorTertiaryContainer">@color/grey_800</item>
+        <item name="colorOnTertiaryContainer">@color/grey_400</item>
         <item name="android:textColorLink">@color/grey_400</item>
 
         <item name="item_head_state_done_color">@color/green_200</item>

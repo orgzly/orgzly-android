@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.TimeType
-import com.orgzly.android.util.LogUtils
 import com.orgzly.org.datetime.OrgDateTime
 import com.orgzly.org.datetime.OrgDelay
 import com.orgzly.org.datetime.OrgInterval
@@ -184,13 +183,6 @@ class TimestampDialogViewModel(val timeType: TimeType, orgDateTime: String?) : C
     fun set(year: Int, month: Int, day: Int) {
         val value = dateTimeMutable.value ?: DateTime.getInstance(null)
         dateTimeMutable.postValue(value.copy(year = year, month = month, day = day))
-    }
-
-    fun setDate(ms: Long) {
-        val cal = Calendar.getInstance(TimeZone.getTimeZone("UTC")).apply {
-            timeInMillis = ms
-        }
-        set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
     }
 
     fun setTime(hour: Int, minute: Int) {

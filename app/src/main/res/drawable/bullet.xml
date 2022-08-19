@@ -14,9 +14,8 @@
                 android:width="@dimen/bullet_inner_size"
                 android:height="@dimen/bullet_inner_size" />
 
-            <solid android:color="?android:textColorTertiary"/>
+            <solid android:color="?colorOnTertiaryContainer" />
         </shape>
-
     </item>
 
 </layer-list>

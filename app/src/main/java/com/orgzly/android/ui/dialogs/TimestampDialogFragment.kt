@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
@@ -113,19 +112,19 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
 
 
         return MaterialAlertDialogBuilder(requireContext())
-                .setCustomTitle(titleBinding.root)
-                .setView(binding.root)
-                .setPositiveButton(R.string.set) { _, _ ->
-                    val time = viewModel.getOrgDateTime()
-                    listener?.onDateTimeSet(dialogId, noteIds, time)
-                }
-                .setNeutralButton(R.string.clear) { _, _ ->
-                    listener?.onDateTimeSet(dialogId, noteIds, null)
-                }
-                .setNegativeButton(R.string.cancel) { _, _ ->
-                    listener?.onDateTimeAborted(dialogId, noteIds)
-                }
-                .show()
+            .setCustomTitle(titleBinding.root)
+            .setView(binding.root)
+            .setPositiveButton(R.string.set) { _, _ ->
+                val time = viewModel.getOrgDateTime()
+                listener?.onDateTimeSet(dialogId, noteIds, time)
+            }
+            .setNeutralButton(R.string.clear) { _, _ ->
+                listener?.onDateTimeSet(dialogId, noteIds, null)
+            }
+            .setNegativeButton(R.string.cancel) { _, _ ->
+                listener?.onDateTimeAborted(dialogId, noteIds)
+            }
+            .show()
     }
 
     /**
@@ -139,21 +138,6 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
                 }, viewModel.getYearMonthDay().first, viewModel.getYearMonthDay().second, viewModel.getYearMonthDay().third)
 
                 picker.show()
-
-//                val picker = MaterialDatePicker.Builder.datePicker().run {
-//                    viewModel.getDateInUtcMs()?.let {
-//                        setSelection(it)
-//                    }
-//
-//                    build()
-//                }
-//
-//                picker.addOnPositiveButtonClickListener { selection ->
-//                    viewModel.setDate(selection)
-//                }
-//
-//                picker.show(childFragmentManager, picker.toString())
-//                }
             }
 
             R.id.time_picker_button -> {
@@ -165,18 +149,6 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
                 }, hourMinute.first, hourMinute.second, DateFormat.is24HourFormat(context))
 
                 picker.show()
-
-//                val picker = MaterialTimePicker.Builder().run {
-//                    setHour(hourMinute.first)
-//                    setMinute(hourMinute.second)
-//                    build()
-//                }
-//
-//                picker.addOnPositiveButtonClickListener { _ ->
-//                    viewModel.setTime(picker.hour, picker.minute)
-//                }
-//
-//                picker.show(childFragmentManager, picker.toString())
             }
 
             R.id.end_time_picker_button -> {
@@ -187,18 +159,6 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
                 }, hourMinute.first, hourMinute.second, DateFormat.is24HourFormat(context))
 
                 picker.show()
-
-//                val picker = MaterialTimePicker.Builder().run {
-//                    setHour(hourMinute.first)
-//                    setMinute(hourMinute.second)
-//                    build()
-//                }
-//
-//                picker.addOnPositiveButtonClickListener { _ ->
-//                    viewModel.setEndTime(picker.hour, picker.minute)
-//                }
-//
-//                picker.show(childFragmentManager, picker.toString())
             }
 
             R.id.repeater_picker_button -> {
@@ -261,7 +221,7 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     private fun setupObservers() {
-        viewModel.dateTime.observe(requireActivity(), Observer { dateTime ->
+        viewModel.dateTime.observe(requireActivity()) { dateTime ->
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, dateTime)
 
             val orgDateTime = viewModel.getOrgDateTime(dateTime)
@@ -285,7 +245,7 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
 
             binding.delayPickerButton.text = userTimeFormatter.formatDelay(dateTime)
             binding.delayUsedCheckbox.isChecked = dateTime.isDelayUsed
-        })
+        }
     }
 
     override fun onResume() {
