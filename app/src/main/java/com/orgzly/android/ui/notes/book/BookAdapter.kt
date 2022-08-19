@@ -21,13 +21,14 @@ import com.orgzly.databinding.ItemHeadBinding
 import com.orgzly.databinding.ItemHeadBookPrefaceBinding
 
 class BookAdapter(
-        private val context: Context,
-        private val clickListener: OnClickListener,
-        private val quickBar: QuickBars,
-        private val inBook: Boolean
+    private val bookId: Long,
+    private val context: Context,
+    private val clickListener: OnClickListener,
+    private val quickBar: QuickBars,
+    private val inBook: Boolean
 ) :
-        ListAdapterWithHeaders<NoteView, RecyclerView.ViewHolder>(DIFF_CALLBACK, 1),
-        SelectableItemAdapter {
+    ListAdapterWithHeaders<NoteView, RecyclerView.ViewHolder>(DIFF_CALLBACK, 1),
+    SelectableItemAdapter {
 
     private var currentPreface: String? = null
 
@@ -48,7 +49,7 @@ class BookAdapter(
     inner class FoldedViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     inner class PrefaceViewHolder(val binding: ItemHeadBookPrefaceBinding) :
-            RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.root.setOnClickListener {
@@ -73,7 +74,8 @@ class BookAdapter(
         return when (viewType) {
             R.layout.item_head_book_preface -> {
                 val binding = ItemHeadBookPrefaceBinding.inflate(
-                        LayoutInflater.from(context), parent, false)
+                    LayoutInflater.from(context), parent, false)
+
                 PrefaceViewHolder(binding)
             }
 
@@ -82,7 +84,8 @@ class BookAdapter(
             }
 
             else -> {
-                val binding = ItemHeadBinding.inflate(LayoutInflater.from(context), parent, false)
+                val binding = ItemHeadBinding.inflate(
+                    LayoutInflater.from(context), parent, false)
 
                 NoteItemViewBinder.setupSpacingForDensitySetting(context, binding)
 
@@ -96,7 +99,7 @@ class BookAdapter(
             position == 0 -> {
                 val holder = h as PrefaceViewHolder
 
-                prefaceItemViewBinder.bind(holder, currentPreface, isPrefaceDisplayed())
+                prefaceItemViewBinder.bind(holder, bookId, currentPreface, isPrefaceDisplayed())
             }
 
             h.itemViewType == HIDDEN_ITEM_TYPE -> {
@@ -144,8 +147,8 @@ class BookAdapter(
 
     fun isPrefaceDisplayed(): Boolean {
         val hidden =
-                context.getString(R.string.pref_value_preface_in_book_hide) ==
-                        AppPreferences.prefaceDisplay(context)
+            context.getString(R.string.pref_value_preface_in_book_hide) ==
+                    AppPreferences.prefaceDisplay(context)
 
         return !TextUtils.isEmpty(currentPreface) && !hidden
     }
@@ -165,14 +168,14 @@ class BookAdapter(
         const val VISIBLE_ITEM_TYPE = 1
 
         private val DIFF_CALLBACK: DiffUtil.ItemCallback<NoteView> =
-                object : DiffUtil.ItemCallback<NoteView>() {
-                    override fun areItemsTheSame(oldItem: NoteView, newItem: NoteView): Boolean {
-                        return oldItem.note.id == newItem.note.id
-                    }
-
-                    override fun areContentsTheSame(oldItem: NoteView, newItem: NoteView): Boolean {
-                        return oldItem == newItem
-                    }
+            object : DiffUtil.ItemCallback<NoteView>() {
+                override fun areItemsTheSame(oldItem: NoteView, newItem: NoteView): Boolean {
+                    return oldItem.note.id == newItem.note.id
                 }
+
+                override fun areContentsTheSame(oldItem: NoteView, newItem: NoteView): Boolean {
+                    return oldItem == newItem
+                }
+            }
     }
 }

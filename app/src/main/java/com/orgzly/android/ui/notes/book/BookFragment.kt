@@ -130,7 +130,7 @@ class BookFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val quickBars = QuickBars(binding.root.context, true)
 
-        viewAdapter = BookAdapter(binding.root.context, this, quickBars, inBook = true).apply {
+        viewAdapter = BookAdapter(mBookId, binding.root.context, this, quickBars, inBook = true).apply {
             setHasStableIds(true)
         }
 
