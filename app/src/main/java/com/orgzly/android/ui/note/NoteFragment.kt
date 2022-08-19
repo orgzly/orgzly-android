@@ -283,7 +283,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         setContentFoldState(AppPreferences.isNoteContentFolded(context))
     }
 
-    private fun appBarToViewMode() {
+    private fun topToolbarToViewMode() {
         binding.topToolbar.run {
             menu.clear()
             inflateMenu(R.menu.note_actions)
@@ -319,10 +319,14 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             setOnMenuItemClickListener { menuItem ->
                 handleActionItemClick(menuItem)
             }
+
+            setOnClickListener {
+                binding.scrollView.scrollTo(0, 0)
+            }
         }
     }
 
-    private fun appBarToEditMode() {
+    private fun topToolbarToEditMode() {
         binding.topToolbar.run {
             menu.clear()
             inflateMenu(R.menu.note_actions_edit)
@@ -341,6 +345,10 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
             setOnMenuItemClickListener { menuItem ->
                 handleActionItemClick(menuItem)
+            }
+
+            setOnClickListener {
+                binding.scrollView.scrollTo(0, 0)
             }
         }
     }
@@ -486,14 +494,14 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         viewModel.appBar.mode.observeSingle(viewLifecycleOwner) { mode ->
             when (mode) {
                 APP_BAR_DEFAULT_MODE -> {
-                    appBarToViewMode()
+                    topToolbarToViewMode()
                     sharedMainActivityViewModel.unlockDrawer()
                     userCancelBackPressHandler.isEnabled = true
                     toViewModeBackPressHandler.isEnabled = false
                 }
 
                 APP_BAR_EDIT_MODE -> {
-                    appBarToEditMode()
+                    topToolbarToEditMode()
                     sharedMainActivityViewModel.lockDrawer()
                     userCancelBackPressHandler.isEnabled = false
                     toViewModeBackPressHandler.isEnabled = true

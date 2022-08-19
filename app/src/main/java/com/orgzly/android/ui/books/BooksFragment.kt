@@ -206,6 +206,12 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
                     true
                 }
 
+                setOnClickListener {
+                    binding.fragmentBooksRecyclerView.scrollToPosition(0)
+                }
+
+                title = getString(R.string.notebooks)
+
                 requireActivity().setupSearchView(menu)
             }
 
@@ -290,10 +296,10 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
 
                 true
             }
-        }
 
-        binding.fab.run {
-            hide()
+            setOnClickListener(null)
+
+            title = viewAdapter.getSelection().count.toString()
         }
     }
 
@@ -502,6 +508,10 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
 
                 APP_BAR_SELECTION_MODE -> {
                     topToolbarToMainSelection()
+
+                    binding.fab.run {
+                        hide()
+                    }
 
                     sharedMainActivityViewModel.lockDrawer()
 

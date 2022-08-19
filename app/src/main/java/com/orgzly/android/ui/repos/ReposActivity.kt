@@ -70,7 +70,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             binding.activityReposFlipper.displayedChild =
                     if (repos != null && repos.isNotEmpty()) 0 else 1
 
-            appBarToDefault()
+            topToolbarToDefault()
         })
 
         viewModel.openRepoRequestEvent.observeSingle(this, Observer { repo ->
@@ -91,10 +91,10 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             registerForContextMenu(it)
         }
 
-        appBarToDefault()
+        topToolbarToDefault()
     }
 
-    private fun appBarToDefault() {
+    private fun topToolbarToDefault() {
         binding.topToolbar.run {
             if (listAdapter.count > 0) {
                 menu.clear()

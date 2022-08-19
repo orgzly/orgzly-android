@@ -113,6 +113,10 @@ class BookPrefaceFragment : Fragment() {
 
                 true
             }
+
+            setOnClickListener {
+                binding.fragmentBookPrefaceContainer.scrollTo(0, 0)
+            }
         }
     }
 

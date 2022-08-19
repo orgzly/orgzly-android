@@ -119,10 +119,10 @@ public class SavedSearchFragment extends Fragment implements DrawerItem {
             ActivityUtils.openSoftKeyboard(activity, viewToFocus);
         }
 
-        appBarToDefault();
+        topToolbarToDefault();
     }
 
-    private void appBarToDefault() {
+    private void topToolbarToDefault() {
         binding.topToolbar.setNavigationOnClickListener(v -> close());
 
         binding.topToolbar.setOnMenuItemClickListener(item -> {
@@ -134,6 +134,8 @@ public class SavedSearchFragment extends Fragment implements DrawerItem {
 
             return false;
         });
+
+        binding.topToolbar.setOnClickListener(v -> binding.scrollView.scrollTo(0, 0));
     }
 
     @Override

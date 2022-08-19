@@ -105,7 +105,7 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
         }
     }
 
-    private fun appBarToDefault() {
+    private fun topToolbarToDefault() {
         binding.topToolbar.run {
             menu.clear()
             inflateMenu(R.menu.saved_searches_actions)
@@ -146,6 +146,10 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
                 true
             }
 
+            setOnClickListener {
+                binding.fragmentSavedSearchesRecyclerView.scrollToPosition(0)
+            }
+
             requireActivity().setupSearchView(menu)
         }
 
@@ -160,7 +164,7 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
         }
     }
 
-    private fun appBarToMainSelection() {
+    private fun topToolbarToMainSelection() {
         binding.topToolbar.run {
             menu.clear()
             inflateMenu(R.menu.saved_searches_cab)
@@ -207,6 +211,8 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
 
                 true
             }
+
+            setOnClickListener(null)
         }
 
         binding.fab.run {
@@ -285,7 +291,7 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
         viewModel.appBar.mode.observeSingle(viewLifecycleOwner) { mode ->
             when (mode) {
                 APP_BAR_DEFAULT_MODE -> {
-                    appBarToDefault()
+                    topToolbarToDefault()
 
                     sharedMainActivityViewModel.unlockDrawer()
 
@@ -293,7 +299,7 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
                 }
 
                 APP_BAR_SELECTION_MODE -> {
-                    appBarToMainSelection()
+                    topToolbarToMainSelection()
 
                     sharedMainActivityViewModel.lockDrawer()
 

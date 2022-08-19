@@ -525,6 +525,10 @@ class BookFragment :
 
             requireActivity().setupSearchView(menu)
 
+            setOnClickListener {
+                scrollToPosition(0)
+            }
+
             title = BookUtils.getFragmentTitleForBook(currentBook)
         }
     }
@@ -555,6 +559,8 @@ class BookFragment :
                 handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId, menuItem)
                 true
             }
+
+            setOnClickListener(null)
 
             title = viewAdapter.getSelection().count.toString()
         }
@@ -601,6 +607,8 @@ class BookFragment :
                 )
                 true
             }
+
+            setOnClickListener(null)
 
             title = viewAdapter.getSelection().count.toString()
         }
