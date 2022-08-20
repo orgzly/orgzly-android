@@ -5,13 +5,9 @@
 
     <style name="AppDayNightTheme" parent="AppLightTheme.Light" />
 
-    <!--
-         Custom light themes should inherit from AppLightTheme, dark themes from AppDarkTheme.
-         They both contain same default font and icon sizes. TODO: DRY (how?)
+    <style name="AppLightTheme" parent="AppLightThemeCommon" />
 
-         See and try using http://developer.android.com/design/style/typography.html
-    -->
-    <style name="AppLightTheme" parent="Theme.Material3.DynamicColors.Light">
+    <style name="AppLightThemeCommon" parent="Theme.Material3.DynamicColors.Light">
 
         <!-- NoActionBar -->
         <item name="windowActionBar">false</item>
@@ -25,9 +21,6 @@
         <!-- <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/ic_launcher_background</item> -->
 
         <!-- Theme-specific items stop here -->
-
-        <item name="android:windowLightStatusBar" tools:targetApi="m">?attr/isLightTheme</item>
-        <item name="android:statusBarColor">?attr/colorSurface</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
 
@@ -158,8 +151,12 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
+        <!-- System bars -->
+        <!-- No need for per-API versions of these, as dark system bars are used -->
         <item name="android:windowLightStatusBar" tools:targetApi="m">?attr/isLightTheme</item>
-        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">?attr/isLightTheme</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
 
@@ -554,22 +551,32 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="AppBarLayoutTheme">
-        <!-- Don't overlay toolbars so they are the same color as status bar (colorSurface) -->
-        <item name="colorPrimary">@android:color/transparent</item>
+    <style name="CoordinatorLayoutFitsSystemWindows">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+
+        <!-- To avoid messed up graphics on some older devices -->
+        <item name="android:background">?android:colorBackground</item>
+
+        <!-- For FAB not to overlap with navigation bar -->
+        <item name="android:fitsSystemWindows">true</item>
     </style>
 
     <style name="AppBarLayoutStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
 
-        <item name="android:theme">@style/AppBarLayoutTheme</item>
+        <!-- For top toolbar not to overlap with status bar -->
+        <item name="android:fitsSystemWindows">true</item>
+
         <item name="liftOnScroll">false</item>
     </style>
+
 
     <style name="TopToolbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:layout_gravity">bottom</item>
     </style>
 
     <style name="BottomToolbar">
@@ -578,7 +585,7 @@
         <item name="android:layout_gravity">bottom</item>
         <item name="android:visibility">gone</item>
         <item name="android:background">?attr/colorSurface</item>
-        <item name="android:elevation">1dp</item>
+        <item name="android:elevation">4dp</item>
     </style>
 
     <style name="Fab">

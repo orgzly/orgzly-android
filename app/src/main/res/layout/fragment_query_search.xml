@@ -3,8 +3,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    style="@style/CoordinatorLayoutFitsSystemWindows">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeContainer"
@@ -43,7 +42,7 @@
     <com.google.android.material.appbar.AppBarLayout
         style="@style/AppBarLayoutStyle">
 
-    <com.google.android.material.appbar.MaterialToolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_toolbar"
             style="@style/TopToolbar"
             app:menu="@menu/query_actions"

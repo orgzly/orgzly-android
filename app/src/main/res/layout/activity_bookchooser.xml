@@ -4,10 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.orgzly.android.ui.BookChooserActivity"
     android:id="@+id/main_content"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    style="@style/CoordinatorLayoutFitsSystemWindows"
+    tools:context="com.orgzly.android.ui.BookChooserActivity">
 
     <FrameLayout
         android:id="@+id/activity_bookchooser_main"

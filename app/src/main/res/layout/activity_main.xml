@@ -6,14 +6,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?android:colorBackground"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?android:colorBackground">
 
         <FrameLayout
             android:id="@+id/single_pane_container"
@@ -21,7 +20,7 @@
             android:layout_height="match_parent"
             tools:context="com.orgzly.android.ui.main.MainActivity"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:ignore="MergeRootFrame"/>
+            tools:ignore="MergeRootFrame" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

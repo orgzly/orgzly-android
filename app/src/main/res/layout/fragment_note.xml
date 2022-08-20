@@ -4,9 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    style="@style/CoordinatorLayoutFitsSystemWindows">
 
     <ViewFlipper
         android:id="@+id/view_flipper"
@@ -378,7 +376,7 @@
     <com.google.android.material.appbar.AppBarLayout
         style="@style/AppBarLayoutStyle">
 
-    <com.google.android.material.appbar.MaterialToolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_toolbar"
             style="@style/TopToolbar"
             app:menu="@menu/note_actions"

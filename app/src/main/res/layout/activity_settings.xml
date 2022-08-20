@@ -5,9 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_content"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?android:colorBackground">
+    style="@style/CoordinatorLayoutFitsSystemWindows">
 
     <FrameLayout
         android:id="@+id/activity_settings_container"
@@ -20,7 +18,7 @@
     <com.google.android.material.appbar.AppBarLayout
         style="@style/AppBarLayoutStyle">
 
-    <com.google.android.material.appbar.MaterialToolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_toolbar"
             app:title="@string/settings"
             app:contentInsetStart="70dp"
