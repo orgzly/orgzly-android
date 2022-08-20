@@ -112,6 +112,4 @@
         android:id="@+id/fab"
         style="@style/Fab.Done" />
 
-    <include layout="@layout/snackbar_anchor" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

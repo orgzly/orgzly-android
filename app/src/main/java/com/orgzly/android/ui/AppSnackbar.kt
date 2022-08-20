@@ -37,7 +37,7 @@ object AppSnackbar {
                 }
             }
 
-            snack.anchorView = activity.findViewById(R.id.snackbar_anchor)
+            snack.anchorView = activity.findViewById(R.id.fab)
 
             showSnackbar(activity, snack)
         }

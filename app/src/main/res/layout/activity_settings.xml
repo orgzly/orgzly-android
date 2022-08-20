@@ -30,6 +30,4 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/snackbar_anchor" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

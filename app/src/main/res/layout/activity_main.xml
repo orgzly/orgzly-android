@@ -23,8 +23,6 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:ignore="MergeRootFrame"/>
 
-        <include layout="@layout/snackbar_anchor" />
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <!--<include layout="@layout/drawer"/>-->
