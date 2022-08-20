@@ -27,6 +27,7 @@
         <!-- Theme-specific items stop here -->
 
         <item name="android:windowLightStatusBar" tools:targetApi="m">?attr/isLightTheme</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
 
@@ -158,6 +159,7 @@
         <item name="windowNoTitle">true</item>
 
         <item name="android:windowLightStatusBar" tools:targetApi="m">?attr/isLightTheme</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
 
@@ -287,11 +289,10 @@
 
     <!-- Color scheme -->
     <style name="AppLightTheme.Light">
-        <item name="android:colorBackground">@color/white</item>
-        <item name="android:statusBarColor">@color/grey_100</item>
         <item name="colorSurface">@color/white</item>
-        <item name="colorPrimary">@color/grey_600</item>
+        <item name="colorPrimary">@color/blue_grey_500</item>
         <item name="colorOnPrimary">@color/grey_100</item>
+        <item name="colorSecondary">@color/blue_grey_500</item>
         <item name="colorPrimaryContainer">@color/grey_100</item>
         <item name="colorOnPrimaryContainer">@color/grey_900</item>
         <item name="colorPrimaryInverse">@color/blue_grey_200</item>
@@ -300,6 +301,7 @@
         <item name="colorTertiaryContainer">@color/grey_300</item>
         <item name="colorOnTertiaryContainer">@color/grey_700</item>
         <item name="android:textColorLink">@color/grey_600</item>
+        <item name="android:colorBackground">?attr/colorSurface</item>
 
         <item name="item_head_state_done_color">@color/green_900</item>
         <item name="item_head_state_todo_color">@color/red_900</item>
@@ -308,11 +310,10 @@
 
     <!-- Color scheme -->
     <style name="AppDarkTheme.Dark">
-        <item name="android:colorBackground">#121212</item>
-        <item name="android:statusBarColor">#1b1b1b</item>
         <item name="colorSurface">#121212</item>
-        <item name="colorPrimary">@color/grey_500</item>
+        <item name="colorPrimary">@color/blue_grey_300</item>
         <item name="colorOnPrimary">@color/grey_900</item>
+        <item name="colorSecondary">@color/blue_grey_300</item>
         <item name="colorPrimaryContainer">@color/grey_900</item>
         <item name="colorOnPrimaryContainer">@color/white</item>
         <item name="colorPrimaryInverse">@color/blue_grey_800</item>
@@ -322,6 +323,7 @@
         <item name="colorOnTertiaryContainer">@color/grey_400</item>
         <item name="colorError">@color/red_200</item>
         <item name="android:textColorLink">@color/grey_400</item>
+        <item name="android:colorBackground">?attr/colorSurface</item>
 
         <item name="item_head_state_done_color">@color/green_200</item>
         <item name="item_head_state_todo_color">@color/red_200</item>
@@ -330,11 +332,10 @@
 
     <!-- Color scheme -->
     <style name="AppDarkTheme.Black">
-        <item name="android:colorBackground">#000000</item>
-        <item name="android:statusBarColor">#000000</item>
         <item name="colorSurface">#000000</item>
-        <item name="colorPrimary">@color/grey_600</item>
-        <item name="colorOnPrimary">@color/grey_300</item>
+        <item name="colorPrimary">@color/grey_400</item>
+        <item name="colorOnPrimary">@color/grey_900</item>
+        <item name="colorSecondary">@color/blue_grey_300</item>
         <item name="colorPrimaryContainer">@color/grey_900</item>
         <item name="colorOnPrimaryContainer">@color/white</item>
         <item name="colorPrimaryInverse">@color/blue_grey_800</item>
@@ -343,6 +344,7 @@
         <item name="colorTertiaryContainer">@color/grey_800</item>
         <item name="colorOnTertiaryContainer">@color/grey_400</item>
         <item name="android:textColorLink">@color/grey_400</item>
+        <item name="android:colorBackground">?attr/colorSurface</item>
 
         <item name="item_head_state_done_color">@color/green_200</item>
         <item name="item_head_state_todo_color">@color/red_200</item>
@@ -519,16 +521,6 @@
         <item name="android:layout_gravity">center</item>
     </style>
 
-    <style name="BottomActionBarButton" parent="android:style/Widget.Holo.Button.Borderless">
-        <!--<item name="android:layout_width">wrap_content</item>-->
-
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
-
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-
     <style name="WhatsNewNotice">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -556,36 +548,37 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="BottomActionBar">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">?attr/actionBarSize</item>
-
-        <!--<item name="android:visibility">invisible</item>-->
-        <!--<item name="android:translationY">?attr/actionBarSize</item>-->
-        <!--<item name="android:alpha">0.0</item>-->
-
-        <item name="android:layout_gravity">bottom</item>
-        <item name="android:elevation">4dp</item>
-
-<!--        <item name="android:contentInsetLeft">0dp</item>-->
-<!--        <item name="android:contentInsetStart">0dp</item>-->
-<!--        <item name="android:contentInsetRight">0dp</item>-->
-<!--        <item name="android:contentInsetEnd">0dp</item>-->
-    </style>
-
     <style name="QuickBarButton" parent="Base.Widget.AppCompat.Button.Borderless">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="TopAndBottomToolbar">
+    <style name="AppBarLayoutTheme">
+        <!-- Don't overlay toolbars so they are the same color as status bar (colorSurface) -->
+        <item name="colorPrimary">@android:color/transparent</item>
+    </style>
+
+    <style name="AppBarLayoutStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+
+        <item name="android:theme">@style/AppBarLayoutTheme</item>
+        <item name="liftOnScroll">false</item>
+    </style>
+
+    <style name="TopToolbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
-        <item name="android:background">?android:statusBarColor</item>
+    </style>
 
-        <!-- Don't overlay -->
-<!--        <item name="colorPrimary">@android:color/transparent</item>-->
+    <style name="BottomToolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:background">?attr/colorSurface</item>
+        <item name="android:elevation">1dp</item>
     </style>
 
     <style name="Fab">

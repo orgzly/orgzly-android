@@ -33,12 +33,11 @@
 
     <!-- Top toolbar -->
     <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        style="@style/AppBarLayoutStyle">
 
-        <com.google.android.material.appbar.MaterialToolbar
+    <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_toolbar"
-            style="@style/TopAndBottomToolbar"
+            style="@style/TopToolbar"
             app:menu="@menu/query_actions"
             app:navigationIcon="?attr/ic_menu_24dp" />
 
@@ -47,9 +46,7 @@
     <!-- Bottom toolbar -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/bottom_toolbar"
-        style="@style/TopAndBottomToolbar"
-        android:layout_gravity="bottom"
-        app:menu="@menu/query_cab"
-        android:visibility="gone" />
+        style="@style/BottomToolbar"
+        app:menu="@menu/query_cab" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -71,13 +71,12 @@
 
     <!-- Top toolbar -->
     <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        style="@style/AppBarLayoutStyle">
 
-        <com.google.android.material.appbar.MaterialToolbar
+    <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_toolbar"
             app:title="@string/repositories"
-            style="@style/TopAndBottomToolbar"
+            style="@style/TopToolbar"
             app:navigationIcon="?attr/ic_arrow_back_24dp"/>
 
     </com.google.android.material.appbar.AppBarLayout>

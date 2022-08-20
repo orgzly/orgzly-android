@@ -33,12 +33,11 @@
 
     <!-- Top toolbar -->
     <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        style="@style/AppBarLayoutStyle">
 
-        <com.google.android.material.appbar.MaterialToolbar
+    <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_toolbar"
-            style="@style/TopAndBottomToolbar"
+            style="@style/TopToolbar"
             app:menu="@menu/saved_searches_actions"
             app:navigationIcon="?attr/ic_menu_24dp" />
 
