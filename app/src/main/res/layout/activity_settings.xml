@@ -21,7 +21,6 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_toolbar"
             app:title="@string/settings"
-            app:contentInsetStart="70dp"
             style="@style/TopToolbar"
             app:navigationIcon="?attr/ic_arrow_back_24dp"/>
 

@@ -21,5 +21,8 @@
             android:icon="?attr/ic_settings_24dp"
             android:title="@string/settings"
             android:orderInCategory="4"/>
+
+        <!-- Space for sync button -->
+        <item android:title="" android:orderInCategory="6" />
     </group>
 </menu>

@@ -31,9 +31,9 @@
                     android:id="@+id/breadcrumbs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/screen_edge"
                     android:layout_marginStart="@dimen/screen_edge"
                     android:layout_marginEnd="@dimen/screen_edge"
-                    android:layout_marginTop="4dp"
                     android:paddingTop="4dp"
                     android:paddingBottom="4dp"
                     android:scrollbars="none">
@@ -53,7 +53,8 @@
                 <!-- Selectable notebook -->
                 <LinearLayout
                     android:id="@+id/location_container"
-                    style="@style/NoteFragmentMetadataItemContainer">
+                    style="@style/NoteFragmentMetadataItemContainer"
+                    android:layout_marginTop="8dp">
 
                     <ImageView
                         android:layout_width="wrap_content"

@@ -563,17 +563,20 @@ public class MainActivity extends CommonActivity
     public void onNoteCreated(Note note) {
         popBackStackAndCloseKeyboard();
 
-        // Display Snackbar with an action (create new note below just created one)
-        AppSnackbarUtils.showSnackbar(this, R.string.message_note_created, R.string.new_below, () -> {
-            NotePlace notePlace = new NotePlace(
-                    note.getPosition().getBookId(),
-                    note.getId(),
-                    Place.BELOW);
+        // FIXME: Gives time for backstack pop to avoid displaying the snackbar on top of FAB
+        new Handler(getMainLooper()).postDelayed(() -> {
+            // Display Snackbar with an action (create new note below just created one)
+            AppSnackbarUtils.showSnackbar(MainActivity.this, R.string.message_note_created, R.string.new_below, () -> {
+                NotePlace notePlace = new NotePlace(
+                        note.getPosition().getBookId(),
+                        note.getId(),
+                        Place.BELOW);
 
-            DisplayManager.displayNewNote(getSupportFragmentManager(), notePlace);
+                DisplayManager.displayNewNote(getSupportFragmentManager(), notePlace);
 
-            return null;
-        });
+                return null;
+            });
+        }, 100);
     }
 
     @Override
