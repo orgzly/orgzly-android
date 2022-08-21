@@ -1,15 +1,5 @@
 package com.orgzly.android.espresso;
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
-
-import com.orgzly.R;
-import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.ui.main.MainActivity;
-
-import org.junit.Rule;
-import org.junit.Test;
-
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
@@ -28,9 +18,23 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasToString;
 
+import androidx.test.core.app.ActivityScenario;
+
+import com.orgzly.R;
+import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.prefs.AppPreferences;
+import com.orgzly.android.ui.main.MainActivity;
+
+import org.junit.Before;
+import org.junit.Test;
+
 public class SettingsFragmentTest extends OrgzlyTest {
-    @Rule
-    public ActivityScenarioRule<MainActivity> rule = new ActivityScenarioRule<>(MainActivity.class);
+    @Before
+    public void setUp() throws Exception {
+        super.setUp();
+
+        ActivityScenario.launch(MainActivity.class);
+    }
 
     @Test
     public void testImportingGettingStartedFromGettingStartedNotebook() {
