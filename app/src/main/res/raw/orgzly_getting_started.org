@@ -12,21 +12,25 @@ Fling it left to open a different menu.
 
 ** Fold a note which contains sub-notes by clicking the icon next to it
 
-Long-click the icon to unfold entire subtree.
+Long-click the icon to unfold the entire subtree.
 
-*** There is no limit in number of levels you can have
+*** There is no limit to the number of levels you can have
 **** Use this to better organize your notes
+
 ** Note can have tags :tag1:tag2:
 *** Sub-note inherits the tags :tag3:
 
-If you search for notes with tag “tag1” using “t.tag1” query, this note will be included in search results.
+If you search for notes tagged with “tag1” using “t.tag1” query, this note will be included in the search results.
 
 *** A note that has the =ARCHIVE= tag set is grayed out :ARCHIVE:
+
 ** TODO Note can have a state
 
-You can configure any number of to-do states (e.g. TODO, NEXT, …) and done states (e.g. DONE, CNCL, …)
+You can configure any number of states to use: TODO, NEXT, DONE, etc.
 
-*** DONE This is a note with done type of state
+*** There are two /types/ of states: to-do and done
+
+*** DONE This is a note with /done/ type of state
 CLOSED: [2018-01-24 Wed 17:00]
 
 ** Note can have a scheduled time
@@ -38,7 +42,14 @@ SCHEDULED: <2015-02-16 Mon .+2d>
 ** You can also set a deadline time
 DEADLINE: <2015-02-20 Fri>
 
-** Reminders are triggered for scheduled and deadline times
+** Event times can be used anywhere in the note's content
+
+You can have multiple event times:
+
+- <2015-02-20 Fri>
+- <2015-02-21 Sat>
+
+** Reminders for notes with scheduled, deadline, or event times are supported
 
 Mark the note as done to shift the repeater.
 
@@ -64,27 +75,27 @@ You can make words *bold*, /italic/, _underlined_, =verbatim=, ~code~ and +strik
 - [ ] Task 2
 - [ ] Task 3
 
-Click the checkbox to toggle it. Press new-line button at the end of the line to create a new item.
+Click the checkbox to toggle it. Press the new-line button at the end of the line to create a new item.
 
 * Search
 ** There are many search operators supported
 
-You can search notes by state, tag, scheduled or deadline time etc.
+You can search notes by state, tag, scheduled, deadline or event times, etc.
 
 See http://www.orgzly.com/help#search to learn more.
 
-** Saved searches are supported
+** Search queries can be saved for quick access
 
 Try sample searches from the navigation drawer and note the queries they use.
 
 You can create your own saved searches by clicking on “Searches” in the navigation drawer.
 
 * Syncing
-** Repository
 
-Repository is a location you can sync your notebooks with. Repository can be a directory on your mobile device, SD card or Dropbox.
-
-** Notebooks are saved as plain-text files
+** Notebooks can be saved as plain-text files
 
 Files are in the format used by [[https://orgmode.org/][Org mode]].
 
+** Location (repository) type
+
+A repository is a location you can sync your notebooks with. A repository can be a directory on your mobile device, SD card, or Dropbox.
