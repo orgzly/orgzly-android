@@ -29,7 +29,7 @@
                     android:id="@+id/activity_repo_git_url"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
+                    android:inputType="textUri"
                     android:imeOptions="actionNext"
                     android:hint="@string/git_url_hint"/>
 
@@ -116,7 +116,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/git_author_hint"
-                    android:inputType="text" />
+                    android:inputType="textPersonName" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -131,7 +131,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/git_email_hint"
-                    android:inputType="text" />
+                    android:inputType="textEmailAddress" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -145,7 +145,6 @@
                     android:id="@+id/activity_repo_git_branch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/git_default_branch"
                     android:hint="@string/git_branch_hint"
                     android:selectAllOnFocus="true"
                     android:inputType="text" />

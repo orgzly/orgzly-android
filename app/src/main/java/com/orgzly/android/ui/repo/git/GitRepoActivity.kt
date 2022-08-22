@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Environment
+import android.provider.Settings
 import android.text.TextUtils
 import android.view.ContextMenu
 import android.view.Menu
@@ -108,14 +109,20 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
         viewModel = ViewModelProvider(this, factory).get(RepoViewModel::class.java)
 
-        /* Set directory value for existing repository being edited. */
         if (repoId != 0L) {
+            /* Set directory value for existing repository being edited. */
             dataRepository.getRepo(repoId)?.let { repo ->
                 binding.activityRepoGitUrl.setText(repo.url)
                 setFromPreferences()
             }
         } else {
+            /* Set default values for new repo being added. */
             createDefaultRepoFolder()
+            binding.activityRepoGitAuthor.setText("Orgzly")
+            binding.activityRepoGitBranch.setText(R.string.git_default_branch)
+            val deviceName = Settings.Secure.getString(contentResolver, "bluetooth_name")
+            if (deviceName != null) binding.activityRepoGitEmail.setText(String.format("orgzly@%s", deviceName))
+            else binding.activityRepoGitEmail.setText("orgzly@phone")
         }
 
         viewModel.finishEvent.observeSingle(this, Observer {
@@ -218,7 +225,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
     private fun setTextFromPrefKey(prefs: RepoPreferences, editText: EditText, prefKey: Int) {
         if (editText.length() < 1) {
-            val setting = prefs.getStringValue(prefKey, "")
             editText.setText(prefs.getStringValue(prefKey, ""))
         }
     }
