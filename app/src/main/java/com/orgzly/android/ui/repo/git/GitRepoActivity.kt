@@ -257,8 +257,18 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
     private fun saveAndFinish() {
         if (validateFields()) {
-            // TODO: If this fails we should notify the user in a nice way and mark the git repo field as bad
-            RepoCloneTask(this).execute()
+            val repoId = intent.getLongExtra(ARG_REPO_ID, 0)
+            if (repoId != 0L) {
+                save()
+            } else {
+                val targetDirectory = File(binding.activityRepoGitDirectory.text.toString())
+                if (targetDirectory.list()!!.isNotEmpty()) {
+                    binding.activityRepoGitDirectoryLayout.error = getString(R.string.git_clone_error_target_not_empty)
+                } else {
+                    // TODO: If this fails we should notify the user in a nice way and mark the git repo field as bad
+                    RepoCloneTask(this).execute()
+                }
+            }
         }
     }
 
@@ -320,8 +330,8 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         }
 
         val targetDirectory = File(binding.activityRepoGitDirectory.text.toString())
-        if (!targetDirectory.exists() || targetDirectory.list().isNotEmpty()) {
-            binding.activityRepoGitDirectoryLayout.error = getString(R.string.git_clone_error_target_not_empty)
+        if (!targetDirectory.exists()) {
+            binding.activityRepoGitDirectoryLayout.error = getString(R.string.git_clone_error_invalid_target_dir)
         }
 
         for (field in fields) {
