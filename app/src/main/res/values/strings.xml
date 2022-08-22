@@ -218,6 +218,7 @@
     <!-- Git sync repo errors -->
     <!-- TODO: I don't think we can say more than this for ssh authentication failures, but we probably want to -->
     <string name="git_clone_error_ssh_auth">Failure while cloning, authentication error</string>
+    <string name="git_clone_error_ssh">Failure while cloning: %s</string>
     <string name="git_clone_error_invalid_repo">The remote address is not a git repo</string>
     <string name="git_clone_error_unknown">Unknown error while cloning</string>
     <string name="git_clone_error_invalid_target_dir">The target directory does not exist</string>
