@@ -36,7 +36,7 @@ import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.databinding.ActivityRepoGitBinding
-import org.eclipse.jgit.api.errors.TransportException
+import org.eclipse.jgit.errors.TransportException
 import org.eclipse.jgit.errors.NoRemoteRepositoryException
 import org.eclipse.jgit.errors.NotSupportedException
 import org.eclipse.jgit.lib.ProgressMonitor
@@ -266,17 +266,26 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         if (e == null) {
             save()
         } else {
-            val errorId = when {
-                // TODO: show error for invalid username/password when using HTTPS
-                e.cause is NoRemoteRepositoryException -> R.string.git_clone_error_invalid_repo
-                e.cause is TransportException -> R.string.git_clone_error_ssh_auth
+            val error = when (e.cause) {
+                is NoRemoteRepositoryException -> R.string.git_clone_error_invalid_repo
+                is TransportException -> {
+                    // JGit's catch-all "remote hung up unexpectedly" message is not very useful.
+                    if (Regex("hung up unexpectedly").containsMatchIn(e.cause!!.message!!)) {
+                        String.format(getString(R.string.git_clone_error_ssh), e.cause!!.cause!!.message)
+                    } else {
+                        String.format(getString(R.string.git_clone_error_ssh), e.cause!!.message)
+                    }
+                }
                 // TODO: This should be checked when the user enters a directory by hand
-                e.cause is FileNotFoundException -> R.string.git_clone_error_invalid_target_dir
-                e.cause is GitRepo.DirectoryNotEmpty -> R.string.git_clone_error_target_not_empty
-                e.cause is NotSupportedException -> R.string.git_clone_error_uri_not_supported
+                is FileNotFoundException -> R.string.git_clone_error_invalid_target_dir
+                is GitRepo.DirectoryNotEmpty -> R.string.git_clone_error_target_not_empty
+                is NotSupportedException -> R.string.git_clone_error_uri_not_supported
                 else -> R.string.git_clone_error_unknown
             }
-            showSnackbar(errorId)
+            when (error) {
+                is Int -> { showSnackbar(error) }
+                is String -> { showSnackbar(error) }
+            }
             e.printStackTrace()
         }
     }
