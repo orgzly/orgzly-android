@@ -3,6 +3,7 @@ package com.orgzly.android.espresso
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.DrawerActions.open
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.platform.app.InstrumentationRegistry
@@ -30,8 +31,14 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
         @JvmStatic
         fun beforeClass() {
             File(SCREENSHOTS_DIRECTORY).run {
-                deleteRecursively()
-                mkdirs()
+                if (exists()) {
+                    if (!deleteRecursively()) {
+                        throw Exception("Failed to delete $SCREENSHOTS_DIRECTORY")
+                    }
+                }
+                if (!mkdirs()) {
+                    throw Exception("Failed to create $SCREENSHOTS_DIRECTORY")
+                }
             }
         }
     }
@@ -47,6 +54,7 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
     @Test
     fun main() {
         ActivityScenario.launch(MainActivity::class.java)
+        onView(withId(R.id.main_content)).check(matches(isDisplayed()))
 
         takeScreenshot("books.png")
 
@@ -82,18 +90,20 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
 
     @Test
     fun mainDark() {
-        AppPreferences.colorScheme(context, context.getString(R.string.pref_value_color_scheme_dark));
+        AppPreferences.colorScheme(context, context.getString(R.string.pref_value_color_scheme_dark))
         ActivityScenario.launch(MainActivity::class.java)
+        onView(withId(R.id.main_content)).check(matches(isDisplayed()))
 
         onBook(0).perform(click())
         onView(withId(R.id.drawer_layout)).perform(open())
 
-        takeScreenshot("dark-navigation-drawer.png")
+        takeScreenshot("navigation-drawer-dark.png")
     }
 
     @Test
     fun settings() {
         ActivityScenario.launch(SettingsActivity::class.java)
+        onView(withId(R.id.main_content)).check(matches(isDisplayed()))
 
         clickSetting("", R.string.sync)
         clickSetting("", R.string.repositories)
