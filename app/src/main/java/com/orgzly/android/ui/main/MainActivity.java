@@ -16,6 +16,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.WindowCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -356,11 +357,14 @@ public class MainActivity extends CommonActivity
     private void drawerOpened() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
         ActivityUtils.closeSoftKeyboard(this);
     }
 
     private void drawerClosed() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
+
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
     }
 
     private SyncFragment addSyncFragment() {

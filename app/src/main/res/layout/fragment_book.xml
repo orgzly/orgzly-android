@@ -60,7 +60,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Bottom toolbar -->
-    <com.google.android.material.appbar.MaterialToolbar
+    <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottom_toolbar"
         style="@style/BottomToolbar" />
 

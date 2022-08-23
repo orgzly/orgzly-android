@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -158,6 +159,7 @@ class AgendaFragment :
 
     private fun bottomToolbarToDefault() {
         binding.bottomToolbar.visibility = View.GONE
+        WindowCompat.setDecorFitsSystemWindows(requireActivity().window, true)
     }
 
     private fun topToolbarToMainSelection() {
@@ -191,6 +193,7 @@ class AgendaFragment :
             }
 
             visibility = View.VISIBLE
+            WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
         }
     }
 

@@ -157,6 +157,7 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">?attr/isLightTheme</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
 
@@ -565,7 +566,6 @@
         <item name="liftOnScroll">false</item>
     </style>
 
-
     <style name="TopToolbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
@@ -574,11 +574,10 @@
 
     <style name="BottomToolbar">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">bottom</item>
+        <item name="android:fitsSystemWindows">true</item>
         <item name="android:visibility">gone</item>
-        <item name="android:background">?attr/colorSurface</item>
-        <item name="android:elevation">4dp</item>
     </style>
 
     <style name="Fab">
