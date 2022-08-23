@@ -102,7 +102,7 @@ class Selection {
 
     fun setIsSelectedBackground(view: View, id: Long) {
         if (selectionBgColor == 0) {
-            selectionBgColor = view.context.styledAttributes(intArrayOf(R.attr.colorSecondaryContainer)) { typedArray ->
+            selectionBgColor = view.context.styledAttributes(intArrayOf(R.attr.colorPrimaryInverse)) { typedArray ->
                 typedArray.getColor(0, 0)
             }
         }
