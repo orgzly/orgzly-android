@@ -25,7 +25,7 @@
             android:id="@+id/item_refile_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp" />
+            android:layout_marginEnd="@dimen/bullet_margin" />
 
         <TextView
             android:id="@+id/item_refile_name"
