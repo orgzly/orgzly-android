@@ -618,7 +618,7 @@
 <!--    <style name="Button" parent="Widget.Material3.Button.ElevatedButton">-->
 <!--    </style>-->
 
-    <style name="Button" />
+    <style name="Button" parent="@style/Widget.Material3.Button.TonalButton" />
 
     <style name="Button.TimestampDialog">
         <item name="android:layout_width">0dp</item>
@@ -628,13 +628,11 @@
     <style name="Button.ReposRepo">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_margin">8dp</item>
         <item name="iconSize">36dp</item>
         <item name="iconGravity">top</item>
     </style>
 
-    <style name="Button.Repo">
-    </style>
+    <style name="Button.Repo" />
 
 </resources>
