@@ -298,7 +298,6 @@
         <item name="colorOnSecondaryContainer">@color/grey_800</item>
         <item name="colorTertiaryContainer">@color/grey_300</item>
         <item name="colorOnTertiaryContainer">@color/grey_700</item>
-        <item name="android:textColorLink">@color/grey_600</item>
         <item name="android:colorBackground">?attr/colorSurface</item>
 
         <item name="item_head_state_done_color">@color/green_900</item>
@@ -320,7 +319,6 @@
         <item name="colorTertiaryContainer">@color/grey_800</item>
         <item name="colorOnTertiaryContainer">@color/grey_400</item>
         <item name="colorError">@color/red_200</item>
-        <item name="android:textColorLink">@color/grey_400</item>
         <item name="android:colorBackground">?attr/colorSurface</item>
 
         <item name="item_head_state_done_color">@color/green_200</item>
@@ -341,7 +339,6 @@
         <item name="colorOnSecondaryContainer">@color/grey_200</item>
         <item name="colorTertiaryContainer">@color/grey_800</item>
         <item name="colorOnTertiaryContainer">@color/grey_400</item>
-        <item name="android:textColorLink">@color/grey_400</item>
         <item name="android:colorBackground">?attr/colorSurface</item>
 
         <item name="item_head_state_done_color">@color/green_200</item>
@@ -600,13 +597,13 @@
     <style name="HorizontalDivider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">?colorSecondaryContainer</item>
+        <item name="android:background">?colorTertiaryContainer</item>
     </style>
 
     <style name="VerticalDivider">
         <item name="android:layout_width">1dp</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">?colorSecondaryContainer</item>
+        <item name="android:background">?colorTertiaryContainer</item>
     </style>
 
     <style name="TitleTextAppearance">
