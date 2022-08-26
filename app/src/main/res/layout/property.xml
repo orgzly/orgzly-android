@@ -34,7 +34,7 @@
         android:text=""/>
 
     <ImageButton
-        android:id="@+id/delete"
+        android:id="@+id/remove"
         style="@style/NoteFragmentMetadataItemButton"
         android:src="@drawable/ic_close" />
 

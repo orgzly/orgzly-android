@@ -2,20 +2,16 @@ package com.orgzly.android.ui.notes
 
 import android.content.Context
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.res.ResourcesCompat
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.ui.ImageLoader
 import com.orgzly.android.ui.TimeType
 import com.orgzly.android.ui.util.TitleGenerator
 import com.orgzly.android.ui.util.styledAttributes
@@ -26,7 +22,6 @@ import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.UserTimeFormatter
 import com.orgzly.databinding.ItemAgendaDividerBinding
 import com.orgzly.databinding.ItemHeadBinding
-import java.lang.IllegalStateException
 
 class NoteItemViewBinder(private val context: Context, private val inBook: Boolean) {
     private val attrs: Attrs = Attrs.obtain(context)
@@ -102,7 +97,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
     }
 
     private fun setupTitle(holder: NoteItemViewHolder, noteView: NoteView) {
-        holder.binding.itemHeadTitle.setText(generateTitle(noteView))
+        holder.binding.itemHeadTitle.setVisibleText(generateTitle(noteView))
     }
 
     fun generateTitle(noteView: NoteView): CharSequence {
@@ -110,30 +105,21 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
     }
 
     private fun setupContent(holder: NoteItemViewHolder, note: Note) {
-        holder.binding.itemHeadContent.setText(note.content)
-
         if (note.hasContent() && titleGenerator.shouldDisplayContent(note)) {
             if (AppPreferences.isFontMonospaced(context)) {
-                holder.binding.itemHeadContent.typeface = Typeface.MONOSPACE
+                holder.binding.itemHeadContent.setTypeface(Typeface.MONOSPACE)
             }
 
             holder.binding.itemHeadContent.setSourceText(note.content)
 
             /* If content changes (for example by toggling the checkbox), update the note. */
-            holder.binding.itemHeadContent.onUserTextChangeListener = Runnable {
-                if (holder.binding.itemHeadContent.getSourceText() != null) {
-                    val useCase = NoteUpdateContent(
-                            note.position.bookId,
-                            note.id,
-                            holder.binding.itemHeadContent.getSourceText()?.toString())
+            holder.binding.itemHeadContent.setOnUserTextChangeListener { str ->
+                val useCase = NoteUpdateContent(note.position.bookId, note.id, str)
 
-                    App.EXECUTORS.diskIO().execute {
-                        UseCaseRunner.run(useCase)
-                    }
+                App.EXECUTORS.diskIO().execute {
+                    UseCaseRunner.run(useCase)
                 }
             }
-
-            ImageLoader.loadImages(holder.binding.itemHeadContent)
 
             holder.binding.itemHeadContent.visibility = View.VISIBLE
 

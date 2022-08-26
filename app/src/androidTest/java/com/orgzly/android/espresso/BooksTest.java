@@ -216,10 +216,10 @@ public class BooksTest extends OrgzlyTest {
     @Test
     public void testDifferentBookLoading() {
         onView(allOf(withText("book-1"), isDisplayed())).perform(click());
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note A.")));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText("Note A.")));
         pressBack();
         onView(allOf(withText("book-2"), isDisplayed())).perform(click());
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note #1.")));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText("Note #1.")));
     }
 
     @Test

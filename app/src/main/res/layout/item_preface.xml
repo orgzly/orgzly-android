@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.orgzly.android.ui.views.richtext.RichText
+        android:id="@+id/item_preface_text"
+        app:view_id="@+id/item_preface_text_view"
+        app:edit_id="@+id/item_preface_text_edit"
+        app:editable="false"
+        app:paddingHorizontal="@dimen/screen_edge"
+        app:paddingVertical="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:textSize="?attr/item_head_title_text_size"/>
+
+</FrameLayout>

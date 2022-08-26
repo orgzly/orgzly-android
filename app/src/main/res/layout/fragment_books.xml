@@ -22,8 +22,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
+                android:paddingStart="@dimen/screen_edge"
+                android:paddingEnd="@dimen/screen_edge"
                 android:paddingTop="?attr/actionBarSize"
                 android:paddingBottom="@dimen/padding_bottom_for_fab" />
 

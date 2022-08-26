@@ -94,12 +94,12 @@ public class AgendaFragmentTest extends OrgzlyTest {
         searchForText(".it.done (s.7d or d.7d) ad.1");
         onNotesInAgenda().check(matches(recyclerViewItemCount(7)));
         onItemInAgenda(0, R.id.item_agenda_divider_text).check(matches(allOf(withText(R.string.overdue), isDisplayed())));
-        onItemInAgenda(1, R.id.item_head_title).check(matches(allOf(withText(endsWith("Note B")), isDisplayed())));
-        onItemInAgenda(2, R.id.item_head_title).check(matches(allOf(withText(endsWith("Note C")), isDisplayed())));
-        onItemInAgenda(3, R.id.item_head_title).check(matches(allOf(withText(endsWith("Note 2")), isDisplayed())));
+        onItemInAgenda(1, R.id.item_head_title_view).check(matches(allOf(withText(endsWith("Note B")), isDisplayed())));
+        onItemInAgenda(2, R.id.item_head_title_view).check(matches(allOf(withText(endsWith("Note C")), isDisplayed())));
+        onItemInAgenda(3, R.id.item_head_title_view).check(matches(allOf(withText(endsWith("Note 2")), isDisplayed())));
         // Day 1
-        onItemInAgenda(5, R.id.item_head_title).check(matches(allOf(withText(endsWith("Note C")), isDisplayed())));
-        onItemInAgenda(6, R.id.item_head_title).check(matches(allOf(withText(endsWith("Note 2")), isDisplayed())));
+        onItemInAgenda(5, R.id.item_head_title_view).check(matches(allOf(withText(endsWith("Note C")), isDisplayed())));
+        onItemInAgenda(6, R.id.item_head_title_view).check(matches(allOf(withText(endsWith("Note 2")), isDisplayed())));
     }
 
     @Test
@@ -234,7 +234,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
         onItemInAgenda(1).perform(click());
 
         onView(withId(R.id.scroll_view)).check(matches(isDisplayed()));
-        onView(withId(R.id.title)).check(matches(withText("Note A")));
+        onView(withId(R.id.title_view)).check(matches(withText("Note A")));
     }
 
     @Test

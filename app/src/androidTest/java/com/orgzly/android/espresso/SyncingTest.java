@@ -86,7 +86,8 @@ public class SyncingTest extends OrgzlyTest {
                 .check(matches((withText(containsString(context.getString(R.string.force_loaded_from_uri, "mock://repo-a/booky.org"))))));
 
         onView(allOf(withText("booky"), isDisplayed())).perform(click());
-        onView(withText("New content")).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.item_preface_text_view), withText("New content")))
+                .check(matches(isDisplayed()));
     }
 
     @Test
@@ -111,7 +112,7 @@ public class SyncingTest extends OrgzlyTest {
 
         // Create note
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.title))
+        onView(withId(R.id.title_edit))
                 .perform(replaceTextCloseKeyboard("new note created by test"));
         onView(withId(R.id.done)).perform(click()); // Note done
 
@@ -135,7 +136,7 @@ public class SyncingTest extends OrgzlyTest {
         // Change preface
         onBook(0).perform(click());
         onActionItemClick(R.id.books_options_menu_book_preface, R.string.edit_book_preface);
-        onView(withId(R.id.fragment_book_preface_content))
+        onView(withId(R.id.fragment_book_preface_content_edit))
                 .perform(replaceTextCloseKeyboard("Modified preface"));
         onView(withId(R.id.done)).perform(click()); // Preface done
         pressBack();
@@ -384,7 +385,8 @@ public class SyncingTest extends OrgzlyTest {
 
         /* Go back to book. */
         pressBack();
-        onView(withText("NEW CONTENT")).check(matches(isDisplayed()));
+        onView(allOf(withId(R.id.item_preface_text_view), withText("NEW CONTENT")))
+                .check(matches(isDisplayed()));
     }
 
     @Test
@@ -412,7 +414,7 @@ public class SyncingTest extends OrgzlyTest {
 
         /* Open note "ANTIVIVISECTIONISTS Note #10." and check title. */
         onNoteInBook(10).perform(click());
-        onView(withId(R.id.title)).check(matches(allOf(withText("ANTIVIVISECTIONISTS Note #10."), isDisplayed())));
+        onView(withId(R.id.title_view)).check(matches(allOf(withText("ANTIVIVISECTIONISTS Note #10."), isDisplayed())));
 
         settingsSetTodoKeywords("ANTIVIVISECTIONISTS");
 
@@ -503,17 +505,20 @@ public class SyncingTest extends OrgzlyTest {
                 .check(matches(allOf(withText(containsString(BookSyncStatus.DUMMY_WITHOUT_LINK_AND_ONE_ROOK.msg())), isDisplayed())));
 
         onBook(0).perform(click());
-        onView(withText("Local content for book 1")).check(matches(isDisplayed()));
+        onView(withId(R.id.item_preface_text_view))
+                .check(matches(withText("Local content for book 1")));
         pressBack();
         onBook(1).perform(click());
-        onView(withText("Local content for book 2")).check(matches(isDisplayed()));
+        onView(withId(R.id.item_preface_text_view))
+                .check(matches(withText("Local content for book 2")));
         pressBack();
         /* Whole notebook view is too big to fit on small devices' screen, so we get
          * "at least 90 percent of the view's area is displayed to the user"
          * when trying to click on it. Clicking on specific view inside (book name) instead.
          */
         onBook(2, R.id.item_book_title).perform(click());
-        onView(withText("Remote content for book 3")).check(matches(isDisplayed()));
+        onView(withId(R.id.item_preface_text_view))
+                .check(matches(withText("Remote content for book 3")));
         pressBack();
 
         sync();
@@ -528,13 +533,18 @@ public class SyncingTest extends OrgzlyTest {
                 .check(matches(allOf(withText(containsString(BookSyncStatus.NO_CHANGE.msg())), isDisplayed())));
 
         onBook(0).perform(click());
-        onView(withText("Local content for book 1")).check(matches(isDisplayed()));
+        onView(withId(R.id.item_preface_text_view))
+                .check(matches(withText("Local content for book 1")));
         pressBack();
+
         onBook(1).perform(click());
-        onView(withText("Local content for book 2")).check(matches(isDisplayed()));
+        onView(withId(R.id.item_preface_text_view))
+                .check(matches(withText("Local content for book 2")));
         pressBack();
+
         onBook(2).perform(click());
-        onView(withText("Remote content for book 3")).check(matches(isDisplayed()));
+        onView(withId(R.id.item_preface_text_view))
+                .check(matches(withText("Remote content for book 3")));
     }
 
     @Test
@@ -712,7 +722,7 @@ public class SyncingTest extends OrgzlyTest {
 
         onBook(0).perform(click()); // Open notebook
         onNoteInBook(1).perform(click()); // Open note
-        onView(withId(R.id.title)).perform(replaceTextCloseKeyboard("New title"));
+        onView(withId(R.id.title_edit)).perform(replaceTextCloseKeyboard("New title"));
         onView(withId(R.id.done)).perform(click()); // Note done
 
         pressBack(); // Back to the list of notebooks

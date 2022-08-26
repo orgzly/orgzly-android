@@ -1,16 +1,13 @@
 package com.orgzly.android.espresso
 
 import android.content.pm.ActivityInfo
+import android.os.SystemClock
 import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.Espresso.pressBack
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.longClick
-import androidx.test.espresso.action.ViewActions.replaceText
-import androidx.test.espresso.action.ViewActions.scrollTo
-import androidx.test.espresso.action.ViewActions.swipeUp
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.PickerActions.setDate
 import androidx.test.espresso.contrib.PickerActions.setTime
@@ -23,7 +20,6 @@ import com.orgzly.android.ui.main.MainActivity
 import org.hamcrest.Matchers.*
 import org.junit.Before
 import org.junit.Test
-
 
 class NoteFragmentTest : OrgzlyTest() {
     private lateinit var scenario: ActivityScenario<MainActivity>
@@ -89,16 +85,16 @@ class NoteFragmentTest : OrgzlyTest() {
 
     @Test
     fun testUpdateNoteTitle() {
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note #1.")))
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText("Note #1.")))
 
         onNoteInBook(1).perform(click())
 
-        onView(withId(R.id.title))
+        onView(withId(R.id.title_edit))
                 .perform(*replaceTextCloseKeyboard("Note title changed"))
 
         onView(withId(R.id.done)).perform(click()); // Note done
 
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note title changed")))
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText("Note title changed")))
     }
 
     @Test
@@ -232,7 +228,7 @@ class NoteFragmentTest : OrgzlyTest() {
     @Test
     fun testTitleCanNotBeEmptyForExistingNote() {
         onNoteInBook(1).perform(click())
-        onView(withId(R.id.title)).perform(*replaceTextCloseKeyboard(""))
+        onView(withId(R.id.title_edit)).perform(*replaceTextCloseKeyboard(""))
         onView(withId(R.id.done)).perform(click()); // Note done
         onSnackbar().check(matches(withText(R.string.title_can_not_be_empty)))
     }
@@ -481,11 +477,12 @@ class NoteFragmentTest : OrgzlyTest() {
     @Test
     fun testContentLineCountUpdatedOnNoteUpdate() {
         onNoteInBook(1).perform(click())
-        onView(withId(R.id.content_edit)).perform(scrollTo()) // For smaller screens
-        onView(withId(R.id.content_edit)).perform(*replaceTextCloseKeyboard("a\nb\nc"))
-        onView(withId(R.id.done)).perform(click()); // Note done
+        onView(withId(R.id.content)).perform(scrollTo()) // For smaller screens
+        onView(withId(R.id.content)).perform(click())
+        onView(withId(R.id.content_edit)).perform(typeTextIntoFocusedView("a\nb\nc"))
+        onView(withId(R.id.done)).perform(click()) // Note done
         onNoteInBook(1, R.id.item_head_fold_button).perform(click())
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("3"))))
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText(endsWith("3"))))
     }
 
     @Test
@@ -504,7 +501,7 @@ class NoteFragmentTest : OrgzlyTest() {
     fun testBreadcrumbsFollowToNote() {
         onNoteInBook(3).perform(click())
         onView(withId(R.id.breadcrumbs_text)).perform(clickClickableSpan("Note #2."))
-        onView(withId(R.id.title)).check(matches(withText("Note #2.")))
+        onView(withId(R.id.title_view)).check(matches(withText("Note #2.")))
     }
 
     @Test
@@ -512,7 +509,7 @@ class NoteFragmentTest : OrgzlyTest() {
         onNoteInBook(1).perform(longClick())
         onActionItemClick(R.id.new_note, R.string.new_note);
         onView(withText(R.string.new_under)).perform(click())
-        onView(withId(R.id.title)).perform(*replaceTextCloseKeyboard("1.1"))
+        onView(withId(R.id.title_edit)).perform(*replaceTextCloseKeyboard("1.1"))
         onView(withId(R.id.breadcrumbs_text)).perform(clickClickableSpan("Note #1."))
 
         // Dialog is displayed
@@ -535,7 +532,6 @@ class NoteFragmentTest : OrgzlyTest() {
         onView(withText(R.string.metadata)).perform(click())
         onView(withText(R.string.show_selected)).perform(click())
         onView(withText("CREATED")).check(matches(isDisplayed()))
-        pressBack()
         pressBack()
         onNoteInBook(10).perform(click())
         onView(withText("CREATED")).check(matches(isDisplayed()))

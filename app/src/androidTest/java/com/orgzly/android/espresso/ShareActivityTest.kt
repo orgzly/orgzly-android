@@ -156,8 +156,8 @@ class ShareActivityTest : OrgzlyTest() {
                 type = "image/png",
                 extraStreamUri = "content://uri")
 
-        onView(withId(R.id.title)).check(matches(withText("content://uri")))
-        onView(withId(R.id.content_edit)).check(matches(withText("Cannot find image using this URI.")))
+        onView(withId(R.id.title_view)).check(matches(withText("content://uri")))
+        onView(withId(R.id.content_view)).check(matches(withText("Cannot find image using this URI.")))
 
         onView(withId(R.id.done)).perform(click()); // Note done
     }
@@ -166,7 +166,7 @@ class ShareActivityTest : OrgzlyTest() {
     fun testNoMatchingType() {
         startActivityWithIntent(action = Intent.ACTION_SEND, type = "application/octet-stream")
 
-        onView(withId(R.id.title)).check(matches(withText("")))
+        onView(withId(R.id.title_view)).check(matches(withText("")))
         onSnackbar().check(matches(withText(context.getString(R.string.share_type_not_supported, "application/octet-stream"))))
     }
 
@@ -174,7 +174,7 @@ class ShareActivityTest : OrgzlyTest() {
     fun testNoActionSend() {
         startActivityWithIntent()
 
-        onView(withId(R.id.title)).check(matches(withText("")))
+        onView(withId(R.id.title_view)).check(matches(withText("")))
     }
 
     @Test

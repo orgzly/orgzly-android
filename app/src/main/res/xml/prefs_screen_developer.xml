@@ -10,4 +10,9 @@
         android:summary="@string/in_development"
         android:defaultValue="@bool/pref_default_git_is_enabled" />
 
+    <SwitchPreference
+        android:key="@string/pref_key_highlight_edited_rich_text"
+        android:title="Highlight edited rich text"
+        android:defaultValue="@bool/pref_default_highlight_edited_rich_text" />
+
 </androidx.preference.PreferenceScreen>

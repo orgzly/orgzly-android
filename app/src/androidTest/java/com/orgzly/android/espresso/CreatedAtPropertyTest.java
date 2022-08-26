@@ -70,11 +70,11 @@ public class CreatedAtPropertyTest extends OrgzlyTest {
         enableCreatedAt();
 
         searchForText("o.cr");
-        onNoteInSearch(0, R.id.item_head_title)
+        onNoteInSearch(0, R.id.item_head_title_view)
                 .check(matches(allOf(withText("Note [a-2]"), isDisplayed())));
 
         searchForText(".o.cr");
-        onNoteInSearch(0, R.id.item_head_title)
+        onNoteInSearch(0, R.id.item_head_title_view)
                 .check(matches(allOf(withText("Note [a-1]"), isDisplayed())));
     }
 
@@ -82,18 +82,18 @@ public class CreatedAtPropertyTest extends OrgzlyTest {
     public void testChangeCreatedAtPropertyResultsShouldBeReordered() {
         searchForText("o.cr");
 
-        onNoteInSearch(0, R.id.item_head_title).check(matches(withText("Note [a-1]")));
-        onNoteInSearch(1, R.id.item_head_title).check(matches(withText("Note [a-2]")));
+        onNoteInSearch(0, R.id.item_head_title_view).check(matches(withText("Note [a-1]")));
+        onNoteInSearch(1, R.id.item_head_title_view).check(matches(withText("Note [a-2]")));
 
         enableCreatedAt();
 
-        onNoteInSearch(0, R.id.item_head_title).check(matches(withText("Note [a-2]")));
-        onNoteInSearch(1, R.id.item_head_title).check(matches(withText("Note [a-1]")));
+        onNoteInSearch(0, R.id.item_head_title_view).check(matches(withText("Note [a-2]")));
+        onNoteInSearch(1, R.id.item_head_title_view).check(matches(withText("Note [a-1]")));
 
         changeCreatedAtProperty("ADDED");
 
-        onNoteInSearch(0, R.id.item_head_title).check(matches(withText("Note [a-1]")));
-        onNoteInSearch(1, R.id.item_head_title).check(matches(withText("Note [a-2]")));
+        onNoteInSearch(0, R.id.item_head_title_view).check(matches(withText("Note [a-1]")));
+        onNoteInSearch(1, R.id.item_head_title_view).check(matches(withText("Note [a-2]")));
     }
 
     @Test
@@ -103,19 +103,19 @@ public class CreatedAtPropertyTest extends OrgzlyTest {
         enableCreatedAt();
 
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.title))
+        onView(withId(R.id.title_edit))
                 .perform(replaceTextCloseKeyboard("new note created by test"));
         onView(withId(R.id.done)).perform(click()); // Note done
 
-        onNoteInBook(3, R.id.item_head_title)
+        onNoteInBook(3, R.id.item_head_title_view)
                 .check(matches(allOf(withText("new note created by test"), isDisplayed())));
 
         searchForText("o.cr");
-        onNoteInSearch(0, R.id.item_head_title)
+        onNoteInSearch(0, R.id.item_head_title_view)
                 .check(matches(allOf(withText("Note [a-2]"), isDisplayed())));
 
         searchForText(".o.cr");
-        onNoteInSearch(0, R.id.item_head_title)
+        onNoteInSearch(0, R.id.item_head_title_view)
                 .check(matches(allOf(withText("new note created by test"), isDisplayed())));
     }
 

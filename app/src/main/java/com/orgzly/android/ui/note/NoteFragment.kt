@@ -34,8 +34,6 @@ import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
-import com.orgzly.android.ui.note.NoteViewModel.Companion.APP_BAR_DEFAULT_MODE
-import com.orgzly.android.ui.note.NoteViewModel.Companion.APP_BAR_EDIT_MODE
 import com.orgzly.android.ui.notes.book.BookFragment
 import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.share.ShareActivity
@@ -70,15 +68,9 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
     private lateinit var sharedMainActivityViewModel: SharedMainActivityViewModel
 
-    private val userCancelBackPressHandler = object : OnBackPressedCallback(false) {
+    private val userCancelBackPressHandler = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             userCancel()
-        }
-    }
-
-    private val toViewModeBackPressHandler = object : OnBackPressedCallback(false) {
-        override fun handleOnBackPressed() {
-            viewModel.toViewMode()
         }
     }
 
@@ -132,7 +124,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         viewModel = ViewModelProvider(this, factory).get(NoteViewModel::class.java)
 
-        requireActivity().onBackPressedDispatcher.addCallback(this, toViewModeBackPressHandler)
         requireActivity().onBackPressedDispatcher.addCallback(this, userCancelBackPressHandler)
     }
 
@@ -151,28 +142,12 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         setupObservers()
 
-        /*
-         * Not working when done in XML.
-         * We want imeOptions="actionDone", so we can't use textMultiLine.
-         */
         binding.title.apply {
-            setHorizontallyScrolling(false)
-
-            maxLines = Integer.MAX_VALUE
-
             // Keyboard's action button pressed
             setOnEditorActionListener { _, _, _ ->
                 userSave()
                 true
             }
-        }
-
-        binding.titleView.apply {
-            removeBackgroundKeepPadding()
-
-            setOnFocusOrClickListener(View.OnClickListener {
-                viewModel.toEditTitleMode()
-            })
         }
 
         binding.breadcrumbsText.movementMethod = LinkMovementMethod.getInstance()
@@ -221,36 +196,8 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         binding.closedButton.setOnClickListener(this)
         binding.closedRemove.setOnClickListener(this)
 
-        binding.bodyView.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable) {
-                // Update bodyEdit text when checkboxes are clicked
-                val text = binding.bodyView.getSourceText()
-                binding.contentEdit.setText(text)
-            }
-        })
-
-        binding.bodyView.apply {
-            removeBackgroundKeepPadding()
-
-            setOnFocusOrClickListener(View.OnClickListener {
-                viewModel.toEditContentMode()
-            })
-        }
-
-        // View mode on keyboard back press
-        listOf(binding.contentEdit, binding.title).forEach { editView ->
-            editView.setOnImeBackListener {
-                viewModel.toViewMode()
-            }
-        }
-
-        if (activity != null && AppPreferences.isFontMonospaced(context)) {
-            binding.contentEdit.typeface = Typeface.MONOSPACE
-            binding.bodyView.typeface = Typeface.MONOSPACE
+        if (AppPreferences.isFontMonospaced(context)) {
+            binding.content.setTypeface(Typeface.MONOSPACE)
         }
 
         /*
@@ -272,7 +219,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         binding.contentHeader.setOnClickListener {
             isNoteContentFolded().not().let { isFolded ->
                 // Close keyboard if content has a focus and it's being folded
-                if (isFolded && binding.contentEdit.hasFocus()) {
+                if (isFolded && binding.content.hasFocus()) {
                     ActivityUtils.closeSoftKeyboard(activity)
                 }
 
@@ -291,32 +238,16 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
             ActivityUtils.keepScreenOnUpdateMenuItem(activity, menu)
 
-            if (activity is ShareActivity) {
-                setNavigationIcon(R.drawable.ic_arrow_back)
+            setNavigationIcon(R.drawable.ic_menu)
 
-                setNavigationOnClickListener {
-                    userCancel()
-                }
-
-            } else {
-                setNavigationIcon(R.drawable.ic_menu)
-
-                setNavigationOnClickListener {
-                    sharedMainActivityViewModel.openDrawer()
-                }
+            setNavigationOnClickListener {
+                sharedMainActivityViewModel.openDrawer()
             }
 
             if (viewModel.notePayload == null) {
                 removeMenuItemsForNoData(menu)
-
             } else {
-                when (AppPreferences.noteMetadataVisibility(context)) {
-                    "selected" -> menu.findItem(R.id.metadata_show_selected).isChecked = true
-                    else -> menu.findItem(R.id.metadata_show_all).isChecked = true
-                }
-
-                menu.findItem(R.id.metadata_always_show_set).isChecked =
-                    AppPreferences.alwaysShowSetNoteMetadata(context)
+                updateMenuMetadataItemVisibility(menu)
             }
 
             /* Newly created note cannot be deleted. */
@@ -334,34 +265,18 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         }
     }
 
-    private fun topToolbarToEditMode() {
-        binding.topToolbar.run {
-            menu.clear()
-            inflateMenu(R.menu.note_actions_edit)
-
-            setNavigationIcon(R.drawable.ic_remove_red_eye)
-
-            setNavigationOnClickListener {
-                viewModel.toViewMode()
-            }
-
-            if (viewModel.notePayload == null) {
-                removeMenuItemsForNoData(menu)
-            }
-
-            setOnMenuItemClickListener { menuItem ->
-                handleActionItemClick(menuItem)
-            }
-
-            setOnClickListener {
-                binding.scrollView.scrollTo(0, 0)
-            }
+    private fun updateMenuMetadataItemVisibility(menu: Menu) {
+        when (AppPreferences.noteMetadataVisibility(context)) {
+            "selected" -> menu.findItem(R.id.metadata_show_selected).isChecked = true
+            else -> menu.findItem(R.id.metadata_show_all).isChecked = true
         }
+
+        menu.findItem(R.id.metadata_always_show_set).isChecked =
+            AppPreferences.alwaysShowSetNoteMetadata(context)
     }
 
     // Displaying a non-existent note, remove some menu items
     private fun removeMenuItemsForNoData(menu: Menu) {
-        menu.removeItem(R.id.to_edit_mode)
         menu.removeItem(R.id.done)
         menu.removeItem(R.id.metadata)
         menu.removeItem(R.id.delete)
@@ -369,10 +284,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
     private fun handleActionItemClick(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.to_edit_mode -> {
-                viewModel.toEditMode()
-            }
-
             R.id.done -> {
                 userSave()
             }
@@ -417,11 +328,11 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     }
 
     private fun isNoteContentFolded(): Boolean {
-        return binding.contentViews.visibility != View.VISIBLE
+        return binding.content.visibility != View.VISIBLE
     }
 
     private fun setContentFoldState(isFolded: Boolean) {
-        binding.contentViews.goneIf(isFolded)
+        binding.content.goneIf(isFolded)
         binding.contentHeaderUpIcon.goneIf(isFolded)
         binding.contentHeaderDownIcon.goneUnless(isFolded)
         // binding.contentHeaderText.invisibleIf(isFolded)
@@ -475,50 +386,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             }
         })
 
-        viewModel.viewEditMode.observe(viewLifecycleOwner, Observer { viewEditMode ->
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed viewEditMode: $viewEditMode")
-
-            when (viewEditMode) {
-                NoteViewModel.ViewEditMode.VIEW -> {
-                    toViewMode()
-                }
-
-                NoteViewModel.ViewEditMode.EDIT -> {
-                    toEditMode()
-                }
-
-                NoteViewModel.ViewEditMode.EDIT_TITLE_WITH_KEYBOARD -> {
-                    toEditMode()
-                    ActivityUtils.openSoftKeyboard(activity, binding.title)
-                }
-
-                NoteViewModel.ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD -> {
-                    toEditMode()
-                    ActivityUtils.openSoftKeyboard(activity, binding.contentEdit)
-                }
-
-                null -> { }
-            }
-        })
-
-        viewModel.appBar.mode.observeSingle(viewLifecycleOwner) { mode ->
-            when (mode) {
-                APP_BAR_DEFAULT_MODE -> {
-                    topToolbarToViewMode()
-                    sharedMainActivityViewModel.unlockDrawer()
-                    userCancelBackPressHandler.isEnabled = true
-                    toViewModeBackPressHandler.isEnabled = false
-                }
-
-                APP_BAR_EDIT_MODE -> {
-                    topToolbarToEditMode()
-                    sharedMainActivityViewModel.lockDrawer()
-                    userCancelBackPressHandler.isEnabled = false
-                    toViewModeBackPressHandler.isEnabled = true
-                }
-            }
-        }
-
         viewModel.errorEvent.observeSingle(viewLifecycleOwner, Observer { error ->
             activity?.showSnackbar((error.cause ?: error).localizedMessage)
         })
@@ -526,34 +393,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         viewModel.snackBarMessage.observeSingle(viewLifecycleOwner, Observer { resId ->
             activity?.showSnackbar(resId)
         })
-    }
-
-    private fun toEditMode() {
-        binding.titleView.visibility = View.GONE
-        binding.title.visibility = View.VISIBLE
-
-        binding.bodyView.visibility = View.GONE
-        binding.contentEdit.visibility = View.VISIBLE
-
-        viewModel.appBar.toMode(APP_BAR_EDIT_MODE)
-    }
-
-    private fun toViewMode() {
-        ActivityUtils.closeSoftKeyboard(activity)
-
-        binding.title.visibility = View.GONE
-        binding.titleView.setSourceText(binding.title.text.toString())
-        binding.titleView.visibility = View.VISIBLE
-
-        binding.contentEdit.visibility = View.GONE
-
-        binding.bodyView.setSourceText(binding.contentEdit.text.toString())
-
-        ImageLoader.loadImages(binding.bodyView)
-
-        binding.bodyView.visibility = View.VISIBLE
-
-        viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
     }
 
     private fun updateViewsFromPayload() {
@@ -566,8 +405,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         setPriorityView(payload.priority)
 
         // Title
-        binding.title.setText(payload.title)
-        binding.titleView.setSourceText(payload.title)
+        binding.title.setSourceText(payload.title)
 
         // Tags
         if (payload.tags.isNotEmpty()) {
@@ -589,12 +427,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         addPropertyToList(null, null)
 
         // Content
-
-        binding.contentEdit.setText(payload.content)
-
-        binding.bodyView.setSourceText(payload.content ?: "")
-
-        ImageLoader.loadImages(binding.bodyView)
+        binding.content.setSourceText(payload.content)
     }
 
     private fun addPropertyToList(propName: String?, propValue: String?) {
@@ -604,16 +437,16 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
         val name = propView.findViewById<EditText>(R.id.name)
         val value = propView.findViewById<EditText>(R.id.value)
-        val delete = propView.findViewById<View>(R.id.delete)
+        val remove = propView.findViewById<View>(R.id.remove)
 
-        // Last property (this one) needs no delete button
-        delete.visibility = View.INVISIBLE
+        // Last property (this one) needs no remove button
+        remove.visibility = View.INVISIBLE
 
-        // Second to last property can now have its delete button
+        // Second to last property can now have its remove button
         if (binding.propertiesContainer.childCount > 1) {
             binding.propertiesContainer
                 .getChildAt(binding.propertiesContainer.childCount - 2)
-                .findViewById<View>(R.id.delete).visibility = View.VISIBLE
+                .findViewById<View>(R.id.remove).visibility = View.VISIBLE
         }
 
         if (propName != null && propValue != null) { // Existing property
@@ -621,7 +454,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             value.setText(propValue)
         }
 
-        delete.setOnClickListener {
+        remove.setOnClickListener {
             if (isOnlyProperty(propView) || isLastProperty(propView)) {
                 name.text = null
                 value.text = null
@@ -678,9 +511,9 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         }
 
         // Replace new lines with spaces, in case multi-line text has been pasted
-        val title = binding.title.text.toString().replace("\n".toRegex(), " ").trim { it <= ' ' }
+        val title = binding.title.getSourceText().toString().replace("\n".toRegex(), " ").trim { it <= ' ' }
 
-        val content = binding.contentEdit.text.toString()
+        val content = binding.content.getSourceText()?.toString() ?: ""
 
         // TODO: Create a function (extension?) for this
         val state = if (TextUtils.isEmpty(binding.stateButton.text))
@@ -729,17 +562,14 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 binding.locationButton.text = bookTitle
             }
 
-            if (viewModel.isNew()) { // New note
-                binding.viewFlipper.displayedChild = 0
-
-            } else { // Existing note
-                if (viewModel.notePayload != null) {
-                    binding.viewFlipper.displayedChild = 0
+            binding.viewFlipper.displayedChild =
+                if (viewModel.isNew()) {
+                    0
+                } else if (viewModel.notePayload != null) {
+                    0
                 } else {
-                    binding.viewFlipper.displayedChild = 1
-                    removeMenuItemsForNoData(binding.topToolbar.menu)
+                    1
                 }
-            }
 
             // Load payload from saved Bundle if available
             if (savedInstanceState != null) {
@@ -748,13 +578,15 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
 
             updateViewsFromPayload()
 
+            topToolbarToViewMode()
+
             setMetadataViewsVisibility()
 
-            /* Open keyboard for new notes, unless fragment was given
+            /* Open the keyboard for new notes, unless fragment was given
              * some initial values (for example from ShareActivity).
              */
             if (viewModel.isNew() && !viewModel.hasInitialData()) {
-                viewModel.toEditTitleMode(saveMode = false)
+                binding.title.toEditMode(0)
             }
         })
 
@@ -780,8 +612,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         sharedMainActivityViewModel.setCurrentFragment(FRAGMENT_TAG)
-
-        sharedMainActivityViewModel.lockDrawer()
     }
 
     override fun onPause() {
@@ -791,8 +621,6 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         dialog = null
 
         ActivityUtils.keepScreenOnClear(activity)
-
-        sharedMainActivityViewModel.unlockDrawer()
     }
 
     override fun onDestroyView() {

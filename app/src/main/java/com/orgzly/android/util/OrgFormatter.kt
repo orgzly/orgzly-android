@@ -6,8 +6,9 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.*
+import com.orgzly.BuildConfig
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.ui.views.TextViewWithMarkup
+import com.orgzly.android.ui.views.richtext.RichTextView
 import com.orgzly.android.ui.views.style.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -68,6 +69,7 @@ object OrgFormatter {
             val content: CharSequence,
             val spans: List<Any?> = listOf())
 
+    // TODO: Pass to OrgFormatter, don't pass context
     private data class Config(
             val style: Boolean = true,
             val withMarks: Boolean = false,
@@ -90,6 +92,8 @@ object OrgFormatter {
     }
 
     private fun parse(str: CharSequence, config: Config): SpannableStringBuilder {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "length:${str.length}")
+
         var ssb = SpannableStringBuilder(str)
 
         /* Must be first, since checkboxes need to know their position in str. */
@@ -230,7 +234,7 @@ object OrgFormatter {
         return found
     }
 
-    private fun newSpan(type: SpanType): Any {
+    private fun newSpan(type: SpanType): CharacterStyle {
         return when (type) {
             SpanType.BOLD -> StyleSpan(Typeface.BOLD)
             SpanType.ITALIC -> StyleSpan(Typeface.ITALIC)
@@ -260,7 +264,7 @@ object OrgFormatter {
                 }
 
             } else {
-                val spans = mutableListOf<Any>()
+                val spans = mutableListOf<CharacterStyle>()
 
                 val found = spanTypes(str) {
                     spans.add(newSpan(it))
@@ -318,7 +322,7 @@ object OrgFormatter {
 
                 // if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found drawer", name, content, "All:'${m.group()}'")
 
-                val drawerSpanned = TextViewWithMarkup.drawerSpanned(name, content, foldDrawers)
+                val drawerSpanned = RichTextView.drawerSpanned(name, content, foldDrawers)
 
                 val start = if (m.group().startsWith("\n")) m.start() + 1 else m.start()
                 val end = if (m.group().endsWith("\n")) m.end() - 1 else m.end()

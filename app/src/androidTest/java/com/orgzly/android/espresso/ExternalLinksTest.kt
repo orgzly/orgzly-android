@@ -59,7 +59,7 @@ class ExternalLinksTest(private val param: Parameter) : OrgzlyTest() {
         onBook(0).perform(click())
 
         // Click on link
-        onNoteInBook(1, R.id.item_head_content).perform(clickClickableSpan(param.link))
+        onNoteInBook(1, R.id.item_head_content_view).perform(clickClickableSpan(param.link))
 
         param.check()
     }

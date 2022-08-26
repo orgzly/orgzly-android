@@ -1,4 +1,4 @@
-package com.orgzly.android.ui.views
+package com.orgzly.android.ui.views.richtext
 
 import android.text.Editable
 import android.text.TextWatcher
@@ -6,7 +6,7 @@ import com.orgzly.BuildConfig
 import com.orgzly.android.util.LogUtils
 import java.util.regex.Pattern
 
-class EditTextWatcher: TextWatcher {
+class RichTextEditWatcher: TextWatcher {
     data class ListItem(val pattern: Pattern, val bullet: String)
 
     data class CurrentListItem(
@@ -28,7 +28,8 @@ class EditTextWatcher: TextWatcher {
 
     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
         if (BuildConfig.LOG_DEBUG) {
-            LogUtils.d(TAG, "$count (count) characters beginning at"
+            LogUtils.d(
+                TAG, "$count (count) characters beginning at"
                     + " $start (start) are about to be replaced by new text "
                     + "with length $after (after)")
         }
@@ -73,7 +74,8 @@ class EditTextWatcher: TextWatcher {
 
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
         if (BuildConfig.LOG_DEBUG) {
-            LogUtils.d(TAG, "$count (count) characters beginning at "
+            LogUtils.d(
+                TAG, "$count (count) characters beginning at "
                     + " $start (start) have just replaced old text that had length $before (before)")
         }
 
@@ -102,6 +104,6 @@ class EditTextWatcher: TextWatcher {
     }
 
     companion object {
-        private val TAG = EditTextWatcher::class.java.name
+        private val TAG = RichTextEditWatcher::class.java.name
     }
 }

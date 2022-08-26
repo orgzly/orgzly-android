@@ -23,14 +23,17 @@
                 android:id="@+id/note"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
                 <!-- Breadcrumbs -->
                 <FrameLayout
                     android:id="@+id/breadcrumbs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/screen_edge"
+                    android:minHeight="36dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginStart="@dimen/screen_edge"
                     android:layout_marginEnd="@dimen/screen_edge"
                     android:paddingTop="4dp"
@@ -65,27 +68,20 @@
                         tools:text="Inbox"/>
                 </LinearLayout>
 
-                <!-- Title (edit mode) -->
-                <com.orgzly.android.ui.views.EditTextWithMarkup
+                <!-- Title -->
+                <com.orgzly.android.ui.views.richtext.RichText
                     android:id="@+id/title"
-                    style="@style/NoteFragmentTextContainer"
-                    android:inputType="text|textCapSentences"
-                    android:imeOptions="actionDone"
-                    android:hint="@string/fragment_note_title_hint"
-                    tools:text="@string/head_title_sample"
-                    android:textAppearance="@style/TitleTextAppearance"
-                    android:visibility="visible" />
-
-                <!-- Title (view mode) -->
-                <com.orgzly.android.ui.views.TextViewWithMarkup
+                    app:view_id="@+id/title_view"
+                    app:edit_id="@+id/title_edit"
                     app:parse_checkboxes="false"
-                    android:id="@+id/title_view"
-                    style="@style/NoteFragmentTextContainer"
+                    app:paddingHorizontal="@dimen/screen_edge"
+                    app:paddingVertical="6dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="text|textCapSentences"
                     android:hint="@string/fragment_note_title_hint"
-                    tools:text="@string/head_title_sample"
-                    android:textAppearance="@style/TitleTextAppearance"
-                    android:textIsSelectable="true"
-                    android:visibility="gone" />
+                    android:textSize="?attr/font_large" />
 
                 <View style="@style/HorizontalDivider" />
 
@@ -317,30 +313,17 @@
                 </LinearLayout>
 
                 <!-- Content -->
-                <LinearLayout
-                    android:id="@+id/content_views"
+                <com.orgzly.android.ui.views.richtext.RichText
+                    android:id="@+id/content"
+                    app:view_id="@+id/content_view"
+                    app:edit_id="@+id/content_edit"
+                    app:paddingHorizontal="@dimen/screen_edge"
+                    app:paddingVertical="6dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <com.orgzly.android.ui.views.EditTextWithMarkup
-                        android:id="@+id/content_edit"
-                        style="@style/NoteFragmentTextContainer"
-                        android:inputType="text|textCapSentences|textMultiLine"
-                        android:hint="@string/content"
-                        android:gravity="start|top"
-                        android:textSize="?attr/fragment_note_content_text_size"
-                        android:visibility="visible"  />
-
-                    <com.orgzly.android.ui.views.TextViewWithMarkup
-                        android:id="@+id/body_view"
-                        style="@style/NoteFragmentTextContainer"
-                        android:gravity="start|top"
-                        android:textIsSelectable="true"
-                        android:textSize="?attr/fragment_note_content_text_size"
-                        android:hint="@string/content"
-                        android:visibility="gone" />
-                </LinearLayout>
+                    android:inputType="text|textCapSentences|textMultiLine"
+                    android:hint="@string/content"
+                    android:textSize="?attr/fragment_note_content_text_size" />
 
                 <View style="@style/HorizontalDivider" />
             </LinearLayout>

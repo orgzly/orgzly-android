@@ -1,5 +1,7 @@
 package com.orgzly.android.prefs;
 
+import static androidx.preference.PreferenceManager.getDefaultSharedPreferences;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -23,8 +25,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static androidx.preference.PreferenceManager.getDefaultSharedPreferences;
 
 
 /**
@@ -718,32 +718,6 @@ public class AppPreferences {
     }
 
     /*
-     * Note details mode.
-     */
-
-    public static String noteDetailsOpeningMode(Context context) {
-        return getDefaultSharedPreferences(context).getString(
-                context.getResources().getString(R.string.pref_key_note_details_opening_mode),
-                context.getResources().getString(R.string.pref_default_note_details_opening_mode));
-    }
-
-    public static void noteDetailsOpeningMode(Context context, String value) {
-        String key = context.getResources().getString(R.string.pref_key_note_details_opening_mode);
-        getDefaultSharedPreferences(context).edit().putString(key, value).apply();
-    }
-
-    public static String noteDetailsLastMode(Context context) {
-        return getDefaultSharedPreferences(context).getString(
-                context.getResources().getString(R.string.pref_key_note_details_last_mode),
-                context.getResources().getString(R.string.pref_default_note_details_last_mode));
-    }
-
-    public static void noteDetailsLastMode(Context context, String value) {
-        String key = context.getResources().getString(R.string.pref_key_note_details_last_mode);
-        getDefaultSharedPreferences(context).edit().putString(key, value).apply();
-    }
-
-    /*
      * Content folding state in note details
      */
 
@@ -816,6 +790,16 @@ public class AppPreferences {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_widget_display_book_name),
                 context.getResources().getBoolean(R.bool.pref_default_widget_display_book_name));
+    }
+
+    /*
+     * RichTextView
+     */
+
+    public static boolean highlightEditedRichText(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_highlight_edited_rich_text),
+                context.getResources().getBoolean(R.bool.pref_default_highlight_edited_rich_text));
     }
 
     /*

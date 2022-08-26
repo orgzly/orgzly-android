@@ -1,8 +1,10 @@
 package com.orgzly.android.espresso;
 
 import android.content.res.Resources;
+import android.os.SystemClock;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ListView;
@@ -23,6 +25,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.orgzly.R;
 import com.orgzly.android.ui.SpanUtils;
+import com.orgzly.android.util.LogUtils;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -205,15 +208,24 @@ class EspressoUtils {
 
                 public void describeTo(Description description) {
                     String idDescription = Integer.toString(recyclerViewId);
+                    String targetDescription = Integer.toString(targetViewId);
+
                     if (this.resources != null) {
                         try {
                             idDescription = this.resources.getResourceName(recyclerViewId);
                         } catch (Resources.NotFoundException var4) {
                             idDescription = String.format("%s (resource name not found)", recyclerViewId);
                         }
+
+                        try {
+                            targetDescription = this.resources.getResourceName(targetViewId);
+                        } catch (Resources.NotFoundException var4) {
+                            targetDescription = String.format("%s (resource name not found)", targetViewId);
+                        }
                     }
 
-                    description.appendText("with id: " + idDescription);
+                    description.appendText(
+                            "with id: " + idDescription + " and target: " + targetDescription);
                 }
 
                 public boolean matchesSafely(View view) {
@@ -240,7 +252,6 @@ class EspressoUtils {
                         View targetView = childView.findViewById(targetViewId);
                         return view == targetView;
                     }
-
                 }
             };
         }

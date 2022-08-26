@@ -3,17 +3,19 @@ package com.orgzly.android.ui.notes.book
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
+import com.orgzly.android.BookUtils
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
-import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentBookPrefaceBinding
 import javax.inject.Inject
@@ -66,15 +68,8 @@ class BookPrefaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val activity = activity
-
-        if (activity != null && AppPreferences.isFontMonospaced(context)) {
-            binding.fragmentBookPrefaceContent.typeface = Typeface.MONOSPACE
-        }
-
-        // Open keyboard
-        if (activity != null) {
-            ActivityUtils.openSoftKeyboard(activity, binding.fragmentBookPrefaceContent)
+        if (AppPreferences.isFontMonospaced(context)) {
+            binding.fragmentBookPrefaceContent.setTypeface(Typeface.MONOSPACE)
         }
 
         /* Parse arguments - set content. */
@@ -85,7 +80,7 @@ class BookPrefaceFragment : Fragment() {
 
             bookId = getLong(ARG_BOOK_ID)
 
-            binding.fragmentBookPrefaceContent.setText(getString(ARG_BOOK_PREFACE))
+            binding.fragmentBookPrefaceContent.setSourceText(getString(ARG_BOOK_PREFACE))
         }
 
         book = dataRepository.getBook(bookId)
@@ -106,7 +101,8 @@ class BookPrefaceFragment : Fragment() {
                     }
 
                     R.id.done -> {
-                        save(binding.fragmentBookPrefaceContent.text.toString())
+                        val source = binding.fragmentBookPrefaceContent.getSourceText()
+                        save(source?.toString() ?: "")
                     }
 
                 }
@@ -117,6 +113,8 @@ class BookPrefaceFragment : Fragment() {
             setOnClickListener {
                 binding.fragmentBookPrefaceContainer.scrollTo(0, 0)
             }
+
+            title = BookUtils.getFragmentTitleForBook(book)
         }
     }
 

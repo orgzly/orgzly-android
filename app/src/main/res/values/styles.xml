@@ -242,13 +242,13 @@
         <item name="android:minWidth">0dp</item>
     </style>
 
-    <style name="NoteFragmentTextContainer" parent="@style/Widget.AppCompat.EditText">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">@dimen/screen_edge_minus_4dp</item>
-        <item name="android:layout_marginEnd">@dimen/screen_edge_minus_4dp</item>
-        <item name="android:freezesText">true</item>
-    </style>
+<!--    <style name="RichTextViewStyle" parent="@style/Widget.AppCompat.EditText">-->
+<!--        <item name="android:layout_width">match_parent</item>-->
+<!--        <item name="android:layout_height">wrap_content</item>-->
+<!--        <item name="android:paddingStart">@dimen/screen_edge</item>-->
+<!--        <item name="android:paddingEnd">@dimen/screen_edge</item>-->
+<!--        <item name="android:freezesText">true</item>-->
+<!--    </style>-->
 
     <style name="NoteFragmentMetadataHeaderContainer" parent="Base.Widget.AppCompat.Button.Borderless">
         <item name="android:layout_width">match_parent</item>
@@ -427,10 +427,6 @@
         <item name="android:layout_height">match_parent</item>
 <!--        <item name="android:background">?colorSecondaryContainer</item>-->
         <item name="android:background">?android:listDivider</item>
-    </style>
-
-    <style name="TitleTextAppearance">
-        <item name="android:textSize">?attr/font_large</item>
     </style>
 
     <!-- For dialogs in Settings -->

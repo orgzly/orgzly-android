@@ -14,7 +14,6 @@ import androidx.core.view.ViewCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.orgzly.android.sync.SyncRunner
 
-
 fun <R> Context.styledAttributes(@StyleableRes attrs: IntArray, f: (typedArray: TypedArray) -> R): R {
     val typedArray = obtainStyledAttributes(attrs)
     try {
@@ -73,11 +72,6 @@ fun SwipeRefreshLayout.setup() {
         SyncRunner.startSync()
         isRefreshing = false
     }
-
-//    context?.styledAttributes(intArrayOf(R.attr.colorPrimary, R.attr.colorOnPrimary)) { typedArray ->
-//        setProgressBackgroundColorSchemeColor(typedArray.getColor(0, 0))
-//        setColorSchemeColors(typedArray.getColor(1, 0))
-//    }
 }
 
 fun View.removeBackgroundKeepPadding() {

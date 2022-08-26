@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
-        android:padding="@dimen/screen_edge"
         android:clipToPadding="false"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical">
@@ -18,18 +17,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
-            <com.google.android.material.textfield.TextInputLayout
+            <com.orgzly.android.ui.views.richtext.RichText
+                android:id="@+id/fragment_book_preface_content"
+                app:view_id="@+id/fragment_book_preface_content_view"
+                app:edit_id="@+id/fragment_book_preface_content_edit"
+                app:paddingHorizontal="@dimen/screen_edge"
+                app:paddingVertical="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.orgzly.android.ui.views.EditTextWithMarkup
-                    android:id="@+id/fragment_book_preface_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text|textCapSentences|textMultiLine"
-                    android:hint="@string/book_preface_hint" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:inputType="text|textCapSentences|textMultiLine"
+                android:hint="@string/book_preface_hint"
+                android:textSize="?attr/fragment_note_content_text_size" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

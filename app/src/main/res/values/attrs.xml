@@ -7,10 +7,6 @@
         <attr name="menu_for_fling_left" format="integer"/>
     </declare-styleable>
 
-    <declare-styleable name="TextViewWithMarkup">
-        <attr name="parse_checkboxes" format="boolean" />
-    </declare-styleable>
-
     <declare-styleable name="IntegerRange">
         <attr name="min" format="integer"/>
         <attr name="max" format="integer"/>
@@ -49,5 +45,25 @@
     <declare-styleable name="ColorScheme">
         <attr name="item_head_state_done_color" format="color"/>
         <attr name="item_head_state_todo_color" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="RichText">
+        <attr name="android:textSize"/>
+        <attr name="android:hint"/>
+        <attr name="android:inputType"/>
+        <attr name="android:minLines"/>
+        <attr name="android:maxLines"/>
+        <attr name="android:gravity"/>
+        <attr name="android:minHeight"/>
+        <attr name="android:imeOptions"/>
+
+        <attr name="view_id" format="reference"/>
+        <attr name="edit_id" format="reference"/>
+
+        <attr name="parse_checkboxes" format="boolean"/>
+        <attr name="linkify" format="boolean"/>
+        <attr name="editable" format="boolean"/>
+        <attr name="paddingHorizontal" format="dimension"/>
+        <attr name="paddingVertical" format="dimension"/>
     </declare-styleable>
 </resources>

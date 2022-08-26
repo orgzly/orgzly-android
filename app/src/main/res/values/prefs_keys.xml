@@ -349,24 +349,6 @@
         <item>scheduled_time</item>
     </string-array>
 
-    <string name="pref_key_note_details_last_mode" translatable="false">pref_key_note_details_last_mode</string>
-    <string name="pref_default_note_details_last_mode" translatable="false">edit</string>
-
-    <string name="pref_key_note_details_opening_mode" translatable="false">pref_key_note_details_opening_mode</string>
-    <string name="pref_default_note_details_opening_mode" translatable="false">last</string>
-
-    <string-array name="note_details_opening_mode">
-        <item>@string/view</item>
-        <item>@string/edit</item>
-        <item>@string/last_used</item>
-    </string-array>
-
-    <string-array name="note_details_opening_mode_values">
-        <item>view</item>
-        <item>edit</item>
-        <item>last</item>
-    </string-array>
-
     <string name="pref_key_states" translatable="false">pref_key_states</string>
     <string name="pref_default_states" translatable="false">TODO NEXT | DONE</string>
 
@@ -555,6 +537,9 @@
 
     <string name="pref_key_widget_display_book_name" translatable="false">pref_key_widget_display_book_name</string>
     <bool name="pref_default_widget_display_book_name" translatable="false">false</bool>
+
+    <string name="pref_key_highlight_edited_rich_text" translatable="false">pref_key_highlight_edited_rich_text</string>
+    <bool name="pref_default_highlight_edited_rich_text" translatable="false">false</bool>
 
     <!-- Git preferences -->
     <string name="pref_key_git_is_enabled" translatable="false">pref_key_git_is_enabled</string>

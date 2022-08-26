@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@color/green_200"
+        android:background="@color/green_900"
         android:visibility="invisible"/>
 
     <View
@@ -23,8 +23,18 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@color/blue_200"
+        android:background="@color/red_900"
         android:visibility="invisible"/>
+
+    <!-- Anchor for the first line -->
+    <TextView
+        android:id="@+id/item_head_first_line_anchor"
+        android:layout_width="42dp"
+        android:layout_height="wrap_content"
+        android:textSize="?attr/item_head_title_text_size"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@id/item_head_top"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <!-- Indent -->
     <LinearLayout
@@ -47,42 +57,32 @@
 
     </LinearLayout>
 
-
-    <!-- Anchor for centering bullet -->
-    <TextView
-        android:id="@+id/item_head_bullet_anchor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        app:layout_constraintBaseline_toBaselineOf="@id/item_head_title"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <!-- Bullet -->
     <ImageView
         android:id="@+id/item_head_bullet"
         android:layout_width="?attr/item_head_indent_width"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/bullet_margin"
         android:src="@drawable/bullet"
         android:visibility="visible"
-        app:layout_constraintTop_toTopOf="@id/item_head_bullet_anchor"
-        app:layout_constraintBottom_toBottomOf="@id/item_head_bullet_anchor"
+        android:layout_marginEnd="@dimen/bullet_margin"
+        app:layout_constraintTop_toTopOf="@id/item_head_first_line_anchor"
+        app:layout_constraintBottom_toBottomOf="@id/item_head_first_line_anchor"
         app:layout_constraintStart_toEndOf="@+id/item_head_indent_container"
         app:layout_constraintEnd_toStartOf="@+id/item_head_title" />
 
     <!-- Title -->
-    <com.orgzly.android.ui.views.TextViewWithMarkup
+    <com.orgzly.android.ui.views.richtext.RichText
         android:id="@+id/item_head_title"
+        app:view_id="@+id/item_head_title_view"
+        app:edit_id="@+id/item_head_title_edit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:minHeight="@dimen/bullet_total_size"
-        android:gravity="center_vertical"
-        android:textColor="?android:textColorPrimary"
         android:textSize="?attr/item_head_title_text_size"
-        app:layout_constraintTop_toBottomOf="@id/item_head_top"
+        android:minHeight="@dimen/bullet_total_size"
+        app:layout_constraintTop_toTopOf="@id/item_head_first_line_anchor"
         app:layout_constraintStart_toEndOf="@+id/item_head_bullet"
         app:layout_constraintEnd_toStartOf="@+id/item_head_fold_button_text"
-        tools:text="@string/note_title_sample" />
+        app:editable="false" />
 
     <!-- Notebook's name. -->
     <ImageView
@@ -110,7 +110,7 @@
         android:layout_width="@dimen/item_head_book_name_width"
         android:layout_height="wrap_content"
         android:minHeight="@dimen/bullet_total_size"
-        app:layout_constraintTop_toTopOf="@+id/item_head_title"
+        app:layout_constraintBaseline_toBaselineOf="@id/item_head_first_line_anchor"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginEnd="@dimen/screen_edge"
         android:ellipsize="end"
@@ -120,7 +120,7 @@
         android:textSize="?attr/item_head_book_name_text"
         android:textStyle="italic"
         tools:text="@string/book_name_sample"
-        android:visibility="visible"/>
+        android:visibility="invisible"/>
 
     <!-- Scheduled time -->
     <ImageView
@@ -203,15 +203,17 @@
         tools:text="@string/note_closed_sample" />
 
     <!-- Content -->
-    <com.orgzly.android.ui.views.TextViewWithMarkup
+    <com.orgzly.android.ui.views.richtext.RichText
         android:id="@+id/item_head_content"
+        app:view_id="@+id/item_head_content_view"
+        app:edit_id="@+id/item_head_content_edit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="?attr/item_head_sub_title_content_text"
         app:layout_constraintTop_toBottomOf="@+id/item_head_closed_text"
         app:layout_constraintStart_toStartOf="@+id/item_head_title"
         app:layout_constraintEnd_toStartOf="@+id/item_head_fold_button_text"
-        tools:text="@string/note_content_sample"
+        app:editable="false"
         android:visibility="visible" />
 
     <!-- Folding button -->
