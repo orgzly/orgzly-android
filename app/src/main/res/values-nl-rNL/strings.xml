@@ -105,7 +105,7 @@
     <string name="copy">Kopieren</string>
     <string name="paste">Plakken</string>
     <string name="heads_action_menu_item_paste_above">Plak erboven</string>
-    <string name="heads_action_menu_item_paste_under">Plak eronder</string>
+    <string name="heads_action_menu_item_paste_under">Plak erbij</string>
     <string name="heads_action_menu_item_paste_below">Plak eronder</string>
     <string name="heads_moving_action_menu_item_promote">Bevorderen</string>
     <string name="heads_moving_action_menu_item_down">Omlaag</string>
@@ -214,7 +214,7 @@
     <string name="prev_state">Vorige toestand</string>
     <string name="next_state">Volgende Toestand</string>
     <string name="new_above">Nieuwe erboven</string>
-    <string name="new_under">Nieuwe eronder</string>
+    <string name="new_under">Nieuwe erbij</string>
     <string name="new_below">Nieuwe eronder</string>
     <string name="confirm_unlinking_from_dropbox_title">Ontkoppel van Dropbox?</string>
     <string name="confirm_unlinking_from_dropbox_message">Je kunt niet kunnen synchroniseren met Dropbox totdat je er opnieuw mee verbindt.</string>
@@ -568,4 +568,5 @@
     <string name="developer_options">Ontwikkelaarsopties</string>
     <string name="git_repository_type">Git repository type</string>
     <string name="in_development">In ontwikkeling</string>
+    <string name="select_notebook">Selecteer notitieboekje</string>
 </resources>

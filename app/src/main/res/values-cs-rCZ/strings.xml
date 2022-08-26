@@ -590,4 +590,5 @@
     <string name="developer_options">Možnosti pro vývojáře</string>
     <string name="git_repository_type">Typ Git repozitáře</string>
     <string name="in_development">Ve vývoji</string>
+    <string name="select_notebook">Vybrat sešit</string>
 </resources>

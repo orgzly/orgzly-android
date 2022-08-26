@@ -590,4 +590,5 @@
     <string name="developer_options">Параметри розробника</string>
     <string name="git_repository_type">Тип git-репозиторію</string>
     <string name="in_development">У розробці</string>
+    <string name="select_notebook">Select notebook</string>
 </resources>

@@ -568,4 +568,5 @@
     <string name="developer_options">Options développeur</string>
     <string name="git_repository_type">Type de dépôt Git</string>
     <string name="in_development">En développement</string>
+    <string name="select_notebook">Choisir le bloc-notes</string>
 </resources>
