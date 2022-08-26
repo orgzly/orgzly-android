@@ -2,8 +2,11 @@ package com.orgzly.android.ui.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.KeyEvent
+import android.view.MotionEvent
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.view.GestureDetectorCompat
 import com.orgzly.BuildConfig
 import com.orgzly.android.util.LogUtils
 
@@ -13,10 +16,15 @@ class EditTextWithMarkup : AppCompatEditText {
 
     private val listeners: Listeners by lazy { Listeners(null) }
 
+    private var onFocusOrClickListener: OnClickListener? = null
+
+    fun setOnFocusOrClickListener(l: OnClickListener?) {
+        onFocusOrClickListener = l
+    }
+
     fun setOnImeBackListener(listener: (() -> Unit)?) {
         listeners.onImeBack = listener
     }
-
 
     constructor(context: Context) : super(context) {
         addTextChangedListener(EditTextWatcher())
@@ -39,6 +47,22 @@ class EditTextWithMarkup : AppCompatEditText {
         }
 
         return super.onKeyPreIme(keyCode, event)
+    }
+
+    private val gestureDetector = GestureDetectorCompat(context, object : GestureDetector.SimpleOnGestureListener() {
+        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+            return true
+        }
+    })
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        val isSingleTapUp = gestureDetector.onTouchEvent(event)
+
+        if (isSingleTapUp) {
+            onFocusOrClickListener?.onClick(this)
+        }
+
+        return super.onTouchEvent(event)
     }
 
     companion object {
