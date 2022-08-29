@@ -22,7 +22,8 @@
             android:title="@string/settings"
             android:orderInCategory="4"/>
 
-        <!-- Space for sync button -->
-        <item android:title="" android:orderInCategory="6" />
+        <!-- FIXME: Space for sync button and progress bar -->
+        <item android:title="" android:enabled="false" android:orderInCategory="6" />
+        <item android:title="" android:enabled="false" android:orderInCategory="7" />
     </group>
 </menu>

@@ -22,8 +22,34 @@
 
 
         <TextView
-            style="@style/WhatsNewNotice"
-            android:text="@string/target_11_warning" />
+            style="@style/WhatsNewVersion"
+            android:text="v1.8.7"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Target Android 12L" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Scroll to the top on action bar click" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Use Material 3" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Use larger agenda dividers with a background color" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Render images, allow using monospaced font and register checkbox changes for notebook preface" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix the permission issue when creating a “New note” widget" />
+
 
         <TextView
             style="@style/WhatsNewVersion"

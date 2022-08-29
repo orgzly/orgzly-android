@@ -557,4 +557,5 @@
     <string name="developer_options">开发者选项</string>
     <string name="git_repository_type">Git 仓库类型</string>
     <string name="in_development">开发中</string>
+    <string name="select_notebook">选择笔记本</string>
 </resources>

@@ -565,7 +565,8 @@
     <string name="content">Conteúdo</string>
     <string name="prepend">Fixar ao topo</string>
     <string name="insert_new_note_at_beginning">Inserir nova nota no início</string>
-    <string name="developer_options">Developer options</string>
+    <string name="developer_options">Opções de desenvolvedor</string>
     <string name="git_repository_type">Git repository type</string>
-    <string name="in_development">In development</string>
+    <string name="in_development">Em desenvolvimento</string>
+    <string name="select_notebook">Select notebook</string>
 </resources>

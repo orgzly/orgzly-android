@@ -12,7 +12,7 @@ Vous pouvez sélectionner plusieurs notes.
 
 ** Dépliez une note qui contient des sous-notes en cliquant sur l'icône à droite
 
-Appuyiez longuement pour ouvrir toute la sous-arborescence.
+Appuyez longuement pour ouvrir toute la sous-arborescence.
 
 *** Il n’y a pas de limite au nombre de niveaux que vous pouvez avoir
 **** Utilisez ceci pour mieux organiser vos notes

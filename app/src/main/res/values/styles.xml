@@ -157,6 +157,7 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">?attr/isLightTheme</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
 
@@ -297,7 +298,6 @@
         <item name="colorOnSecondaryContainer">@color/grey_800</item>
         <item name="colorTertiaryContainer">@color/grey_300</item>
         <item name="colorOnTertiaryContainer">@color/grey_700</item>
-        <item name="android:textColorLink">@color/grey_600</item>
         <item name="android:colorBackground">?attr/colorSurface</item>
 
         <item name="item_head_state_done_color">@color/green_900</item>
@@ -319,7 +319,6 @@
         <item name="colorTertiaryContainer">@color/grey_800</item>
         <item name="colorOnTertiaryContainer">@color/grey_400</item>
         <item name="colorError">@color/red_200</item>
-        <item name="android:textColorLink">@color/grey_400</item>
         <item name="android:colorBackground">?attr/colorSurface</item>
 
         <item name="item_head_state_done_color">@color/green_200</item>
@@ -340,7 +339,6 @@
         <item name="colorOnSecondaryContainer">@color/grey_200</item>
         <item name="colorTertiaryContainer">@color/grey_800</item>
         <item name="colorOnTertiaryContainer">@color/grey_400</item>
-        <item name="android:textColorLink">@color/grey_400</item>
         <item name="android:colorBackground">?attr/colorSurface</item>
 
         <item name="item_head_state_done_color">@color/green_200</item>
@@ -565,7 +563,6 @@
         <item name="liftOnScroll">false</item>
     </style>
 
-
     <style name="TopToolbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
@@ -574,11 +571,10 @@
 
     <style name="BottomToolbar">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">bottom</item>
+        <item name="android:fitsSystemWindows">true</item>
         <item name="android:visibility">gone</item>
-        <item name="android:background">?attr/colorSurface</item>
-        <item name="android:elevation">4dp</item>
     </style>
 
     <style name="Fab">
@@ -601,13 +597,13 @@
     <style name="HorizontalDivider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">?colorSecondaryContainer</item>
+        <item name="android:background">?colorTertiaryContainer</item>
     </style>
 
     <style name="VerticalDivider">
         <item name="android:layout_width">1dp</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">?colorSecondaryContainer</item>
+        <item name="android:background">?colorTertiaryContainer</item>
     </style>
 
     <style name="TitleTextAppearance">
@@ -622,7 +618,7 @@
 <!--    <style name="Button" parent="Widget.Material3.Button.ElevatedButton">-->
 <!--    </style>-->
 
-    <style name="Button" />
+    <style name="Button" parent="@style/Widget.Material3.Button.TonalButton" />
 
     <style name="Button.TimestampDialog">
         <item name="android:layout_width">0dp</item>
@@ -632,13 +628,11 @@
     <style name="Button.ReposRepo">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_margin">8dp</item>
         <item name="iconSize">36dp</item>
         <item name="iconGravity">top</item>
     </style>
 
-    <style name="Button.Repo">
-    </style>
+    <style name="Button.Repo" />
 
 </resources>

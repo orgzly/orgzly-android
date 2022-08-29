@@ -135,6 +135,9 @@ public class OrgzlyTest {
 
         /* Display inherited tags in search results. */
         AppPreferences.inheritedTagsInSearchResults(context, true);
+
+        /* Start with light color scheme. */
+        AppPreferences.colorScheme(context, context.getString(R.string.pref_value_color_scheme_light));
     }
 
     /**

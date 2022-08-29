@@ -8,6 +8,7 @@ import android.os.Handler
 import android.util.Log
 import android.view.*
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -537,6 +538,7 @@ class BookFragment :
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         binding.bottomToolbar.visibility = View.GONE
+        WindowCompat.setDecorFitsSystemWindows(requireActivity().window, true)
     }
 
     private fun topToolbarToMainSelection() {
@@ -578,9 +580,10 @@ class BookFragment :
                 handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId, menuItem)
                 true
             }
-        }
 
-        binding.bottomToolbar.visibility = View.VISIBLE
+            visibility = View.VISIBLE
+            WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
+        }
     }
 
     private fun topToolbarToNextSelection() {
@@ -626,9 +629,10 @@ class BookFragment :
                 handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId, menuItem)
                 false
             }
-        }
 
-        binding.bottomToolbar.visibility = View.VISIBLE
+            visibility = View.VISIBLE
+            WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
+        }
     }
 
     private fun hideMenuItemsBasedOnSelection(menu: Menu) {

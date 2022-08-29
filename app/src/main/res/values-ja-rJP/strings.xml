@@ -557,4 +557,5 @@
     <string name="developer_options">開発者オプション</string>
     <string name="git_repository_type">リポジトリの種類</string>
     <string name="in_development">開発中</string>
+    <string name="select_notebook">Select notebook</string>
 </resources>
