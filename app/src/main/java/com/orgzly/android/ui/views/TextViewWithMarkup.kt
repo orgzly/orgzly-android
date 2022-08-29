@@ -17,13 +17,12 @@ import com.orgzly.android.ui.views.style.DrawerSpan
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.OrgFormatter
 
-
 /**
  * [TextView] with markup support.
  *
  * Used for title, content and preface text.
  */
-class TextViewWithMarkup : TextViewFixed {
+class TextViewWithMarkup : TextViewFixed, ActionableTextView {
     constructor(context: Context) : super(context) {
         // addTextChangedListener(EditTextWatcher())
     }
@@ -67,15 +66,15 @@ class TextViewWithMarkup : TextViewFixed {
     }
 
     // TODO: Consider getting MainActivity's *ViewModel* here instead
-    fun followLinkToNoteWithProperty(name: String, value: String) {
+    override fun followLinkToNoteWithProperty(name: String, value: String) {
         MainActivity.followLinkToNoteWithProperty(name, value)
     }
 
-    fun followLinkToFile(path: String) {
+    override fun followLinkToFile(path: String) {
         MainActivity.followLinkToFile(path)
     }
 
-    fun toggleDrawer(drawerSpan: DrawerSpan) {
+    override fun toggleDrawer(drawerSpan: DrawerSpan) {
         val textSpanned = text as Spanned
 
         val drawerStart = textSpanned.getSpanStart(drawerSpan)
@@ -109,7 +108,7 @@ class TextViewWithMarkup : TextViewFixed {
         text = builder
     }
 
-    fun toggleCheckbox(checkboxSpan: CheckboxSpan) {
+    override fun toggleCheckbox(checkboxSpan: CheckboxSpan) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, checkboxSpan)
 
         val content = if (checkboxSpan.isChecked()) "[ ]" else "[X]"
@@ -170,4 +169,11 @@ class TextViewWithMarkup : TextViewFixed {
 
         val TAG: String = TextViewWithMarkup::class.java.name
     }
+}
+
+interface ActionableTextView {
+    fun toggleCheckbox(checkboxSpan: CheckboxSpan)
+    fun followLinkToNoteWithProperty(name: String, value: String)
+    fun toggleDrawer(drawerSpan: DrawerSpan)
+    fun followLinkToFile(path: String)
 }
