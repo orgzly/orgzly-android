@@ -590,5 +590,5 @@
     <string name="developer_options">Ustawienia programisty</string>
     <string name="git_repository_type">Typ repozytorium Git</string>
     <string name="in_development">W trakcie rozwoju</string>
-    <string name="select_notebook">Select notebook</string>
+    <string name="select_notebook">Wybierz notatnik</string>
 </resources>
