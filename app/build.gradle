@@ -62,6 +62,8 @@ android {
         premium {
             buildConfigField "boolean", "IS_DROPBOX_ENABLED", "true"
 
+            buildConfigField "boolean", "IS_GOOGLE_DRIVE_ENABLED", "true"
+
             buildConfigField "String", "VERSION_NAME_SUFFIX", '""'
 
             dimension "store"
@@ -69,10 +71,12 @@ android {
 
         fdroid {
             /*
-             * Disable Dropbox.
+             * Disable Dropbox and Google Drive.
              * Properties file which contains the required API key is not included with the code.
              */
             buildConfigField "boolean", "IS_DROPBOX_ENABLED", "false"
+
+            buildConfigField "boolean", "IS_GOOGLE_DRIVE_ENABLED", "false"
 
             buildConfigField "String", "VERSION_NAME_SUFFIX", '" (fdroid)"'
 
@@ -88,7 +92,6 @@ android {
     kotlinOptions {
         jvmTarget = 11
     }
-
     packagingOptions {
         resources {
             excludes += ['META-INF/DEPENDENCIES', 'plugin.properties']
@@ -99,6 +102,10 @@ android {
         checkDependencies true
         disable 'MissingTranslation', 'MissingQuantity', 'ImpliedQuantity', 'InvalidPackage'
     }
+    lint {
+        disable 'MissingTranslation', 'MissingQuantity', 'ImpliedQuantity', 'InvalidPackage'
+    }
+
 }
 
 dependencies {
@@ -163,6 +170,18 @@ dependencies {
     implementation "com.google.code.gson:gson:$versions.gson"
 
     implementation "com.dropbox.core:dropbox-core-sdk:$versions.dropbox_core_sdk"
+
+    // Google Drive
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+    implementation 'com.google.http-client:google-http-client-gson:1.26.0'
+    implementation('com.google.api-client:google-api-client-android:1.26.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    implementation('com.google.apis:google-api-services-drive:v3-rev136-1.25.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    // just to avoid duplicate class build error
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
 
     implementation "com.googlecode.juniversalchardet:juniversalchardet:$versions.juniversalchardet"
 

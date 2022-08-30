@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_content"
-    style="@style/CoordinatorLayoutFitsSystemWindows">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ScrollView
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -13,7 +14,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/activity_repo_dropbox_container"
+            android:id="@+id/activity_repo_google_drive_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/screen_edge"
@@ -30,56 +31,60 @@
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:id="@+id/activity_repo_dropbox_icon"
+                    android:id="@+id/activity_repo_google_drive_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="?attr/oic_dropbox_not_linked"
-                    android:contentDescription="@string/dropbox" />
+                    android:src="?attr/oic_google_drive_not_linked"
+                    android:contentDescription="@string/google_drive" />
 
                 <Button
-                    android:id="@+id/activity_repo_dropbox_link_button"
+                    android:id="@+id/activity_repo_google_drive_link_button"
                     style="@style/Button.Repo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/screen_edge"
-                    android:text="@string/repo_dropbox_button_not_linked" />
+                    android:text="@string/repo_google_drive_button_not_linked" />
 
             </LinearLayout>
 
             <!-- Input. -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/activity_repo_dropbox_directory_input_layout"
+                android:id="@+id/activity_repo_google_drive_directory_input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/space_between_content_areas"
                 app:errorEnabled="true">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/activity_repo_dropbox_directory"
+                    android:id="@+id/activity_repo_google_drive_directory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:imeOptions="actionDone"
-                    android:hint="@string/fragment_repo_dropbox_directory_desc" />
+                    android:hint="@string/fragment_repo_google_drive_directory_desc" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
     </ScrollView>
 
-    <!-- Top toolbar -->
-    <com.google.android.material.appbar.AppBarLayout
-        style="@style/AppBarLayoutStyle">
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        style="@style/BottomAppBar.FabAlignEnd.WithCancel">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/top_toolbar"
-            app:title="@string/dropbox"
-            style="@style/TopToolbar"
-            app:navigationIcon="?attr/ic_arrow_back_24dp"/>
+        <TextView
+            android:id="@+id/bottomAppBarTitle"
+            style="@style/BottomAppBarTitle"
+            android:text="@string/google_drive" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+    </com.google.android.material.bottomappbar.BottomAppBar>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
-        style="@style/Fab.Done" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="?attr/ic_done_24dp"
+        app:layout_anchor="@id/bottomAppBar" />
+
+    <include layout="@layout/snackbar_anchor" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

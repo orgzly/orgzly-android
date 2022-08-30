@@ -128,6 +128,8 @@
 
         <attr name="oic_dropbox_linked" format="reference"/>
         <attr name="oic_dropbox_not_linked" format="reference"/>
+        <attr name="oic_google_drive_linked" format="reference"/>
+        <attr name="oic_google_drive_not_linked" format="reference"/>
         <attr name="oic_git_48dp" format="reference"/>
         <attr name="oic_new_above_24dp" format="reference"/>
         <attr name="oic_new_below_24dp" format="reference"/>
