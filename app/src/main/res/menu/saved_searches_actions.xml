@@ -6,14 +6,14 @@
 
     <item
         android:id="@+id/saved_searches_help"
-        android:icon="?attr/ic_help_outline_24dp"
+        android:icon="@drawable/ic_help_outline"
         app:showAsAction="always"
         android:title="@string/help" />
 
     <item
         android:id="@+id/search_view"
         android:title="@string/options_menu_item_search"
-        android:icon="?attr/ic_search_24dp"
+        android:icon="@drawable/ic_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|always" tools:ignore="AlwaysShowAction"/>
 

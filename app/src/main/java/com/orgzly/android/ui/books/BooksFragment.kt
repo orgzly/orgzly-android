@@ -183,9 +183,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
                 menu.clear()
                 inflateMenu(R.menu.books_actions)
 
-                setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
-                    typedArray.getResourceId(R.styleable.Icons_ic_menu_24dp, 0)
-                })
+                setNavigationIcon(R.drawable.ic_menu)
 
                 setNavigationOnClickListener {
                     sharedMainActivityViewModel.openDrawer()
@@ -227,9 +225,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
             menu.clear()
             inflateMenu(R.menu.books_cab)
 
-            setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
-                typedArray.getResourceId(R.styleable.Icons_ic_arrow_back_24dp, 0)
-            })
+            setNavigationIcon(R.drawable.ic_arrow_back)
 
             setNavigationOnClickListener {
                 viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)

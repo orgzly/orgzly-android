@@ -22,7 +22,7 @@
             android:id="@+id/top_toolbar"
             app:title="@string/settings"
             style="@style/TopToolbar"
-            app:navigationIcon="?attr/ic_arrow_back_24dp"/>
+            app:navigationIcon="@drawable/ic_arrow_back"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 

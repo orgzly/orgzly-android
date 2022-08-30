@@ -46,7 +46,7 @@ public class Notifications {
         // Build notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.ONGOING)
                 .setOngoing(true)
-                .setSmallIcon(R.drawable.ic_logo_for_notification)
+                .setSmallIcon(R.drawable.cic_logo_for_notification)
                 .setContentTitle(context.getString(R.string.new_note))
                 .setColor(ContextCompat.getColor(context, R.color.notification))
                 .setContentText(context.getString(R.string.tap_to_create_new_note))
@@ -69,7 +69,7 @@ public class Notifications {
 
             // Add new note action
             NotificationCompat.Action action = new NotificationCompat.Action.Builder(
-                    R.drawable.ic_add_white_24dp, context.getString(R.string.quick_note), newNotePendingIntent)
+                    R.drawable.ic_add, context.getString(R.string.quick_note), newNotePendingIntent)
                     .addRemoteInput(remoteInput)
                     .build();
             builder.addAction(action);
@@ -82,7 +82,7 @@ public class Notifications {
                 new Intent(context, MainActivity.class),
                 ActivityUtils.mutable(PendingIntent.FLAG_UPDATE_CURRENT));
         builder.addAction(
-                R.drawable.ic_open_in_new_white_24dp,
+                R.drawable.ic_open_in_new,
                 context.getString(R.string.open),
                 openAppPendingIntent);
 
@@ -95,7 +95,7 @@ public class Notifications {
                 syncIntent,
                 ActivityUtils.mutable(PendingIntent.FLAG_UPDATE_CURRENT));
         builder.addAction(
-                    R.drawable.ic_sync_white_24dp,
+                    R.drawable.ic_sync,
                     context.getString(R.string.sync),
                     syncPendingIntent);
 
@@ -141,7 +141,7 @@ public class Notifications {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.SYNC_PROGRESS)
                 .setOngoing(true)
                 .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
-                .setSmallIcon(R.drawable.ic_sync_white_24dp)
+                .setSmallIcon(R.drawable.ic_sync)
                 .setContentTitle(context.getString(R.string.syncing_in_progress))
                 .setColor(ContextCompat.getColor(context, R.color.notification))
                 .setContentIntent(openAppPendingIntent);

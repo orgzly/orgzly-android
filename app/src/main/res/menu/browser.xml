@@ -6,13 +6,13 @@
 
     <item
         android:id="@+id/open_home"
-        android:icon="?attr/ic_storage_24dp"
+        android:icon="@drawable/ic_storage"
         app:showAsAction="always"
         android:title="@string/primary_storage"/>
 
     <item
         android:id="@+id/new_folder"
-        android:icon="?attr/ic_create_new_folder_24dp"
+        android:icon="@drawable/ic_create_new_folder"
         app:showAsAction="always"
         android:title="@string/new_folder"/>
 

@@ -41,25 +41,25 @@
                 <Button
                     android:id="@+id/activity_repos_dropbox"
                     style="@style/Button.ReposRepo"
-                    app:icon="?attr/oic_dropbox_not_linked"
+                    app:icon="@drawable/cic_dropbox"
                     android:text="@string/dropbox" />
 
                 <Button
                     android:id="@+id/activity_repos_git"
                     style="@style/Button.ReposRepo"
-                    app:icon="?attr/oic_git_48dp"
+                    app:icon="@drawable/cic_git"
                     android:text="@string/git" />
 
                 <Button
                     android:id="@+id/activity_repos_webdav"
                     style="@style/Button.ReposRepo"
-                    app:icon="?attr/ic_outline_cloud_48dp"
+                    app:icon="@drawable/ic_cloud_outline"
                     android:text="@string/webdav" />
 
                 <Button
                     android:id="@+id/activity_repos_directory"
                     style="@style/Button.ReposRepo"
-                    app:icon="?attr/ic_folder_open_48dp"
+                    app:icon="@drawable/ic_folder_open"
                     android:text="@string/directory" />
 
             </LinearLayout>
@@ -76,7 +76,7 @@
             android:id="@+id/top_toolbar"
             app:title="@string/repositories"
             style="@style/TopToolbar"
-            app:navigationIcon="?attr/ic_arrow_back_24dp"/>
+            app:navigationIcon="@drawable/ic_arrow_back"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -46,8 +46,8 @@
                 android:id="@+id/item_list_widget_book_icon"
                 android:layout_height="14dp"
                 android:layout_width="14dp"
-                android:alpha="0.55"
-                android:src="@drawable/ic_folder_open_black_18dp"
+                android:alpha="@dimen/widget_metadata_icon_alpha"
+                android:src="@drawable/ic_folder_open"
                 android:contentDescription="@string/notebook" />
 
             <TextView
@@ -77,8 +77,8 @@
                 android:id="@+id/item_list_widget_scheduled_icon"
                 android:layout_height="14dp"
                 android:layout_width="14dp"
-                android:alpha="0.55"
-                android:src="@drawable/ic_today_black_18dp"
+                android:alpha="@dimen/widget_metadata_icon_alpha"
+                android:src="@drawable/ic_today"
                 android:contentDescription="@string/schedule" />
 
             <TextView
@@ -108,8 +108,8 @@
                 android:id="@+id/item_list_widget_deadline_icon"
                 android:layout_height="14dp"
                 android:layout_width="14dp"
-                android:alpha="0.55"
-                android:src="@drawable/ic_alarm_black_18dp"
+                android:alpha="@dimen/widget_metadata_icon_alpha"
+                android:src="@drawable/ic_alarm"
                 android:contentDescription="@string/deadline" />
 
             <TextView
@@ -139,8 +139,8 @@
                 android:id="@+id/item_list_widget_event_icon"
                 android:layout_height="14dp"
                 android:layout_width="14dp"
-                android:alpha="0.55"
-                android:src="@drawable/ic_access_time_black_18dp"
+                android:alpha="@dimen/widget_metadata_icon_alpha"
+                android:src="@drawable/ic_access_time"
                 android:contentDescription="@string/event" />
 
             <TextView
@@ -170,8 +170,8 @@
                 android:id="@+id/item_list_widget_closed_icon"
                 android:layout_height="14dp"
                 android:layout_width="14dp"
-                android:alpha="0.55"
-                android:src="@drawable/outline_check_circle_black_18"
+                android:alpha="@dimen/widget_metadata_icon_alpha"
+                android:src="@drawable/ic_check_circle_outline"
                 android:contentDescription="@string/closed" />
 
             <TextView
@@ -200,5 +200,5 @@
         android:paddingRight="12dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/outline_check_circle_black_24" />
+        android:src="@drawable/ic_check_circle_outline" />
 </LinearLayout>

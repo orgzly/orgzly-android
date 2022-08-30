@@ -291,18 +291,14 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             ActivityUtils.keepScreenOnUpdateMenuItem(activity, menu)
 
             if (activity is ShareActivity) {
-                setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
-                    typedArray.getResourceId(R.styleable.Icons_ic_arrow_back_24dp, 0)
-                })
+                setNavigationIcon(R.drawable.ic_arrow_back)
 
                 setNavigationOnClickListener {
                     userCancel()
                 }
 
             } else {
-                setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
-                    typedArray.getResourceId(R.styleable.Icons_ic_menu_24dp, 0)
-                })
+                setNavigationIcon(R.drawable.ic_menu)
 
                 setNavigationOnClickListener {
                     sharedMainActivityViewModel.openDrawer()
@@ -342,9 +338,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             menu.clear()
             inflateMenu(R.menu.note_actions_edit)
 
-            setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
-                typedArray.getResourceId(R.styleable.Icons_ic_remove_red_eye_24dp, 0)
-            })
+            setNavigationIcon(R.drawable.ic_remove_red_eye)
 
             setNavigationOnClickListener {
                 viewModel.toViewMode()

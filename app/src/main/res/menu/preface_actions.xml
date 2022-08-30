@@ -7,12 +7,12 @@
     <item
         android:id="@+id/done"
         android:title="@string/done"
-        android:icon="?attr/ic_done_24dp"
+        android:icon="@drawable/ic_done"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/delete"
-        android:icon="?attr/ic_delete_24dp"
+        android:icon="@drawable/ic_delete"
         app:showAsAction="never"
         android:title="@string/delete"/>
 </menu>

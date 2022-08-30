@@ -16,7 +16,6 @@ import com.orgzly.android.repos.DirectoryRepo
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog
 import com.orgzly.android.ui.showSnackbar
-import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.UriUtils
@@ -306,12 +305,10 @@ class BrowserActivity :
     }
 
     private fun getIconResources(): Triple<Int, Int, Int> {
-        return styledAttributes(R.styleable.Icons) { typedArray ->
-            Triple(
-                    typedArray.getResourceId(R.styleable.Icons_ic_keyboard_arrow_up_24dp, 0),
-                    typedArray.getResourceId(R.styleable.Icons_ic_insert_drive_file_24dp, 0),
-                    typedArray.getResourceId(R.styleable.Icons_ic_folder_open_24dp, 0))
-        }
+        return Triple(
+            R.drawable.ic_keyboard_arrow_up,
+            R.drawable.ic_insert_drive_file,
+            R.drawable.ic_folder_open)
     }
 
     private fun setupAdapter() {

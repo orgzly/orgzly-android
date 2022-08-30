@@ -6,37 +6,37 @@
 
     <androidx.preference.PreferenceScreen
         android:title="@string/look_and_feel"
-        android:icon="?attr/ic_palette_24dp"
+        android:icon="@drawable/ic_palette"
         android:key="prefs_screen_look_and_feel"/>
 
     <androidx.preference.PreferenceScreen
         android:title="@string/pref_title_notebooks"
-        android:icon="?attr/ic_library_books_24dp"
+        android:icon="@drawable/ic_library_books"
         android:key="prefs_screen_notebooks"/>
 
     <androidx.preference.PreferenceScreen
         android:title="@string/prefs_title_notifications"
-        android:icon="?attr/ic_notifications_none_24dp"
+        android:icon="@drawable/ic_notifications_none"
         android:key="prefs_screen_notifications"/>
 
     <androidx.preference.PreferenceScreen
         android:title="@string/prefs_title_reminders"
-        android:icon="?attr/ic_alarm_24dp"
+        android:icon="@drawable/ic_alarm"
         android:key="prefs_screen_reminders"/>
 
     <androidx.preference.PreferenceScreen
         android:title="@string/sync"
-        android:icon="?attr/ic_sync_24dp"
+        android:icon="@drawable/ic_sync"
         android:key="prefs_screen_sync"/>
 
     <androidx.preference.PreferenceScreen
         android:title="@string/widget"
-        android:icon="?attr/ic_widgets_24dp"
+        android:icon="@drawable/ic_widgets"
         android:key="prefs_screen_widget"/>
 
     <androidx.preference.PreferenceScreen
         android:title="@string/app"
-        android:icon="?attr/ic_info_outline_24dp"
+        android:icon="@drawable/ic_info_outline"
         android:key="prefs_screen_app"/>
 
 </androidx.preference.PreferenceScreen>

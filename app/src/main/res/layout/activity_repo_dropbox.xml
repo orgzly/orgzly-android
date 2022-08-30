@@ -31,9 +31,9 @@
 
                 <ImageView
                     android:id="@+id/activity_repo_dropbox_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="?attr/oic_dropbox_not_linked"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/cic_dropbox"
                     android:contentDescription="@string/dropbox" />
 
                 <Button
@@ -74,7 +74,7 @@
             android:id="@+id/top_toolbar"
             app:title="@string/dropbox"
             style="@style/TopToolbar"
-            app:navigationIcon="?attr/ic_arrow_back_24dp"/>
+            app:navigationIcon="@drawable/ic_arrow_back"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 

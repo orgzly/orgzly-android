@@ -66,7 +66,7 @@ public class SyncStatusBroadcastReceiver extends BroadcastReceiver {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.SYNC_FAILED)
                 .setAutoCancel(true)
-                .setSmallIcon(R.drawable.ic_logo_for_notification)
+                .setSmallIcon(R.drawable.cic_logo_for_notification)
                 .setContentTitle(context.getString(R.string.syncing_failed_title))
                 .setColor(ContextCompat.getColor(context, R.color.notification))
                 .setContentIntent(openAppPendingIntent);

@@ -46,6 +46,8 @@
     <dimen name="widget_post_title_text_size_16">14sp</dimen>
     <dimen name="widget_header_text_size_16">17sp</dimen>
 
+    <dimen name="widget_metadata_icon_alpha">0.87</dimen>
+
     <dimen name="widget_padding">2dp</dimen>
 
     <dimen name="bullet_margin">8dp</dimen>

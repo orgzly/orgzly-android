@@ -59,8 +59,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="?attr/ic_folder_open_24dp"
-                        android:alpha="?attr/active_unfocused_icon_alpha"/>
+                        android:src="@drawable/ic_folder_open" />
                     <TextView
                         android:id="@+id/location_button"
                         style="@style/NoteFragmentMetadataItemValueButton"
@@ -101,8 +100,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/screen_edge"
                         android:layout_marginLeft="@dimen/screen_edge"
-                        android:src="?attr/ic_info_outline_24dp"
-                        android:alpha="?attr/active_unfocused_icon_alpha"/>
+                        android:src="@drawable/ic_info_outline" />
 
                     <TextView
                         android:id="@+id/metadata_header_text"
@@ -120,16 +118,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="12dp"
-                        android:src="?attr/ic_keyboard_arrow_up_24dp"
-                        android:alpha="?attr/active_unfocused_icon_alpha"/>
+                        android:src="@drawable/ic_keyboard_arrow_up" />
 
                     <ImageView
                         android:id="@+id/metadata_header_down_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="12dp"
-                        android:src="?attr/ic_keyboard_arrow_down_24dp"
-                        android:alpha="?attr/active_unfocused_icon_alpha"
+                        android:src="@drawable/ic_keyboard_arrow_down"
                         android:visibility="gone"/>
 
                 </LinearLayout>
@@ -150,8 +146,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:src="?attr/ic_label_outline_24dp"
-                            android:alpha="?attr/active_unfocused_icon_alpha"
+                            android:src="@drawable/ic_label_outline"
                             android:contentDescription="@string/tags"/>
 
                         <MultiAutoCompleteTextView
@@ -166,12 +161,12 @@
                         <ImageButton
                             android:id="@+id/tags_menu"
                             style="@style/NoteFragmentMetadataItemButton"
-                            android:src="?attr/ic_more_horiz_24dp" />
+                            android:src="@drawable/ic_more_horiz" />
 
                         <ImageButton
                             android:id="@+id/tags_remove"
                             style="@style/NoteFragmentMetadataItemButton"
-                            android:src="?attr/ic_close_24dp" />
+                            android:src="@drawable/ic_close" />
                     </LinearLayout>
 
                     <!-- State -->
@@ -182,8 +177,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="?attr/ic_flag_24dp"
-                            android:alpha="?attr/active_unfocused_icon_alpha"/>
+                            android:src="@drawable/ic_flag" />
                         <TextView
                             android:id="@+id/state_button"
                             style="@style/NoteFragmentMetadataItemValueButton"
@@ -192,7 +186,7 @@
                         <ImageButton
                             android:id="@+id/state_remove"
                             style="@style/NoteFragmentMetadataItemButton"
-                            android:src="?attr/ic_close_24dp" />
+                            android:src="@drawable/ic_close" />
                     </LinearLayout>
 
                     <!-- Priority -->
@@ -203,8 +197,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="?attr/ic_star_border_24dp"
-                            android:alpha="?attr/active_unfocused_icon_alpha"/>
+                            android:src="@drawable/ic_star_border" />
                         <TextView
                             android:id="@+id/priority_button"
                             style="@style/NoteFragmentMetadataItemValueButton"
@@ -213,7 +206,7 @@
                         <ImageButton
                             android:id="@+id/priority_remove"
                             style="@style/NoteFragmentMetadataItemButton"
-                            android:src="?attr/ic_close_24dp" />
+                            android:src="@drawable/ic_close" />
                     </LinearLayout>
 
                     <!-- Scheduled time -->
@@ -224,8 +217,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="?attr/ic_today_24dp"
-                            android:alpha="?attr/active_unfocused_icon_alpha"/>
+                            android:src="@drawable/ic_today" />
                         <TextView
                             android:id="@+id/scheduled_button"
                             style="@style/NoteFragmentMetadataItemValueButton"
@@ -233,7 +225,7 @@
                         <ImageButton
                             android:id="@+id/scheduled_remove"
                             style="@style/NoteFragmentMetadataItemButton"
-                            android:src="?attr/ic_close_24dp" />
+                            android:src="@drawable/ic_close" />
                     </LinearLayout>
 
                     <!-- Deadline time -->
@@ -244,8 +236,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="?attr/ic_alarm_24dp"
-                            android:alpha="?attr/active_unfocused_icon_alpha"/>
+                            android:src="@drawable/ic_alarm" />
                         <TextView
                             android:id="@+id/deadline_button"
                             style="@style/NoteFragmentMetadataItemValueButton"
@@ -254,7 +245,7 @@
                         <ImageButton
                             android:id="@+id/deadline_remove"
                             style="@style/NoteFragmentMetadataItemButton"
-                            android:src="?attr/ic_close_24dp" />
+                            android:src="@drawable/ic_close" />
                     </LinearLayout>
 
                     <!-- Closed time -->
@@ -265,8 +256,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="?attr/ic_outline_check_circle_24dp"
-                            android:alpha="?attr/active_unfocused_icon_alpha"/>
+                            android:src="@drawable/ic_check_circle_outline" />
                         <TextView
                             android:id="@+id/closed_button"
                             style="@style/NoteFragmentMetadataItemValueButton"
@@ -274,7 +264,7 @@
                         <ImageButton
                             android:id="@+id/closed_remove"
                             style="@style/NoteFragmentMetadataItemButton"
-                            android:src="?attr/ic_close_24dp" />
+                            android:src="@drawable/ic_close" />
                     </LinearLayout>
 
                     <!-- List of properties -->
@@ -301,8 +291,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/screen_edge"
                         android:layout_marginLeft="@dimen/screen_edge"
-                        android:src="?attr/ic_outline_notes_24dp"
-                        android:alpha="?attr/active_unfocused_icon_alpha"/>
+                        android:src="@drawable/ic_notes" />
 
                     <TextView
                         android:id="@+id/content_header_text"
@@ -320,16 +309,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="12dp"
-                        android:src="?attr/ic_keyboard_arrow_up_24dp"
-                        android:alpha="?attr/active_unfocused_icon_alpha"/>
+                        android:src="@drawable/ic_keyboard_arrow_up" />
 
                     <ImageView
                         android:id="@+id/content_header_down_icon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="12dp"
-                        android:src="?attr/ic_keyboard_arrow_down_24dp"
-                        android:alpha="?attr/active_unfocused_icon_alpha"
+                        android:src="@drawable/ic_keyboard_arrow_down"
                         android:visibility="gone"/>
 
                 </LinearLayout>
@@ -381,7 +368,7 @@
             android:id="@+id/top_toolbar"
             style="@style/TopToolbar"
             app:menu="@menu/note_actions"
-            app:navigationIcon="?attr/ic_menu_24dp" />
+            app:navigationIcon="@drawable/ic_menu" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

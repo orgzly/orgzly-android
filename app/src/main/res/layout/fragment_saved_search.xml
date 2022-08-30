@@ -72,7 +72,7 @@
             app:title="@string/search"
             style="@style/TopToolbar"
             app:menu="@menu/done"
-            app:navigationIcon="?attr/ic_arrow_back_24dp" />
+            app:navigationIcon="@drawable/ic_arrow_back" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

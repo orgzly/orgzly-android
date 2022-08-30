@@ -13,7 +13,6 @@ import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.ui.notes.NoteItemViewBinder
-import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.databinding.ItemRefileBinding
 
 class RefileAdapter(val context: Context, val listener: OnClickListener) :
@@ -56,7 +55,7 @@ class RefileAdapter(val context: Context, val listener: OnClickListener) :
     override fun onBindViewHolder(holder: RefileViewHolder, position: Int) {
 
         if (icons == null) {
-            icons = getIcons(holder.binding.root.context)
+            icons = Icons(R.drawable.ic_keyboard_arrow_up, R.drawable.ic_library_books)
         }
 
         val item = getItem(position)
@@ -88,14 +87,6 @@ class RefileAdapter(val context: Context, val listener: OnClickListener) :
                     holder.binding.itemRefileIcon.visibility = View.VISIBLE
                 }
             }
-        }
-    }
-
-    private fun getIcons(context: Context): Icons {
-        return context.styledAttributes(R.styleable.Icons) { typedArray ->
-            Icons(
-                    typedArray.getResourceId(R.styleable.Icons_ic_keyboard_arrow_up_24dp, 0),
-                    typedArray.getResourceId(R.styleable.Icons_ic_library_books_24dp, 0))
         }
     }
 

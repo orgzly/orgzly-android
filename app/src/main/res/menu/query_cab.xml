@@ -6,7 +6,7 @@
 <!--        android:id="@+id/edit"-->
 <!--        app:showAsAction="always"-->
 <!--        android:title="@string/edit"-->
-<!--        android:icon="?attr/ic_edit_24dp">-->
+<!--        android:icon="@drawable/ic_edit">-->
 
 <!--        <menu>-->
 <!--        </menu>-->
@@ -16,30 +16,30 @@
         android:id="@+id/schedule"
         app:showAsAction="always"
         android:title="@string/schedule"
-        android:icon="?attr/ic_today_24dp" />
+        android:icon="@drawable/ic_today" />
 
     <item
         android:id="@+id/deadline"
         app:showAsAction="always"
         android:title="@string/deadline"
-        android:icon="?attr/ic_alarm_24dp" />
+        android:icon="@drawable/ic_alarm" />
 
     <item
         android:id="@+id/state"
         app:showAsAction="always"
         android:title="@string/state"
-        android:icon="?attr/ic_flag_24dp" />
+        android:icon="@drawable/ic_flag" />
 
     <item
         android:id="@+id/toggle_state"
         app:showAsAction="always"
         android:title="@string/done"
-        android:icon="?attr/ic_outline_check_circle_24dp" />
+        android:icon="@drawable/ic_check_circle_outline" />
 
     <item
         android:id="@+id/focus"
         app:showAsAction="always"
         android:title="@string/open"
-        android:icon="?attr/ic_center_focus_strong_24dp" />
+        android:icon="@drawable/ic_center_focus_strong" />
 
 </menu>

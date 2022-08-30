@@ -125,9 +125,7 @@ class SearchFragment :
 
             ActivityUtils.keepScreenOnUpdateMenuItem(activity, menu)
 
-            setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
-                typedArray.getResourceId(R.styleable.Icons_ic_menu_24dp, 0)
-            })
+            setNavigationIcon(R.drawable.ic_menu)
 
             setNavigationOnClickListener {
                 sharedMainActivityViewModel.openDrawer()
@@ -171,9 +169,7 @@ class SearchFragment :
                 menu.findItem(id)?.isVisible = viewAdapter.getSelection().count == 1
             }
 
-            setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
-                typedArray.getResourceId(R.styleable.Icons_ic_arrow_back_24dp, 0)
-            })
+            setNavigationIcon(R.drawable.ic_arrow_back)
 
             setNavigationOnClickListener {
                 viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)

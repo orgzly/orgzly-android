@@ -5,14 +5,14 @@
     <item
         android:id="@+id/books_context_menu_force_load"
         android:title="@string/books_context_menu_item_force_load"
-        android:icon="?attr/ic_outline_cloud_download_24dp"
+        android:icon="@drawable/ic_cloud_download_outline"
         app:showAsAction="always">
     </item>
 
     <item
         android:id="@+id/books_context_menu_force_save"
         android:title="@string/books_context_menu_item_force_save"
-        android:icon="?attr/ic_outline_cloud_upload_24dp"
+        android:icon="@drawable/ic_cloud_upload_outline"
         app:showAsAction="always">
     </item>
 

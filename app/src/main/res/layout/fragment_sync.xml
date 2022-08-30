@@ -43,7 +43,7 @@
                 android:id="@+id/sync_button_icon"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:src="?attr/ic_sync_24dp"
+                android:src="@drawable/ic_sync"
                 android:contentDescription="@string/sync"/>
 
             <TextView

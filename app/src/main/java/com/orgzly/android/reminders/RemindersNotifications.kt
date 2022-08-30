@@ -42,7 +42,7 @@ object RemindersNotifications {
                     .setCategory(NotificationCompat.CATEGORY_REMINDER)
                     .setPriority(NotificationCompat.PRIORITY_MAX)
                     .setColor(ContextCompat.getColor(context, R.color.notification))
-                    .setSmallIcon(R.drawable.ic_logo_for_notification)
+                    .setSmallIcon(R.drawable.cic_logo_for_notification)
 
             if (canGroupReminders()) {
                 builder.setGroup(Notifications.REMINDERS_GROUP)
@@ -89,7 +89,7 @@ object RemindersNotifications {
             } else {
                 context.getString(R.string.mark_as_done)
             }
-            val markAsDoneAction = NotificationCompat.Action(R.drawable.ic_done_white_24dp,
+            val markAsDoneAction = NotificationCompat.Action(R.drawable.ic_done,
                     doneActionText,
                     markNoteAsDonePendingIntent(
                             context, noteReminder.payload.noteId, notificationTag))
@@ -98,7 +98,7 @@ object RemindersNotifications {
 
             // Snooze action
             val snoozeActionText = context.getString(R.string.reminder_snooze)
-            val snoozeAction = NotificationCompat.Action(R.drawable.ic_snooze_white_24dp,
+            val snoozeAction = NotificationCompat.Action(R.drawable.ic_snooze,
                     snoozeActionText,
                     reminderSnoozePendingIntent(
                             context,
@@ -119,7 +119,7 @@ object RemindersNotifications {
             if (notes.isNotEmpty()) {
                 val builder = NotificationCompat.Builder(context, NotificationChannels.REMINDERS)
                         .setAutoCancel(true)
-                        .setSmallIcon(R.drawable.ic_logo_for_notification)
+                        .setSmallIcon(R.drawable.cic_logo_for_notification)
                         .setGroup(Notifications.REMINDERS_GROUP)
                         .setGroupSummary(true)
 

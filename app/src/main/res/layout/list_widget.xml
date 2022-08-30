@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -44,8 +45,8 @@
                 android:text="@string/list_widget_select_search"
                 android:textColor="@color/widget_light_header_text_color"
                 android:textSize="@dimen/widget_header_text_size_14"
-                android:drawableRight="@drawable/ic_arrow_drop_down_white_24dp"
-                android:drawableEnd="@drawable/ic_arrow_drop_down_white_24dp"
+                android:drawableRight="@drawable/ic_arrow_drop_down"
+                android:drawableEnd="@drawable/ic_arrow_drop_down"
                 android:drawablePadding="4dp"
                 android:ellipsize="end"
                 android:maxLines="1" />
@@ -58,7 +59,7 @@
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_add_white_24dp" />
+            android:src="@drawable/ic_add" />
     </LinearLayout>
 
     <LinearLayout

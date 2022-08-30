@@ -43,8 +43,7 @@
         style="@style/BorderlessButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="?attr/ic_move_to_inbox_24dp"
-        android:alpha="?attr/active_focused_icon_alpha"
+        android:src="@drawable/ic_move_to_inbox"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

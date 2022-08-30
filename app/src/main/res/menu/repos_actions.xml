@@ -14,7 +14,7 @@
 
     <item
         android:id="@+id/repos_options_menu_item_new"
-        android:icon="?attr/ic_add_24dp"
+        android:icon="@drawable/ic_add"
         app:showAsAction="always"
         android:title="@string/repos_options_menu_new_repo">
 

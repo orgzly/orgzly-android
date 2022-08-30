@@ -6,13 +6,13 @@
         android:id="@+id/refile"
         app:showAsAction="always"
         android:title="@string/refile"
-        android:icon="?attr/ic_move_to_inbox_24dp"/>
+        android:icon="@drawable/ic_move_to_inbox"/>
 
 <!--    <item-->
 <!--        android:id="@+id/edit"-->
 <!--        app:showAsAction="always"-->
 <!--        android:title="@string/edit"-->
-<!--        android:icon="?attr/ic_edit_24dp">-->
+<!--        android:icon="@drawable/ic_edit">-->
 
 <!--        <menu>-->
 <!--        </menu>-->
@@ -22,31 +22,31 @@
         android:id="@+id/schedule"
         app:showAsAction="always"
         android:title="@string/schedule"
-        android:icon="?attr/ic_today_24dp"/>
+        android:icon="@drawable/ic_today"/>
 
     <item
         android:id="@+id/deadline"
         app:showAsAction="always"
         android:layout_height="wrap_content"
         android:title="@string/deadline"
-        android:icon="?attr/ic_alarm_24dp" />
+        android:icon="@drawable/ic_alarm" />
 
     <item
         android:id="@+id/state"
         app:showAsAction="always"
         android:title="@string/state"
-        android:icon="?attr/ic_flag_24dp"/>
+        android:icon="@drawable/ic_flag"/>
 
     <item
         android:id="@+id/toggle_state"
         app:showAsAction="always"
         android:title="@string/done"
-        android:icon="?attr/ic_outline_check_circle_24dp"/>
+        android:icon="@drawable/ic_check_circle_outline"/>
 
 
     <item
         android:id="@+id/new_note"
-        android:icon="?attr/ic_add_24dp"
+        android:icon="@drawable/ic_add"
         app:showAsAction="always"
         android:title="@string/new_note">
 
@@ -54,17 +54,17 @@
             <item
                 android:id="@+id/new_note_above"
                 android:title="@string/new_above"
-                android:icon="?attr/oic_new_above_24dp"/>
+                android:icon="@drawable/ic_north" />
 
             <item
                 android:id="@+id/new_note_under"
                 android:title="@string/new_under"
-                android:icon="?attr/oic_new_under_24dp"/>
+                android:icon="@drawable/ic_south_east" />
 
             <item
                 android:id="@+id/new_note_below"
                 android:title="@string/new_below"
-                android:icon="?attr/oic_new_below_24dp"/>
+                android:icon="@drawable/ic_south"/>
         </menu>
     </item>
 </menu>

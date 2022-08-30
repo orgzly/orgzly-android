@@ -2,7 +2,6 @@ package com.orgzly.android.widgets
 
 import android.content.Context
 import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import android.util.TypedValue
@@ -77,9 +76,10 @@ object WidgetStyle {
 
         /* Book name */
 
-        remoteViews.setImageViewResource(
-                R.id.item_list_widget_book_icon,
-                bookIcon(context))
+        remoteViews.setInt(
+            R.id.item_list_widget_book_icon,
+            "setColorFilter",
+            secondaryTextColor(context))
 
         remoteViews.setTextViewTextSize(
                 R.id.item_list_widget_book_text,
@@ -92,9 +92,10 @@ object WidgetStyle {
 
         /* Scheduled time */
 
-        remoteViews.setImageViewResource(
-                R.id.item_list_widget_scheduled_icon,
-                scheduledIcon(context))
+        remoteViews.setInt(
+            R.id.item_list_widget_scheduled_icon,
+            "setColorFilter",
+            secondaryTextColor(context))
 
         remoteViews.setTextViewTextSize(
                 R.id.item_list_widget_scheduled_text,
@@ -107,9 +108,10 @@ object WidgetStyle {
 
         /* Deadline time */
 
-        remoteViews.setImageViewResource(
-                R.id.item_list_widget_deadline_icon,
-                deadlineIcon(context))
+        remoteViews.setInt(
+            R.id.item_list_widget_deadline_icon,
+            "setColorFilter",
+            secondaryTextColor(context))
 
         remoteViews.setTextViewTextSize(
                 R.id.item_list_widget_deadline_text,
@@ -122,9 +124,10 @@ object WidgetStyle {
 
         /* Event time */
 
-        remoteViews.setImageViewResource(
-                R.id.item_list_widget_event_icon,
-                eventIcon(context))
+        remoteViews.setInt(
+            R.id.item_list_widget_event_icon,
+            "setColorFilter",
+            secondaryTextColor(context))
 
         remoteViews.setTextViewTextSize(
                 R.id.item_list_widget_event_text,
@@ -137,9 +140,10 @@ object WidgetStyle {
 
         /* Closed time */
 
-        remoteViews.setImageViewResource(
-                R.id.item_list_widget_closed_icon,
-                closedIcon(context))
+        remoteViews.setInt(
+            R.id.item_list_widget_closed_icon,
+            "setColorFilter",
+            secondaryTextColor(context))
 
         remoteViews.setTextViewTextSize(
                 R.id.item_list_widget_closed_text,
@@ -152,9 +156,10 @@ object WidgetStyle {
 
         /* Done icon */
 
-        remoteViews.setImageViewResource(
-                R.id.item_list_widget_done,
-                doneIcon(context))
+        remoteViews.setInt(
+            R.id.item_list_widget_done,
+            "setColorFilter",
+            secondaryTextColor(context))
 
         remoteViews.setInt(
                 R.id.item_list_widget_done, "setAlpha", doneIconAlpha(context))
@@ -257,54 +262,6 @@ object WidgetStyle {
         }
 
         return withOpacity(context, color)
-    }
-
-    @DrawableRes
-    private fun bookIcon(context: Context): Int {
-        return when (AppPreferences.widgetColorScheme(context)) {
-            "dark", "black" -> R.drawable.ic_folder_open_white_18dp
-            else -> R.drawable.ic_folder_open_black_18dp
-        }
-    }
-
-    @DrawableRes
-    private fun scheduledIcon(context: Context): Int {
-        return when (AppPreferences.widgetColorScheme(context)) {
-            "dark", "black" -> R.drawable.ic_today_white_18dp
-            else -> R.drawable.ic_today_black_18dp
-        }
-    }
-
-    @DrawableRes
-    private fun deadlineIcon(context: Context): Int {
-        return when (AppPreferences.widgetColorScheme(context)) {
-            "dark", "black" -> R.drawable.ic_alarm_white_18dp
-            else -> R.drawable.ic_alarm_black_18dp
-        }
-    }
-
-    @DrawableRes
-    private fun eventIcon(context: Context): Int {
-        return when (AppPreferences.widgetColorScheme(context)) {
-            "dark", "black" -> R.drawable.ic_access_time_white_18dp
-            else -> R.drawable.ic_access_time_black_18dp
-        }
-    }
-
-    @DrawableRes
-    private fun closedIcon(context: Context): Int {
-        return when (AppPreferences.widgetColorScheme(context)) {
-            "dark", "black" -> R.drawable.outline_check_circle_white_18
-            else -> R.drawable.outline_check_circle_black_18
-        }
-    }
-
-    @DrawableRes
-    private fun doneIcon(context: Context): Int {
-        return when (AppPreferences.widgetColorScheme(context)) {
-            "dark", "black" -> R.drawable.outline_check_circle_white_24
-            else -> R.drawable.outline_check_circle_black_24
-        }
     }
 
     private fun doneIconAlpha(context: Context): Int {

@@ -100,5 +100,7 @@
     <color name="widget_black_state_unknown_color">@color/blue_200</color>
     <color name="widget_black_title_color">@color/white_text_primary_color</color>
     <color name="widget_black_post_title_color">@color/white_text_secondary_color</color>
+
+    <color name="dropbox_blue">#007ee5</color>
 </resources>
 

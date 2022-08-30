@@ -8,8 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/property"
-        android:src="?attr/ic_outline_abc_24dp"
-        android:alpha="?attr/active_unfocused_icon_alpha"/>
+        android:src="@drawable/ic_abc" />
 
     <EditText
         android:id="@+id/name"
@@ -38,6 +37,6 @@
     <ImageButton
         android:id="@+id/delete"
         style="@style/NoteFragmentMetadataItemButton"
-        android:src="?attr/ic_close_24dp" />
+        android:src="@drawable/ic_close" />
 
 </LinearLayout>

@@ -12,7 +12,7 @@
         android:id="@+id/dialog_refile_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        app:navigationIcon="?attr/ic_close_24dp" />
+        app:navigationIcon="@drawable/ic_close" />
 
     <!-- Breadcrumbs -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,8 +54,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginEnd="8dp"
             android:contentDescription="@string/refile"
-            android:src="?attr/ic_move_to_inbox_24dp"
-            android:alpha="?attr/active_focused_icon_alpha"
+            android:src="@drawable/ic_move_to_inbox"
             app:layout_constraintBottom_toBottomOf="@+id/dialog_refile_breadcrumbs_scroll_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/dialog_refile_breadcrumbs_scroll_view" />

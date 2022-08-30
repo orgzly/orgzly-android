@@ -5,10 +5,13 @@ import android.app.Activity
 import androidx.appcompat.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.EditText
+import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -252,22 +255,23 @@ class DropboxRepoActivity : CommonActivity() {
     private fun updateDropboxLinkUnlinkButton() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        val resources = styledAttributes(R.styleable.Icons) { typedArray ->
+        binding.activityRepoDropboxLinkButton.text =
             if (isDropboxLinked()) {
-                Pair(
-                        getString(R.string.repo_dropbox_button_linked),
-                        typedArray.getResourceId(R.styleable.Icons_oic_dropbox_linked, 0))
+                getString(R.string.repo_dropbox_button_linked)
             } else {
-                Pair(
-                        getString(R.string.repo_dropbox_button_not_linked),
-                        typedArray.getResourceId(R.styleable.Icons_oic_dropbox_not_linked, 0))
+                getString(R.string.repo_dropbox_button_not_linked)
             }
-        }
 
-        binding.activityRepoDropboxLinkButton.text = resources.first
+        binding.activityRepoDropboxIcon.let { icon ->
+            icon.setImageResource(R.drawable.cic_dropbox)
 
-        if (resources.second != 0) {
-            binding.activityRepoDropboxIcon.setImageResource(resources.second)
+            // Tint the icon blue if linked
+            if (isDropboxLinked()) {
+                ImageViewCompat.setImageTintList(
+                    icon,
+                    ContextCompat.getColorStateList(this, R.color.dropbox_blue)
+                )
+            }
         }
     }
 

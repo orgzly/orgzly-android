@@ -59,90 +59,6 @@
         <!-- For some reason, cursor is invisible (or was it black on black?) on Nexus 7 (API 19).
              With this, it's white. -->
         <item name="android:textCursorDrawable">@null</item>
-
-        <item name="ic_access_time_18dp">@drawable/ic_access_time_black_18dp</item>
-        <item name="ic_access_time_24dp">@drawable/ic_access_time_black_24dp</item>
-        <item name="ic_add_24dp">@drawable/ic_add_black_24dp</item>
-        <item name="ic_alarm_18dp">@drawable/ic_alarm_black_18dp</item>
-        <item name="ic_alarm_24dp">@drawable/ic_alarm_black_24dp</item>
-        <item name="ic_arrow_back_24dp">@drawable/ic_arrow_back_black_24dp</item>
-        <item name="ic_arrow_downward_24dp">@drawable/ic_arrow_downward_black_24dp</item>
-        <item name="ic_arrow_forward_24dp">@drawable/ic_arrow_forward_black_24dp</item>
-        <item name="ic_arrow_upward_24dp">@drawable/ic_arrow_upward_black_24dp</item>
-        <item name="ic_cancel_24dp">@drawable/ic_cancel_black_24dp</item>
-        <item name="ic_cancel_outline_24dp">@drawable/outline_cancel_black_24</item>
-        <item name="ic_center_focus_strong_24dp">@drawable/ic_center_focus_strong_black_24dp</item>
-        <item name="ic_close_24dp">@drawable/ic_close_black_24dp</item>
-        <item name="ic_content_copy_24dp">@drawable/ic_content_copy_black_24dp</item>
-        <item name="ic_content_cut_24dp">@drawable/ic_content_cut_black_24dp</item>
-        <item name="ic_content_paste_24dp">@drawable/ic_content_paste_black_24dp</item>
-        <item name="ic_create_new_folder_24dp">@drawable/outline_create_new_folder_black_24</item>
-        <item name="ic_delete_24dp">@drawable/ic_delete_black_24dp</item>
-        <item name="ic_done_18dp">@drawable/ic_done_black_18dp</item>
-        <item name="ic_done_24dp">@drawable/ic_done_black_24dp</item>
-        <item name="ic_edit_24dp">@drawable/ic_edit_black_24dp</item>
-        <item name="ic_event_24dp">@drawable/ic_event_black_24dp</item>
-        <item name="ic_help_outline_24dp">@drawable/ic_help_outline_black_24dp</item>
-        <item name="ic_history_24dp">@drawable/ic_history_black_24dp</item>
-        <item name="ic_file_download_24dp">@drawable/ic_file_download_black_24dp</item>
-        <item name="ic_file_upload_24dp">@drawable/ic_file_upload_black_24dp</item>
-        <item name="ic_flag_24dp">@drawable/ic_flag_black_24dp</item>
-        <item name="ic_folder_open_18dp">@drawable/ic_folder_open_black_18dp</item>
-        <item name="ic_folder_open_24dp">@drawable/ic_folder_open_black_24dp</item>
-        <item name="ic_folder_open_48dp">@drawable/ic_folder_open_black_48dp</item>
-        <item name="ic_format_list_bulleted_18dp">@drawable/ic_format_list_bulleted_black_18dp</item>
-        <item name="ic_info_outline_18dp">@drawable/ic_info_outline_black_18dp</item>
-        <item name="ic_info_outline_24dp">@drawable/ic_info_outline_black_24dp</item>
-        <item name="ic_insert_drive_file_24dp">@drawable/ic_insert_drive_file_black_24dp</item>
-        <item name="ic_keyboard_arrow_down_24dp">@drawable/ic_keyboard_arrow_down_black_24dp</item>
-        <item name="ic_keyboard_arrow_up_24dp">@drawable/ic_keyboard_arrow_up_black_24dp</item>
-        <item name="ic_label_outline_24dp">@drawable/ic_label_outline_black_24dp</item>
-        <item name="ic_language_18dp">@drawable/ic_language_black_18dp</item>
-        <item name="ic_library_books_24dp">@drawable/ic_library_books_black_24dp</item>
-        <item name="ic_link_18dp">@drawable/ic_link_black_18dp</item>
-        <item name="ic_move_to_inbox_24dp">@drawable/ic_move_to_inbox_black_24dp</item>
-        <item name="ic_more_horiz_24dp">@drawable/ic_more_horiz_black_24dp</item>
-        <item name="ic_menu_24dp">@drawable/outline_menu_black_24</item>
-        <item name="ic_menu_open_24dp">@drawable/ic_menu_open_black_24dp</item>
-        <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_black_24dp</item>
-        <item name="ic_open_in_new_24dp">@drawable/ic_open_in_new_black_24dp</item>
-        <item name="ic_outline_abc_24dp">@drawable/outline_abc_black_24</item>
-        <item name="ic_outline_check_circle_18dp">@drawable/outline_check_circle_black_18</item>
-        <item name="ic_outline_check_circle_24dp">@drawable/outline_check_circle_black_24</item>
-        <item name="ic_outline_cloud_48dp">@drawable/outline_cloud_black_48</item>
-        <item name="ic_outline_cloud_download_24dp">@drawable/outline_cloud_download_black_24</item>
-        <item name="ic_outline_cloud_upload_24dp">@drawable/outline_cloud_upload_black_24</item>
-        <item name="ic_outline_notes_24dp">@drawable/outline_notes_black_24</item>
-        <item name="ic_palette_24dp">@drawable/ic_palette_black_24dp</item>
-        <item name="ic_remove_red_eye_24dp">@drawable/ic_remove_red_eye_black_24dp</item>
-        <item name="ic_repeat_24dp">@drawable/ic_repeat_black_24dp</item>
-        <item name="ic_rotate_left_24dp">@drawable/ic_rotate_left_black_24dp</item>
-        <item name="ic_rotate_right_24dp">@drawable/ic_rotate_right_black_24dp</item>
-        <item name="ic_search_24dp">@drawable/ic_search_black_24dp</item>
-        <item name="ic_send_24dp">@drawable/ic_send_black_24dp</item>
-        <item name="ic_settings_24dp">@drawable/ic_settings_black_24dp</item>
-        <item name="ic_storage_24dp">@drawable/ic_storage_black_24dp</item>
-        <item name="ic_swap_vert_24dp">@drawable/ic_swap_vert_black_24dp</item>
-        <item name="ic_sync_18dp">@drawable/ic_sync_black_18dp</item>
-        <item name="ic_sync_24dp">@drawable/ic_sync_black_24dp</item>
-        <item name="ic_sync_problem_18dp">@drawable/ic_sync_problem_black_18dp</item>
-        <item name="ic_today_18dp">@drawable/ic_today_black_18dp</item>
-        <item name="ic_today_24dp">@drawable/ic_today_black_24dp</item>
-        <item name="ic_star_border_24dp">@drawable/ic_star_border_black_24dp</item>
-        <item name="ic_unfold_more_24dp">@drawable/ic_unfold_more_black_24dp</item>
-        <item name="ic_warning_24dp">@drawable/ic_warning_black_24dp</item>
-        <item name="ic_widgets_24dp">@drawable/ic_widgets_black_24dp</item>
-
-        <item name="oic_dropbox_linked">@drawable/cic_dropbox_blue_48px</item>
-        <item name="oic_git_48dp">@drawable/cic_git_black_48dp</item>
-        <item name="oic_dropbox_not_linked">@drawable/cic_dropbox_black_48px</item>
-        <item name="oic_new_above_24dp">@drawable/cic_new_above_black_24dp</item>
-        <item name="oic_new_below_24dp">@drawable/cic_new_below_black_24dp</item>
-        <item name="oic_new_under_24dp">@drawable/cic_new_under_black_24dp</item>
-
-        <!-- https://material.io/design/iconography/system-icons.html#color -->
-        <item name="active_focused_icon_alpha">0.87</item>
-        <item name="active_unfocused_icon_alpha">0.54</item>
     </style>
 
     <style name="AppDarkTheme" parent="Theme.Material3.DynamicColors.Dark">
@@ -195,90 +111,6 @@
         <!-- For some reason, cursor is invisible (or was it black on black?) on Nexus 7 (API 19).
              With this, it's white. -->
         <item name="android:textCursorDrawable">@null</item>
-
-        <item name="ic_access_time_18dp">@drawable/ic_access_time_white_18dp</item>
-        <item name="ic_access_time_24dp">@drawable/ic_access_time_white_24dp</item>
-        <item name="ic_add_24dp">@drawable/ic_add_white_24dp</item>
-        <item name="ic_alarm_18dp">@drawable/ic_alarm_white_18dp</item>
-        <item name="ic_alarm_24dp">@drawable/ic_alarm_white_24dp</item>
-        <item name="ic_arrow_back_24dp">@drawable/ic_arrow_back_white_24dp</item>
-        <item name="ic_arrow_downward_24dp">@drawable/ic_arrow_downward_white_24dp</item>
-        <item name="ic_arrow_forward_24dp">@drawable/ic_arrow_forward_white_24dp</item>
-        <item name="ic_arrow_upward_24dp">@drawable/ic_arrow_upward_white_24dp</item>
-        <item name="ic_cancel_24dp">@drawable/ic_cancel_white_24dp</item>
-        <item name="ic_cancel_outline_24dp">@drawable/outline_cancel_white_24</item>
-        <item name="ic_center_focus_strong_24dp">@drawable/ic_center_focus_strong_white_24dp</item>
-        <item name="ic_close_24dp">@drawable/ic_close_white_24dp</item>
-        <item name="ic_content_copy_24dp">@drawable/ic_content_copy_white_24dp</item>
-        <item name="ic_content_cut_24dp">@drawable/ic_content_cut_white_24dp</item>
-        <item name="ic_content_paste_24dp">@drawable/ic_content_paste_white_24dp</item>
-        <item name="ic_create_new_folder_24dp">@drawable/outline_create_new_folder_white_24</item>
-        <item name="ic_delete_24dp">@drawable/ic_delete_white_24dp</item>
-        <item name="ic_done_18dp">@drawable/ic_done_white_18dp</item>
-        <item name="ic_done_24dp">@drawable/ic_done_white_24dp</item>
-        <item name="ic_edit_24dp">@drawable/ic_edit_white_24dp</item>
-        <item name="ic_event_24dp">@drawable/ic_event_white_24dp</item>
-        <item name="ic_help_outline_24dp">@drawable/ic_help_outline_white_24dp</item>
-        <item name="ic_history_24dp">@drawable/ic_history_white_24dp</item>
-        <item name="ic_file_download_24dp">@drawable/ic_file_download_white_24dp</item>
-        <item name="ic_file_upload_24dp">@drawable/ic_file_upload_white_24dp</item>
-        <item name="ic_flag_24dp">@drawable/ic_flag_white_24dp</item>
-        <item name="ic_folder_open_18dp">@drawable/ic_folder_open_white_18dp</item>
-        <item name="ic_folder_open_24dp">@drawable/ic_folder_open_white_24dp</item>
-        <item name="ic_folder_open_48dp">@drawable/ic_folder_open_white_48dp</item>
-        <item name="ic_format_list_bulleted_18dp">@drawable/ic_format_list_bulleted_white_18dp</item>
-        <item name="ic_info_outline_18dp">@drawable/ic_info_outline_white_18dp</item>
-        <item name="ic_info_outline_24dp">@drawable/ic_info_outline_white_24dp</item>
-        <item name="ic_insert_drive_file_24dp">@drawable/ic_insert_drive_file_white_24dp</item>
-        <item name="ic_keyboard_arrow_down_24dp">@drawable/ic_keyboard_arrow_down_white_24dp</item>
-        <item name="ic_keyboard_arrow_up_24dp">@drawable/ic_keyboard_arrow_up_white_24dp</item>
-        <item name="ic_label_outline_24dp">@drawable/ic_label_outline_white_24dp</item>
-        <item name="ic_language_18dp">@drawable/ic_language_white_18dp</item>
-        <item name="ic_library_books_24dp">@drawable/ic_library_books_white_24dp</item>
-        <item name="ic_link_18dp">@drawable/ic_link_white_18dp</item>
-        <item name="ic_move_to_inbox_24dp">@drawable/ic_move_to_inbox_white_24dp</item>
-        <item name="ic_more_horiz_24dp">@drawable/ic_more_horiz_white_24dp</item>
-        <item name="ic_menu_24dp">@drawable/outline_menu_white_24</item>
-        <item name="ic_menu_open_24dp">@drawable/ic_menu_open_white_24dp</item>
-        <item name="ic_notifications_none_24dp">@drawable/ic_notifications_none_white_24dp</item>
-        <item name="ic_open_in_new_24dp">@drawable/ic_open_in_new_white_24dp</item>
-        <item name="ic_outline_abc_24dp">@drawable/outline_abc_white_24</item>
-        <item name="ic_outline_check_circle_18dp">@drawable/outline_check_circle_white_18</item>
-        <item name="ic_outline_check_circle_24dp">@drawable/outline_check_circle_white_24</item>
-        <item name="ic_outline_cloud_48dp">@drawable/outline_cloud_white_48</item>
-        <item name="ic_outline_cloud_download_24dp">@drawable/outline_cloud_download_white_24</item>
-        <item name="ic_outline_cloud_upload_24dp">@drawable/outline_cloud_upload_white_24</item>
-        <item name="ic_outline_notes_24dp">@drawable/outline_notes_white_24</item>
-        <item name="ic_palette_24dp">@drawable/ic_palette_white_24dp</item>
-        <item name="ic_remove_red_eye_24dp">@drawable/ic_remove_red_eye_white_24dp</item>
-        <item name="ic_repeat_24dp">@drawable/ic_repeat_white_24dp</item>
-        <item name="ic_rotate_left_24dp">@drawable/ic_rotate_left_white_24dp</item>
-        <item name="ic_rotate_right_24dp">@drawable/ic_rotate_right_white_24dp</item>
-        <item name="ic_search_24dp">@drawable/ic_search_white_24dp</item>
-        <item name="ic_send_24dp">@drawable/ic_send_white_24dp</item>
-        <item name="ic_settings_24dp">@drawable/ic_settings_white_24dp</item>
-        <item name="ic_storage_24dp">@drawable/ic_storage_white_24dp</item>
-        <item name="ic_swap_vert_24dp">@drawable/ic_swap_vert_white_24dp</item>
-        <item name="ic_sync_18dp">@drawable/ic_sync_white_18dp</item>
-        <item name="ic_sync_24dp">@drawable/ic_sync_white_24dp</item>
-        <item name="ic_sync_problem_18dp">@drawable/ic_sync_problem_white_18dp</item>
-        <item name="ic_today_18dp">@drawable/ic_today_white_18dp</item>
-        <item name="ic_today_24dp">@drawable/ic_today_white_24dp</item>
-        <item name="ic_star_border_24dp">@drawable/ic_star_border_white_24dp</item>
-        <item name="ic_unfold_more_24dp">@drawable/ic_unfold_more_white_24dp</item>
-        <item name="ic_warning_24dp">@drawable/ic_warning_white_24dp</item>
-        <item name="ic_widgets_24dp">@drawable/ic_widgets_white_24dp</item>
-
-        <item name="oic_dropbox_linked">@drawable/cic_dropbox_blue_48px</item>
-        <item name="oic_git_48dp">@drawable/cic_git_white_48dp</item>
-        <item name="oic_dropbox_not_linked">@drawable/cic_dropbox_white_48px</item>
-        <item name="oic_new_above_24dp">@drawable/cic_new_above_white_24dp</item>
-        <item name="oic_new_below_24dp">@drawable/cic_new_below_white_24dp</item>
-        <item name="oic_new_under_24dp">@drawable/cic_new_under_white_24dp</item>
-
-        <!-- https://material.io/design/iconography/system-icons.html#color -->
-        <item name="active_focused_icon_alpha">1.00</item>
-        <item name="active_unfocused_icon_alpha">0.70</item>
     </style>
 
     <style name="OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
@@ -467,7 +299,6 @@
     <style name="NoteFragmentMetadataItemButton" parent="Base.Widget.AppCompat.Button.Borderless">
         <item name="android:layout_width">48dp</item>
         <item name="android:layout_height">48dp</item>
-        <item name="android:alpha">?attr/active_unfocused_icon_alpha</item>
     </style>
 
     <style name="BookItemInfoIcon">
@@ -587,11 +418,11 @@
     </style>
 
     <style name="Fab.Done">
-        <item name="android:src">?attr/ic_done_24dp</item>
+        <item name="android:src">@drawable/ic_done</item>
     </style>
 
     <style name="Fab.Add">
-        <item name="android:src">?attr/ic_add_24dp</item>
+        <item name="android:src">@drawable/ic_add</item>
     </style>
 
     <style name="HorizontalDivider">
