@@ -59,6 +59,15 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_add_white_24dp" />
+
+        <ImageButton
+            android:id="@+id/list_widget_header_sync"
+            style="@style/BorderlessButton"
+            android:padding="0dp"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_sync_white_24dp" />
     </LinearLayout>
 
     <LinearLayout
