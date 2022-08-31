@@ -6,6 +6,7 @@
     <style name="AppDayNightTheme" parent="AppLightTheme.Light" />
 
     <style name="AppLightTheme" parent="AppLightThemeCommon" />
+    <style name="AppDarkTheme" parent="AppDarkThemeCommon" />
 
     <style name="AppLightThemeCommon" parent="Theme.Material3.DynamicColors.Light">
 
@@ -55,19 +56,11 @@
         <item name="android:textCursorDrawable">@null</item>
     </style>
 
-    <style name="AppDarkTheme" parent="Theme.Material3.DynamicColors.Dark">
+    <style name="AppDarkThemeCommon" parent="Theme.Material3.DynamicColors.Dark">
 
         <!-- NoActionBar -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-
-        <!-- System bars -->
-        <!-- No need for per-API versions of these, as dark system bars are used -->
-        <item name="android:windowLightStatusBar" tools:targetApi="m">?attr/isLightTheme</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">?attr/isLightTheme</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimation</item>
 
