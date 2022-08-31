@@ -422,13 +422,13 @@
     <style name="HorizontalDivider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">?colorTertiaryContainer</item>
+        <item name="android:background">?colorSecondaryContainer</item>
     </style>
 
     <style name="VerticalDivider">
         <item name="android:layout_width">1dp</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">?colorTertiaryContainer</item>
+        <item name="android:background">?colorSecondaryContainer</item>
     </style>
 
     <style name="TitleTextAppearance">
