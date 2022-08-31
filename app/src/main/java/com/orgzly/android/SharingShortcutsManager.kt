@@ -34,7 +34,7 @@ class SharingShortcutsManager {
     }
 
     private fun createShortcuts(context: Context): List<ShortcutInfoCompat> {
-        return dataRepository.getBooks().mapNotNull { bookView ->
+        return dataRepository.getBooks().mapNotNull { bookView -> // FIXME: ANR
             val book = bookView.book
 
             if (hasRequestedDirectShare(book)) {
