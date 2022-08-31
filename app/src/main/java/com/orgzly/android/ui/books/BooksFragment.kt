@@ -24,14 +24,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
-import com.orgzly.android.App
-import com.orgzly.android.BookFormat
-import com.orgzly.android.BookName
+import com.orgzly.android.*
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.ui.*
+import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.books.BooksViewModel.Companion.APP_BAR_DEFAULT_MODE
 import com.orgzly.android.ui.books.BooksViewModel.Companion.APP_BAR_SELECTION_MODE
 import com.orgzly.android.ui.dialogs.SimpleOneLinerDialog
@@ -40,11 +38,10 @@ import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.ui.main.setupSearchView
 import com.orgzly.android.ui.repos.ReposActivity
 import com.orgzly.android.ui.settings.SettingsActivity
+import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.setup
-import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.usecase.BookDelete
-import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.databinding.DialogBookDeleteBinding
@@ -193,6 +190,13 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
                     when (menuItem.itemId) {
                         R.id.books_options_menu_item_import_book -> {
                             pickFileForBookImport.launch("*/*")
+                        }
+
+                        R.id.sync -> {
+                            activity?.let {
+                                val intent = Intent(it, ActionReceiver::class.java).setAction(AppIntent.ACTION_SYNC_START)
+                                it.sendBroadcast(intent)
+                            }
                         }
 
                         R.id.activity_action_settings -> {

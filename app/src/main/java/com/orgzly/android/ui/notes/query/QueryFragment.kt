@@ -5,14 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
-import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.ActionReceiver
+import com.orgzly.android.AppIntent
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.ui.notes.NotesFragment
 import com.orgzly.android.ui.settings.SettingsActivity
-import com.orgzly.android.util.LogUtils
 
 /**
  * Displays query results.
@@ -88,6 +88,13 @@ abstract class QueryFragment :
             R.id.quick_bar_done,
             R.id.toggle_state -> {
                 listener?.onStateToggleRequest(ids)
+            }
+
+            R.id.sync -> {
+                activity?.let {
+                    val intent = Intent(it, ActionReceiver::class.java).setAction(AppIntent.ACTION_SYNC_START)
+                    it.sendBroadcast(intent)
+                }
             }
 
             R.id.activity_action_settings -> {

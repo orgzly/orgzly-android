@@ -17,6 +17,11 @@
         android:title="@string/keep_screen_on"/>
 
     <item
+        android:id="@+id/sync"
+        app:showAsAction="never"
+        android:title="@string/sync"/>
+
+    <item
         android:id="@+id/activity_action_settings"
         app:showAsAction="never"
         android:title="@string/settings"/>

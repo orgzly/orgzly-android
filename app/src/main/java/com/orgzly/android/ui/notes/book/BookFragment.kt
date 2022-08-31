@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.ActionReceiver
+import com.orgzly.android.AppIntent
 import com.orgzly.android.BookUtils
 import com.orgzly.android.db.NotesClipboard
 import com.orgzly.android.db.entity.Book
@@ -762,6 +764,13 @@ class BookFragment :
             R.id.keep_screen_on -> {
                 if (item != null) {
                     dialog = ActivityUtils.keepScreenOnToggle(activity, item)
+                }
+            }
+
+            R.id.sync -> {
+                activity?.let {
+                    val intent = Intent(it, ActionReceiver::class.java).setAction(AppIntent.ACTION_SYNC_START)
+                    it.sendBroadcast(intent)
                 }
             }
 

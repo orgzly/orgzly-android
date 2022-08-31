@@ -17,7 +17,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.ActionReceiver
 import com.orgzly.android.App
+import com.orgzly.android.AppIntent
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.SavedSearch
 import com.orgzly.android.savedsearch.FileSavedSearchStore
@@ -134,6 +136,13 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
                         val uri = Uri.parse("http://www.orgzly.com/help#search")
                         val intent = Intent(Intent.ACTION_VIEW, uri)
                         startActivity(intent)
+                    }
+
+                    R.id.sync -> {
+                        activity?.let {
+                            val intent = Intent(it, ActionReceiver::class.java).setAction(AppIntent.ACTION_SYNC_START)
+                            it.sendBroadcast(intent)
+                        }
                     }
 
                     R.id.activity_action_settings -> {

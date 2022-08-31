@@ -51,6 +51,11 @@
         android:title="@string/delete" />
 
     <item
+        android:id="@+id/sync"
+        app:showAsAction="never"
+        android:title="@string/sync"/>
+
+    <item
         android:id="@+id/activity_action_settings"
         app:showAsAction="never"
         android:title="@string/settings"/>

@@ -22,7 +22,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.ActionReceiver
 import com.orgzly.android.App
+import com.orgzly.android.AppIntent
 import com.orgzly.android.BookUtils
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.BookView
@@ -400,6 +402,13 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 menuItem.isChecked = !menuItem.isChecked
                 AppPreferences.alwaysShowSetNoteMetadata(context, menuItem.isChecked)
                 setMetadataViewsVisibility()
+            }
+
+            R.id.sync -> {
+                activity?.let {
+                    val intent = Intent(it, ActionReceiver::class.java).setAction(AppIntent.ACTION_SYNC_START)
+                    it.sendBroadcast(intent)
+                }
             }
 
             R.id.activity_action_settings -> {

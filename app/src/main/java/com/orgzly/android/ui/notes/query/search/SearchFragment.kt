@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.ActionReceiver
+import com.orgzly.android.AppIntent
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.OnViewHolderClickListener
@@ -30,7 +32,6 @@ import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.setup
-import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentQuerySearchBinding
 
@@ -133,6 +134,13 @@ class SearchFragment :
 
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
+                    R.id.sync -> {
+                        activity?.let {
+                            val intent = Intent(it, ActionReceiver::class.java).setAction(AppIntent.ACTION_SYNC_START)
+                            it.sendBroadcast(intent)
+                        }
+                    }
+
                     R.id.activity_action_settings -> {
                         startActivity(Intent(context, SettingsActivity::class.java))
                     }
