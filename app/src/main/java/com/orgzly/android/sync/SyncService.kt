@@ -324,11 +324,6 @@ class SyncService : Service() {
                                 BookAction.forNow(BookAction.Type.ERROR, e.message ?: ""))
                     }
 
-                    // TODO: Call only if book was loaded, move to usecase
-                    RemindersScheduler.notifyDataSetChanged(App.getAppContext())
-                    ListWidgetProvider.notifyDataSetChanged(App.getAppContext())
-                    SharingShortcutsManager().replaceDynamicShortcuts(App.getAppContext())
-
                     syncStatus.set(SyncStatus.Type.BOOK_ENDED, namesake.name, curr + 1, namesakes.size)
                     announceActiveSyncStatus()
                 }
@@ -336,11 +331,17 @@ class SyncService : Service() {
                 curr++
             }
 
-            for (repo in repos) {
-                if (repo is TwoWaySyncRepo) {
-                    repo.tryPushIfHeadDiffersFromRemote()
+            if (!isCancelled) {
+                for (repo in repos) {
+                    if (repo is TwoWaySyncRepo) {
+                        repo.tryPushIfHeadDiffersFromRemote()
+                    }
                 }
             }
+
+            RemindersScheduler.notifyDataSetChanged(App.getAppContext())
+            ListWidgetProvider.notifyDataSetChanged(App.getAppContext())
+            SharingShortcutsManager().replaceDynamicShortcuts(App.getAppContext())
 
             syncStatus.set(SyncStatus.Type.FINISHED, null, 0, 0)
             announceActiveSyncStatus()
