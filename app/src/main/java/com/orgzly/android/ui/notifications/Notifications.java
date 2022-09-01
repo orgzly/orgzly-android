@@ -2,7 +2,6 @@ package com.orgzly.android.ui.notifications;
 
 import static com.orgzly.android.NewNoteBroadcastReceiver.NOTE_TITLE;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -15,11 +14,11 @@ import androidx.core.content.ContextCompat;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.ActionReceiver;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.NewNoteBroadcastReceiver;
 import com.orgzly.android.NotificationChannels;
 import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.sync.SyncService;
 import com.orgzly.android.ui.main.MainActivity;
 import com.orgzly.android.ui.share.ShareActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
@@ -36,7 +35,7 @@ public class Notifications {
 
     public static final String REMINDERS_GROUP = "com.orgzly.notification.group.REMINDERS";
 
-    public static void createNewNoteNotification(Context context) {
+    public static void showNewNoteNotification(Context context) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, context);
 
         PendingIntent shareNotePendingIntent = ShareActivity.createNewNoteIntent(context, null);
@@ -85,9 +84,9 @@ public class Notifications {
                 openAppPendingIntent);
 
         // Add sync action
-        Intent syncIntent = new Intent(context, SyncService.class);
+        Intent syncIntent = new Intent(context, ActionReceiver.class);
         syncIntent.setAction(AppIntent.ACTION_SYNC_START);
-        PendingIntent syncPendingIntent = PendingIntent.getService(
+        PendingIntent syncPendingIntent = PendingIntent.getBroadcast(
                 context,
                 0,
                 syncIntent,
@@ -125,23 +124,5 @@ public class Notifications {
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.cancel(ONGOING_NEW_NOTE_ID);
-    }
-
-    public static Notification createSyncInProgressNotification(Context context) {
-        PendingIntent openAppPendingIntent = PendingIntent.getActivity(
-                context,
-                0,
-                new Intent(context, MainActivity.class),
-                ActivityUtils.immutable(PendingIntent.FLAG_UPDATE_CURRENT));
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.SYNC_PROGRESS)
-                .setOngoing(true)
-                .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
-                .setSmallIcon(R.drawable.ic_sync)
-                .setContentTitle(context.getString(R.string.syncing_in_progress))
-                .setColor(ContextCompat.getColor(context, R.color.notification))
-                .setContentIntent(openAppPendingIntent);
-
-        return builder.build();
     }
 }

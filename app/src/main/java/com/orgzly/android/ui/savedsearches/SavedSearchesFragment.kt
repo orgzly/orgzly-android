@@ -21,7 +21,7 @@ import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.SavedSearch
 import com.orgzly.android.savedsearch.FileSavedSearchStore
-import com.orgzly.android.sync.SyncService
+import com.orgzly.android.sync.SyncRunner
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
@@ -137,7 +137,7 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
                     }
 
                     R.id.sync -> {
-                        SyncService.start(context)
+                        SyncRunner.startSync()
                     }
 
                     R.id.activity_action_settings -> {

@@ -224,6 +224,10 @@ class DataRepository @Inject constructor(
         }
     }
 
+    fun getBooksWithError(): List<Book> {
+        return db.book().getWithActionType(BookAction.Type.ERROR)
+    }
+
     fun getBookView(name: String): BookView? {
         return db.bookView().get(name)
     }
@@ -415,7 +419,8 @@ class DataRepository @Inject constructor(
                 System.currentTimeMillis(),
                 status)
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Updating status for $bookId: $updated")
+        if (BuildConfig.LOG_DEBUG)
+            LogUtils.d(TAG, "Updating book $bookId status to $status ($updated updated)")
     }
 
     fun updateBookLinkAndSync(bookId: Long, uploadedBook: VersionedRook) {
@@ -2257,6 +2262,19 @@ class DataRepository @Inject constructor(
             val timestamp = OrgDateTime.doParse(it.string).calendar.timeInMillis
             db.orgTimestamp().update(it.copy(timestamp = timestamp))
         }
+    }
+
+    fun getSyncRepos(): List<SyncRepo> {
+        val list = ArrayList<SyncRepo>()
+        for ((id, type, url) in getRepos()) {
+            try {
+                list.add(getRepoInstance(id, type, url))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+        }
+        return list
     }
 
     fun getRepoInstance(id: Long, type: RepoType, url: String): SyncRepo {

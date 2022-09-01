@@ -17,7 +17,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 
         if (intent != null && Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             if (AppPreferences.newNoteNotification(context)) {
-                Notifications.createNewNoteNotification(context);
+                Notifications.showNewNoteNotification(context);
             }
         }
     }

@@ -20,6 +20,9 @@ abstract class BookDao : BaseDao<Book> {
     @Query("SELECT * FROM books WHERE id = :id")
     abstract fun getLiveData(id: Long): LiveData<Book> // null not allowed, use List
 
+    @Query("SELECT * FROM books WHERE last_action_type = :type")
+    abstract fun getWithActionType(type: BookAction.Type): List<Book>
+
     @Insert
     abstract fun insertBooks(vararg books: Book): LongArray
 

@@ -79,7 +79,8 @@ abstract class NotesFragment : Fragment(), TimestampDialogFragment.OnDateTimeSet
         dialog = NoteStateDialog.show(
             requireContext(),
             currentState,
-            { state -> listener.onStateChangeRequest(noteIds, state) },
+            { state -> listener.
+            onStateChangeRequest(noteIds, state) },
             { listener.onStateChangeRequest(noteIds, null) })
     }
 

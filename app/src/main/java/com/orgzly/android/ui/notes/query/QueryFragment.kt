@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import com.orgzly.R
-import com.orgzly.android.sync.SyncService
+import com.orgzly.android.sync.SyncRunner
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
@@ -90,7 +90,7 @@ abstract class QueryFragment :
             }
 
             R.id.sync -> {
-                SyncService.start(context)
+                SyncRunner.startSync()
             }
 
             R.id.activity_action_settings -> {

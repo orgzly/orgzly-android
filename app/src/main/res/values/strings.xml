@@ -177,8 +177,9 @@
     <string name="searches">Searches</string>
     <string name="search">Search</string>
     <string name="new_search">New Search</string>
-    <string name="no_repos">No repositories configured</string>
     <string name="multiple_repos">Multiple repositories exist</string>
+    <string name="no_repos">No repositories configured</string>
+    <string name="no_books">No notebooks found</string>
 
     <string name="book_encoding">Notebook\'s encoding</string>
     <string name="collecting_notebooks_in_progress">Collecting notebooks…</string>

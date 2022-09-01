@@ -23,9 +23,6 @@
     <!-- For reminders -->
     <uses-permission android:name="android.permission.VIBRATE"/>
 
-    <!-- For sync -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-
     <!-- For reminders -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
 
@@ -173,10 +170,6 @@
             android:name=".android.ui.SyncShortcutActivity"
             android:taskAffinity="" />
 
-        <service
-            android:name=".android.sync.SyncService"
-            android:exported="true" />
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -226,7 +219,6 @@
 
         <receiver
             android:name=".android.ActionReceiver"
-            android:exported="true"
-            tools:ignore="ExportedReceiver" />
+            android:exported="true" tools:ignore="ExportedReceiver" />
     </application>
 </manifest>

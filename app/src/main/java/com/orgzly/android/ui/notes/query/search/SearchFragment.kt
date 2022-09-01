@@ -15,7 +15,7 @@ import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.sync.SyncService
+import com.orgzly.android.sync.SyncRunner
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.main.setupSearchView
@@ -134,7 +134,7 @@ class SearchFragment :
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.sync -> {
-                        SyncService.start(context)
+                        SyncRunner.startSync()
                     }
 
                     R.id.activity_action_settings -> {

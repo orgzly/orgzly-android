@@ -1,5 +1,8 @@
 package com.orgzly.android;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import android.net.Uri;
 
 import com.orgzly.android.data.DataRepository;
@@ -12,15 +15,12 @@ import com.orgzly.android.repos.RepoWithProps;
 import com.orgzly.android.repos.SyncRepo;
 import com.orgzly.android.repos.VersionedRook;
 import com.orgzly.android.sync.BookNamesake;
-import com.orgzly.android.sync.SyncService;
+import com.orgzly.android.sync.SyncUtils;
 import com.orgzly.android.util.MiscUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 /**
  * Utility methods used by tests.
@@ -133,10 +133,10 @@ public class TestUtils {
 
     public Map<String, BookNamesake> sync() {
         try {
-            Map<String, BookNamesake> nameGroups = SyncService.groupAllNotebooksByName(dataRepository);
+            Map<String, BookNamesake> nameGroups = SyncUtils.groupAllNotebooksByName(dataRepository);
 
             for (BookNamesake group : nameGroups.values()) {
-                BookAction action = SyncService.syncNamesake(dataRepository, group);
+                BookAction action = SyncUtils.syncNamesake(dataRepository, group);
                 dataRepository.setBookLastActionAndSyncStatus(
                         group.getBook().getBook().getId(), action, group.getStatus().toString());
             }

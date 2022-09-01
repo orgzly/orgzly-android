@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.view.View
 import androidx.annotation.StringRes
 import androidx.preference.*
 import com.orgzly.BuildConfig
@@ -19,7 +18,6 @@ import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.NoteStates
 import com.orgzly.android.ui.notifications.Notifications
 import com.orgzly.android.ui.util.ActivityUtils
-import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.usecase.NoteReparseStateAndTitles
 import com.orgzly.android.usecase.NoteSyncCreatedAtTimeWithProperty
 import com.orgzly.android.usecase.UseCase
@@ -207,7 +205,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             getString(R.string.pref_key_ongoing_notification),
             getString(R.string.pref_key_ongoing_notification_priority) -> {
                 if (AppPreferences.newNoteNotification(context)) {
-                    Notifications.createNewNoteNotification(context)
+                    Notifications.showNewNoteNotification(context)
                 } else {
                     Notifications.cancelNewNoteNotification(context)
                 }

@@ -44,10 +44,10 @@ import com.orgzly.android.ui.note.NoteFragment;
 import com.orgzly.android.ui.notes.book.BookFragment;
 import com.orgzly.android.ui.notes.book.BookPrefaceFragment;
 import com.orgzly.android.ui.notifications.Notifications;
-import com.orgzly.android.ui.repos.ReposActivity;
 import com.orgzly.android.ui.savedsearch.SavedSearchFragment;
 import com.orgzly.android.ui.savedsearches.SavedSearchesFragment;
 import com.orgzly.android.ui.settings.SettingsActivity;
+import com.orgzly.android.ui.sync.SyncFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.usecase.BookExport;
 import com.orgzly.android.usecase.BookImportGettingStarted;
@@ -144,7 +144,7 @@ public class MainActivity extends CommonActivity
         setupDisplay(savedInstanceState);
 
         if (AppPreferences.newNoteNotification(this)) {
-            Notifications.createNewNoteNotification(this);
+            Notifications.showNewNoteNotification(this);
         }
 
         activityForResult = new ActivityForResult(this) {
@@ -643,26 +643,6 @@ public class MainActivity extends CommonActivity
     @Override
     public void onNotesPasteRequest(long bookId, long noteId, Place place) {
         mSyncFragment.run(new NotePaste(bookId, noteId, place));
-    }
-
-    /**
-     * Sync finished.
-     *
-     * Display Snackbar with a message.  If it makes sense also set action to open a repository.
-     *
-     * @param msg Error message if syncing failed, null if it was successful
-     */
-    @Override
-    public void onSyncFinished(String msg) {
-        if (msg != null) {
-            AppSnackbarUtils.showSnackbar(
-                    this, getString(R.string.sync_with_argument, msg), R.string.repositories, () -> {
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setClass(this, ReposActivity.class);
-                        startActivity(intent);
-                        return null;
-                    });
-        }
     }
 
     @Override

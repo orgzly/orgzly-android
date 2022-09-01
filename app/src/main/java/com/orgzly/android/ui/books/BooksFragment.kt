@@ -24,12 +24,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
-import com.orgzly.android.*
+import com.orgzly.android.App
+import com.orgzly.android.BookFormat
+import com.orgzly.android.BookName
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.sync.SyncService
+import com.orgzly.android.sync.SyncRunner
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.books.BooksViewModel.Companion.APP_BAR_DEFAULT_MODE
 import com.orgzly.android.ui.books.BooksViewModel.Companion.APP_BAR_SELECTION_MODE
@@ -49,7 +51,6 @@ import com.orgzly.databinding.DialogBookDeleteBinding
 import com.orgzly.databinding.DialogBookRenameBinding
 import com.orgzly.databinding.FragmentBooksBinding
 import javax.inject.Inject
-
 
 /**
  * Displays all notebooks.
@@ -194,7 +195,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
                         }
 
                         R.id.sync -> {
-                            SyncService.start(context)
+                            SyncRunner.startSync()
                         }
 
                         R.id.activity_action_settings -> {

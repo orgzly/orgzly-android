@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.sync.SyncService
+import com.orgzly.android.sync.SyncRunner
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.main.setupSearchView
@@ -33,7 +33,6 @@ import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.setup
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentQueryAgendaBinding
-
 
 /**
  * Displays agenda results.
@@ -134,7 +133,7 @@ class AgendaFragment :
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.sync -> {
-                        SyncService.start(context)
+                        SyncRunner.startSync()
                     }
 
                     R.id.activity_action_settings -> {

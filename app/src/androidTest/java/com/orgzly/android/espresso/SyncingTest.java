@@ -29,20 +29,19 @@ import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
 
-import android.content.Intent;
 import android.net.Uri;
+import android.os.SystemClock;
 import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
-import com.orgzly.android.AppIntent;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.db.entity.Repo;
 import com.orgzly.android.repos.RepoType;
 import com.orgzly.android.sync.BookSyncStatus;
-import com.orgzly.android.sync.SyncService;
+import com.orgzly.android.sync.SyncRunner;
 import com.orgzly.android.ui.main.MainActivity;
 
 import org.junit.Assert;
@@ -762,10 +761,8 @@ public class SyncingTest extends OrgzlyTest {
                 1520681916000L);
 
         // Sync by starting the service directly, to keep note selected
-        Intent intent = new Intent(context, SyncService.class);
-        intent.setAction(AppIntent.ACTION_SYNC_START);
-        context.startService(intent);
-        // SystemClock.sleep(1000);
+        SyncRunner.startSync();
+        SystemClock.sleep(1000);
 
         onNotesInBook().check(matches(recyclerViewItemCount(2)));
 

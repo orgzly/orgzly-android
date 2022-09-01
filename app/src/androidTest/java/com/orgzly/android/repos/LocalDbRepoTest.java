@@ -1,12 +1,15 @@
 package com.orgzly.android.repos;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import com.orgzly.android.BookFormat;
 import com.orgzly.android.BookName;
 import com.orgzly.android.NotesOrgExporter;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.db.entity.Repo;
-import com.orgzly.android.sync.SyncService;
+import com.orgzly.android.sync.SyncUtils;
 import com.orgzly.android.util.MiscUtils;
 
 import org.junit.Before;
@@ -15,9 +18,6 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class LocalDbRepoTest extends OrgzlyTest {
     @Before
@@ -32,7 +32,7 @@ public class LocalDbRepoTest extends OrgzlyTest {
         Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
         testUtils.setupRook(repo, "mock://repo-a/mock-book.org", "book content\n\n* First note\n** Second note", "rev1", 1234567890000L);
 
-        List<VersionedRook> books = SyncService.getBooksFromAllRepos(dataRepository, null);
+        List<VersionedRook> books = SyncUtils.getBooksFromAllRepos(dataRepository, null);
 
         assertEquals(1, books.size());
 
@@ -78,7 +78,7 @@ public class LocalDbRepoTest extends OrgzlyTest {
         testUtils.setupRook(repo, "mock://repo-a/mock-book.org", "book content\n\n* First note\n** Second note", "rev1", 1234567890000L);
 
         SyncRepo syncRepo = testUtils.repoInstance(RepoType.MOCK, "mock://repo-a");
-        VersionedRook vrook = SyncService.getBooksFromAllRepos(dataRepository, null).get(0);
+        VersionedRook vrook = SyncUtils.getBooksFromAllRepos(dataRepository, null).get(0);
 
         File tmpFile = dataRepository.getTempBookFile();
         try {

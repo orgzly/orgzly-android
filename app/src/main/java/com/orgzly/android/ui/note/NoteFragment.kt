@@ -28,7 +28,7 @@ import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.sync.SyncService
+import com.orgzly.android.sync.SyncRunner
 import com.orgzly.android.ui.*
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
@@ -404,7 +404,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             }
 
             R.id.sync -> {
-                SyncService.start(context)
+                SyncRunner.startSync()
             }
 
             R.id.activity_action_settings -> {

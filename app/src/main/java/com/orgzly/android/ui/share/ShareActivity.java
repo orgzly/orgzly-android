@@ -30,7 +30,7 @@ import com.orgzly.android.ui.AppSnackbarUtils;
 import com.orgzly.android.ui.CommonActivity;
 import com.orgzly.android.ui.NotePlace;
 import com.orgzly.android.SharingShortcutsManager;
-import com.orgzly.android.ui.main.SyncFragment;
+import com.orgzly.android.ui.sync.SyncFragment;
 import com.orgzly.android.ui.note.NoteFragment;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.usecase.UseCase;
@@ -290,10 +290,6 @@ public class ShareActivity extends CommonActivity
     @Override
     public void onNoteCanceled() {
         finish();
-    }
-
-    @Override
-    public void onSyncFinished(String msg) {
     }
 
     /**
