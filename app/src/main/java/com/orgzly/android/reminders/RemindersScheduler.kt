@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.SystemClock
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.orgzly.BuildConfig
 import com.orgzly.android.AppIntent
 import com.orgzly.android.prefs.AppPreferences
@@ -67,11 +68,15 @@ object RemindersScheduler {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
 
         if (alarmManager != null) {
-            // Use alarm clock when time part is specified
-            // TODO: AppPreferences.useAlarmClockForReminders(context)
+            // TODO: Add preferences to control *how* to schedule the alarms
             if (hasTime) {
-                // Doesn't always immediately show notifications?
-                scheduleAlarmClock(alarmManager, intent, inMs)
+                // scheduleAlarmClock(alarmManager, intent, inMs)
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    scheduleExactAndAllowWhileIdle(alarmManager, intent, inMs)
+                } else {
+                    scheduleExact(alarmManager, intent, inMs)
+                }
             } else {
                 // Does not trigger while dozing
                 scheduleExact(alarmManager, intent, inMs)
@@ -94,25 +99,21 @@ object RemindersScheduler {
         logScheduled("setAlarmClock", inMs)
     }
 
-//        private fun scheduleExactAndAllowWhileIdle(alarmManager: AlarmManager, intent: PendingIntent, inMs: Long) {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                alarmManager.setExactAndAllowWhileIdle(
-//                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
-//                    SystemClock.elapsedRealtime() + inMs,
-//                    intent)
-//                log("setExactAndAllowWhileIdle", inMs)
-//
-//            } else {
-//                scheduleExact(alarmManager, intent, inMs)
-//            }
-//        }
-
     private fun scheduleExact(alarmManager: AlarmManager, intent: PendingIntent, inMs: Long) {
         alarmManager.setExact(
             AlarmManager.ELAPSED_REALTIME_WAKEUP,
             SystemClock.elapsedRealtime() + inMs,
             intent)
         logScheduled("setExact", inMs)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun scheduleExactAndAllowWhileIdle(alarmManager: AlarmManager, intent: PendingIntent, inMs: Long) {
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            SystemClock.elapsedRealtime() + inMs,
+            intent)
+        logScheduled("setExactAndAllowWhileIdle", inMs)
     }
 
     private fun logScheduled(s: String, inMs: Long) {
