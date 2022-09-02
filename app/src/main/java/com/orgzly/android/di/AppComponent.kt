@@ -19,7 +19,6 @@ import com.orgzly.android.ui.notes.book.BookFragment
 import com.orgzly.android.ui.notes.book.BookPrefaceFragment
 import com.orgzly.android.ui.notes.query.agenda.AgendaFragment
 import com.orgzly.android.ui.notes.query.search.SearchFragment
-import com.orgzly.android.ui.notifications.SyncStatusBroadcastReceiver
 import com.orgzly.android.ui.refile.RefileFragment
 import com.orgzly.android.ui.repo.BrowserActivity
 import com.orgzly.android.ui.repo.directory.DirectoryRepoActivity
@@ -74,7 +73,6 @@ interface AppComponent {
     fun inject(arg: SyncFragment)
 
     fun inject(arg: SyncService)
-    fun inject(arg: SyncStatusBroadcastReceiver)
     fun inject(arg: NoteReminders)
     fun inject(arg: UseCaseRunner.Factory)
     fun inject(arg: UseCaseWorker)

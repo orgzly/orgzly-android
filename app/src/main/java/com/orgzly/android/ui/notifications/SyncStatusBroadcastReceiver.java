@@ -2,16 +2,15 @@ package com.orgzly.android.ui.notifications;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.orgzly.R;
-import com.orgzly.android.App;
-import com.orgzly.android.data.DataRepository;
 import com.orgzly.android.NotificationChannels;
+import com.orgzly.android.data.DataRepository;
 import com.orgzly.android.db.entity.BookAction;
 import com.orgzly.android.db.entity.BookView;
 import com.orgzly.android.prefs.AppPreferences;
@@ -21,17 +20,9 @@ import com.orgzly.android.ui.util.ActivityUtils;
 
 import java.util.List;
 
-import javax.inject.Inject;
+public class SyncStatusBroadcastReceiver {
 
-public class SyncStatusBroadcastReceiver extends BroadcastReceiver {
-
-    @Inject
-    DataRepository dataRepository;
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        App.appComponent.inject(this);
-
+    public static void updateNotifications(DataRepository dataRepository, Context context, Intent intent) {
         SyncStatus status = SyncStatus.fromIntent(intent);
 
         switch (status.type) {
@@ -44,20 +35,20 @@ public class SyncStatusBroadcastReceiver extends BroadcastReceiver {
             case NOT_RUNNING:
             case FINISHED:
                 if (AppPreferences.showSyncNotifications(context)) {
-                    createSyncFailedNotification(context, status);
+                    createSyncFailedNotification(dataRepository, context, status);
                 }
                 break;
         }
     }
 
-    private void cancelSyncFailedNotification(Context context) {
+    private static void cancelSyncFailedNotification(Context context) {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.cancel(Notifications.SYNC_FAILED_ID);
     }
 
-    private void createSyncFailedNotification(Context context, SyncStatus status) {
+    private static void createSyncFailedNotification(DataRepository dataRepository, Context context, SyncStatus status) {
         PendingIntent openAppPendingIntent = PendingIntent.getActivity(
                 context,
                 0,
@@ -75,7 +66,7 @@ public class SyncStatusBroadcastReceiver extends BroadcastReceiver {
             builder.setContentText(status.message);
 
         } else {
-            List<BookView> books = dataRepository.getBooks(); // FIXME: ANR reported
+            List<BookView> books = dataRepository.getBooks();
 
             StringBuilder sb = new StringBuilder();
             for (BookView book: books) {

@@ -23,6 +23,7 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.reminders.RemindersScheduler
 import com.orgzly.android.repos.*
 import com.orgzly.android.ui.notifications.Notifications
+import com.orgzly.android.ui.notifications.SyncStatusBroadcastReceiver
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.widgets.ListWidgetProvider
@@ -107,8 +108,7 @@ class SyncService : Service() {
     private fun stop() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        syncStatus.set(SyncStatus.Type.CANCELING, null, syncStatus.currentBook, syncStatus.totalBooks)
-        announceActiveSyncStatus()
+        updateSyncStatus(SyncStatus.Type.CANCELING, null, syncStatus.currentBook, syncStatus.totalBooks)
 
         syncTask?.cancel(false)
     }
@@ -172,15 +172,17 @@ class SyncService : Service() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
     }
 
-    /**
-     * Announce current sync syncStatus.
-     */
-    fun announceActiveSyncStatus() {
-        if (BuildConfig.LOG_DEBUG)
-            LogUtils.d(TAG, syncStatus.type, syncStatus.message, syncStatus.currentBook, syncStatus.totalBooks)
+    private fun updateSyncStatus(type: SyncStatus.Type, message: String?, currentBook: Int, totalBooks: Int) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, type, message, currentBook, totalBooks)
 
-        /* Broadcast the intent. */
-        LocalBroadcastManager.getInstance(this).sendBroadcast(syncStatus.intent())
+        syncStatus.set(type, message, currentBook, totalBooks)
+
+        val intent = syncStatus.intent()
+
+        // Broadcast the intent for SyncFragment
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+
+        SyncStatusBroadcastReceiver.updateNotifications(dataRepository, this, intent)
 
         syncStatus.saveToPreferences(this)
     }
@@ -203,19 +205,15 @@ class SyncService : Service() {
                 }
             }
 
-            Notifications.ensureSyncNotificationSetup(context)
-
             /* There are no repositories configured. */
             if (repos.isEmpty()) {
-                syncStatus.set(SyncStatus.Type.FAILED, getString(R.string.no_repos_configured), 0, 0)
-                announceActiveSyncStatus()
+                updateSyncStatus(SyncStatus.Type.FAILED, getString(R.string.no_repos_configured), 0, 0)
                 return null
             }
 
             /* If one of the repositories requires internet connection, check for it. */
             if (RepoUtils.isConnectionRequired(repos) && !haveNetworkConnection()) {
-                syncStatus.set(SyncStatus.Type.FAILED, getString(R.string.no_connection), 0, 0)
-                announceActiveSyncStatus()
+                updateSyncStatus(SyncStatus.Type.FAILED, getString(R.string.no_connection), 0, 0)
                 return null
             }
 
@@ -224,14 +222,12 @@ class SyncService : Service() {
              */
             if (reposRequireStoragePermission(repos)) {
                 if (!AppPermissions.isGranted(context, AppPermissions.Usage.SYNC_START)) {
-                    syncStatus.set(SyncStatus.Type.NO_STORAGE_PERMISSION, null, 0, 0)
-                    announceActiveSyncStatus()
+                    updateSyncStatus(SyncStatus.Type.NO_STORAGE_PERMISSION, null, 0, 0)
                     return null
                 }
             }
 
-            syncStatus.set(SyncStatus.Type.STARTING, null, 0, 0)
-            announceActiveSyncStatus()
+            updateSyncStatus(SyncStatus.Type.STARTING, null, 0, 0)
 
             /* Get the list of local and remote books from all repositories.
              * Group them by name.
@@ -243,14 +239,12 @@ class SyncService : Service() {
             } catch (e: Exception) {
                 e.printStackTrace()
                 val msg = if (e.message != null) e.message else e.toString()
-                syncStatus.set(SyncStatus.Type.FAILED, msg, 0, 0)
-                announceActiveSyncStatus()
+                updateSyncStatus(SyncStatus.Type.FAILED, msg, 0, 0)
                 return null
             }
 
             if (namesakes.isEmpty()) {
-                syncStatus.set(SyncStatus.Type.FAILED, "No notebooks found", 0, 0)
-                announceActiveSyncStatus()
+                updateSyncStatus(SyncStatus.Type.FAILED, "No notebooks found", 0, 0)
                 return null
             }
 
@@ -258,8 +252,7 @@ class SyncService : Service() {
                 return null
             }
 
-            syncStatus.set(SyncStatus.Type.BOOKS_COLLECTED, null, 0, namesakes.size)
-            announceActiveSyncStatus()
+            updateSyncStatus(SyncStatus.Type.BOOKS_COLLECTED, null, 0, namesakes.size)
 
             /* Because android sometimes drops milliseconds on reported file lastModified,
              * wait until the next full second
@@ -308,8 +301,7 @@ class SyncService : Service() {
                             BookAction.forNow(BookAction.Type.INFO, getString(R.string.canceled)))
 
                 } else {
-                    syncStatus.set(SyncStatus.Type.BOOK_STARTED, namesake.name, curr, namesakes.size)
-                    announceActiveSyncStatus()
+                    updateSyncStatus(SyncStatus.Type.BOOK_STARTED, namesake.name, curr, namesakes.size)
 
                     try {
                         val action = syncNamesake(dataRepository, namesake)
@@ -324,8 +316,7 @@ class SyncService : Service() {
                                 BookAction.forNow(BookAction.Type.ERROR, e.message ?: ""))
                     }
 
-                    syncStatus.set(SyncStatus.Type.BOOK_ENDED, namesake.name, curr + 1, namesakes.size)
-                    announceActiveSyncStatus()
+                    updateSyncStatus(SyncStatus.Type.BOOK_ENDED, namesake.name, curr + 1, namesakes.size)
                 }
 
                 curr++
@@ -343,8 +334,7 @@ class SyncService : Service() {
             ListWidgetProvider.notifyDataSetChanged(App.getAppContext())
             SharingShortcutsManager().replaceDynamicShortcuts(App.getAppContext())
 
-            syncStatus.set(SyncStatus.Type.FINISHED, null, 0, 0)
-            announceActiveSyncStatus()
+            updateSyncStatus(SyncStatus.Type.FINISHED, null, 0, 0)
 
             /* Save last successful sync time to preferences. */
             val time = System.currentTimeMillis()
@@ -354,8 +344,7 @@ class SyncService : Service() {
         }
 
         override fun onCancelled(v: Void?) {
-            syncStatus.set(SyncStatus.Type.CANCELED, getString(R.string.canceled), 0, 0)
-            announceActiveSyncStatus()
+            updateSyncStatus(SyncStatus.Type.CANCELED, getString(R.string.canceled), 0, 0)
 
             syncTask = null
             stopSelf()
@@ -373,20 +362,29 @@ class SyncService : Service() {
     }
 
     companion object {
-        val TAG = SyncService::class.java.name
+        private val TAG: String = SyncService::class.java.name
 
         @JvmStatic
-        fun start(context: Context?, intent: Intent) {
+        @JvmOverloads
+        fun start(
+            context: Context?,
+            action: String = AppIntent.ACTION_SYNC_START,
+            isTriggeredAutomatically: Boolean = false) {
+
             if (context == null) {
                 return
             }
+
+            val intent = Intent(context, SyncService::class.java)
+                .setAction(action)
+                .putExtra(AppIntent.EXTRA_IS_AUTOMATIC, isTriggeredAutomatically)
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(intent)
             } else {
                 context.startService(intent)
             }
         }
-
 
         /**
          * Compares every local book with every remote one and calculates the syncStatus for each link.

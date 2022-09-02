@@ -6,8 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import com.orgzly.R
-import com.orgzly.android.ActionReceiver
-import com.orgzly.android.AppIntent
+import com.orgzly.android.sync.SyncService
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
@@ -91,10 +90,7 @@ abstract class QueryFragment :
             }
 
             R.id.sync -> {
-                activity?.let {
-                    val intent = Intent(it, ActionReceiver::class.java).setAction(AppIntent.ACTION_SYNC_START)
-                    it.sendBroadcast(intent)
-                }
+                SyncService.start(context)
             }
 
             R.id.activity_action_settings -> {

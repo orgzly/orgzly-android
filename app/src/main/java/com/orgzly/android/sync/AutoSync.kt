@@ -43,11 +43,7 @@ class AutoSync @Inject constructor(val context: Application, val dataRepository:
         App.EXECUTORS.diskIO().execute {
             // Skip sync if there are no repos
             if (dataRepository.getRepos().isNotEmpty()) {
-                val intent = Intent(context, SyncService::class.java)
-                        .setAction(AppIntent.ACTION_SYNC_START)
-                        .putExtra(AppIntent.EXTRA_IS_AUTOMATIC, true)
-
-                SyncService.start(context, intent)
+                SyncService.start(context, AppIntent.ACTION_SYNC_START, true)
             }
         }
     }

@@ -238,8 +238,7 @@ public class SyncFragment extends Fragment {
                 setButtonTextToLastSynced();
             }
 
-            buttonContainer.setOnClickListener(v ->
-                    SyncService.start(getContext(), new Intent(getContext(), SyncService.class)));
+            buttonContainer.setOnClickListener(v -> SyncService.start(getContext()));
 
             buttonContainer.setOnLongClickListener(v -> {
                 Dialog dialog = new MaterialAlertDialogBuilder(getContext())

@@ -13,9 +13,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orgzly.BuildConfig
 import com.orgzly.R
-import com.orgzly.android.ActionReceiver
-import com.orgzly.android.AppIntent
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.sync.SyncService
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.main.setupSearchView
@@ -135,10 +134,7 @@ class AgendaFragment :
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.sync -> {
-                        activity?.let {
-                            val intent = Intent(it, ActionReceiver::class.java).setAction(AppIntent.ACTION_SYNC_START)
-                            it.sendBroadcast(intent)
-                        }
+                        SyncService.start(context)
                     }
 
                     R.id.activity_action_settings -> {

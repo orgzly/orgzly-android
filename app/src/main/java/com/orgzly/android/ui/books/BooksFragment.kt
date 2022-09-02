@@ -29,6 +29,7 @@ import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.sync.SyncService
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.books.BooksViewModel.Companion.APP_BAR_DEFAULT_MODE
 import com.orgzly.android.ui.books.BooksViewModel.Companion.APP_BAR_SELECTION_MODE
@@ -193,10 +194,7 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
                         }
 
                         R.id.sync -> {
-                            activity?.let {
-                                val intent = Intent(it, ActionReceiver::class.java).setAction(AppIntent.ACTION_SYNC_START)
-                                it.sendBroadcast(intent)
-                            }
+                            SyncService.start(context)
                         }
 
                         R.id.activity_action_settings -> {

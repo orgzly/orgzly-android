@@ -16,8 +16,8 @@ public class SyncStatus {
 
     public Type type = Type.NOT_RUNNING;
     public String message = null;
-    public int totalBooks = 0;
     public int currentBook = 0;
+    public int totalBooks = 0;
 
     public static SyncStatus fromIntent(Intent intent) {
         SyncStatus status = new SyncStatus();

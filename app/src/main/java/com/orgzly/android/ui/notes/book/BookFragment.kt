@@ -15,13 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
-import com.orgzly.android.ActionReceiver
-import com.orgzly.android.AppIntent
 import com.orgzly.android.BookUtils
 import com.orgzly.android.db.NotesClipboard
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.sync.SyncService
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.NotePlace
 import com.orgzly.android.ui.Place
@@ -768,10 +767,7 @@ class BookFragment :
             }
 
             R.id.sync -> {
-                activity?.let {
-                    val intent = Intent(it, ActionReceiver::class.java).setAction(AppIntent.ACTION_SYNC_START)
-                    it.sendBroadcast(intent)
-                }
+                SyncService.start(context)
             }
 
             R.id.activity_action_settings -> {

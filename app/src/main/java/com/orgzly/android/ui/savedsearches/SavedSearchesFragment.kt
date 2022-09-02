@@ -1,6 +1,5 @@
 package com.orgzly.android.ui.savedsearches
 
-import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -10,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,12 +17,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orgzly.BuildConfig
 import com.orgzly.R
-import com.orgzly.android.ActionReceiver
 import com.orgzly.android.App
-import com.orgzly.android.AppIntent
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.SavedSearch
 import com.orgzly.android.savedsearch.FileSavedSearchStore
+import com.orgzly.android.sync.SyncService
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
@@ -31,7 +30,6 @@ import com.orgzly.android.ui.savedsearches.SavedSearchesViewModel.Companion.APP_
 import com.orgzly.android.ui.savedsearches.SavedSearchesViewModel.Companion.APP_BAR_SELECTION_MODE
 import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.showSnackbar
-import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentSavedSearchesBinding
 import java.io.IOException
@@ -139,10 +137,7 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
                     }
 
                     R.id.sync -> {
-                        activity?.let {
-                            val intent = Intent(it, ActionReceiver::class.java).setAction(AppIntent.ACTION_SYNC_START)
-                            it.sendBroadcast(intent)
-                        }
+                        SyncService.start(context)
                     }
 
                     R.id.activity_action_settings -> {

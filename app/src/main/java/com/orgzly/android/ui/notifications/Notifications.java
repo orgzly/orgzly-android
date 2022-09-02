@@ -1,17 +1,17 @@
 package com.orgzly.android.ui.notifications;
 
+import static com.orgzly.android.NewNoteBroadcastReceiver.NOTE_TITLE;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Build;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.RemoteInput;
 import androidx.core.content.ContextCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -24,8 +24,6 @@ import com.orgzly.android.ui.main.MainActivity;
 import com.orgzly.android.ui.share.ShareActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
 import com.orgzly.android.util.LogUtils;
-
-import static com.orgzly.android.NewNoteBroadcastReceiver.NOTE_TITLE;
 
 public class Notifications {
     public static final String TAG = Notifications.class.getName();
@@ -129,8 +127,6 @@ public class Notifications {
         notificationManager.cancel(ONGOING_NEW_NOTE_ID);
     }
 
-    private static BroadcastReceiver syncServiceReceiver = new SyncStatusBroadcastReceiver();
-
     public static Notification createSyncInProgressNotification(Context context) {
         PendingIntent openAppPendingIntent = PendingIntent.getActivity(
                 context,
@@ -147,11 +143,5 @@ public class Notifications {
                 .setContentIntent(openAppPendingIntent);
 
         return builder.build();
-    }
-
-    public static void ensureSyncNotificationSetup(Context context) {
-        LocalBroadcastManager bm = LocalBroadcastManager.getInstance(context);
-        bm.unregisterReceiver(syncServiceReceiver);
-        bm.registerReceiver(syncServiceReceiver, new IntentFilter(AppIntent.ACTION_SYNC_STATUS));
     }
 }

@@ -35,10 +35,7 @@ fun <R> Context.styledAttributes(set: AttributeSet, @StyleableRes attrs: IntArra
 @SuppressLint("ResourceType")
 fun SwipeRefreshLayout.setup() {
     setOnRefreshListener {
-        Intent(context, SyncService::class.java).setAction(AppIntent.ACTION_SYNC_START).let {
-            SyncService.start(context, it)
-        }
-
+        SyncService.start(context)
         isRefreshing = false
     }
 
