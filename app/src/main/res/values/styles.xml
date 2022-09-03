@@ -5,8 +5,13 @@
 
     <style name="AppDayNightTheme" parent="AppLightTheme.Light" />
 
-    <style name="AppLightTheme" parent="AppLightThemeCommon" />
-    <style name="AppDarkTheme" parent="AppDarkThemeCommon" />
+    <style name="AppLightTheme" parent="AppLightThemeCommon">
+        <item name="android:statusBarColor">@color/black</item>
+    </style>
+
+    <style name="AppDarkTheme" parent="AppDarkThemeCommon">
+        <item name="android:statusBarColor">@color/black</item>
+    </style>
 
     <style name="AppLightThemeCommon" parent="Theme.Material3.DynamicColors.Light">
 
