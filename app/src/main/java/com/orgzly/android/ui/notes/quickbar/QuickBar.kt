@@ -168,9 +168,9 @@ class QuickBar(val context: Context, val inBook: Boolean) {
 
             private val LEFT_IN_BOOK = listOf(
                 Button(R.id.quick_bar_delete, R.drawable.ic_delete),
-                Button(R.id.quick_bar_new_above, R.drawable.ic_north),
-                Button(R.id.quick_bar_new_under, R.drawable.ic_south_east),
-                Button(R.id.quick_bar_new_below, R.drawable.ic_south),
+                Button(R.id.quick_bar_new_above, R.drawable.cic_new_above),
+                Button(R.id.quick_bar_new_under, R.drawable.cic_new_under),
+                Button(R.id.quick_bar_new_below, R.drawable.cic_new_below),
                 Button(R.id.quick_bar_refile, R.drawable.ic_move_to_inbox)
             )
 
