@@ -154,9 +154,7 @@ abstract class CommonActivity : AppCompatActivity() {
         setupTheme()
 
         // Required to immediately change layout direction after locale change
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            window.decorView.layoutDirection = baseContext.resources.configuration.layoutDirection
-        }
+        window.decorView.layoutDirection = baseContext.resources.configuration.layoutDirection
 
         super.onCreate(savedInstanceState)
 

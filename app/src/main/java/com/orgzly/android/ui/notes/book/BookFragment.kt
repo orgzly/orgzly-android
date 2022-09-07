@@ -537,7 +537,6 @@ class BookFragment :
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         binding.bottomToolbar.visibility = View.GONE
-        WindowCompat.setDecorFitsSystemWindows(requireActivity().window, true)
     }
 
     private fun topToolbarToMainSelection() {
@@ -579,7 +578,6 @@ class BookFragment :
             }
 
             visibility = View.VISIBLE
-            WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
         }
     }
 
@@ -626,7 +624,6 @@ class BookFragment :
             }
 
             visibility = View.VISIBLE
-            WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
         }
     }
 

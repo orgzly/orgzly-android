@@ -161,7 +161,6 @@ class SearchFragment :
 
     private fun bottomToolbarToDefault() {
         binding.bottomToolbar.visibility = View.GONE
-        WindowCompat.setDecorFitsSystemWindows(requireActivity().window, true)
     }
 
     private fun topToolbarToMainSelection() {
@@ -193,7 +192,6 @@ class SearchFragment :
             }
 
             visibility = View.VISIBLE
-            WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
         }
     }
 

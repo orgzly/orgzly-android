@@ -357,14 +357,11 @@ public class MainActivity extends CommonActivity
     private void drawerOpened() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
         ActivityUtils.closeSoftKeyboard(this);
     }
 
     private void drawerClosed() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
-
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
     }
 
     private SyncFragment addSyncFragment() {

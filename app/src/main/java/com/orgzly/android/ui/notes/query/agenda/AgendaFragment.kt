@@ -160,7 +160,6 @@ class AgendaFragment :
 
     private fun bottomToolbarToDefault() {
         binding.bottomToolbar.visibility = View.GONE
-        WindowCompat.setDecorFitsSystemWindows(requireActivity().window, true)
     }
 
     private fun topToolbarToMainSelection() {
@@ -192,7 +191,6 @@ class AgendaFragment :
             }
 
             visibility = View.VISIBLE
-            WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
         }
     }
 
