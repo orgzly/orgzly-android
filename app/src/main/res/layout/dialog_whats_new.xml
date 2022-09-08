@@ -40,7 +40,11 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Fix a graphics glitch with transparent navigation bar on Android 8.1" />
+            app:text="Fix a graphics glitch with a transparent navigation bar on Android 8.1" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Stop hiding the top of the content under the toolbar on the keyboard open" />
 
 
         <TextView
