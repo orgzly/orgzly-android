@@ -23,6 +23,32 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.8.8"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix slow sync and app start due to shortcuts refreshing" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Stop using alarm clock for reminders" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Add Sync back to the overflow menu" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix a graphics glitch with a transparent navigation bar on Android 8.1" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Stop hiding the top of the content under the toolbar on the keyboard open" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.8.7"
             tools:ignore="HardcodedText" />
 
