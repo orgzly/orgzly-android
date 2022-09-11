@@ -66,7 +66,6 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
 
     private var listener: Listener? = null
 
-    private var withOptionsMenu = true
     private var withActionBar = true
 
     @Inject
@@ -95,7 +94,6 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
     private fun parseArguments() {
         requireNotNull(arguments) { "No arguments found to " + BooksFragment::class.java.simpleName }
 
-        withOptionsMenu = arguments?.getBoolean(ARG_WITH_OPTIONS_MENU) ?: true
         withActionBar = arguments?.getBoolean(ARG_WITH_ACTION_BAR) ?: true
     }
 
@@ -609,17 +607,14 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
          */
         val FRAGMENT_TAG: String = BooksFragment::class.java.name
 
-        private const val ARG_WITH_OPTIONS_MENU = "with_options_menu"
         private const val ARG_WITH_ACTION_BAR = "with_action_bar"
 
-        val instance: BooksFragment
-            get() = getInstance(true, true)
-
-        fun getInstance(withOptionsMenu: Boolean, withActionBar: Boolean): BooksFragment {
+        @JvmStatic
+        @JvmOverloads
+        fun getInstance(withActionBar: Boolean = true): BooksFragment {
             val fragment = BooksFragment()
             val args = Bundle()
 
-            args.putBoolean(ARG_WITH_OPTIONS_MENU, withOptionsMenu)
             args.putBoolean(ARG_WITH_ACTION_BAR, withActionBar)
 
             fragment.arguments = args

@@ -110,7 +110,7 @@ public class DisplayManager {
             return;
         }
 
-        Fragment fragment = BooksFragment.Companion.getInstance();
+        Fragment fragment = BooksFragment.getInstance();
 
         replaceFragment(
                 fragmentManager,
