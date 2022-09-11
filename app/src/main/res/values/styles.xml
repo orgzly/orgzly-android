@@ -284,7 +284,7 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_marginStart">@dimen/fragment_note_icon_margin</item>
         <item name="android:focusable">true</item>
-        <item name="android:textAppearance">?android:textAppearanceSmall</item>
+        <item name="android:textSize">?attr/fragment_note_content_text_size</item>
         <item name="android:background">@null</item>
     </style>
 
@@ -435,7 +435,6 @@
 
     <style name="TitleTextAppearance">
         <item name="android:textSize">?attr/font_large</item>
-        <item name="android:textStyle">normal</item>
     </style>
 
     <!-- For dialogs in Settings -->
