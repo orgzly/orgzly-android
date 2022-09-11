@@ -282,6 +282,8 @@
     <string name="monospaced_font_summary">为笔记内容和笔记本序言使用等宽字体</string>
     <string name="reversed_note_click_action">反转笔记点击动作</string>
     <string name="reversed_note_click_action_summary">点击选择笔记，长按打开笔记</string>
+    <string name="remove_note_indent">移除笔记缩进</string>
+    <string name="remove_mote_indent_summary">移除笔记缩进以节省屏幕空间</string>
     <string name="look_and_feel">外观 &amp; 感觉</string>
     <string name="notes_list">笔记列表</string>
     <string name="prefs_title_new_note">新建笔记</string>

@@ -328,6 +328,8 @@
     <string name="monospaced_font_summary">Use monospaced font for note\'s content and notebook\'s preface</string>
     <string name="reversed_note_click_action">Swap note click and long-click actions</string>
     <string name="reversed_note_click_action_summary">Click to select note, long-click to open</string>
+    <string name="remove_note_indent">Remove note indent</string>
+    <string name="remove_mote_indent_summary">Remove note indent to save screen space</string>
     <string name="look_and_feel">Look &amp; Feel</string>
     <string name="notes_list">List of notes</string>
     <string name="prefs_title_new_note">New note</string>

@@ -103,7 +103,14 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
     }
 
     private fun setupTitle(holder: NoteItemViewHolder, noteView: NoteView) {
-        holder.binding.itemHeadTitle.setText(generateTitle(noteView))
+        val level = if (inBook) noteView.note.position.level else 0
+
+        if (AppPreferences.isRemoveNoteIndent(context)) {
+            holder.binding.itemHeadTitle.setText("--".repeat(level)+"  "+generateTitle(noteView))
+        }
+        else {
+            holder.binding.itemHeadTitle.setText(generateTitle(noteView))
+        }
     }
 
     fun generateTitle(noteView: NoteView): CharSequence {
@@ -244,28 +251,33 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
         val container = holder.binding.itemHeadIndentContainer
 
         val level = if (inBook) note.position.level - 1 else 0
+        var titleIndentLevel = level
+
+        if (AppPreferences.isRemoveNoteIndent(context)) {
+            titleIndentLevel = 0
+        }
 
         when {
-            container.childCount < level -> { // More levels needed
+            container.childCount < titleIndentLevel -> { // More levels needed
                 // Make all existing levels visible
                 for (i in 1..container.childCount) {
                     container.getChildAt(i - 1).visibility = View.VISIBLE
                 }
 
                 // Inflate the rest
-                for (i in container.childCount + 1..level) {
+                for (i in container.childCount + 1..titleIndentLevel) {
                     View.inflate(container.context, R.layout.indent, container)
                 }
             }
 
-            level < container.childCount -> { // Too many levels
+            titleIndentLevel< container.childCount -> { // Too many levels
                 // Make required levels visible
-                for (i in 1..level) {
+                for (i in 1..titleIndentLevel) {
                     container.getChildAt(i - 1).visibility = View.VISIBLE
                 }
 
                 // Hide the rest
-                for (i in level + 1..container.childCount) {
+                for (i in titleIndentLevel + 1..container.childCount) {
                     container.getChildAt(i - 1).visibility = View.GONE
                 }
             }
