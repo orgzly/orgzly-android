@@ -54,7 +54,6 @@
                 android:layout_marginStart="16dp"
                 android:gravity="center_vertical"
                 tools:text="@string/sync_button_sample"
-                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:scrollHorizontally="true"
                 android:ellipsize="end"
                 android:maxLines="1"
