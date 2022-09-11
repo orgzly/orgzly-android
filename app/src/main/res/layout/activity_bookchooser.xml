@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_content"
     style="@style/CoordinatorLayoutFitsSystemWindows"
+    android:fitsSystemWindows="false"
     tools:context="com.orgzly.android.ui.BookChooserActivity">
 
     <FrameLayout
