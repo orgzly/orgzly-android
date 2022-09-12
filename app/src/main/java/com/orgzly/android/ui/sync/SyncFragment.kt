@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -147,9 +146,6 @@ class SyncFragment : Fragment() {
      */
     private inner class SyncButton(view: View) {
         private val context: Context
-        private val progressBar: ProgressBar
-        private val buttonText: TextView
-        private val buttonIcon: View
         private val rotation: Animation
 
         fun updateUi(state: SyncState) {
@@ -166,7 +162,7 @@ class SyncFragment : Fragment() {
                     msg = lastSyncTime()
                 }
 
-                buttonText.text = msg
+                binding.syncButtonText.text = msg
             }
         }
 
@@ -193,18 +189,18 @@ class SyncFragment : Fragment() {
                 SyncState.Type.STARTING,
                 SyncState.Type.COLLECTING_BOOKS,
                 SyncState.Type.CANCELING -> {
-                    progressBar.isIndeterminate = true
-                    progressBar.visibility = View.VISIBLE
+                    binding.syncProgressBar.isIndeterminate = true
+                    binding.syncProgressBar.visibility = View.VISIBLE
                     setAnimation(true)
                 }
 
                 SyncState.Type.BOOKS_COLLECTED,
                 SyncState.Type.BOOK_STARTED,
                 SyncState.Type.BOOK_ENDED -> {
-                    progressBar.isIndeterminate = false
-                    progressBar.max = state.total
-                    progressBar.progress = state.current
-                    progressBar.visibility = View.VISIBLE
+                    binding.syncProgressBar.isIndeterminate = false
+                    binding.syncProgressBar.max = state.total
+                    binding.syncProgressBar.progress = state.current
+                    binding.syncProgressBar.visibility = View.VISIBLE
                     setAnimation(true)
                 }
 
@@ -219,7 +215,7 @@ class SyncFragment : Fragment() {
                 SyncState.Type.FAILED_NO_STORAGE_PERMISSION,
                 SyncState.Type.FAILED_NO_BOOKS_FOUND,
                 SyncState.Type.FAILED_EXCEPTION -> {
-                    progressBar.visibility = View.GONE
+                    binding.syncProgressBar.visibility = View.GONE
                     setAnimation(false)
                 }
             }
@@ -227,12 +223,12 @@ class SyncFragment : Fragment() {
 
         private fun setAnimation(shouldAnimate: Boolean) {
             if (shouldAnimate) {
-                if (buttonIcon.animation == null) {
-                    buttonIcon.startAnimation(rotation)
+                if (binding.syncButtonIcon.animation == null) {
+                    binding.syncButtonIcon.startAnimation(rotation)
                 }
             } else {
-                if (buttonIcon.animation != null) {
-                    buttonIcon.clearAnimation()
+                if (binding.syncButtonIcon.animation != null) {
+                    binding.syncButtonIcon.clearAnimation()
                 }
             }
         }
@@ -243,14 +239,7 @@ class SyncFragment : Fragment() {
             rotation = AnimationUtils.loadAnimation(context, R.anim.rotate_counterclockwise)
             rotation.repeatCount = Animation.INFINITE
 
-            progressBar = view.findViewById<View>(R.id.sync_progress_bar) as ProgressBar
-
-            buttonText = view.findViewById<View>(R.id.sync_button_text) as TextView
-
-            buttonIcon = view.findViewById(R.id.sync_button_icon)
-
-            view.findViewById<ViewGroup>(R.id.sync_button_container).run {
-
+            binding.syncButtonContainer.run {
                 setOnClickListener {
                     if (viewModel.isSyncRunning()) {
                         SyncRunner.stopSync()
@@ -259,13 +248,13 @@ class SyncFragment : Fragment() {
                     }
                 }
 
-                setOnLongClickListener { v: View? ->
+                setOnLongClickListener {
                     val dialog: Dialog = MaterialAlertDialogBuilder(requireContext())
                         .setPositiveButton(R.string.ok, null)
                         .setNeutralButton(R.string.copy) { _: DialogInterface?, _: Int ->
-                            copyToClipboard("Sync output", buttonText.text)
+                            copyToClipboard("Sync output", binding.syncButtonText.text)
                         }
-                        .setMessage(buttonText.text)
+                        .setMessage(binding.syncButtonText.text)
                         .show()
                     setDialogMessageSelectable(dialog)
                     true
