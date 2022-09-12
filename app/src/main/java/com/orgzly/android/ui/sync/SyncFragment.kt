@@ -188,13 +188,13 @@ class SyncFragment : Fragment() {
             when (state.type) {
                 SyncState.Type.STARTING,
                 SyncState.Type.COLLECTING_BOOKS,
+                SyncState.Type.BOOKS_COLLECTED,
                 SyncState.Type.CANCELING -> {
                     binding.syncProgressBar.isIndeterminate = true
                     binding.syncProgressBar.visibility = View.VISIBLE
                     setAnimation(true)
                 }
 
-                SyncState.Type.BOOKS_COLLECTED,
                 SyncState.Type.BOOK_STARTED,
                 SyncState.Type.BOOK_ENDED -> {
                     binding.syncProgressBar.isIndeterminate = false
