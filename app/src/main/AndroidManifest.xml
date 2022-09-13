@@ -38,6 +38,8 @@
         android:fullBackupContent="@xml/backup_config"
         android:requestLegacyExternalStorage="true">
 
+        <!-- <profileable android:shell="true" tools:targetApi="q" /> -->
+
         <activity android:name=".android.ui.LauncherActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

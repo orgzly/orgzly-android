@@ -47,6 +47,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             buildConfigField "boolean", "LOG_DEBUG", "false"
+
+            // signingConfig signingConfigs.debug
         }
 
         debug {
