@@ -37,10 +37,26 @@ object AppSnackbar {
                 }
             }
 
-            snack.anchorView = activity.findViewById(R.id.fab)
+            snack.anchorView = anchorView(activity)
 
             showSnackbar(activity, snack)
         }
+    }
+
+    private fun anchorView(activity: Activity): View? {
+        activity.findViewById<View>(R.id.fab)?.run {
+            if (visibility == View.VISIBLE) {
+                return this
+            }
+        }
+
+        activity.findViewById<View>(R.id.bottom_toolbar)?.run {
+            if (visibility == View.VISIBLE) {
+                return this
+            }
+        }
+
+        return null
     }
 
     private fun showSnackbar(activity: Activity, snack: Snackbar) {
