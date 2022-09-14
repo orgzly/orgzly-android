@@ -18,6 +18,8 @@ import com.orgzly.android.ui.util.haveNetworkConnection
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.widgets.ListWidgetProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class SyncWorker(val context: Context, val params: WorkerParameters) :
@@ -65,10 +67,8 @@ class SyncWorker(val context: Context, val params: WorkerParameters) :
         }
     }
 
-    private fun tryDoWork(): SyncState {
+    private suspend fun tryDoWork(): SyncState {
         SyncNotifications.cancelSyncFailedNotification(context)
-
-        setForegroundAsync(SyncNotifications.syncInProgressForegroundInfo(context))
 
         sendProgress(SyncState.getInstance(SyncState.Type.STARTING))
 
@@ -136,7 +136,7 @@ class SyncWorker(val context: Context, val params: WorkerParameters) :
         return null
     }
 
-    private fun syncRepos(): SyncState? {
+    private suspend fun syncRepos(): SyncState? {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         sendProgress(SyncState.getInstance(SyncState.Type.COLLECTING_BOOKS))
@@ -145,7 +145,9 @@ class SyncWorker(val context: Context, val params: WorkerParameters) :
          * Group them by name.
          * Inserts dummy books if they don't exist in database.
          */
-        val namesakes = SyncUtils.groupAllNotebooksByName(dataRepository)
+        val namesakes = withContext(Dispatchers.IO) {
+            SyncUtils.groupAllNotebooksByName(dataRepository)
+        }
 
         if (isStopped) {
             return SyncState.getInstance(SyncState.Type.CANCELED)
@@ -250,13 +252,12 @@ class SyncWorker(val context: Context, val params: WorkerParameters) :
         return false
     }
 
-    // Needed for expedited request on earlier APIs
     override suspend fun getForegroundInfo(): ForegroundInfo {
         return SyncNotifications.syncInProgressForegroundInfo(context)
     }
 
-    private fun sendProgress(state: SyncState) {
-        setProgressAsync(state.toData())
+    private suspend fun sendProgress(state: SyncState) {
+        setProgress(state.toData())
     }
 
     companion object {
