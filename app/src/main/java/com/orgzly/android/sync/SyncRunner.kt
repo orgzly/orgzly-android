@@ -31,6 +31,7 @@ object SyncRunner {
         val workManager = WorkManager.getInstance(App.getAppContext())
 
         val syncWorker = OneTimeWorkRequestBuilder<SyncWorker>()
+            .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
             .setInputData(workDataOf(AUTO_SYNC_DATA to autoSync))
             .build()
 

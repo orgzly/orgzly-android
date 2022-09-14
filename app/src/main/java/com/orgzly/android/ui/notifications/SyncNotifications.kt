@@ -38,6 +38,7 @@ object SyncNotifications {
 
         val builder = NotificationCompat.Builder(context, NotificationChannels.SYNC_PROGRESS)
             .setOngoing(true)
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .setSmallIcon(R.drawable.ic_sync)
             .setContentTitle(context.getString(R.string.syncing_in_progress))
             .setColor(ContextCompat.getColor(context, R.color.notification))
