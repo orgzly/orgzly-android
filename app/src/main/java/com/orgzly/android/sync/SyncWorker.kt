@@ -1,7 +1,8 @@
 package com.orgzly.android.sync
 
 import android.content.Context
-import androidx.work.Worker
+import androidx.work.CoroutineWorker
+import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -20,12 +21,12 @@ import com.orgzly.android.widgets.ListWidgetProvider
 import javax.inject.Inject
 
 class SyncWorker(val context: Context, val params: WorkerParameters) :
-    Worker(context, params) {
+    CoroutineWorker(context, params) {
 
     @Inject
     lateinit var dataRepository: DataRepository
 
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
         App.appComponent.inject(this)
 
         val state = try {
@@ -249,9 +250,9 @@ class SyncWorker(val context: Context, val params: WorkerParameters) :
         return false
     }
 
-    override fun onStopped() {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
-        // sendProgress(SyncState.getInstance(SyncState.Type.CANCELED))
+    // Needed for expedited request on earlier APIs
+    override suspend fun getForegroundInfo(): ForegroundInfo {
+        return SyncNotifications.syncInProgressForegroundInfo(context)
     }
 
     private fun sendProgress(state: SyncState) {
