@@ -20,6 +20,7 @@ import com.orgzly.android.util.LogUtils
 import com.orgzly.android.widgets.ListWidgetProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.concurrent.CancellationException
 import javax.inject.Inject
 
 class SyncWorker(val context: Context, val params: WorkerParameters) :
@@ -33,6 +34,10 @@ class SyncWorker(val context: Context, val params: WorkerParameters) :
 
         val state = try {
             tryDoWork()
+
+        } catch (e: CancellationException) {
+            SyncState.getInstance(SyncState.Type.CANCELED)
+
         } catch (e: Exception) {
             SyncState.getInstance(SyncState.Type.FAILED_EXCEPTION, e.localizedMessage)
         }
@@ -253,6 +258,7 @@ class SyncWorker(val context: Context, val params: WorkerParameters) :
     }
 
     override suspend fun getForegroundInfo(): ForegroundInfo {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
         return SyncNotifications.syncInProgressForegroundInfo(context)
     }
 
