@@ -2290,6 +2290,15 @@ class DataRepository @Inject constructor(
         return AppPreferences.repoPropsMap(context, id)
     }
 
+    fun updateBooksStatusToCanceled() {
+        db.book().updateStatusToCanceled(
+            BookAction.Type.PROGRESS,
+            BookAction.Type.INFO,
+            context.getString(R.string.canceled),
+            System.currentTimeMillis(),
+            null)
+    }
+
     companion object {
         private val TAG = DataRepository::class.java.name
 

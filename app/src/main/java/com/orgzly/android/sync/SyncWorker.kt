@@ -36,6 +36,7 @@ class SyncWorker(val context: Context, val params: WorkerParameters) :
             tryDoWork()
 
         } catch (e: CancellationException) {
+            updateBooksStatusToCanceled()
             SyncState.getInstance(SyncState.Type.CANCELED)
 
         } catch (e: Exception) {
@@ -54,6 +55,10 @@ class SyncWorker(val context: Context, val params: WorkerParameters) :
             LogUtils.d(TAG, "Worker ${javaClass.simpleName} finished: $result")
 
         return result
+    }
+
+    private fun updateBooksStatusToCanceled() {
+        dataRepository.updateBooksStatusToCanceled()
     }
 
     private fun showNotificationOnFailures(state: SyncState) {
