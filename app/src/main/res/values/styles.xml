@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<resources
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <style name="AppDayNightTheme" parent="AppLightTheme.Light" />
-
-    <style name="AppLightTheme" parent="AppLightThemeCommon">
-        <item name="android:statusBarColor">@color/black</item>
-    </style>
-
-    <style name="AppDarkTheme" parent="AppDarkThemeCommon">
-        <item name="android:statusBarColor">@color/black</item>
-    </style>
-
+<resources>
     <style name="AppLightThemeCommon" parent="Theme.Material3.DynamicColors.Light">
 
         <!-- NoActionBar -->
@@ -105,8 +93,14 @@
         <item name="android:textCursorDrawable">@null</item>
     </style>
 
-    <style name="OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
-        <item name="tint">?android:textColorPrimary</item>
+    <style name="AppLightTheme" parent="AppLightThemeCommon">
+        <!-- Status bar -->
+        <item name="android:statusBarColor">@color/black</item>
+    </style>
+
+    <style name="AppDarkTheme" parent="AppDarkThemeCommon">
+        <!-- Status bar -->
+        <item name="android:statusBarColor">@color/black</item>
     </style>
 
     <!-- Color scheme -->
@@ -198,7 +192,6 @@
         <item name="item_head_info_icon_size">14dp</item>
 
         <item name="item_head_indent_width">16dp</item>
-
     </style>
 
     <style name="FontSize.Large">
@@ -232,6 +225,10 @@
         <!--<item name="android:textAppearanceButton">@style/TextAppearance.AppCompat.Button</item>-->
         <!--<item name="android:textAppearanceSmall">@style/TextAppearance.AppCompat.Medium</item>-->
         <!--<item name="android:textAppearanceMedium">@style/TextAppearance.AppCompat.Large</item>-->
+    </style>
+
+    <style name="OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="tint">?android:textColorPrimary</item>
     </style>
 
     <style name="WindowAnimation" parent="@android:style/Animation.Activity">

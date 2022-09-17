@@ -8,9 +8,9 @@
     <ListPreference
         android:key="@string/pref_key_widget_color_scheme"
         android:title="@string/color_scheme"
-        android:entries="@array/color_scheme"
-        android:entryValues="@array/color_scheme_values"
-        android:defaultValue="@string/pref_default_color_scheme"
+        android:entries="@array/color_theme"
+        android:entryValues="@array/color_theme_values"
+        android:defaultValue="@string/pref_default_color_theme"
         app:useSimpleSummaryProvider="true" />
 
     <com.orgzly.android.prefs.IntegerPreference

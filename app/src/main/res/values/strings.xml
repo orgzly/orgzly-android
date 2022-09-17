@@ -325,6 +325,10 @@
     <string name="notebooks_sort_order">Notebooks sort order</string>
     <string name="font_size">Font size</string>
     <string name="color_scheme">Color scheme</string>
+    <string name="other">Other</string>
+    <string name="theme">Theme</string>
+    <string name="light_scheme">Light scheme</string>
+    <string name="dark_scheme">Dark scheme</string>
     <string name="monospaced_font">Monospaced font</string>
     <string name="monospaced_font_summary">Use monospaced font for note\'s content and notebook\'s preface</string>
     <string name="reversed_note_click_action">Swap note click and long-click actions</string>
@@ -402,6 +406,7 @@
     <string name="displayed_book_details_notes_count" >Notes count</string>
 
     <string name="color_scheme_system">System</string>
+    <string name="color_scheme_dynamic">Dynamic color</string>
     <string name="color_scheme_light">Light</string>
     <string name="color_scheme_dark">Dark</string>
     <string name="color_scheme_black">Black</string>

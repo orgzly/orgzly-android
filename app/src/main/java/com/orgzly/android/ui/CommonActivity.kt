@@ -11,7 +11,6 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import androidx.core.view.WindowCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -223,22 +222,44 @@ abstract class CommonActivity : AppCompatActivity() {
     }
 
     private fun setupTheme() {
-        // Set theme (color scheme)
-        when (AppPreferences.colorScheme(this)) {
-            getString(R.string.pref_value_color_scheme_system) ->
-                setTheme(R.style.AppDayNightTheme)
+        setColorScheme()
+        applyFontStyle()
+    }
 
-            getString(R.string.pref_value_color_scheme_dark) ->
-                setTheme(R.style.AppDarkTheme_Dark)
+    private fun setColorScheme() {
+        when (AppPreferences.colorTheme(this)) {
+            "light" ->
+                setLightScheme()
 
-            getString(R.string.pref_value_color_scheme_black) ->
-                setTheme(R.style.AppDarkTheme_Black)
+            "dark" ->
+                setDarkScheme()
 
-            else ->
-                setTheme(R.style.AppLightTheme_Light)
+            else -> { // "system"
+                if ("day" == theme.resources.getString(R.string.day_night)) {
+                    setLightScheme()
+                } else {
+                    setDarkScheme()
+                }
+            }
         }
+    }
 
-        // Apply font style based on preferences
+    private fun setLightScheme() {
+        when (AppPreferences.lightColorScheme(this)) {
+            "dynamic" -> setTheme(R.style.AppLightTheme)
+            "light" -> setTheme(R.style.AppLightTheme_Light)
+        }
+    }
+
+    private fun setDarkScheme() {
+        when (AppPreferences.darkColorScheme(this)) {
+            "dynamic" -> setTheme(R.style.AppDarkTheme)
+            "dark" -> setTheme(R.style.AppDarkTheme_Dark)
+            "black" -> setTheme(R.style.AppDarkTheme_Black)
+        }
+    }
+
+    private fun applyFontStyle() {
         when (AppPreferences.fontSize(this)) {
             getString(R.string.pref_value_font_size_large) ->
                 theme.applyStyle(R.style.FontSize_Large, true)
@@ -337,7 +358,9 @@ abstract class CommonActivity : AppCompatActivity() {
 
         private val PREFS_REQUIRE_IMMEDIATE_ACTIVITY_RECREATE = listOf(
             R.string.pref_key_font_size,
-            R.string.pref_key_color_scheme,
+            R.string.pref_key_color_theme,
+            R.string.pref_key_light_color_scheme,
+            R.string.pref_key_dark_color_scheme,
             R.string.pref_key_ignore_system_locale
         )
     }

@@ -100,25 +100,50 @@
         <item>@string/pref_value_list_density_compact</item>
     </string-array>
 
-    <!-- Color scheme. -->
-    <string name="pref_key_color_scheme" translatable="false">pref_key_color_scheme</string>
-    <string name="pref_default_color_scheme" translatable="false">@string/pref_value_color_scheme_system</string>
-    <string name="pref_value_color_scheme_system" translatable="false">system</string>
-    <string name="pref_value_color_scheme_light" translatable="false">light</string>
-    <string name="pref_value_color_scheme_dark" translatable="false">dark</string>
-    <string name="pref_value_color_scheme_black" translatable="false">black</string>
-    <string-array name="color_scheme">
-        <item>@string/color_scheme_system</item>
+    <!-- Theme -->
+    <string name="color_theme_system_default">System default</string>
+    <string name="color_theme_light">Light</string>
+    <string name="color_theme_dark">Dark</string>
+    <string name="pref_key_color_theme" translatable="false">pref_key_color_theme</string>
+    <string name="pref_default_color_theme" translatable="false">system</string>
+    <string-array name="color_theme">
+        <item>@string/color_theme_system_default</item>
+        <item>@string/color_theme_light</item>
+        <item>@string/color_theme_dark</item>
+    </string-array>
+    <string-array name="color_theme_values">
+        <item>system</item>
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+
+    <!-- Light theme scheme -->
+    <string name="pref_key_light_color_scheme">pref_key_light_color_scheme</string>
+    <string name="pref_default_light_color_scheme">dynamic</string>
+    <string-array name="light_color_scheme_list">
+        <item>@string/color_scheme_dynamic</item>
         <item>@string/color_scheme_light</item>
+    </string-array>
+    <string-array name="light_color_scheme_list_values">
+        <item>dynamic</item>
+        <item>light</item>
+    </string-array>
+    
+    <!-- Dark theme scheme -->
+    <string name="pref_key_dark_color_scheme">pref_key_dark_color_scheme</string>
+    <string name="pref_default_dark_color_scheme">dynamic</string>
+    <string-array name="dark_color_scheme_list">
+        <item>@string/color_scheme_dynamic</item>
         <item>@string/color_scheme_dark</item>
         <item>@string/color_scheme_black</item>
     </string-array>
-    <string-array name="color_scheme_values">
-        <item>@string/pref_value_color_scheme_system</item>
-        <item>@string/pref_value_color_scheme_light</item>
-        <item>@string/pref_value_color_scheme_dark</item>
-        <item>@string/pref_value_color_scheme_black</item>
+    <string-array name="dark_color_scheme_list_values">
+        <item>dynamic</item>
+        <item>dark</item>
+        <item>black</item>
     </string-array>
+
+
 
     <!-- Font size. -->
     <string name="pref_key_font_size" translatable="false">pref_key_font_size</string>

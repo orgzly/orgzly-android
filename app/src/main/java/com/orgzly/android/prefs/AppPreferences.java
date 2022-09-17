@@ -331,14 +331,31 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_show_sync_notifications));
     }
 
-    public static String colorScheme(Context context) {
+    public static String colorTheme(Context context) {
         return getDefaultSharedPreferences(context).getString(
-                context.getResources().getString(R.string.pref_key_color_scheme),
-                context.getResources().getString(R.string.pref_default_color_scheme));
+                context.getResources().getString(R.string.pref_key_color_theme),
+                context.getResources().getString(R.string.pref_default_color_theme));
     }
 
-    public static void colorScheme(Context context, String value) {
-        String key = context.getResources().getString(R.string.pref_key_color_scheme);
+    public static void colorTheme(Context context, String value) {
+        String key = context.getResources().getString(R.string.pref_key_color_theme);
+        getDefaultSharedPreferences(context).edit().putString(key, value).apply();
+    }
+
+    public static String lightColorScheme(Context context){
+        return getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_light_color_scheme),
+                context.getResources().getString(R.string.pref_default_light_color_scheme));
+    }
+
+    public static String darkColorScheme(Context context) {
+        return getDefaultSharedPreferences(context).getString(
+                context.getResources().getString(R.string.pref_key_dark_color_scheme),
+                context.getResources().getString(R.string.pref_default_dark_color_scheme));
+    }
+
+    public static void darkColorScheme(Context context, String value) {
+        String key = context.getResources().getString(R.string.pref_key_dark_color_scheme);
         getDefaultSharedPreferences(context).edit().putString(key, value).apply();
     }
 

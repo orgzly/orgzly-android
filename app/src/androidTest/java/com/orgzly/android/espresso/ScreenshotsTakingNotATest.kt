@@ -111,7 +111,10 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
 
     @Test
     fun mainDark() {
-        startActivity(MainActivity::class.java, R.string.pref_value_color_scheme_dark)
+        AppPreferences.colorTheme(context, "dark")
+        AppPreferences.darkColorScheme(context, "dark")
+
+        startActivity(MainActivity::class.java)
 
         onView(withId(R.id.drawer_layout)).perform(open())
 
@@ -128,11 +131,7 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
         takeScreenshot("repositories.png")
     }
 
-    private fun startActivity(activityClass: Class<out AppCompatActivity>, @StringRes id: Int = 0) {
-        if (id != 0) {
-            AppPreferences.colorScheme(context, context.getString(id))
-        }
-
+    private fun startActivity(activityClass: Class<out AppCompatActivity>) {
         ActivityScenario.launch(activityClass)
 
         // onView(withId(R.id.main_content)).check(matches(isDisplayed()))

@@ -2,6 +2,8 @@
 <resources>
     <string name="app_name" translatable="false">Orgzly</string>
 
+    <string name="day_night" translatable="false">day</string>
+
     <!-- Samples used in tools:text -->
     <string name="book_mtime_sample" translatable="false">Jul 3, 2013 9:45:37 PM</string>
     <string name="book_name_sample" translatable="false">notebook-name</string>
