@@ -28,7 +28,7 @@ open class TextViewFixed : AppCompatTextView {
     private var onFocusOrClickListener: OnClickListener? = null
 
     private val gestureDetector = GestureDetectorCompat(context, object : GestureDetector.SimpleOnGestureListener() {
-        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
             return true
         }
     })
