@@ -31,7 +31,9 @@ object SyncRunner {
         val workManager = WorkManager.getInstance(App.getAppContext())
 
         val syncWorker = OneTimeWorkRequestBuilder<SyncWorker>()
-            .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+            // On Android >= 12 notification from overridden getForegroundInfo might not be shown
+            // We are handing sync-in-progress notification manually
+            // .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
             .setInputData(workDataOf(AUTO_SYNC_DATA to autoSync))
             .build()
 

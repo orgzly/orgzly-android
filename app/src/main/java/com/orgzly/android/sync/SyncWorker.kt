@@ -32,6 +32,8 @@ class SyncWorker(val context: Context, val params: WorkerParameters) :
     override suspend fun doWork(): Result {
         App.appComponent.inject(this)
 
+        SyncNotifications.notifySyncInProgress(context)
+
         val state = try {
             tryDoWork()
 
@@ -53,6 +55,8 @@ class SyncWorker(val context: Context, val params: WorkerParameters) :
 
         if (BuildConfig.LOG_DEBUG)
             LogUtils.d(TAG, "Worker ${javaClass.simpleName} finished: $result")
+
+        SyncNotifications.cancelSyncInProgress(context)
 
         return result
     }
@@ -262,10 +266,10 @@ class SyncWorker(val context: Context, val params: WorkerParameters) :
         return false
     }
 
-    override suspend fun getForegroundInfo(): ForegroundInfo {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
-        return SyncNotifications.syncInProgressForegroundInfo(context)
-    }
+//    override suspend fun getForegroundInfo(): ForegroundInfo {
+//        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+//        return SyncNotifications.syncInProgressForegroundInfo(context)
+//    }
 
     private suspend fun sendProgress(state: SyncState) {
         setProgress(state.toData())
