@@ -110,7 +110,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
                 openIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, savedSearch.getQuery());
                 openIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
                 remoteViews.setOnClickPendingIntent(
-                        R.id.list_widget_header_icon,
+                        R.id.list_widget_header_logo,
                         PendingIntent.getActivity(
                                 context,
                                 0,

@@ -247,11 +247,14 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
             // Update widget for changed style
             getString(R.string.pref_key_widget_color_scheme),
-            getString(R.string.pref_key_widget_font_size),
             getString(R.string.pref_key_widget_opacity),
+            getString(R.string.pref_key_widget_font_size),
+            getString(R.string.pref_key_widget_display_checkmarks),
+            getString(R.string.pref_key_widget_display_book_name),
             getString(R.string.pref_key_widget_update_frequency) -> {
-                val intent = Intent(context, ListWidgetProvider::class.java)
-                intent.action = AppIntent.ACTION_UPDATE_LAYOUT_LIST_WIDGET
+                val intent = Intent(context, ListWidgetProvider::class.java).apply {
+                    action = AppIntent.ACTION_UPDATE_LAYOUT_LIST_WIDGET
+                }
                 context?.sendBroadcast(intent)
             }
 

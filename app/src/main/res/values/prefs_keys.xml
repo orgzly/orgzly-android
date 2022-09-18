@@ -511,11 +511,13 @@
     <string name="pref_key_widget_color_scheme" translatable="false">pref_key_widget_color_scheme</string>
     <string name="pref_default_widget_color_scheme" translatable="false">light</string>
     <string-array name="widget_color_scheme">
+        <item>@string/color_scheme_dynamic</item>
         <item>@string/color_scheme_light</item>
         <item>@string/color_scheme_dark</item>
         <item>@string/color_scheme_black</item>
     </string-array>
     <string-array name="widget_color_scheme_values">
+        <item>dynamic</item>
         <item>light</item>
         <item>dark</item>
         <item>black</item>
