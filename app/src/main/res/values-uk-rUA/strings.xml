@@ -306,7 +306,7 @@
     <string name="connecting">Зʼєднання…</string>
     <string name="no_connection">Відсутнє зʼєднання</string>
     <string name="connection_successful">Зʼєднання успішне</string>
-    <string name="last_sync_with_argument">Востаннє синхронізовано: %s</string>
+    <string name="last_sync_with_argument">Синхронізовано: %s</string>
     <string name="force_loading_from_uri">Примусове завантаження з %s…</string>
     <string name="force_loaded_from_uri">Примусово завантажено з %s</string>
     <string name="force_saving_to_uri">Примусове зберігання в %s…</string>
