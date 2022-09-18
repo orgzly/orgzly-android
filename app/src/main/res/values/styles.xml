@@ -47,6 +47,12 @@
         <!-- For some reason, cursor is invisible (or was it black on black?) on Nexus 7 (API 19).
              With this, it's white. -->
         <item name="android:textCursorDrawable">@null</item>
+
+        <item name="android:colorBackground">?attr/colorSurface</item>
+
+        <item name="item_head_state_done_color">@color/green_900</item>
+        <item name="item_head_state_todo_color">@color/red_900</item>
+        <item name="item_head_state_unknown_color">@color/blue_900</item>
     </style>
 
     <style name="AppDarkThemeCommon" parent="Theme.Material3.DynamicColors.Dark">
@@ -91,6 +97,12 @@
         <!-- For some reason, cursor is invisible (or was it black on black?) on Nexus 7 (API 19).
              With this, it's white. -->
         <item name="android:textCursorDrawable">@null</item>
+
+        <item name="android:colorBackground">?attr/colorSurface</item>
+
+        <item name="item_head_state_done_color">@color/green_200</item>
+        <item name="item_head_state_todo_color">@color/red_200</item>
+        <item name="item_head_state_unknown_color">@color/blue_200</item>
     </style>
 
     <style name="AppLightTheme" parent="AppLightThemeCommon">
@@ -116,11 +128,6 @@
         <item name="colorOnSecondaryContainer">@color/grey_800</item>
         <item name="colorTertiaryContainer">@color/grey_300</item>
         <item name="colorOnTertiaryContainer">@color/grey_700</item>
-        <item name="android:colorBackground">?attr/colorSurface</item>
-
-        <item name="item_head_state_done_color">@color/green_900</item>
-        <item name="item_head_state_todo_color">@color/red_900</item>
-        <item name="item_head_state_unknown_color">@color/blue_900</item>
     </style>
 
     <!-- Color scheme -->
@@ -137,11 +144,7 @@
         <item name="colorTertiaryContainer">@color/grey_800</item>
         <item name="colorOnTertiaryContainer">@color/grey_400</item>
         <item name="colorError">@color/red_200</item>
-        <item name="android:colorBackground">?attr/colorSurface</item>
 
-        <item name="item_head_state_done_color">@color/green_200</item>
-        <item name="item_head_state_todo_color">@color/red_200</item>
-        <item name="item_head_state_unknown_color">@color/blue_200</item>
     </style>
 
     <!-- Color scheme -->
@@ -157,11 +160,6 @@
         <item name="colorOnSecondaryContainer">@color/grey_200</item>
         <item name="colorTertiaryContainer">@color/grey_800</item>
         <item name="colorOnTertiaryContainer">@color/grey_400</item>
-        <item name="android:colorBackground">?attr/colorSurface</item>
-
-        <item name="item_head_state_done_color">@color/green_200</item>
-        <item name="item_head_state_todo_color">@color/red_200</item>
-        <item name="item_head_state_unknown_color">@color/blue_200</item>
     </style>
 
     <style name="FontSize"/>
