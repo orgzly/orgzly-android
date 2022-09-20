@@ -773,9 +773,19 @@ public class AppPreferences {
      */
 
     public static String widgetColorScheme(Context context) {
-        return getDefaultSharedPreferences(context).getString(
+        String scheme = getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_widget_color_scheme),
                 context.getResources().getString(R.string.pref_default_widget_color_scheme));
+
+        // FIXME: Return scheme found in preferences if it's supported, or the first one if not.
+        String[] schemes = context.getResources().getStringArray(R.array.widget_color_scheme_values);
+        for (String s : schemes) {
+            if (s.equals(scheme)) {
+                return scheme;
+            }
+        }
+
+        return schemes[0];
     }
 
     public static int widgetOpacity(Context context) {
