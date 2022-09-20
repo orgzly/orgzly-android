@@ -23,6 +23,20 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.8.9-beta.1"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Dynamic color scheme" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix starting of sync from the background (e.g. auto-sync or ActionReceiver)" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.8.8"
             tools:ignore="HardcodedText" />
 
