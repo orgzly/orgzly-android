@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_list_widget_layout"
-    android:theme="@style/Theme.Material3.DynamicColors.DayNight"
+    android:theme="@style/ListWidgetTheme"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"

@@ -94,8 +94,7 @@ object WidgetColors {
         )
     )
 
-    // TODO:
-    val colorDayNight = mapOf(
+    val dataDependentColors = mapOf(
         "dynamic-day" to mapOf(
             "todo" to R.color.widget_light_state_todo_color,
             "done" to R.color.widget_light_state_done_color,

@@ -144,7 +144,6 @@
         <item name="colorTertiaryContainer">@color/grey_800</item>
         <item name="colorOnTertiaryContainer">@color/grey_400</item>
         <item name="colorError">@color/red_200</item>
-
     </style>
 
     <!-- Color scheme -->
@@ -224,6 +223,8 @@
         <!--<item name="android:textAppearanceSmall">@style/TextAppearance.AppCompat.Medium</item>-->
         <!--<item name="android:textAppearanceMedium">@style/TextAppearance.AppCompat.Large</item>-->
     </style>
+
+    <style name="ListWidgetTheme" parent="Theme.Material3.DynamicColors.DayNight" />
 
     <style name="OverFlow" parent="Widget.AppCompat.ActionButton.Overflow">
         <item name="tint">?android:textColorPrimary</item>

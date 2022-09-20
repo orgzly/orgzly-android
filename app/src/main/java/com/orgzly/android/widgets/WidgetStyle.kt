@@ -41,7 +41,7 @@ object WidgetStyle {
 
     @ColorInt
     private fun getColor(context: Context, scheme: String, name: String): Int {
-        val s = WidgetColors.colorDayNight[scheme]?.get(name).let { value ->
+        val s = WidgetColors.dataDependentColors[scheme]?.get(name).let { value ->
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "$scheme/$name: $value")
             value ?: throw Exception("Not defined: $scheme/$name")
         }
