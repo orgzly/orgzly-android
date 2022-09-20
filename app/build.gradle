@@ -10,8 +10,8 @@ android {
         minSdkVersion 21 // Lollipop (5.0)
         targetSdkVersion 32 // Android 12L
         applicationId "com.orgzly"
-        versionCode 166
-        versionName "1.8.8"
+        versionCode 167
+        versionName "1.8.9-beta.1"
 
         testInstrumentationRunner "com.orgzly.android.OrgzlyTestRunner"
         // testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
