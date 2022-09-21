@@ -147,7 +147,6 @@
                         android:layout_height="wrap_content"
                         android:gravity="start|center_vertical"
                         android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
                         tools:text="@string/repo_url_sample"
                         android:textSize="?attr/item_book_details_text_size"/>
                 </LinearLayout>

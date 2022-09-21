@@ -16,7 +16,6 @@
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingLeft="8dp"
         android:paddingStart="8dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
@@ -59,7 +58,6 @@
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/widget_post_title_text_size_14"
                 android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
                 android:maxLines="1"
                 android:ellipsize="end" />
         </LinearLayout>
@@ -90,7 +88,6 @@
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/widget_post_title_text_size_14"
                 android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
                 android:maxLines="1"
                 android:ellipsize="end" />
         </LinearLayout>
@@ -121,7 +118,6 @@
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/widget_post_title_text_size_14"
                 android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
                 android:maxLines="1"
                 android:ellipsize="end" />
         </LinearLayout>
@@ -152,7 +148,6 @@
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/widget_post_title_text_size_14"
                 android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
                 android:maxLines="1"
                 android:ellipsize="end" />
         </LinearLayout>
@@ -183,7 +178,6 @@
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/widget_post_title_text_size_14"
                 android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
                 android:maxLines="1"
                 android:ellipsize="end" />
         </LinearLayout>
@@ -197,8 +191,8 @@
         android:minWidth="0dp"
         android:paddingTop="@dimen/widget_padding"
         android:paddingBottom="0dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:src="@drawable/ic_check_circle_outline" />

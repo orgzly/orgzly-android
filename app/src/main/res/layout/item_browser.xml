@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/screen_edge"
-    android:paddingRight="@dimen/screen_edge"
+    android:paddingStart="@dimen/screen_edge"
+    android:paddingEnd="@dimen/screen_edge"
     android:minHeight="48dp"
     android:orientation="horizontal"
     android:gravity="center_vertical">

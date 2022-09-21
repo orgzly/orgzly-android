@@ -8,8 +8,8 @@
     android:id="@+id/quick_bar_flipper"
     android:layout_width="match_parent"
     android:layout_height="@dimen/quick_bar_height"
-    android:paddingLeft="@dimen/screen_edge"
-    android:paddingRight="@dimen/screen_edge"
+    android:paddingStart="@dimen/screen_edge"
+    android:paddingEnd="@dimen/screen_edge"
     android:visibility="visible"
     android:gravity="center">
 

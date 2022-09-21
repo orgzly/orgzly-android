@@ -55,18 +55,6 @@ abstract class CommonActivity : AppCompatActivity() {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Received broadcast: $intent")
 
             when (intent.action) {
-                AppIntent.ACTION_DB_UPGRADE_STARTED -> {
-                    whatsNewDialog?.getButton(AlertDialog.BUTTON_POSITIVE)?.setText(R.string.running_database_update)
-                    whatsNewDialog?.getButton(DialogInterface.BUTTON_POSITIVE)?.isEnabled = false
-                    whatsNewDialog?.setCancelable(false)
-                }
-
-                AppIntent.ACTION_DB_UPGRADE_ENDED -> {
-                    whatsNewDialog?.getButton(AlertDialog.BUTTON_POSITIVE)?.setText(R.string.ok)
-                    whatsNewDialog?.getButton(DialogInterface.BUTTON_POSITIVE)?.isEnabled = true
-                    whatsNewDialog?.setCancelable(true)
-                }
-
                 AppIntent.ACTION_BOOK_IMPORTED ->
                     showSnackbar(R.string.notebook_imported)
 
@@ -158,8 +146,6 @@ abstract class CommonActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val intentFilter = IntentFilter()
-        intentFilter.addAction(AppIntent.ACTION_DB_UPGRADE_STARTED)
-        intentFilter.addAction(AppIntent.ACTION_DB_UPGRADE_ENDED)
         intentFilter.addAction(AppIntent.ACTION_BOOK_IMPORTED)
         intentFilter.addAction(AppIntent.ACTION_DB_CLEARED)
         intentFilter.addAction(AppIntent.ACTION_UPDATING_NOTES_STARTED)

@@ -26,7 +26,6 @@
     <EditText
         android:id="@+id/value"
         style="@style/NoteFragmentMetadataItemValueButton"
-        android:layout_marginLeft="0dp"
         android:layout_marginStart="0dp"
         android:maxLines="1"
         android:inputType="text"
