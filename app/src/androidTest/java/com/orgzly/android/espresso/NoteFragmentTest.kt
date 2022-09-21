@@ -347,12 +347,12 @@ class NoteFragmentTest : OrgzlyTest() {
         /* Set date. */
         onView(withId(R.id.date_picker_button)).perform(click())
         onView(withClassName(equalTo(DatePicker::class.java.name))).perform(setDate(2014, 4, 1))
-        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click())
+        onView(withText(android.R.string.ok)).perform(click())
 
         /* Set time. */
         onView(withId(R.id.time_picker_button)).perform(scrollTo(), click())
         onView(withClassName(equalTo(TimePicker::class.java.name))).perform(setTime(15, 15))
-        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click())
+        onView(withText(android.R.string.ok)).perform(click())
 
         onView(withText(R.string.set)).perform(click())
 
@@ -375,12 +375,12 @@ class NoteFragmentTest : OrgzlyTest() {
         /* Set date. */
         onView(withId(R.id.date_picker_button)).perform(click())
         onView(withClassName(equalTo(DatePicker::class.java.name))).perform(setDate(2014, 4, 1))
-        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click())
+        onView(withText(android.R.string.ok)).perform(click())
 
         /* Set time. */
         onView(withId(R.id.time_picker_button)).perform(scrollTo(), click())
         onView(withClassName(equalTo(TimePicker::class.java.name))).perform(setTime(9, 15))
-        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click())
+        onView(withText(android.R.string.ok)).perform(click())
 
         /* Set repeater. */
         onView(withId(R.id.repeater_used_checkbox)).perform(scrollTo(), click())

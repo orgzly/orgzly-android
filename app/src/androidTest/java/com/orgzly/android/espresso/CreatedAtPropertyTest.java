@@ -133,7 +133,7 @@ public class CreatedAtPropertyTest extends OrgzlyTest {
         clickSetting("prefs_screen_sync", R.string.sync);
         clickSetting("pref_key_created_at_property", R.string.created_at_property);
         onView(instanceOf(EditText.class)).perform(replaceTextCloseKeyboard(propName));
-        onView(withText(R.string.ok)).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
         onView(withText(R.string.yes)).perform(click());
         pressBack();
         pressBack();

@@ -249,10 +249,10 @@ public class QueryFragmentTest extends OrgzlyTest {
         onView(withId(R.id.schedule)).perform(click());
         onView(withId(R.id.date_picker_button)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
-        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
         onView(withId(R.id.time_picker_button)).perform(scrollTo(), click());
         onView(withClassName(equalTo(TimePicker.class.getName()))).perform(setTime(9, 15));
-        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
         onView(withText(R.string.set)).perform(click());
 
         onNotesInSearch().check(matches(recyclerViewItemCount(2)));

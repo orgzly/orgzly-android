@@ -435,7 +435,7 @@ public class BookTest extends OrgzlyTest {
         onView(withId(R.id.deadline_button)).perform(closeSoftKeyboardWithDelay(), scrollTo(), click());
         onView(withId(R.id.date_picker_button)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
-        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
         onView(withText(R.string.set)).perform(click());
         onView(withId(R.id.deadline_button)).check(matches(withText(userDateTime("<2014-04-01 Tue>"))));
     }

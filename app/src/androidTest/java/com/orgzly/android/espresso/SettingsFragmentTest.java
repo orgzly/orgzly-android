@@ -65,7 +65,7 @@ public class SettingsFragmentTest extends OrgzlyTest {
 
         onView(withId(R.id.todo_states)).perform(replaceTextCloseKeyboard("TODO AAA BBB CCC"));
 
-        onView(withText(R.string.ok)).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
         onView(withText(R.string.not_now)).perform(click());
 
         clickSetting("pref_key_new_note_state", R.string.state);
@@ -81,7 +81,7 @@ public class SettingsFragmentTest extends OrgzlyTest {
         clickSetting("pref_key_states", R.string.states);
 
         onView(withId(R.id.todo_states)).perform(replaceTextCloseKeyboard("TODO CCC"));
-        onView(withText(R.string.ok)).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
         onView(withText(R.string.not_now)).perform(click());
 
         clickSetting("pref_key_new_note_state", R.string.state);
@@ -97,7 +97,7 @@ public class SettingsFragmentTest extends OrgzlyTest {
         clickSetting("prefs_screen_notebooks", R.string.pref_title_notebooks);
         clickSetting("pref_key_states", R.string.states);
         onView(withId(R.id.todo_states)).perform(replaceTextCloseKeyboard("TODO"));
-        onView(withText(R.string.ok)).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
         onView(withText(R.string.not_now)).perform(click());
         onView(allOf(withText(R.string.states), hasSibling(withText("TODO |")))).check(matches(isDisplayed()));
     }
@@ -176,7 +176,7 @@ public class SettingsFragmentTest extends OrgzlyTest {
 
         onView(withId(R.id.todo_states)).perform(replaceTextCloseKeyboard("TODO NEXT wait"));
 
-        onView(withText(R.string.ok)).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
         onView(withText(R.string.not_now)).perform(click());
 
         onView(allOf(withText(R.string.states), hasSibling(withText("TODO NEXT WAIT | DONE"))))

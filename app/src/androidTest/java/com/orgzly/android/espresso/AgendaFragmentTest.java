@@ -152,7 +152,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
                         tomorrow.getYear(),
                         tomorrow.getMonthOfYear(),
                         tomorrow.getDayOfMonth()));
-        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
         onView(withText(R.string.set)).perform(click());
         onNotesInAgenda().check(matches(recyclerViewItemCount(23)));
     }

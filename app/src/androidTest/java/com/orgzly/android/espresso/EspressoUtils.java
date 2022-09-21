@@ -308,7 +308,7 @@ class EspressoUtils {
         clickSetting("pref_key_states", R.string.states);
 
         onView(withId(viewId)).perform(replaceTextCloseKeyboard(keywords));
-        onView(withText(R.string.ok)).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
         onView(withText(R.string.yes)).perform(click());
 
         pressBack();
