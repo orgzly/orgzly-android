@@ -32,7 +32,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text="Fix starting of sync from the background (e.g. auto-sync or ActionReceiver)" />
+            app:text="Fix starting sync from the background (e.g. auto-sync or ActionReceiver)" />
 
 
         <TextView
