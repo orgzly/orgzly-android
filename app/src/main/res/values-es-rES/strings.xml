@@ -157,8 +157,9 @@
     <string name="searches">Búsquedas</string>
     <string name="search">Búsqueda</string>
     <string name="new_search">Nueva búsqueda</string>
-    <string name="no_repos">No hay repositorios configurados</string>
     <string name="multiple_repos">Existen múltiples repositorios</string>
+    <string name="no_repos">No hay repositorios configurados</string>
+    <string name="no_books">Ningún cuaderno encontrado</string>
     <string name="book_encoding">Codificación del cuaderno</string>
     <string name="collecting_notebooks_in_progress">Recogiendo cuadernos…</string>
     <string name="syncing_in_progress">Sincronizando…</string>
@@ -281,6 +282,10 @@
     <string name="notebooks_sort_order">Orden de clasificación de las notas</string>
     <string name="font_size">Tamaño de letra</string>
     <string name="color_scheme">Combinación de colores</string>
+    <string name="other">Otro</string>
+    <string name="theme">Tema</string>
+    <string name="light_scheme">Tema claro</string>
+    <string name="dark_scheme">Tema oscuro</string>
     <string name="monospaced_font">Fuente monoespaciada</string>
     <string name="monospaced_font_summary">Usar fuente monoespaciada para el contenido de las notas y las portada de los libros</string>
     <string name="reversed_note_click_action">Acción de click de nota invertida</string>
@@ -348,6 +353,7 @@
     <string name="displayed_book_details_last_action">Ultima acción</string>
     <string name="displayed_book_details_notes_count">Contador de notas</string>
     <string name="color_scheme_system">Sistema</string>
+    <string name="color_scheme_dynamic">Color dinámico</string>
     <string name="color_scheme_light">Claro</string>
     <string name="color_scheme_dark">Oscuro</string>
     <string name="color_scheme_black">Negro</string>

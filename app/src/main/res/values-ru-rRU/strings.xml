@@ -163,8 +163,9 @@
     <string name="searches">Поисковые запросы</string>
     <string name="search">Поиск</string>
     <string name="new_search">Новый поиск</string>
-    <string name="no_repos">Нет настроенных хранилищ</string>
     <string name="multiple_repos">Существует несколько хранилищ</string>
+    <string name="no_repos">Нет настроенных хранилищ</string>
+    <string name="no_books">Блокноты не найдены</string>
     <string name="book_encoding">Кодировка блокнота</string>
     <string name="collecting_notebooks_in_progress">Обновление блокнотов…</string>
     <string name="syncing_in_progress">Синхронизация…</string>
@@ -287,6 +288,10 @@
     <string name="notebooks_sort_order">Порядок сортировки блокнотов</string>
     <string name="font_size">Размер шрифта</string>
     <string name="color_scheme">Цветовая схема</string>
+    <string name="other">Другое</string>
+    <string name="theme">Тема</string>
+    <string name="light_scheme">Светлая тема</string>
+    <string name="dark_scheme">Тёмная тема</string>
     <string name="monospaced_font">Моноширинный шрифт</string>
     <string name="monospaced_font_summary">Использовать моноширинный шрифт для содержания заметки и предисловия к блокноту</string>
     <string name="reversed_note_click_action">Обратное действие при нажатии на заметку</string>
@@ -354,6 +359,7 @@
     <string name="displayed_book_details_last_action">Последнее действие</string>
     <string name="displayed_book_details_notes_count">Количество заметок</string>
     <string name="color_scheme_system">Системная</string>
+    <string name="color_scheme_dynamic">Динамический цвет</string>
     <string name="color_scheme_light">Светлая</string>
     <string name="color_scheme_dark">Тёмная</string>
     <string name="color_scheme_black">Чёрная</string>

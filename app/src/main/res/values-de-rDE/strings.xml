@@ -157,8 +157,9 @@
     <string name="searches">Suchen</string>
     <string name="search">Suche</string>
     <string name="new_search">Neue Suche</string>
-    <string name="no_repos">Keine Ablageorte eingerichtet</string>
     <string name="multiple_repos">Es existieren mehrere Ablageorte</string>
+    <string name="no_repos">Keine Ablageorte eingerichtet</string>
+    <string name="no_books">No notebooks found</string>
     <string name="book_encoding">Zeichensatz für das Notizbuch</string>
     <string name="collecting_notebooks_in_progress">Notizbücher werden gesammelt …</string>
     <string name="syncing_in_progress">Synchronisation läuft …</string>
@@ -281,6 +282,10 @@
     <string name="notebooks_sort_order">Sortierreihenfolge für Notizbücher</string>
     <string name="font_size">Schriftgröße</string>
     <string name="color_scheme">Farbschema</string>
+    <string name="other">Other</string>
+    <string name="theme">Theme</string>
+    <string name="light_scheme">Light scheme</string>
+    <string name="dark_scheme">Dark scheme</string>
     <string name="monospaced_font">Nichtproportionale Schriftart</string>
     <string name="monospaced_font_summary">Für Notizinhalt und Notizbucheinleitung nichtproportionale Schriftart verwenden</string>
     <string name="reversed_note_click_action">Notizklick- und Langklick-Aktionen tauschen</string>
@@ -348,6 +353,7 @@
     <string name="displayed_book_details_last_action">Letzte Aktion</string>
     <string name="displayed_book_details_notes_count">Notizenanzahl</string>
     <string name="color_scheme_system">System</string>
+    <string name="color_scheme_dynamic">Dynamic color</string>
     <string name="color_scheme_light">Hell</string>
     <string name="color_scheme_dark">Dunkel</string>
     <string name="color_scheme_black">Schwarz</string>

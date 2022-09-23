@@ -157,8 +157,9 @@
     <string name="searches">Sökningar</string>
     <string name="search">Sök</string>
     <string name="new_search">Ny sökning</string>
-    <string name="no_repos">Inga lagringsplatser konfigurerade</string>
     <string name="multiple_repos">Det finns flera lagringsplatser</string>
+    <string name="no_repos">Inga lagringsplatser konfigurerade</string>
+    <string name="no_books">No notebooks found</string>
     <string name="book_encoding">Anteckningsbokens teckenkodning</string>
     <string name="collecting_notebooks_in_progress">Hämtar anteckningsböcker…</string>
     <string name="syncing_in_progress">Synkroniserar…</string>
@@ -281,6 +282,10 @@
     <string name="notebooks_sort_order">Sorteringsordning för anteckningsböcker</string>
     <string name="font_size">Teckenstorlek</string>
     <string name="color_scheme">Färgschema</string>
+    <string name="other">Other</string>
+    <string name="theme">Theme</string>
+    <string name="light_scheme">Light scheme</string>
+    <string name="dark_scheme">Dark scheme</string>
     <string name="monospaced_font">Monospacetypsnitt</string>
     <string name="monospaced_font_summary">Använd typsnitt med fast bredd för anteckningens innehåll och anteckningsbokens förord</string>
     <string name="reversed_note_click_action">Omvänt beteende vid kort och långt klick på anteckning</string>
@@ -348,6 +353,7 @@
     <string name="displayed_book_details_last_action">Senaste aktivitet</string>
     <string name="displayed_book_details_notes_count">Antal anteckningar</string>
     <string name="color_scheme_system">System</string>
+    <string name="color_scheme_dynamic">Dynamic color</string>
     <string name="color_scheme_light">Ljust</string>
     <string name="color_scheme_dark">Mörkt</string>
     <string name="color_scheme_black">Svart</string>

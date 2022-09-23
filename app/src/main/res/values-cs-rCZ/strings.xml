@@ -163,8 +163,9 @@
     <string name="searches">Vyhledávání</string>
     <string name="search">Hledat</string>
     <string name="new_search">Nové hledání</string>
-    <string name="no_repos">Nebyly konfigurovány žádné repozitáře</string>
     <string name="multiple_repos">Existuje více úložišť</string>
+    <string name="no_repos">Nebyly konfigurovány žádné repozitáře</string>
+    <string name="no_books">Nebyly nalezeny žádné sešity</string>
     <string name="book_encoding">Znaková sada sešitu</string>
     <string name="collecting_notebooks_in_progress">Shromažďuji sešity…</string>
     <string name="syncing_in_progress">Synchronizuji…</string>
@@ -287,6 +288,10 @@
     <string name="notebooks_sort_order">Pořadí sešitů</string>
     <string name="font_size">Velikost písma</string>
     <string name="color_scheme">Barevné téma</string>
+    <string name="other">Ostatní</string>
+    <string name="theme">Vzhled</string>
+    <string name="light_scheme">Světlý vzhled</string>
+    <string name="dark_scheme">Tmavý vzhled</string>
     <string name="monospaced_font">Neproporcionální písmo</string>
     <string name="monospaced_font_summary">Použít neproporcionální písmo pro obsah poznámky a úvod sešitu</string>
     <string name="reversed_note_click_action">Zaměnit akci kliknutí a přidržení poznámky</string>
@@ -354,6 +359,7 @@
     <string name="displayed_book_details_last_action">Poslední akce</string>
     <string name="displayed_book_details_notes_count">Počet poznámek</string>
     <string name="color_scheme_system">Systém</string>
+    <string name="color_scheme_dynamic">Dynamický vzhled</string>
     <string name="color_scheme_light">Světlé</string>
     <string name="color_scheme_dark">Tmavé</string>
     <string name="color_scheme_black">Černé</string>

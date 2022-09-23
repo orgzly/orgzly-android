@@ -163,8 +163,9 @@
     <string name="searches">Wyszukiwania</string>
     <string name="search">Szukaj</string>
     <string name="new_search">Nowe wyszukiwanie</string>
-    <string name="no_repos">Nie skonfigurowano żadnych repozytoriów</string>
     <string name="multiple_repos">Istnieje wiele repozytoriów</string>
+    <string name="no_repos">Nie skonfigurowano żadnych repozytoriów</string>
+    <string name="no_books">Nie znaleziono notatników</string>
     <string name="book_encoding">Kodowanie notatnika</string>
     <string name="collecting_notebooks_in_progress">Zbieranie notatników…</string>
     <string name="syncing_in_progress">Synchronizowanie…</string>
@@ -287,6 +288,10 @@
     <string name="notebooks_sort_order">Kolejność wyświetlania notatników</string>
     <string name="font_size">Rozmiar czcionki</string>
     <string name="color_scheme">Styl kolorów</string>
+    <string name="other">Inne</string>
+    <string name="theme">Motyw</string>
+    <string name="light_scheme">Jasny motyw</string>
+    <string name="dark_scheme">Ciemny motyw</string>
     <string name="monospaced_font">Czcionka o stałej szerokości</string>
     <string name="monospaced_font_summary">Użyj czcionki o stałej szerokości dla treści notatki i opisu notatnika</string>
     <string name="reversed_note_click_action">Zamień akcję kliknięcia i długiego kliknięcia</string>
@@ -354,6 +359,7 @@
     <string name="displayed_book_details_last_action">Ostatnia akcja</string>
     <string name="displayed_book_details_notes_count">Liczba notatek</string>
     <string name="color_scheme_system">System</string>
+    <string name="color_scheme_dynamic">Kolor dynamiczny</string>
     <string name="color_scheme_light">Jasny</string>
     <string name="color_scheme_dark">Ciemny</string>
     <string name="color_scheme_black">Czarny</string>
