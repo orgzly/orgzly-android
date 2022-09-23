@@ -8,7 +8,6 @@ import android.os.Handler
 import android.util.Log
 import android.view.*
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,6 +38,7 @@ import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.ui.refile.RefileFragment
 import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.ui.util.setDecorFitsSystemWindowsForBottomToolbar
 import com.orgzly.android.ui.util.setup
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils
@@ -537,6 +537,8 @@ class BookFragment :
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         binding.bottomToolbar.visibility = View.GONE
+
+        activity?.setDecorFitsSystemWindowsForBottomToolbar(binding.bottomToolbar.visibility)
     }
 
     private fun topToolbarToMainSelection() {
@@ -578,6 +580,8 @@ class BookFragment :
             }
 
             visibility = View.VISIBLE
+
+            activity?.setDecorFitsSystemWindowsForBottomToolbar(visibility)
         }
     }
 
@@ -624,6 +628,8 @@ class BookFragment :
             }
 
             visibility = View.VISIBLE
+
+            activity?.setDecorFitsSystemWindowsForBottomToolbar(visibility)
         }
     }
 

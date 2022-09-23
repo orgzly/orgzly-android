@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -30,6 +29,7 @@ import com.orgzly.android.ui.notes.quickbar.QuickBarListener
 import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.ui.util.setDecorFitsSystemWindowsForBottomToolbar
 import com.orgzly.android.ui.util.setup
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentQuerySearchBinding
@@ -161,6 +161,8 @@ class SearchFragment :
 
     private fun bottomToolbarToDefault() {
         binding.bottomToolbar.visibility = View.GONE
+
+        activity?.setDecorFitsSystemWindowsForBottomToolbar(binding.bottomToolbar.visibility)
     }
 
     private fun topToolbarToMainSelection() {
@@ -192,6 +194,8 @@ class SearchFragment :
             }
 
             visibility = View.VISIBLE
+
+            activity?.setDecorFitsSystemWindowsForBottomToolbar(visibility)
         }
     }
 

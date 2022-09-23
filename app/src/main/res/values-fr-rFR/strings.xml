@@ -157,8 +157,9 @@
     <string name="searches">Recherches</string>
     <string name="search">Chercher</string>
     <string name="new_search">Nouvelle recherche</string>
-    <string name="no_repos">Aucun dépôt configuré</string>
     <string name="multiple_repos">Il existe plusieurs dépôts</string>
+    <string name="no_repos">Aucun dépôt configuré</string>
+    <string name="no_books">Aucun bloc-notes trouvé</string>
     <string name="book_encoding">Encodage du bloc-notes</string>
     <string name="collecting_notebooks_in_progress">Récupération des blocs-notes…</string>
     <string name="syncing_in_progress">Synchronisation en cours…</string>
@@ -281,6 +282,10 @@
     <string name="notebooks_sort_order">Ordre de tri des bloc-notes</string>
     <string name="font_size">Taille de police</string>
     <string name="color_scheme">Jeu de couleurs</string>
+    <string name="other">Autre</string>
+    <string name="theme">Thème</string>
+    <string name="light_scheme">Schém clair</string>
+    <string name="dark_scheme">Schéma sombre</string>
     <string name="monospaced_font">Police à chasse fixe</string>
     <string name="monospaced_font_summary">Utiliser une police à chasse fixe pour le contenu des notes et la préface du bloc-notes</string>
     <string name="reversed_note_click_action">Échanger les actions des clics court et long sur les notes</string>
@@ -348,6 +353,7 @@
     <string name="displayed_book_details_last_action">Dernière action</string>
     <string name="displayed_book_details_notes_count">Nombre de notes</string>
     <string name="color_scheme_system">Système</string>
+    <string name="color_scheme_dynamic">Couleur dynamique</string>
     <string name="color_scheme_light">Clair</string>
     <string name="color_scheme_dark">Sombre</string>
     <string name="color_scheme_black">Noir</string>

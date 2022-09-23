@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
@@ -16,6 +17,7 @@ import android.widget.ScrollView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.WindowCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -257,5 +259,15 @@ object ActivityUtils {
         } else {
             flags
         }
+    }
+}
+
+/** Don't fit decor to system windows only in portrait mode when the bottom toolbar is visible. */
+fun Activity.setDecorFitsSystemWindowsForBottomToolbar(visibility: Int) {
+    val orientation = resources.configuration.orientation
+    if (visibility == View.VISIBLE && orientation == Configuration.ORIENTATION_PORTRAIT) {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+    } else {
+        WindowCompat.setDecorFitsSystemWindows(window, true)
     }
 }

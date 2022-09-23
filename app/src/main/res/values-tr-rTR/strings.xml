@@ -157,8 +157,9 @@
     <string name="searches">Aramalar</string>
     <string name="search">Arama</string>
     <string name="new_search">Yeni Arama</string>
-    <string name="no_repos">Depolamalar yapılandırılmadı</string>
     <string name="multiple_repos">Birden fazla depo var</string>
+    <string name="no_repos">Depolamalar yapılandırılmadı</string>
+    <string name="no_books">No notebooks found</string>
     <string name="book_encoding">NotDefter\'leri kodlamaları</string>
     <string name="collecting_notebooks_in_progress">Collecting notebooks…</string>
     <string name="syncing_in_progress">Senkronize ediliyor…</string>
@@ -281,6 +282,10 @@
     <string name="notebooks_sort_order">Not defterleri sıralama düzeni</string>
     <string name="font_size">Yazı Boyutu</string>
     <string name="color_scheme">Tema Rengi</string>
+    <string name="other">Other</string>
+    <string name="theme">Theme</string>
+    <string name="light_scheme">Light scheme</string>
+    <string name="dark_scheme">Dark scheme</string>
     <string name="monospaced_font">Eş aralıklı yazı tipi</string>
     <string name="monospaced_font_summary">Not içeriği\'s ve kitap\'s önsözü için eş aralıklı font kullanın</string>
     <string name="reversed_note_click_action">Notlara tıklama ve uzun tıklama eylemlerini değiştirin</string>
@@ -348,6 +353,7 @@
     <string name="displayed_book_details_last_action">Son Eylem</string>
     <string name="displayed_book_details_notes_count">Not sayısı</string>
     <string name="color_scheme_system">System</string>
+    <string name="color_scheme_dynamic">Dynamic color</string>
     <string name="color_scheme_light">Beyaz - Parlak</string>
     <string name="color_scheme_dark">Hafif karanlık</string>
     <string name="color_scheme_black">Siyah</string>
