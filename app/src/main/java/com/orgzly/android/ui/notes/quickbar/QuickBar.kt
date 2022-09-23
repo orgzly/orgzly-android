@@ -1,6 +1,7 @@
 package com.orgzly.android.ui.notes.quickbar
 
 import android.content.Context
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import android.widget.ImageButton
 import android.widget.ViewFlipper
 import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
+import androidx.annotation.StringRes
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.ui.notes.NoteItemViewHolder
@@ -100,6 +102,10 @@ class QuickBar(val context: Context, val inBook: Boolean) {
 
                     setImageResource(button.icon)
 
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        tooltipText = context.getString(button.tooltip)
+                    }
+
                     setOnClickListener {
                         listener.onQuickBarButtonClick(button.id, holder.itemId)
                     }
@@ -149,8 +155,7 @@ class QuickBar(val context: Context, val inBook: Boolean) {
         }
     }
 
-    // TODO: Add contentDescription
-    data class Button(@IdRes val id: Int, @DrawableRes val icon: Int)
+    data class Button(@IdRes val id: Int, @DrawableRes val icon: Int, @StringRes val tooltip: Int)
 
     data class Buttons(
         val rightSwipeInBook: List<Button>,
@@ -160,22 +165,22 @@ class QuickBar(val context: Context, val inBook: Boolean) {
         companion object {
 
             private val RIGHT_IN_BOOK = listOf(
-                Button(R.id.quick_bar_schedule, R.drawable.ic_today),
-                Button(R.id.quick_bar_deadline, R.drawable.ic_alarm),
-                Button(R.id.quick_bar_state, R.drawable.ic_flag),
-                Button(R.id.quick_bar_done, R.drawable.ic_check_circle_outline)
+                Button(R.id.quick_bar_schedule, R.drawable.ic_today, R.string.schedule),
+                Button(R.id.quick_bar_deadline, R.drawable.ic_alarm, R.string.deadline),
+                Button(R.id.quick_bar_state, R.drawable.ic_flag, R.string.state),
+                Button(R.id.quick_bar_done, R.drawable.ic_check_circle_outline, R.string.done)
             )
 
             private val LEFT_IN_BOOK = listOf(
-                Button(R.id.quick_bar_delete, R.drawable.ic_delete),
-                Button(R.id.quick_bar_new_above, R.drawable.cic_new_above),
-                Button(R.id.quick_bar_new_under, R.drawable.cic_new_under),
-                Button(R.id.quick_bar_new_below, R.drawable.cic_new_below),
-                Button(R.id.quick_bar_refile, R.drawable.ic_move_to_inbox)
+                Button(R.id.quick_bar_delete, R.drawable.ic_delete, R.string.delete),
+                Button(R.id.quick_bar_new_above, R.drawable.cic_new_above, R.string.new_above),
+                Button(R.id.quick_bar_new_under, R.drawable.cic_new_under, R.string.new_under),
+                Button(R.id.quick_bar_new_below, R.drawable.cic_new_below, R.string.new_below),
+                Button(R.id.quick_bar_refile, R.drawable.ic_move_to_inbox, R.string.refile)
             )
 
             private val LEFT_IN_QUERY = listOf(
-                Button(R.id.quick_bar_focus, R.drawable.ic_center_focus_strong)
+                Button(R.id.quick_bar_focus, R.drawable.ic_center_focus_strong, R.string.open)
             )
 
             fun fromPreferences(@Suppress("UNUSED_PARAMETER") context: Context): Buttons {
