@@ -5,13 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.longClick
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.contrib.DrawerActions.open
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.orgzly.R
-import com.orgzly.android.BookFormat
 import com.orgzly.android.OrgzlyTest
+import com.orgzly.android.db.entity.SavedSearch
 import com.orgzly.android.espresso.EspressoUtils.clickSetting
 import com.orgzly.android.espresso.EspressoUtils.onNoteInBook
 import com.orgzly.android.prefs.AppPreferences
@@ -68,6 +67,16 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
                 R.string.pref_value_book_details_last_action,
             ).map(context.resources::getString)
         )
+
+        dataRepository.replaceSavedSearches(listOf(
+            SavedSearch(0, "10 days agenda", ".it.done ad.10", 0),
+            SavedSearch(0, "Work in progress", "tn.wip b.gtd", 0),
+            SavedSearch(0, "Pre travel", "t.pre@travel", 0),
+            SavedSearch(0, "Post travel", "t.post@travel", 0),
+            SavedSearch(0, "@ Office", "t.l@office b.gtd", 0),
+            SavedSearch(0, "@ Market", "t.l@market b.gtd", 0),
+            SavedSearch(0, "@ Downtown", "t.l@downtown b.gtd", 0),
+        ))
     }
 
     private fun importBooks() {
@@ -102,7 +111,8 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
 
         // Open quick-menu
         // Not working
-        // onNoteInBook(4).perform(swipeRight())
+        onNoteInBook(4).perform(swipeRight())
+        onNoteInBook(4).perform(swipeRight())
 
         // Fold a note
         onView(allOf(
@@ -131,7 +141,8 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
 
         onView(withId(R.id.drawer_layout)).perform(open())
 
-        onView(allOf(isDescendantOfA(withId(R.id.drawer_navigation_view)), withText(R.string.agenda)))
+        onView(allOf(isDescendantOfA(
+            withId(R.id.drawer_navigation_view)), withText("10 days agenda")))
             .perform(click())
 
         takeScreenshot("agenda.png")
@@ -173,35 +184,6 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
         // onView(withId(R.id.main_content)).check(matches(isDisplayed()))
         SystemClock.sleep(1000)
     }
-
-//    private fun setupSavedSearches() {
-//        [
-//            {
-//                "name": "Agenda",
-//                "query": ".it.done ad.7"
-//            },
-//            {
-//                "name": "Next 3 days",
-//                "query": "s.ge.today .it.done ad.3"
-//            },
-//            {
-//                "name": "Projects",
-//                "query": "(b.Work or b.Home) i.todo"
-//            },
-//            {
-//                "name": "Next actions",
-//                "query": "i.next"
-//            },
-//            {
-//                "name": "Some day \/ Maybe",
-//                "query": "t.@some"
-//            },
-//            {
-//                "name": "Errands",
-//                "query": "t.errand"
-//            }
-//        ]
-//    }
 
     private fun takeScreenshot(name: String) {
         return // Set the breakpoint there
