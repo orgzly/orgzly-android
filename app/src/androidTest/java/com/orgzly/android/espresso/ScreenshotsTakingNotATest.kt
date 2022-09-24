@@ -1,7 +1,6 @@
 package com.orgzly.android.espresso
 
 import android.os.SystemClock
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
@@ -10,13 +9,13 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.longClick
 import androidx.test.espresso.contrib.DrawerActions.open
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.uiautomator.UiDevice
 import com.orgzly.R
+import com.orgzly.android.BookFormat
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.espresso.EspressoUtils.clickSetting
 import com.orgzly.android.espresso.EspressoUtils.onNoteInBook
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.repos.RepoType
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.settings.SettingsActivity
 import org.hamcrest.CoreMatchers.allOf
@@ -28,6 +27,7 @@ import java.io.File
 
 @Ignore("Not a test")
 class ScreenshotsTakingNotATest : OrgzlyTest() {
+    private lateinit var scenario: ActivityScenario<out AppCompatActivity>
 
     companion object {
         private const val SCREENSHOTS_DIRECTORY = "/sdcard/Download/screenshots"
@@ -53,7 +53,34 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
     override fun setUp() {
         super.setUp()
 
-        dataRepository.importGettingStartedBook()
+        importBooks()
+
+        AppPreferences.colorTheme(context, "system")
+
+        AppPreferences.displayedBookDetails(
+            context,
+            listOf(
+                R.string.pref_value_book_details_mtime,
+                R.string.pref_value_book_details_notes_count,
+                R.string.pref_value_book_details_link_url,
+                R.string.pref_value_book_details_encoding_detected,
+                R.string.pref_value_book_details_encoding_used,
+                R.string.pref_value_book_details_last_action,
+            ).map(context.resources::getString)
+        )
+    }
+
+    private fun importBooks() {
+        /*
+         * Getting Started.org
+         * README.org
+         * changelog.org
+         * miscellaneous.org
+         */
+        testUtils.setupRepo(RepoType.DIRECTORY, "file:/data/data/com.orgzly/cache");
+
+        testUtils.sync()
+        testUtils.sync() // For "No change"
     }
 
     @Test
@@ -63,12 +90,13 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
         takeScreenshot("books.png")
 
         onView(withId(R.id.drawer_layout)).perform(open())
+        onView(withId(R.id.sync_button_container)).perform(click()) // Sync for fresh "Last sync"
 
         takeScreenshot("navigation-drawer.png")
 
         onView(allOf(
             isDescendantOfA(withId(R.id.drawer_navigation_view)),
-            withText(R.string.getting_started_notebook_name)
+            withText("Getting Started")
         ))
             .perform(click())
 
@@ -111,12 +139,10 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
 
     @Test
     fun mainDark() {
-        AppPreferences.colorTheme(context, "dark")
-        AppPreferences.darkColorScheme(context, "dark")
-
-        startActivity(MainActivity::class.java)
+        startActivity(MainActivity::class.java, true)
 
         onView(withId(R.id.drawer_layout)).perform(open())
+        onView(withId(R.id.sync_button_container)).perform(click()) // Sync for fresh "Last sync"
 
         takeScreenshot("navigation-drawer-dark.png")
     }
@@ -131,8 +157,18 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
         takeScreenshot("repositories.png")
     }
 
-    private fun startActivity(activityClass: Class<out AppCompatActivity>) {
-        ActivityScenario.launch(activityClass)
+    private fun startActivity(activityClass: Class<out AppCompatActivity>, nightMode: Boolean = false) {
+        if (nightMode) {
+            // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
+            AppPreferences.colorTheme(context, "dark")
+            AppPreferences.darkColorScheme(context, "dynamic")
+
+        } else {
+            // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+
+        scenario = ActivityScenario.launch(activityClass)
 
         // onView(withId(R.id.main_content)).check(matches(isDisplayed()))
         SystemClock.sleep(1000)
@@ -168,12 +204,19 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
 //    }
 
     private fun takeScreenshot(name: String) {
-        val screenshotFile = File(SCREENSHOTS_DIRECTORY, name)
+        return // Set the breakpoint there
 
-        UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).run {
-            if (!takeScreenshot(screenshotFile, 1.0f, 100)) {
-                throw Exception("Failed to create screenshot $name")
-            }
-        }
+        /* Using Android Studio for framing instead of
+         * https://developer.android.com/distribute/marketing-tools/device-art-generator
+         * which doesn't align the images correctly.
+         */
+
+//        File(SCREENSHOTS_DIRECTORY, name).let { file ->
+//            UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()).run {
+//                if (!takeScreenshot(file, 1.0f, 100)) {
+//                    throw Exception("Failed to create screenshot $name")
+//                }
+//            }
+//        }
     }
 }
