@@ -23,6 +23,12 @@
         android:summary="@string/pref_title_summary_reminders_for_event_times"
         android:defaultValue="@bool/pref_default_use_reminders_for_event_times" />
 
+    <SwitchPreference
+        android:key="@string/pref_key_reminders_sticky"
+        android:title="@string/pref_title_reminders_remindersSticky"
+        android:summary="@string/pref_title_summary_remindersSticky"
+        android:defaultValue="@bool/pref_default_reminders_sticky" />
+
     <com.orgzly.android.prefs.TimePreference
         android:key="@string/pref_key_daily_reminder_time"
         android:title="@string/pref_title_daily_reminder_time" />
