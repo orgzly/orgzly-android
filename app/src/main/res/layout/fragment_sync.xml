@@ -15,10 +15,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:listDivider"/>
+        <View style="@style/HorizontalDivider" />
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/sync_progress_bar"
