@@ -98,31 +98,26 @@ object WidgetColors {
         "dynamic-day" to mapOf(
             "todo" to R.color.widget_light_state_todo_color,
             "done" to R.color.widget_light_state_done_color,
-            "unknown" to R.color.widget_light_state_unknown_color,
             "post title" to R.color.widget_light_post_title_color,
         ),
         "dynamic-night" to mapOf(
             "todo" to R.color.widget_dark_state_todo_color,
             "done" to R.color.widget_dark_state_done_color,
-            "unknown" to R.color.widget_dark_state_unknown_color,
             "post title" to R.color.widget_dark_post_title_color,
         ),
         "light" to mapOf(
             "todo" to R.color.widget_light_state_todo_color,
             "done" to R.color.widget_light_state_done_color,
-            "unknown" to R.color.widget_light_state_unknown_color,
             "post title" to R.color.widget_light_post_title_color,
         ),
         "dark" to mapOf(
             "todo" to R.color.widget_dark_state_todo_color,
             "done" to R.color.widget_dark_state_done_color,
-            "unknown" to R.color.widget_dark_state_unknown_color,
             "post title" to R.color.widget_dark_post_title_color,
         ),
         "black" to mapOf(
             "todo" to R.color.widget_black_state_todo_color,
             "done" to R.color.widget_black_state_done_color,
-            "unknown" to R.color.widget_black_state_unknown_color,
             "post title" to R.color.widget_black_post_title_color,
         )
     )

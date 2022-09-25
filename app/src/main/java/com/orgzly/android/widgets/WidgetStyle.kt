@@ -203,7 +203,6 @@ object WidgetStyle {
         return TitleGenerator.TitleAttributes(
             getColor(context, stateColorsKey, "todo"),
             getColor(context, stateColorsKey, "done"),
-            getColor(context, stateColorsKey, "unknown"),
             postTitleTextSize(context).toInt(),
             getColor(context, stateColorsKey, "post title"))
     }

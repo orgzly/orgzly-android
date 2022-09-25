@@ -52,7 +52,6 @@
 
         <item name="item_head_state_done_color">@color/green_900</item>
         <item name="item_head_state_todo_color">@color/red_900</item>
-        <item name="item_head_state_unknown_color">@color/blue_900</item>
     </style>
 
     <style name="AppDarkThemeCommon" parent="Theme.Material3.DynamicColors.Dark">
@@ -102,7 +101,6 @@
 
         <item name="item_head_state_done_color">@color/green_200</item>
         <item name="item_head_state_todo_color">@color/red_200</item>
-        <item name="item_head_state_unknown_color">@color/blue_200</item>
     </style>
 
     <style name="AppLightTheme" parent="AppLightThemeCommon">

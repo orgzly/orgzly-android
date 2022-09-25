@@ -146,12 +146,10 @@ public class TitleGenerator {
 
         ForegroundColorSpan color;
 
-        if (AppPreferences.todoKeywordsSet(mContext).contains(note.getState())) {
-            color = attributes.colorTodo;
-        } else if (AppPreferences.doneKeywordsSet(mContext).contains(note.getState())) {
+        if (AppPreferences.doneKeywordsSet(mContext).contains(note.getState())) {
             color = attributes.colorDone;
         } else {
-            color = attributes.colorUnknown;
+            color = attributes.colorTodo;
         }
 
         str.setSpan(color, 0, str.length(), 0);
@@ -164,16 +162,14 @@ public class TitleGenerator {
     }
 
     public static class TitleAttributes {
-        private ForegroundColorSpan colorTodo;
-        private ForegroundColorSpan colorDone;
-        private ForegroundColorSpan colorUnknown;
-        private AbsoluteSizeSpan postTitleTextSize;
-        private ForegroundColorSpan postTitleTextColor;
+        private final ForegroundColorSpan colorTodo;
+        private final ForegroundColorSpan colorDone;
+        private final AbsoluteSizeSpan postTitleTextSize;
+        private final ForegroundColorSpan postTitleTextColor;
 
-        public TitleAttributes(int colorTodo, int colorDone, int colorUnknown, int postTitleTextSize, int postTitleTextColor) {
+        public TitleAttributes(int colorTodo, int colorDone, int postTitleTextSize, int postTitleTextColor) {
             this.colorTodo = new ForegroundColorSpan(colorTodo);
             this.colorDone = new ForegroundColorSpan(colorDone);
-            this.colorUnknown = new ForegroundColorSpan(colorUnknown);
             this.postTitleTextSize = new AbsoluteSizeSpan(postTitleTextSize);
             this.postTitleTextColor = new ForegroundColorSpan(postTitleTextColor);
         }

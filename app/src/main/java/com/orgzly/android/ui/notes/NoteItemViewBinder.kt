@@ -40,7 +40,6 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
         val titleAttributes = TitleGenerator.TitleAttributes(
                 attrs.todoColor,
                 attrs.doneColor,
-                attrs.unknownColor,
                 attrs.postTitleTextSize,
                 attrs.postTitleTextColor)
 
@@ -489,7 +488,6 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
     private data class Attrs(
         @ColorInt val todoColor: Int,
         @ColorInt val doneColor: Int,
-        @ColorInt val unknownColor: Int,
         val postTitleTextSize: Int,
         @ColorInt val postTitleTextColor: Int
     ) {
@@ -500,16 +498,14 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
                     intArrayOf(
                         R.attr.item_head_state_todo_color,
                         R.attr.item_head_state_done_color,
-                        R.attr.item_head_state_unknown_color,
                         R.attr.item_head_post_title_text_size,
                         android.R.attr.textColorTertiary)) { typedArray ->
 
                     Attrs(
                         typedArray.getColor(0, 0),
                         typedArray.getColor(1, 0),
-                        typedArray.getColor(2, 0),
-                        typedArray.getDimensionPixelSize(3, 0),
-                        typedArray.getColor(4, 0))
+                        typedArray.getDimensionPixelSize(2, 0),
+                        typedArray.getColor(3, 0))
                 }
             }
         }

@@ -49,6 +49,5 @@
     <declare-styleable name="ColorScheme">
         <attr name="item_head_state_done_color" format="color"/>
         <attr name="item_head_state_todo_color" format="color"/>
-        <attr name="item_head_state_unknown_color" format="color"/>
     </declare-styleable>
 </resources>
