@@ -4,6 +4,8 @@ apply plugin: 'kotlin-kapt'
 
 
 android {
+    namespace 'com.orgzly'
+
     compileSdkVersion 32
 
     defaultConfig {
