@@ -15,48 +15,56 @@
         app:navigationIcon="@drawable/ic_close" />
 
     <!-- Breadcrumbs -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/dialog_refile_second_bar"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        style="?attr/materialCardViewElevatedStyle"
+        app:cardElevation="2dp"
+        app:cardCornerRadius="0dp">
 
-        <HorizontalScrollView
-            android:id="@+id/dialog_refile_breadcrumbs_scroll_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:scrollbars="none"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/dialog_refile_refile_here"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dialog_refile_second_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/dialog_refile_breadcrumbs"
+            <HorizontalScrollView
+                android:id="@+id/dialog_refile_breadcrumbs_scroll_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scrollbars="none"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/dialog_refile_refile_here"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/dialog_refile_breadcrumbs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:paddingStart="@dimen/screen_edge"
+                    android:paddingEnd="@dimen/screen_edge"
+                    android:scrollHorizontally="true"
+                    android:gravity="center_vertical"
+                    android:linksClickable="true"
+                    android:textColor="?android:textColorPrimary"
+                    tools:text="@string/breadcrumbs_sample" />
+            </HorizontalScrollView>
+
+            <ImageButton
+                android:id="@+id/dialog_refile_refile_here"
+                style="@style/BorderlessButton"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:paddingStart="@dimen/screen_edge"
-                android:paddingEnd="@dimen/screen_edge"
-                android:scrollHorizontally="true"
-                android:gravity="center_vertical"
-                android:linksClickable="true"
-                android:textColor="?android:textColorPrimary"
-                tools:text="@string/breadcrumbs_sample" />
-        </HorizontalScrollView>
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/refile"
+                android:src="@drawable/ic_move_to_inbox"
+                app:layout_constraintBottom_toBottomOf="@+id/dialog_refile_breadcrumbs_scroll_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/dialog_refile_breadcrumbs_scroll_view" />
 
-        <ImageButton
-            android:id="@+id/dialog_refile_refile_here"
-            style="@style/BorderlessButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:contentDescription="@string/refile"
-            android:src="@drawable/ic_move_to_inbox"
-            app:layout_constraintBottom_toBottomOf="@+id/dialog_refile_breadcrumbs_scroll_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/dialog_refile_breadcrumbs_scroll_view" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <View style="@style/HorizontalDivider" />
 
@@ -66,6 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:clipToPadding="false" />
