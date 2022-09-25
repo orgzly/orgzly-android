@@ -183,9 +183,6 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
     private fun logAction(msg: String) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, msg)
 
-        //        NotificationManager notificationManager =
-//                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//
 //        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
 //                .setCategory(NotificationCompat.CATEGORY_REMINDER)
 //                .setPriority(NotificationCompat.PRIORITY_MAX)

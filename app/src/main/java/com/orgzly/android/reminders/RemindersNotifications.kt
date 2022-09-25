@@ -18,6 +18,7 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.notifications.Notifications
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.ActivityUtils.mainActivityPendingIntent
+import com.orgzly.android.ui.util.getNotificationManager
 import com.orgzly.android.util.OrgFormatter
 import com.orgzly.android.util.UserTimeFormatter
 
@@ -27,8 +28,7 @@ object RemindersNotifications {
     private val LIGHTS = Triple(Color.BLUE, 1000, 5000)
 
     fun showNotification(context: Context, notes: List<NoteReminder>) {
-        val notificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = context.getNotificationManager()
 
         for (noteReminder in notes) {
             val wearableExtender = NotificationCompat.WearableExtender()

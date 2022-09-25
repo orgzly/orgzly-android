@@ -8,6 +8,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.orgzly.R
 import com.orgzly.android.reminders.RemindersNotifications
+import com.orgzly.android.ui.util.getNotificationManager
 
 
 /**
@@ -48,8 +49,7 @@ object NotificationChannels {
 
         channel.setShowBadge(false)
 
-        val mNotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        mNotificationManager.createNotificationChannel(channel)
+        context.getNotificationManager().createNotificationChannel(channel)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -69,8 +69,7 @@ object NotificationChannels {
 
         channel.setShowBadge(false)
 
-        val mNotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        mNotificationManager.createNotificationChannel(channel)
+        context.getNotificationManager().createNotificationChannel(channel)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -90,8 +89,7 @@ object NotificationChannels {
 
         channel.setShowBadge(false)
 
-        val mNotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        mNotificationManager.createNotificationChannel(channel)
+        context.getNotificationManager().createNotificationChannel(channel)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -111,7 +109,6 @@ object NotificationChannels {
 
         channel.setShowBadge(true)
 
-        val mNotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        mNotificationManager.createNotificationChannel(channel)
+        context.getNotificationManager().createNotificationChannel(channel)
     }
 }

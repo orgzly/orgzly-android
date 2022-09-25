@@ -38,8 +38,7 @@ object ActivityUtils {
             // If no view currently has focus, create a new one to grab a window token from it
             val view = activity.currentFocus ?: View(activity)
 
-            val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
+            activity.getInputMethodManager().hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 
@@ -96,9 +95,7 @@ object ActivityUtils {
 
         scrollView?.viewTreeObserver?.addOnGlobalLayoutListener(listener)
 
-        val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
-        showSoftInput(imm, view, delay, 0) {
+        showSoftInput(activity.getInputMethodManager(), view, delay, 0) {
             if (scrollView != null) {
                 Handler().postDelayed({
                     scrollView.viewTreeObserver?.removeOnGlobalLayoutListener(listener)

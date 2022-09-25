@@ -13,6 +13,7 @@ import com.orgzly.BuildConfig
 import com.orgzly.android.AppIntent
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.ui.util.getAlarmManager
 import com.orgzly.android.util.LogUtils
 import org.joda.time.DateTime
 
@@ -30,8 +31,7 @@ object RemindersScheduler {
     }
 
     fun cancelAll(context: Context) {
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
-        alarmManager?.cancel(reminderTriggeredIntent(context))
+        context.getAlarmManager().cancel(reminderTriggeredIntent(context))
     }
 
     fun notifyDataSetChanged(context: Context) {
@@ -65,32 +65,26 @@ object RemindersScheduler {
     }
 
     private fun schedule(context: Context, intent: PendingIntent, inMs: Long, hasTime: Boolean) {
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+        val alarmManager = context.getAlarmManager()
 
-        if (alarmManager != null) {
-            // TODO: Add preferences to control *how* to schedule the alarms
-            if (hasTime) {
-                // scheduleAlarmClock(alarmManager, intent, inMs)
+        // TODO: Add preferences to control *how* to schedule the alarms
+        if (hasTime) {
+            // scheduleAlarmClock(alarmManager, intent, inMs)
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    scheduleExactAndAllowWhileIdle(alarmManager, intent, inMs)
-                } else {
-                    scheduleExact(alarmManager, intent, inMs)
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                scheduleExactAndAllowWhileIdle(alarmManager, intent, inMs)
             } else {
-                // Does not trigger while dozing
                 scheduleExact(alarmManager, intent, inMs)
             }
-
-            // Intent received, notifications not displayed by default
-            // Note: Neither setAndAllowWhileIdle() nor setExactAndAllowWhileIdle() can fire
-            // alarms more than once per 9 minutes, per app.
-            // scheduleExactAndAllowWhileIdle(context, intent, inMs)
-
         } else {
-            Log.e(TAG, "Failed getting AlarmManager")
-            return
+            // Does not trigger while dozing
+            scheduleExact(alarmManager, intent, inMs)
         }
+
+        // Intent received, notifications not displayed by default
+        // Note: Neither setAndAllowWhileIdle() nor setExactAndAllowWhileIdle() can fire
+        // alarms more than once per 9 minutes, per app.
+        // scheduleExactAndAllowWhileIdle(context, intent, inMs)
     }
 
     private fun scheduleAlarmClock(alarmManager: AlarmManager, intent: PendingIntent, inMs: Long) {

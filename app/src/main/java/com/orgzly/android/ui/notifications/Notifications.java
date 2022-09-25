@@ -2,7 +2,6 @@ package com.orgzly.android.ui.notifications;
 
 import static com.orgzly.android.NewNoteBroadcastReceiver.NOTE_TITLE;
 
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +21,7 @@ import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.main.MainActivity;
 import com.orgzly.android.ui.share.ShareActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
+import com.orgzly.android.ui.util.SystemServices;
 import com.orgzly.android.util.LogUtils;
 
 public class Notifications {
@@ -96,10 +96,7 @@ public class Notifications {
                     context.getString(R.string.sync),
                     syncPendingIntent);
 
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.notify(ONGOING_NEW_NOTE_ID, builder.build());
+        SystemServices.getNotificationManager(context).notify(ONGOING_NEW_NOTE_ID, builder.build());
     }
 
     private static int getNotificationPriority(String priority) {
@@ -120,9 +117,6 @@ public class Notifications {
     }
 
     public static void cancelNewNoteNotification(Context context) {
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.cancel(ONGOING_NEW_NOTE_ID);
+        SystemServices.getNotificationManager(context).cancel(ONGOING_NEW_NOTE_ID);
     }
 }

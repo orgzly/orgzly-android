@@ -22,6 +22,8 @@ import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.main.MainActivity;
 import com.orgzly.android.ui.share.ShareActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
+import com.orgzly.android.ui.util.ExtensionsKt;
+import com.orgzly.android.ui.util.SystemServices;
 import com.orgzly.android.usecase.NoteUpdateStateToggle;
 import com.orgzly.android.usecase.UseCaseRunner;
 import com.orgzly.android.util.LogUtils;
@@ -184,7 +186,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
          schedule updates via AlarmManager, because we don't want to wake the device on every update
          see https://developer.android.com/guide/topics/appwidgets/index.html#MetaData
          */
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = SystemServices.getAlarmManager(context);
 
         PendingIntent intent = getAlarmIntent(context);
 
@@ -213,9 +215,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
     }
 
     private void clearUpdate(Context context) {
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-        alarmManager.cancel(getAlarmIntent(context));
+        SystemServices.getAlarmManager(context).cancel(getAlarmIntent(context));
     }
 
     private PendingIntent getAlarmIntent(Context context) {

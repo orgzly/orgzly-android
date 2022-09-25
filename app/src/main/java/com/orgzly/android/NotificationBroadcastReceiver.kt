@@ -8,6 +8,7 @@ import android.os.Build
 import com.orgzly.BuildConfig
 import com.orgzly.android.reminders.RemindersScheduler
 import com.orgzly.android.ui.notifications.Notifications
+import com.orgzly.android.ui.util.getNotificationManager
 import com.orgzly.android.usecase.NoteUpdateStateDone
 import com.orgzly.android.usecase.UseCaseRunner.run
 import com.orgzly.android.util.LogUtils.d
@@ -50,11 +51,10 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
         val id = intent.getIntExtra(AppIntent.EXTRA_NOTIFICATION_ID, 0)
 
         if (id > 0) {
-            val notificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-            notificationManager.cancel(tag, id)
-            cancelRemindersSummary(notificationManager)
+            context.getNotificationManager().let {
+                it.cancel(tag, id)
+                cancelRemindersSummary(it)
+            }
         }
     }
 

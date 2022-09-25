@@ -2,8 +2,6 @@ package com.orgzly.android.ui.util
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
-import android.app.NotificationManager
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.res.TypedArray
 import android.net.ConnectivityManager
@@ -40,17 +38,11 @@ fun <R> Context.styledAttributes(set: AttributeSet, @StyleableRes attrs: IntArra
  * Determines if there is internet connection available.
  */
 fun Context.haveNetworkConnection(): Boolean {
-    val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-
-    return if (cm != null) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            haveNetworkConnection(cm)
-
-        } else {
-            haveNetworkConnectionPreM(cm)
-        }
-    } else false
-
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        haveNetworkConnection(getConnectivityManager())
+    } else {
+        haveNetworkConnectionPreM(getConnectivityManager())
+    }
 }
 
 @TargetApi(Build.VERSION_CODES.M)
@@ -73,14 +65,6 @@ private fun haveNetworkConnectionPreM(cm: ConnectivityManager): Boolean {
     }
 
     return false
-}
-
-fun Context.getNotificationManager(): NotificationManager {
-    return getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-}
-
-fun Context.getClipboardManager(): ClipboardManager {
-    return getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 }
 
 @SuppressLint("ResourceType")
