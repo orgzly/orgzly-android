@@ -6,32 +6,30 @@ import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.os.Environment
-import androidx.core.content.FileProvider
-import androidx.core.content.res.ResourcesCompat
 import android.text.Spannable
 import android.text.style.ImageSpan
 import android.view.View
+import android.widget.TextView
+import androidx.core.content.FileProvider
+import androidx.core.content.res.ResourcesCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.orgzly.BuildConfig
+import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.ui.views.TextViewWithMarkup
 import com.orgzly.android.ui.views.style.FileLinkSpan
-import com.orgzly.android.util.AppPermissions
-import java.io.File
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
-import com.bumptech.glide.request.RequestOptions
-import com.orgzly.R
 import com.orgzly.android.usecase.LinkFindTarget
 import com.orgzly.android.usecase.UseCaseRunner
+import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
-
+import java.io.File
 
 object ImageLoader {
     @JvmStatic
-    fun loadImages(textWithMarkup: TextViewWithMarkup) {
+    fun loadImages(textWithMarkup: TextView) {
         val context = textWithMarkup.context
 
         // Only if AppPreferences.displayImages(context) is true
@@ -46,7 +44,7 @@ object ImageLoader {
         }
     }
 
-    private fun loadImage(textWithMarkup: TextViewWithMarkup, span: FileLinkSpan) {
+    private fun loadImage(textWithMarkup: TextView, span: FileLinkSpan) {
         val path = span.path
 
         if (hasSupportedExtension(path)) {
@@ -84,7 +82,7 @@ object ImageLoader {
                         .asBitmap()
                         .apply(RequestOptions().placeholder(drawable))
                         .load(contentUri)
-                        .into(object : SimpleTarget<Bitmap>() {
+                        .into(object : CustomTarget<Bitmap>() {
 
                             val start = text.getSpanStart(span)
                             val end = text.getSpanEnd(span)
@@ -116,6 +114,9 @@ object ImageLoader {
                                 }
 
                                 text.setSpan(ImageSpan(bitmapDrawable), start, end, flags)
+                            }
+
+                            override fun onLoadCleared(placeholder: Drawable?) {
                             }
                         })
             } else {

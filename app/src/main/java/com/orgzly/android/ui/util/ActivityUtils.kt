@@ -164,7 +164,7 @@ object ActivityUtils {
             return MaterialAlertDialogBuilder(activity)
                 .setTitle(R.string.keep_screen_on)
                 .setMessage(R.string.keep_screen_on_desc)
-                .setPositiveButton(android.R.string.yes) { dialog, _ ->
+                .setPositiveButton(android.R.string.ok) { dialog, _ ->
                     keepScreenOnSet(activity)
                     item.isChecked = true
                     dialog.dismiss()

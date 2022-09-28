@@ -116,7 +116,7 @@ class BookAdapter(
 
                 quickBar.bind(holder)
 
-                getSelection().setIsSelectedBackground(holder.itemView, note.id)
+                getSelection().setBackgroundIfSelected(holder.itemView, note.id)
             }
         }
     }

@@ -130,6 +130,8 @@ class BookFragment :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
+
         val quickBars = QuickBars(binding.root.context, true)
 
         viewAdapter = BookAdapter(mBookId, binding.root.context, this, quickBars, inBook = true).apply {
@@ -166,16 +168,6 @@ class BookFragment :
         }
 
         binding.swipeContainer.setup()
-    }
-
-    override fun onQuickBarButtonClick(buttonId: Int, itemId: Long) {
-        handleActionItemClick(setOf(itemId), buttonId)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         viewModel.flipperDisplayedChild.observe(viewLifecycleOwner, Observer { child ->
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed flipper displayed child: $child")
@@ -220,7 +212,7 @@ class BookFragment :
 
         viewModel.refileRequestEvent.observeSingle(viewLifecycleOwner, Observer {
             RefileFragment.getInstance(it.selected, it.count)
-                    .show(requireFragmentManager(), RefileFragment.FRAGMENT_TAG)
+                    .show(childFragmentManager, RefileFragment.FRAGMENT_TAG)
         })
 
         viewModel.notesDeleteRequest.observeSingle(viewLifecycleOwner, Observer { pair ->
@@ -297,7 +289,7 @@ class BookFragment :
         } else if (notes == null) {
             viewModel.setFlipperDisplayedChild(BookViewModel.FlipperDisplayedChild.LOADING)
 
-        } else if (viewAdapter.isPrefaceDisplayed() || !notes.isNullOrEmpty()) {
+        } else if (notes.isNotEmpty() || viewAdapter.isPrefaceDisplayed()) {
             viewModel.setFlipperDisplayedChild(BookViewModel.FlipperDisplayedChild.LOADED)
 
         } else {
@@ -339,11 +331,9 @@ class BookFragment :
         } ?: throw IllegalArgumentException("No arguments passed")
     }
 
-//    override fun onPrepareOptionsMenu(menu: Menu) {
-//        super.onPrepareOptionsMenu(menu)
-//
-//
-//    }
+    override fun onQuickBarButtonClick(buttonId: Int, itemId: Long) {
+        handleActionItemClick(setOf(itemId), buttonId)
+    }
 
     /*
      * Actions
