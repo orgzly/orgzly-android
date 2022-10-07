@@ -51,34 +51,31 @@ object ActivityUtils {
         scrollView: ScrollView? = null,
         scrollToTopOfView: View? = null) {
 
-        if (activity != null) {
 
-            // Focus on view or use currently focused view
-            val focusedView = if (viewToFocus != null) {
-                if (viewToFocus.requestFocus()) {
-                    viewToFocus
-                } else {
-                    null // Failed to get focus
-                }
-            } else {
-                activity.currentFocus
+        // Find a focused view to receive soft keyboard input.
+        val focusedView = if (viewToFocus != null) {
+            if (viewToFocus.requestFocus()) {
+                viewToFocus
+            } else { // Failed to get focus
+                null
             }
+        } else {
+            activity?.currentFocus
+        }
 
-            if (focusedView != null) {
-                if (BuildConfig.LOG_DEBUG)
-                    LogUtils.d(TAG, "Showing keyboard for view $focusedView in activity $activity")
+        if (focusedView != null) {
+            if (BuildConfig.LOG_DEBUG)
+                LogUtils.d(TAG, "Showing keyboard for view $focusedView in activity $activity")
 
-                doOpenSoftKeyboard(activity, focusedView, delay, scrollView, scrollToTopOfView)
+            doOpenSoftKeyboard(focusedView, delay, scrollView, scrollToTopOfView)
 
-            } else {
-                Log.w(TAG, "Can't open keyboard because view " + viewToFocus +
-                        " failed to get focus in activity " + activity)
-            }
+        } else {
+            Log.w(TAG, "Can't open keyboard because view " + viewToFocus +
+                    " failed to get focus in activity " + activity)
         }
     }
 
     private fun doOpenSoftKeyboard(
-        activity: Activity,
         view: View,
         delay: Long,
         scrollView: ScrollView?,
@@ -95,7 +92,7 @@ object ActivityUtils {
 
         scrollView?.viewTreeObserver?.addOnGlobalLayoutListener(listener)
 
-        showSoftInput(activity.getInputMethodManager(), view, delay, 0) {
+        showSoftInput(view.context.getInputMethodManager(), view, delay, 0) {
             if (scrollView != null) {
                 Handler().postDelayed({
                     scrollView.viewTreeObserver?.removeOnGlobalLayoutListener(listener)

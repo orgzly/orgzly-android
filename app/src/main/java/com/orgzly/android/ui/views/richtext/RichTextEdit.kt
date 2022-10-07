@@ -10,6 +10,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.AppCompatEditText
 import com.orgzly.BuildConfig
+import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.getInputMethodManager
 import com.orgzly.android.util.LogUtils
 
@@ -25,13 +26,10 @@ class RichTextEdit : AppCompatEditText {
 
         // Position the cursor and open the keyboard
         if (charOffset in 0..(text?.length ?: 0)) {
-            requestFocus()
-
-            context.getInputMethodManager()
-                .showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
-
             performClick()
             setSelection(charOffset)
+
+            ActivityUtils.openSoftKeyboard(null, this)
         }
 
         addTextChangedListener(userEditingTextWatcher)
