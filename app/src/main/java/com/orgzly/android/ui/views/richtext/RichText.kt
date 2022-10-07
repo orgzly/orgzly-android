@@ -67,6 +67,10 @@ class RichText(context: Context, attrs: AttributeSet?) : FrameLayout(context, at
         richTextView = findViewById(R.id.rich_text_view)
 
         richTextEdit.apply {
+            if (attributes.editId != 0) {
+                id = attributes.editId
+            }
+
             setCommonAttributes(this)
 
             inputType = attributes.inputType
@@ -91,6 +95,10 @@ class RichText(context: Context, attrs: AttributeSet?) : FrameLayout(context, at
         }
 
         richTextView.apply {
+            if (attributes.viewId != 0) {
+                id = attributes.viewId
+            }
+
             setCommonAttributes(this)
 
             if (attributes.editable) {
@@ -137,10 +145,6 @@ class RichText(context: Context, attrs: AttributeSet?) : FrameLayout(context, at
     }
 
     private fun setCommonAttributes(view: TextView) {
-        if (attributes.editId != 0) {
-            view.id = attributes.editId
-        }
-
         view.hint = attributes.hint
 
         if (attributes.textSize > 0) {
