@@ -220,7 +220,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             isNoteContentFolded().not().let { isFolded ->
                 // Close keyboard if content has a focus and it's being folded
                 if (isFolded && binding.content.hasFocus()) {
-                    ActivityUtils.closeSoftKeyboard(activity)
+                    KeyboardUtils.closeSoftKeyboard(activity)
                 }
 
                 setContentFoldState(isFolded)
@@ -902,7 +902,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     }
 
     private fun userSave() {
-        // ActivityUtils.closeSoftKeyboard(activity)
+        // KeyboardUtils.closeSoftKeyboard(activity)
 
         updatePayloadFromViews()
 
@@ -910,7 +910,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     }
 
     private fun userCancel(): Boolean {
-        ActivityUtils.closeSoftKeyboard(activity)
+        KeyboardUtils.closeSoftKeyboard(activity)
 
         updatePayloadFromViews()
 
@@ -943,7 +943,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     }
 
     private fun userFollowBookBreadcrumb() {
-        ActivityUtils.closeSoftKeyboard(activity)
+        KeyboardUtils.closeSoftKeyboard(activity)
 
         updatePayloadFromViews()
 
@@ -967,7 +967,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
     }
 
     private fun userFollowNoteBreadcrumb(ancestor: Note) {
-        ActivityUtils.closeSoftKeyboard(activity)
+        KeyboardUtils.closeSoftKeyboard(activity)
 
         updatePayloadFromViews()
 

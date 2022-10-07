@@ -17,7 +17,7 @@ import com.orgzly.android.repos.WebdavRepo.Companion.PASSWORD_PREF_KEY
 import com.orgzly.android.repos.WebdavRepo.Companion.USERNAME_PREF_KEY
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.showSnackbar
-import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.ui.util.KeyboardUtils
 import com.orgzly.android.util.UriUtils
 import com.orgzly.databinding.ActivityRepoWebdavBinding
 import com.orgzly.databinding.DialogCertificatesBinding
@@ -226,7 +226,7 @@ class WebdavRepoActivity : CommonActivity() {
     }
 
     private fun testConnection() {
-        ActivityUtils.closeSoftKeyboard(this)
+        KeyboardUtils.closeSoftKeyboard(this)
 
         if (!isInputValid()) {
             return

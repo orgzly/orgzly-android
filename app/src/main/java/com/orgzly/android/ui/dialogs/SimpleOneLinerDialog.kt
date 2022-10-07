@@ -1,20 +1,18 @@
 package com.orgzly.android.ui.dialogs
 
-import androidx.appcompat.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
-import android.view.WindowManager
 import android.widget.EditText
 import androidx.annotation.StringRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.R
-import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.ui.util.KeyboardUtils
 
 class SimpleOneLinerDialog : DialogFragment() {
     private lateinit var requestKey: String
@@ -66,11 +64,11 @@ class SimpleOneLinerDialog : DialogFragment() {
                 }
 
                 // Closing due to used android:windowSoftInputMode="stateUnchanged"
-                ActivityUtils.closeSoftKeyboard(activity)
+                KeyboardUtils.closeSoftKeyboard(activity)
             }
             .setNegativeButton(negativeButtonText) { _, _ ->
                 // Closing due to used android:windowSoftInputMode="stateUnchanged"
-                ActivityUtils.closeSoftKeyboard(activity)
+                KeyboardUtils.closeSoftKeyboard(activity)
             }
             .create()
 
@@ -81,7 +79,7 @@ class SimpleOneLinerDialog : DialogFragment() {
         }
 
         dialog.setOnShowListener {
-            ActivityUtils.openSoftKeyboard(activity, input)
+            KeyboardUtils.openSoftKeyboard(input)
         }
 
         return dialog

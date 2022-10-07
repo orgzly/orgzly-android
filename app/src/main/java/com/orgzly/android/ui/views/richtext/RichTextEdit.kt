@@ -1,17 +1,13 @@
 package com.orgzly.android.ui.views.richtext
 
 import android.content.Context
-import android.text.*
-import android.text.style.ClickableSpan
+import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.KeyEvent
-import android.view.MotionEvent
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.AppCompatEditText
 import com.orgzly.BuildConfig
-import com.orgzly.android.ui.util.ActivityUtils
-import com.orgzly.android.ui.util.getInputMethodManager
+import com.orgzly.android.ui.util.KeyboardUtils
 import com.orgzly.android.util.LogUtils
 
 class RichTextEdit : AppCompatEditText {
@@ -29,7 +25,7 @@ class RichTextEdit : AppCompatEditText {
             performClick()
             setSelection(charOffset)
 
-            ActivityUtils.openSoftKeyboard(null, this)
+            KeyboardUtils.openSoftKeyboard(this)
         }
 
         addTextChangedListener(userEditingTextWatcher)

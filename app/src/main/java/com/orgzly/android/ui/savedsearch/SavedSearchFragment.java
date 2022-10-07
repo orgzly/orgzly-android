@@ -1,6 +1,5 @@
 package com.orgzly.android.ui.savedsearch;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,7 +20,7 @@ import com.orgzly.android.db.entity.SavedSearch;
 import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.ui.main.SharedMainActivityViewModel;
 import com.orgzly.android.ui.savedsearches.SavedSearchesFragment;
-import com.orgzly.android.ui.util.ActivityUtils;
+import com.orgzly.android.ui.util.KeyboardUtils;
 import com.orgzly.android.util.LogUtils;
 import com.orgzly.databinding.FragmentSavedSearchBinding;
 
@@ -114,9 +113,8 @@ public class SavedSearchFragment extends Fragment implements DrawerItem {
          * Open a soft keyboard.
          * For new filters focus on name, for existing focus on query.
          */
-        Activity activity = getActivity();
-        if (viewToFocus != null && activity != null) {
-            ActivityUtils.openSoftKeyboard(activity, viewToFocus);
+        if (viewToFocus != null) {
+            KeyboardUtils.openSoftKeyboard(viewToFocus);
         }
 
         topToolbarToDefault();

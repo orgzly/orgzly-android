@@ -2,10 +2,8 @@ package com.orgzly.android.ui.repo.dropbox
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import androidx.appcompat.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
@@ -26,8 +24,7 @@ import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.RepoViewModel
 import com.orgzly.android.ui.repo.RepoViewModelFactory
 import com.orgzly.android.ui.showSnackbar
-import com.orgzly.android.ui.util.ActivityUtils
-import com.orgzly.android.ui.util.styledAttributes
+import com.orgzly.android.ui.util.KeyboardUtils
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.android.util.UriUtils
@@ -113,7 +110,7 @@ class DropboxRepoActivity : CommonActivity() {
                 binding.activityRepoDropboxDirectory,
                 binding.activityRepoDropboxDirectoryInputLayout)
 
-        ActivityUtils.openSoftKeyboard(this, binding.activityRepoDropboxDirectory)
+        KeyboardUtils.openSoftKeyboard(binding.activityRepoDropboxDirectory)
 
         client = DropboxClient(applicationContext, repoId)
 
@@ -162,7 +159,7 @@ class DropboxRepoActivity : CommonActivity() {
                 .setNegativeButton(R.string.cancel) { _, _ -> }
                 .create().apply {
                     setOnShowListener {
-                        ActivityUtils.openSoftKeyboard(this@DropboxRepoActivity, editView)
+                        KeyboardUtils.openSoftKeyboard(editView)
                     }
 
                     show()

@@ -17,14 +17,13 @@ import com.orgzly.android.reminders.RemindersScheduler
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.NoteStates
 import com.orgzly.android.ui.notifications.Notifications
-import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.ui.util.KeyboardUtils
 import com.orgzly.android.usecase.NoteReparseStateAndTitles
 import com.orgzly.android.usecase.NoteSyncCreatedAtTimeWithProperty
 import com.orgzly.android.usecase.UseCase
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.widgets.ListWidgetProvider
-import java.util.*
 
 /**
  * Displays settings.
@@ -187,7 +186,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
                 AppPreferences.updateStaticKeywords(context)
 
                 /* Re-parse notes. */
-                ActivityUtils.closeSoftKeyboard(activity)
+                KeyboardUtils.closeSoftKeyboard(activity)
                 listener?.onNotesUpdateRequest(NoteReparseStateAndTitles())
 
                 setDefaultStateForNewNote()

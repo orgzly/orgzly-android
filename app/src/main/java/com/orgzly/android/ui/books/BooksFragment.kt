@@ -42,7 +42,7 @@ import com.orgzly.android.ui.main.setupSearchView
 import com.orgzly.android.ui.repos.ReposActivity
 import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.showSnackbar
-import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.ui.util.KeyboardUtils
 import com.orgzly.android.ui.util.setup
 import com.orgzly.android.usecase.BookDelete
 import com.orgzly.android.util.LogUtils
@@ -373,8 +373,8 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
             true
         }
 
-        d.setOnShowListener { ActivityUtils.openSoftKeyboard(activity, dialogBinding.name) }
-        d.setOnDismissListener { ActivityUtils.closeSoftKeyboard(activity) }
+        d.setOnShowListener { KeyboardUtils.openSoftKeyboard(dialogBinding.name) }
+        d.setOnDismissListener { KeyboardUtils.closeSoftKeyboard(activity) }
 
         // Disable positive button if value is empty or same
         dialogBinding.name.addTextChangedListener(object : TextWatcher {

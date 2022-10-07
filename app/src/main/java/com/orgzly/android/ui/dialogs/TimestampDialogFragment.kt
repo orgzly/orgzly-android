@@ -14,7 +14,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.ui.TimeType
-import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.ui.util.KeyboardUtils
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.UserTimeFormatter
 import com.orgzly.databinding.DialogTimestampBinding
@@ -250,7 +250,7 @@ class TimestampDialogFragment : DialogFragment(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        ActivityUtils.closeSoftKeyboard(activity)
+        KeyboardUtils.closeSoftKeyboard(activity)
     }
 
     override fun onPause() {

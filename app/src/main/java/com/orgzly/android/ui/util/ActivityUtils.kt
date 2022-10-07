@@ -8,12 +8,8 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
-import android.os.Handler
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.*
-import android.view.inputmethod.InputMethodManager
-import android.widget.ScrollView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.appcompat.widget.Toolbar
@@ -28,104 +24,6 @@ import com.orgzly.android.util.LogUtils
 
 object ActivityUtils {
     private val TAG = ActivityUtils::class.java.name
-
-    @JvmStatic
-    fun closeSoftKeyboard(activity: Activity?) {
-        if (activity != null) {
-            if (BuildConfig.LOG_DEBUG)
-                LogUtils.d(TAG, "Hiding keyboard, current focus ${activity.currentFocus}")
-
-            // If no view currently has focus, create a new one to grab a window token from it
-            val view = activity.currentFocus ?: View(activity)
-
-            activity.getInputMethodManager().hideSoftInputFromWindow(view.windowToken, 0)
-        }
-    }
-
-    @JvmStatic
-    @JvmOverloads
-    fun openSoftKeyboard(
-        activity: Activity?,
-        viewToFocus: View?,
-        delay: Long = 0,
-        scrollView: ScrollView? = null,
-        scrollToTopOfView: View? = null) {
-
-
-        // Find a focused view to receive soft keyboard input.
-        val focusedView = if (viewToFocus != null) {
-            if (viewToFocus.requestFocus()) {
-                viewToFocus
-            } else { // Failed to get focus
-                null
-            }
-        } else {
-            activity?.currentFocus
-        }
-
-        if (focusedView != null) {
-            if (BuildConfig.LOG_DEBUG)
-                LogUtils.d(TAG, "Showing keyboard for view $focusedView in activity $activity")
-
-            doOpenSoftKeyboard(focusedView, delay, scrollView, scrollToTopOfView)
-
-        } else {
-            Log.w(TAG, "Can't open keyboard because view " + viewToFocus +
-                    " failed to get focus in activity " + activity)
-        }
-    }
-
-    private fun doOpenSoftKeyboard(
-        view: View,
-        delay: Long,
-        scrollView: ScrollView?,
-        scrollToTopOfView: View? = null) {
-
-        val listener = if (scrollView != null && scrollToTopOfView != null) {
-            // Keep scrolling the view as the keyboard opens
-            ViewTreeObserver.OnGlobalLayoutListener {
-                scrollView.scrollTo(0, scrollToTopOfView.top)
-            }
-        } else {
-            null
-        }
-
-        scrollView?.viewTreeObserver?.addOnGlobalLayoutListener(listener)
-
-        showSoftInput(view.context.getInputMethodManager(), view, delay, 0) {
-            if (scrollView != null) {
-                Handler().postDelayed({
-                    scrollView.viewTreeObserver?.removeOnGlobalLayoutListener(listener)
-                }, 500)
-            }
-        }
-    }
-
-    // With animations enabled, keyboard is not shown immediately. Try a few times
-    // TODO: Display keyboard when ready
-    private fun showSoftInput(imm: InputMethodManager, view: View, delay: Long, attempt: Int = 0, onShow: () -> Unit) {
-        Handler().postDelayed({
-            val shown = imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-
-            if (BuildConfig.LOG_DEBUG) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    LogUtils.d(TAG, "Keyboard shown: $shown (view attached:${view.isAttachedToWindow} has-focus:${view.hasFocus()})")
-                }
-            }
-
-            if (shown) {
-                onShow()
-
-            } else {
-                if (attempt < 3) {
-                    showSoftInput(imm, view, delay + 100, attempt + 1, onShow)
-                } else {
-                    if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Failed to show keyboard after $attempt retries")
-                }
-            }
-
-        }, delay)
-    }
 
     /**
      * Open "App info" settings, where permissions can be granted.

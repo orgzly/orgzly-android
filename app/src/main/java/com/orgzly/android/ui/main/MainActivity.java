@@ -16,7 +16,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.WindowCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -48,7 +47,7 @@ import com.orgzly.android.ui.savedsearch.SavedSearchFragment;
 import com.orgzly.android.ui.savedsearches.SavedSearchesFragment;
 import com.orgzly.android.ui.settings.SettingsActivity;
 import com.orgzly.android.ui.sync.SyncFragment;
-import com.orgzly.android.ui.util.ActivityUtils;
+import com.orgzly.android.ui.util.KeyboardUtils;
 import com.orgzly.android.usecase.BookExport;
 import com.orgzly.android.usecase.BookImportGettingStarted;
 import com.orgzly.android.usecase.BookSparseTreeForNote;
@@ -357,7 +356,7 @@ public class MainActivity extends CommonActivity
     private void drawerOpened() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
-        ActivityUtils.closeSoftKeyboard(this);
+        KeyboardUtils.closeSoftKeyboard(this);
     }
 
     private void drawerClosed() {
@@ -764,7 +763,7 @@ public class MainActivity extends CommonActivity
 
     public void popBackStackAndCloseKeyboard() {
         getSupportFragmentManager().popBackStack();
-        ActivityUtils.closeSoftKeyboard(this);
+        KeyboardUtils.closeSoftKeyboard(this);
     }
 
     /**
