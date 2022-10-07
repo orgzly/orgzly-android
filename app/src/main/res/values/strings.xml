@@ -712,4 +712,5 @@
     <string name="in_development">In development</string>
 
     <string name="select_notebook">Select notebook</string>
+    <string name="highlight_rich_text_being_edited">Highlight rich text being edited</string>
 </resources>

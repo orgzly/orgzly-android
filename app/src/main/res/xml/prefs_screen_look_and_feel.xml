@@ -67,6 +67,11 @@
             android:defaultValue="@bool/pref_default_styled_text_with_marks"/>
 
         <SwitchPreference
+            android:key="@string/pref_key_highlight_edited_rich_text"
+            android:title="@string/highlight_rich_text_being_edited"
+            android:defaultValue="@bool/pref_default_highlight_edited_rich_text" />
+
+        <SwitchPreference
             android:key="@string/pref_key_keep_screen_on_menu_item"
             android:title="@string/keep_screen_on_title"
             android:summary="@string/keep_screen_on_summary"
