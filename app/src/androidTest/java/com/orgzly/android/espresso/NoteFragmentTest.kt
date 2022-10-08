@@ -1,7 +1,6 @@
 package com.orgzly.android.espresso
 
 import android.content.pm.ActivityInfo
-import android.os.SystemClock
 import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.test.core.app.ActivityScenario
@@ -89,8 +88,8 @@ class NoteFragmentTest : OrgzlyTest() {
 
         onNoteInBook(1).perform(click())
 
-        onView(withId(R.id.title_edit))
-                .perform(*replaceTextCloseKeyboard("Note title changed"))
+        onView(withId(R.id.title)).perform(click())
+        onView(withId(R.id.title_edit)).perform(*replaceTextCloseKeyboard("Note title changed"))
 
         onView(withId(R.id.done)).perform(click()); // Note done
 
@@ -228,6 +227,7 @@ class NoteFragmentTest : OrgzlyTest() {
     @Test
     fun testTitleCanNotBeEmptyForExistingNote() {
         onNoteInBook(1).perform(click())
+        onView(withId(R.id.title)).perform(click())
         onView(withId(R.id.title_edit)).perform(*replaceTextCloseKeyboard(""))
         onView(withId(R.id.done)).perform(click()); // Note done
         onSnackbar().check(matches(withText(R.string.title_can_not_be_empty)))
@@ -520,7 +520,7 @@ class NoteFragmentTest : OrgzlyTest() {
         onView(withText(R.string.cancel)).perform(click())
 
         // Title remains the same
-        onView(withId(R.id.title)).check(matches(withText("1.1")))
+        onView(withId(R.id.title_edit)).check(matches(withText("1.1")))
     }
 
     // https://github.com/orgzly/orgzly-android/issues/605

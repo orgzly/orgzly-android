@@ -136,6 +136,7 @@ public class SyncingTest extends OrgzlyTest {
         // Change preface
         onBook(0).perform(click());
         onActionItemClick(R.id.books_options_menu_book_preface, R.string.edit_book_preface);
+        onView(withId(R.id.fragment_book_preface_content)).perform(click());
         onView(withId(R.id.fragment_book_preface_content_edit))
                 .perform(replaceTextCloseKeyboard("Modified preface"));
         onView(withId(R.id.done)).perform(click()); // Preface done
@@ -314,7 +315,7 @@ public class SyncingTest extends OrgzlyTest {
     }
 
     @Test
-    public void testSyncButton() throws IOException {
+    public void testSyncButton() {
         testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
         testUtils.setupBook("book-one", "First book used for testing\n* Note A");
         testUtils.setupBook("book-two", "Second book used for testing\n* Note 1\n* Note 2");
@@ -324,7 +325,7 @@ public class SyncingTest extends OrgzlyTest {
     }
 
     @Test
-    public void testSavingAndLoadingBookBySyncing() throws IOException {
+    public void testSavingAndLoadingBookBySyncing() {
         testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
         testUtils.setupBook("booky",
                 "Sample book used for tests\n" +
@@ -349,7 +350,7 @@ public class SyncingTest extends OrgzlyTest {
     }
 
     @Test
-    public void testBackToModifiedBookAfterSyncing() throws IOException {
+    public void testBackToModifiedBookAfterSyncing() {
         Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
 
         testUtils.setupBook("booky",
@@ -390,7 +391,7 @@ public class SyncingTest extends OrgzlyTest {
     }
 
     @Test
-    public void testBookParsingAfterKeywordsSettingChange() throws IOException {
+    public void testBookParsingAfterKeywordsSettingChange() {
         testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
         testUtils.setupBook("booky",
                 "Sample book used for tests\n" +
@@ -434,11 +435,11 @@ public class SyncingTest extends OrgzlyTest {
 
         /* Open note "ANTIVIVISECTIONISTS Note #10." and check title. */
         onNoteInBook(10).perform(click());
-        onView(withId(R.id.title)).check(matches(allOf(withText("Note #10."), isDisplayed())));
+        onView(withId(R.id.title_view)).check(matches(allOf(withText("Note #10."), isDisplayed())));
     }
 
     @Test
-    public void testChangeBookLink() throws IOException {
+    public void testChangeBookLink() {
         Repo repoA = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
         Repo repoB = testUtils.setupRepo(RepoType.MOCK, "mock://repo-b");
         testUtils.setupRook(repoA, "mock://repo-a/book-1.org", "Remote content for book in repo a", "abc", 1234567890);
@@ -464,7 +465,8 @@ public class SyncingTest extends OrgzlyTest {
                 .check(matches(allOf(withText(containsString(BookSyncStatus.DUMMY_WITH_LINK.msg())), isDisplayed())));
 
         onBook(0).perform(click());
-        onView(withText("Remote content for book in repo b")).check(matches(isDisplayed()));
+        onView(withId(R.id.item_preface_text_view))
+                .check(matches(withText("Remote content for book in repo b")));
         pressBack();
 
         /* Set link to repo-a. */
@@ -482,7 +484,9 @@ public class SyncingTest extends OrgzlyTest {
 
         /* Still the same content due to conflict. */
         onBook(0).perform(click());
-        onView(withText("Remote content for book in repo b")).check(matches(isDisplayed()));
+
+        onView(allOf(withId(R.id.item_preface_text_view), withText("Remote content for book in repo b")))
+                .check(matches(isDisplayed()));
     }
 
     @Test
@@ -699,9 +703,10 @@ public class SyncingTest extends OrgzlyTest {
     }
 
     @Test
-    public void testSpaceSeparatedBookName() throws IOException {
+    public void testSpaceSeparatedBookName() {
         Repo repo = testUtils.setupRepo(RepoType.MOCK, "mock://repo-a");
         testUtils.setupRook(repo, "mock://repo-a/Book%20Name.org", "", "1abcdef", 1400067155);
+
         ActivityScenario.launch(MainActivity.class);
 
         sync();
@@ -722,6 +727,7 @@ public class SyncingTest extends OrgzlyTest {
 
         onBook(0).perform(click()); // Open notebook
         onNoteInBook(1).perform(click()); // Open note
+        onView(withId(R.id.title)).perform(click());
         onView(withId(R.id.title_edit)).perform(replaceTextCloseKeyboard("New title"));
         onView(withId(R.id.done)).perform(click()); // Note done
 

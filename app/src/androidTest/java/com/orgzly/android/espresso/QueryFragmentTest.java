@@ -25,7 +25,6 @@ import static com.orgzly.android.espresso.EspressoUtils.recyclerViewItemCount;
 import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
 import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
@@ -819,7 +818,7 @@ public class QueryFragmentTest extends OrgzlyTest {
         // Remove time usage
         onView(allOf(withText(endsWith("Note A")), isDisplayed())).perform(longClick());
         onView(withId(R.id.schedule)).perform(click());
-        onView(withId(R.id.time_used_checkbox)).perform(click());
+        onView(withId(R.id.time_used_checkbox)).perform(scrollTo(), click());
         onView(withText(R.string.set)).perform(click());
         pressBack();
 

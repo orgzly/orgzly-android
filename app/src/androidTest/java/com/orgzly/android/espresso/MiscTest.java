@@ -30,7 +30,6 @@ import static com.orgzly.android.espresso.EspressoUtils.searchForText;
 import static com.orgzly.android.espresso.EspressoUtils.settingsSetDoneKeywords;
 import static com.orgzly.android.espresso.EspressoUtils.settingsSetTodoKeywords;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
@@ -554,6 +553,7 @@ public class MiscTest extends OrgzlyTest {
         /* Set #+TITLE */
         onView(allOf(withText("book-name"), isDisplayed())).perform(click());
         onActionItemClick(R.id.books_options_menu_book_preface, R.string.edit_book_preface);
+        onView(withId(R.id.fragment_book_preface_content)).perform(click());
         onView(withId(R.id.fragment_book_preface_content_edit))
                 .perform(replaceTextCloseKeyboard("#+TITLE: Notebook Title"));
         onView(withId(R.id.done)).perform(click()); // Preface done
@@ -572,6 +572,7 @@ public class MiscTest extends OrgzlyTest {
 
         onBook(0).perform(click());
         onPreface().perform(click());
+        onView(withId(R.id.fragment_book_preface_content)).perform(click());
         onView(withId(R.id.fragment_book_preface_content_edit)).perform(replaceTextCloseKeyboard("#+TTL: Notebook Title"));
         onView(withId(R.id.done)).perform(click()); // Preface done
         onNoteInBook(0, R.id.item_preface_text_view)
@@ -611,7 +612,7 @@ public class MiscTest extends OrgzlyTest {
         pressBack(); // Leave book
         onView(allOf(withText("book-name"), isDisplayed())).perform(click());
         onNoteInBook(8).perform(click());
-        onView(withId(R.id.title)).check(matches(withText("Note #8.")));
+        onView(withId(R.id.title_view)).check(matches(withText("Note #8.")));
     }
 
     @Test
