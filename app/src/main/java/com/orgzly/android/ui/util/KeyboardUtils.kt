@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import com.orgzly.BuildConfig
 import com.orgzly.android.util.LogUtils
@@ -39,7 +40,22 @@ object KeyboardUtils {
 
     private fun doOpenSoftKeyboard(view: View, onShow: (() -> Unit)?) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Showing the keyboard for view $view")
+
+        val listener = ViewTreeObserver.OnGlobalLayoutListener {
+            if (onShow != null) {
+                onShow()
+            }
+        }
+
+        view.viewTreeObserver?.addOnGlobalLayoutListener(listener)
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Listener added")
+
         showSoftInput(view.context.getInputMethodManager(), view, 0, 0, onShow)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            view.viewTreeObserver?.removeOnGlobalLayoutListener(listener)
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Listener removed")
+        }, 500)
     }
 
     /**
@@ -56,12 +72,7 @@ object KeyboardUtils {
                         + "(view attached:${view.isAttachedToWindow} has-focus:${view.hasFocus()})")
             }
 
-            if (shown) {
-                if (onShow != null) {
-                    onShow()
-                }
-
-            } else {
+            if (!shown) {
                 if (attempt < TIMES_TO_TRY_OPEN) {
                     showSoftInput(imm, view, delay + 100, attempt + 1, onShow)
                 } else {
@@ -69,7 +80,6 @@ object KeyboardUtils {
                         LogUtils.d(TAG, "Failed to show keyboard after $attempt tries")
                 }
             }
-
         }, delay)
     }
 }
