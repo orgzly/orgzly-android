@@ -78,7 +78,7 @@
                     app:paddingVertical="6dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:imeOptions="actionDone"
+                    android:imeOptions="actionDone|flagNoFullscreen"
                     android:inputType="text|textCapSentences"
                     android:hint="@string/fragment_note_title_hint"
                     android:textSize="?attr/font_large" />
@@ -321,6 +321,7 @@
                     app:paddingVertical="6dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:imeOptions="flagNoFullscreen"
                     android:inputType="text|textCapSentences|textMultiLine"
                     android:hint="@string/content"
                     android:textSize="?attr/fragment_note_content_text_size" />

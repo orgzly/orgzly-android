@@ -29,6 +29,7 @@
                 app:paddingVertical="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="flagNoFullscreen"
                 android:inputType="text|textCapSentences|textMultiLine"
                 android:hint="@string/book_preface_hint"
                 android:textSize="?attr/fragment_note_content_text_size" />
