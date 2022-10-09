@@ -2,7 +2,10 @@ package com.orgzly.android.ui.views.richtext
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.text.*
+import android.text.Layout
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.TextUtils
 import android.text.style.ClickableSpan
 import android.util.AttributeSet
 import android.util.Log
@@ -19,6 +22,7 @@ import com.orgzly.android.ui.views.style.CheckboxSpan
 import com.orgzly.android.ui.views.style.DrawerEndSpan
 import com.orgzly.android.ui.views.style.DrawerSpan
 import com.orgzly.android.util.LogUtils
+import com.orgzly.android.util.OrgFormatter
 
 class RichTextView : AppCompatTextView, ActionableRichTextView {
 
@@ -32,7 +36,8 @@ class RichTextView : AppCompatTextView, ActionableRichTextView {
 
     private data class Listeners(
         var onTapUp: OnTapUpListener? = null,
-        var onUserTextChange: OnUserTextChangeListener? = null)
+        var onUserTextChange: OnUserTextChangeListener? = null,
+        var onActionListener: ActionableRichTextView? = null)
 
     private val listeners = Listeners()
 
@@ -42,6 +47,10 @@ class RichTextView : AppCompatTextView, ActionableRichTextView {
 
     fun setOnUserTextChangeListener(listener: OnUserTextChangeListener) {
         listeners.onUserTextChange = listener
+    }
+
+    fun setOnActionListener(listener: ActionableRichTextView) {
+        listeners.onActionListener = listener
     }
 
 
@@ -68,15 +77,6 @@ class RichTextView : AppCompatTextView, ActionableRichTextView {
                 parseCheckboxes = typedArray.getBoolean(R.styleable.RichText_parse_checkboxes, true)
             }
         }
-    }
-
-    // TODO: Consider getting MainActivity's *ViewModel* here instead
-    override fun followLinkToNoteWithProperty(name: String, value: String) {
-        MainActivity.followLinkToNoteWithProperty(name, value)
-    }
-
-    override fun followLinkToFile(path: String) {
-        MainActivity.followLinkToFile(path)
     }
 
     private val singleTapUpDetector = GestureDetectorCompat(context, object : GestureDetector.SimpleOnGestureListener() {
@@ -159,53 +159,6 @@ class RichTextView : AppCompatTextView, ActionableRichTextView {
         return super.onTouchEvent(event)
     }
 
-    override fun toggleDrawer(drawerSpan: DrawerSpan) {
-        val textSpanned = text as Spanned
-
-        val drawerStart = textSpanned.getSpanStart(drawerSpan)
-
-        val builder = SpannableStringBuilder(text)
-
-        if (drawerSpan.isFolded) { // Open drawer
-            val replacement = drawerSpanned(drawerSpan.name, drawerSpan.content, isFolded = false)
-
-            builder.removeSpan(drawerSpan)
-            builder.replace(drawerStart, textSpanned.getSpanEnd(drawerSpan), replacement)
-
-        } else { // Close drawer
-
-            // Get first DrawerEndSpan after DrawerSpan
-            val endSpans = textSpanned.getSpans(drawerStart, textSpanned.length, DrawerEndSpan::class.java)
-            if (endSpans.isNotEmpty()) {
-                val endSpan = endSpans.first()
-
-                val replacement = drawerSpanned(drawerSpan.name, drawerSpan.content, isFolded = true)
-
-                builder.removeSpan(drawerSpan)
-                builder.removeSpan(endSpan)
-                builder.replace(drawerStart, textSpanned.getSpanEnd(endSpan), replacement)
-
-            } else {
-                Log.e(TAG, "Open drawer with no DrawerEndSpan")
-            }
-        }
-
-        text = builder
-    }
-
-    override fun toggleCheckbox(checkboxSpan: CheckboxSpan) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, checkboxSpan)
-
-        val content = if (checkboxSpan.isChecked()) "[ ]" else "[X]"
-        val replacement = checkboxSpanned(content, checkboxSpan.rawStart, checkboxSpan.rawEnd)
-
-        val newSource = text
-            ?.replaceRange(checkboxSpan.rawStart, checkboxSpan.rawEnd, replacement)
-            ?.toString()
-            ?: ""
-
-        listeners.onUserTextChange?.onUserTextChange(newSource)
-    }
 
     fun activate() {
         visibility = View.VISIBLE
@@ -215,54 +168,27 @@ class RichTextView : AppCompatTextView, ActionableRichTextView {
         visibility = View.GONE
     }
 
+    // Just pass to RichView
+    override fun toggleDrawer(drawerSpan: DrawerSpan) {
+        listeners.onActionListener?.toggleDrawer(drawerSpan)
+    }
+
+    // Just pass to RichView
+    override fun toggleCheckbox(checkboxSpan: CheckboxSpan) {
+        listeners.onActionListener?.toggleCheckbox(checkboxSpan)
+    }
+
+    // Just pass to RichView
+    override fun followLinkToNoteWithProperty(name: String, value: String) {
+        listeners.onActionListener?.followLinkToNoteWithProperty(name, value)
+    }
+
+    // Just pass to RichView
+    override fun followLinkToFile(path: String) {
+        listeners.onActionListener?.followLinkToFile(path)
+    }
+
     companion object {
-        fun drawerSpanned(name: String, content: CharSequence, isFolded: Boolean): Spanned {
-
-            val begin = if (isFolded) ":$name:…" else ":$name:"
-            val end = ":END:"
-
-            val builder = SpannableStringBuilder()
-
-            val beginSpannable = SpannableString(begin)
-            beginSpannable.setSpan(
-                    DrawerSpan(name, content, isFolded),
-                    0,
-                    beginSpannable.length,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            builder.append(beginSpannable)
-
-            if (!isFolded) {
-                val endSpannable = SpannableString(end)
-                endSpannable.setSpan(
-                        DrawerEndSpan(),
-                        0,
-                        endSpannable.length,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                builder.append("\n")
-
-                // val i = builder.length
-                builder.append(content)
-                // builder.setSpan(QuoteSpan(Color.GREEN), i, builder.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-                builder.append("\n").append(endSpannable)
-            }
-
-            return builder
-        }
-
-        fun checkboxSpanned(content: CharSequence, rawStart: Int, rawEnd: Int): Spanned {
-
-            val beginSpannable = SpannableString(content)
-
-            beginSpannable.setSpan(
-                    CheckboxSpan(content, rawStart, rawEnd),
-                    0,
-                    beginSpannable.length,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-            return beginSpannable
-        }
-
         val TAG: String = RichTextView::class.java.name
     }
 }

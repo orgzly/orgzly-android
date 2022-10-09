@@ -4,8 +4,11 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.Typeface
 import android.text.InputType
+import android.text.SpannableStringBuilder
+import android.text.Spanned
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.widget.FrameLayout
@@ -14,11 +17,16 @@ import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.ImageLoader
+import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.util.styledAttributes
+import com.orgzly.android.ui.views.style.CheckboxSpan
+import com.orgzly.android.ui.views.style.DrawerEndSpan
+import com.orgzly.android.ui.views.style.DrawerSpan
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.OrgFormatter
 
-class RichText(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
+class RichText(context: Context, attrs: AttributeSet?) :
+    FrameLayout(context, attrs), ActionableRichTextView {
 
     fun interface OnUserTextChangeListener {
         fun onUserTextChange(str: String)
@@ -115,6 +123,8 @@ class RichText(context: Context, attrs: AttributeSet?) : FrameLayout(context, at
                 setSourceText(str)
                 listeners.onUserTextChange?.onUserTextChange(str)
             }
+
+            setOnActionListener(this@RichText)
         }
     }
 
@@ -226,6 +236,68 @@ class RichText(context: Context, attrs: AttributeSet?) : FrameLayout(context, at
 
     fun setOnEditorActionListener(any: TextView.OnEditorActionListener) {
         richTextEdit.setOnEditorActionListener(any)
+    }
+
+    override fun toggleDrawer(drawerSpan: DrawerSpan) {
+        val textSpanned = richTextView.text as Spanned
+
+        val drawerStart = textSpanned.getSpanStart(drawerSpan)
+
+        val builder = SpannableStringBuilder(textSpanned)
+
+        if (drawerSpan.isFolded) { // Open drawer
+            val replacement = OrgFormatter.drawerSpanned(
+                drawerSpan.name, drawerSpan.content, isFolded = false)
+
+            builder.removeSpan(drawerSpan)
+            builder.replace(drawerStart, textSpanned.getSpanEnd(drawerSpan), replacement)
+
+        } else { // Close drawer
+
+            // Get first DrawerEndSpan after DrawerSpan
+            val endSpans = textSpanned.getSpans(
+                drawerStart, textSpanned.length, DrawerEndSpan::class.java)
+            if (endSpans.isNotEmpty()) {
+                val endSpan = endSpans.first()
+
+                val replacement = OrgFormatter.drawerSpanned(
+                    drawerSpan.name, drawerSpan.content, isFolded = true)
+
+                builder.removeSpan(drawerSpan)
+                builder.removeSpan(endSpan)
+                builder.replace(drawerStart, textSpanned.getSpanEnd(endSpan), replacement)
+
+            } else {
+                Log.e(TAG, "Open drawer with no DrawerEndSpan")
+            }
+        }
+
+        richTextView.text = builder
+    }
+
+    override fun toggleCheckbox(checkboxSpan: CheckboxSpan) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, checkboxSpan)
+
+        val content = if (checkboxSpan.isChecked()) "[ ]" else "[X]"
+
+        val replacement = OrgFormatter.checkboxSpanned(
+            content, checkboxSpan.rawStart, checkboxSpan.rawEnd)
+
+        val newSource = richTextEdit.text
+            ?.replaceRange(checkboxSpan.rawStart, checkboxSpan.rawEnd, replacement)
+            ?.toString()
+            ?: ""
+
+        listeners.onUserTextChange?.onUserTextChange(newSource)
+    }
+
+    // TODO: Consider getting MainActivity's *ViewModel* here instead
+    override fun followLinkToNoteWithProperty(name: String, value: String) {
+        MainActivity.followLinkToNoteWithProperty(name, value)
+    }
+
+    override fun followLinkToFile(path: String) {
+        MainActivity.followLinkToFile(path)
     }
 
     companion object {

@@ -322,7 +322,7 @@ object OrgFormatter {
 
                 // if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found drawer", name, content, "All:'${m.group()}'")
 
-                val drawerSpanned = RichTextView.drawerSpanned(name, content, foldDrawers)
+                val drawerSpanned = drawerSpanned(name, content, foldDrawers)
 
                 val start = if (m.group().startsWith("\n")) m.start() + 1 else m.start()
                 val end = if (m.group().endsWith("\n")) m.end() - 1 else m.end()
@@ -407,6 +407,54 @@ object OrgFormatter {
         val to = if (toState.isNullOrEmpty()) "" else toState
 
         return String.format("- State %-12s from %-12s %s", "\"$to\"", "\"$from\"", time)
+    }
+
+    fun drawerSpanned(name: String, content: CharSequence, isFolded: Boolean): Spanned {
+        val begin = if (isFolded) ":$name:…" else ":$name:"
+        val end = ":END:"
+
+        val builder = SpannableStringBuilder()
+
+        // :START:
+        SpannableString(begin).run {
+            setSpan(
+                DrawerSpan(name, content, isFolded),
+                0,
+                length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            builder.append(this)
+        }
+
+        if (!isFolded) {
+            // Content
+            builder.append("\n").append(content)
+
+            // :END:
+            SpannableString(end).run {
+                setSpan(
+                    DrawerEndSpan(),
+                    0,
+                    length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                builder.append("\n").append(this)
+            }
+        }
+
+        return builder
+    }
+
+    fun checkboxSpanned(content: CharSequence, rawStart: Int, rawEnd: Int): Spanned {
+        val beginSpannable = SpannableString(content)
+
+        beginSpannable.setSpan(
+            CheckboxSpan(content, rawStart, rawEnd),
+            0,
+            beginSpannable.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        return beginSpannable
     }
 
     private val TAG = OrgFormatter::class.java.name

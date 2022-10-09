@@ -683,6 +683,30 @@ public class MiscTest extends OrgzlyTest {
     }
 
     @Test
+    public void testCheckboxWithFoldedDrawerBeforeIt() {
+        testUtils.setupBook("book-name", ":DRAWER:\ndrawer\n:END:\n\n- [ ] Item");
+        ActivityScenario.launch(MainActivity.class);
+
+        onBook(0).perform(click());
+
+        onView(withId(R.id.item_preface_text_view)).perform(clickClickableSpan("[ ]"));
+
+        onView(allOf(withId(R.id.item_preface_text_view), withText(containsString("- [X] Item"))))
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testDrawerWithFoldedDrawerBeforeIt() {
+        testUtils.setupBook("book-name", ":DRAWER1:\ndrawer1\n:END:\n\n:DRAWER2:\ndrawer2\n:END:");
+        ActivityScenario.launch(MainActivity.class);
+
+        onBook(0).perform(click());
+
+        onView(withId(R.id.item_preface_text_view)).perform(clickClickableSpan("DRAWER2"));
+        onView(withId(R.id.item_preface_text_view)).perform(clickClickableSpan("DRAWER1"));
+    }
+
+    @Test
     public void testActiveDrawerItemForSearchQuery() {
         testUtils.setupBook("booky-one", "* TODO Note 1\n* Note 2\n* Note 3\n* Note 4\n* TODO Note 5");
         ActivityScenario.launch(MainActivity.class);

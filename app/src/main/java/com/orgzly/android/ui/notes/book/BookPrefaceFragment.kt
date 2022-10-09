@@ -53,11 +53,11 @@ class BookPrefaceFragment : Fragment() {
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
-        sharedMainActivityViewModel = ViewModelProvider(requireActivity())
-                .get(SharedMainActivityViewModel::class.java)
+        sharedMainActivityViewModel =
+            ViewModelProvider(requireActivity())[SharedMainActivityViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         binding = FragmentBookPrefaceBinding.inflate(inflater, container, false)
@@ -115,13 +115,14 @@ class BookPrefaceFragment : Fragment() {
             }
 
             title = BookUtils.getFragmentTitleForBook(book)
+            subtitle = getString(R.string.preface_in_book)
         }
     }
 
     override fun onPause() {
         super.onPause()
 
-        sharedMainActivityViewModel.unlockDrawer();
+        sharedMainActivityViewModel.unlockDrawer()
     }
 
     override fun onResume() {
@@ -131,7 +132,7 @@ class BookPrefaceFragment : Fragment() {
 
         sharedMainActivityViewModel.setCurrentFragment(FRAGMENT_TAG)
 
-        sharedMainActivityViewModel.lockDrawer();
+        sharedMainActivityViewModel.lockDrawer()
     }
 
     override fun onDetach() {
