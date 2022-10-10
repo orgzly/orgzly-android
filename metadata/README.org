@@ -1,0 +1,3 @@
+* Metadata for F-Droid
+
+[[https://f-droid.org/docs/All_About_Descriptions_Graphics_and_Screenshots/][All About Descriptions, Graphics, and Screenshots]]

@@ -1,0 +1,5 @@
+• Allow using alarm clock for scheduling reminders with a time of day
+• Log and view major events (e.g. scheduling reminders)
+• Check for reminders since the last run on boot and data-change
+• Remove edit/view modes from note, single tap to edit and position the cursor correctly
+• Replace quick menus with popup windows
