@@ -3,12 +3,10 @@ package com.orgzly.android.ui.views.richtext
 import android.annotation.SuppressLint
 import android.content.Context
 import android.text.Layout
-import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.TextUtils
 import android.text.style.ClickableSpan
 import android.util.AttributeSet
-import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
@@ -16,13 +14,10 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.GestureDetectorCompat
 import com.orgzly.BuildConfig
 import com.orgzly.R
-import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.ui.views.style.CheckboxSpan
-import com.orgzly.android.ui.views.style.DrawerEndSpan
 import com.orgzly.android.ui.views.style.DrawerSpan
 import com.orgzly.android.util.LogUtils
-import com.orgzly.android.util.OrgFormatter
 
 class RichTextView : AppCompatTextView, ActionableRichTextView {
 
@@ -30,23 +25,14 @@ class RichTextView : AppCompatTextView, ActionableRichTextView {
         fun onTapUp(x: Float, y: Float, charOffset: Int)
     }
 
-    fun interface OnUserTextChangeListener {
-        fun onUserTextChange(str: String)
-    }
-
     private data class Listeners(
         var onTapUp: OnTapUpListener? = null,
-        var onUserTextChange: OnUserTextChangeListener? = null,
         var onActionListener: ActionableRichTextView? = null)
 
     private val listeners = Listeners()
 
     fun setOnTapUpListener(listener: OnTapUpListener) {
         listeners.onTapUp = listener
-    }
-
-    fun setOnUserTextChangeListener(listener: OnUserTextChangeListener) {
-        listeners.onUserTextChange = listener
     }
 
     fun setOnActionListener(listener: ActionableRichTextView) {
@@ -142,7 +128,7 @@ class RichTextView : AppCompatTextView, ActionableRichTextView {
         }
 
         interceptClickableSpan(event)?.let { handled ->
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "ClickableSpan intercepted")
+            // if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "ClickableSpan intercepted")
             return handled
         }
 

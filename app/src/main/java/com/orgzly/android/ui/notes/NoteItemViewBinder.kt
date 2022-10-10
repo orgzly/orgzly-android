@@ -44,21 +44,13 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
     }
 
     fun bind(holder: NoteItemViewHolder, noteView: NoteView, agendaTimeType: TimeType? = null) {
-
         setupTitle(holder, noteView)
-
         setupBookName(holder, noteView)
-
         setupPlanningTimes(holder, noteView, agendaTimeType)
-
         setupContent(holder, noteView.note)
-
         setupIndent(holder, noteView.note)
-
         setupBullet(holder, noteView.note)
-
         setupFoldingButtons(holder, noteView.note)
-
         setupAlpha(holder, noteView)
     }
 

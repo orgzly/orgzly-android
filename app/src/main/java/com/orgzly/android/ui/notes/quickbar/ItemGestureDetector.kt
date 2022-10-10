@@ -37,7 +37,7 @@ class ItemGestureDetector(context: Context, private val listener: Listener) :
     }
 
     override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, e.action)
+        // if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, e.action)
         return gestureDetector.onTouchEvent(e)
     }
 

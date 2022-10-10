@@ -74,6 +74,7 @@ class RichText(context: Context, attrs: AttributeSet?) :
         richTextEdit = findViewById(R.id.rich_text_edit)
         richTextView = findViewById(R.id.rich_text_view)
 
+        // TODO: if editable
         richTextEdit.apply {
             if (attributes.editId != 0) {
                 id = attributes.editId
@@ -117,11 +118,6 @@ class RichText(context: Context, attrs: AttributeSet?) :
                 if (attributes.editable) {
                     toEditMode(charOffset)
                 }
-            }
-
-            setOnUserTextChangeListener { str ->
-                setSourceText(str)
-                listeners.onUserTextChange?.onUserTextChange(str)
             }
 
             setOnActionListener(this@RichText)
@@ -208,7 +204,8 @@ class RichText(context: Context, attrs: AttributeSet?) :
         val source = richTextEdit.text
 
         if (source != null) {
-            val parsed = OrgFormatter.parse(source, context, attributes.linkify, attributes.parseCheckboxes)
+            val parsed = OrgFormatter.parse(
+                source, context, attributes.linkify, attributes.parseCheckboxes)
 
             richTextView.setText(parsed, TextView.BufferType.SPANNABLE)
 

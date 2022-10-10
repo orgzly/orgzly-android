@@ -8,7 +8,6 @@ import android.text.Spanned
 import android.text.style.*
 import com.orgzly.BuildConfig
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.ui.views.richtext.RichTextView
 import com.orgzly.android.ui.views.style.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -92,7 +91,7 @@ object OrgFormatter {
     }
 
     private fun parse(str: CharSequence, config: Config): SpannableStringBuilder {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "length:${str.length}")
+        val t0 = System.currentTimeMillis()
 
         var ssb = SpannableStringBuilder(str)
 
@@ -106,6 +105,11 @@ object OrgFormatter {
         ssb = parseMarkup(ssb, config)
 
         ssb = parseDrawers(ssb, config.foldDrawers)
+
+        if (BuildConfig.LOG_DEBUG) {
+            val t1 = System.currentTimeMillis()
+            LogUtils.d(TAG, "Parsed ${str.length} characters in ${t1-t0}ms")
+        }
 
         return ssb
     }

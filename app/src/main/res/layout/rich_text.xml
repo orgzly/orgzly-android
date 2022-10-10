@@ -2,7 +2,6 @@
 
 <merge
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.orgzly.android.ui.views.richtext.RichTextView
