@@ -200,6 +200,11 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
             binding.content.setTypeface(Typeface.MONOSPACE)
         }
 
+        binding.content.setOnUserTextChangeListener { str ->
+            binding.content.setSourceText(str)
+
+        }
+
         /*
          * Metadata folding
          */

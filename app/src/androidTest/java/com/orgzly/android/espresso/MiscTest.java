@@ -696,6 +696,20 @@ public class MiscTest extends OrgzlyTest {
     }
 
     @Test
+    public void testClickingCheckboxInNoteDetails() {
+        testUtils.setupBook("book-name", "* Title\n\n- [ ] Item");
+        ActivityScenario.launch(MainActivity.class);
+
+        onBook(0).perform(click());
+        onNoteInBook(1).perform(click());
+
+        onView(withId(R.id.content_view)).perform(clickClickableSpan("[ ]"));
+
+        onView(allOf(withId(R.id.content_view), withText(containsString("- [X] Item"))))
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
     public void testDrawerWithFoldedDrawerBeforeIt() {
         testUtils.setupBook("book-name", ":DRAWER1:\ndrawer1\n:END:\n\n:DRAWER2:\ndrawer2\n:END:");
         ActivityScenario.launch(MainActivity.class);
