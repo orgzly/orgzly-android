@@ -47,13 +47,13 @@ object KeyboardUtils {
             }
         }
 
-        view.viewTreeObserver?.addOnGlobalLayoutListener(listener)
+        view.rootView.viewTreeObserver?.addOnGlobalLayoutListener(listener)
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Listener added")
 
         showSoftInput(view.context.getInputMethodManager(), view, 0, 0, onShow)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            view.viewTreeObserver?.removeOnGlobalLayoutListener(listener)
+            view.rootView.viewTreeObserver?.removeOnGlobalLayoutListener(listener)
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Listener removed")
         }, 500)
     }

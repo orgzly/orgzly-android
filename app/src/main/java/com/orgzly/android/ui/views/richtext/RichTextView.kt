@@ -122,11 +122,6 @@ class RichTextView : AppCompatTextView, ActionableRichTextView {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (BuildConfig.LOG_DEBUG && event.action != MotionEvent.ACTION_MOVE) {
-            val charOffset = getOffsetForPosition(event.x, event.y)
-            LogUtils.d(TAG, charOffset, event)
-        }
-
         interceptClickableSpan(event)?.let { handled ->
             // if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "ClickableSpan intercepted")
             return handled

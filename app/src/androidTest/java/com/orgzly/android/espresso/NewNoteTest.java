@@ -16,10 +16,10 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
-import static com.orgzly.android.espresso.EspressoUtils.onBook;
-import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
-import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
+import static com.orgzly.android.espresso.util.EspressoUtils.onActionItemClick;
+import static com.orgzly.android.espresso.util.EspressoUtils.onBook;
+import static com.orgzly.android.espresso.util.EspressoUtils.onNoteInBook;
+import static com.orgzly.android.espresso.util.EspressoUtils.replaceTextCloseKeyboard;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.endsWith;
 

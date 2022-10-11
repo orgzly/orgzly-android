@@ -1,10 +1,27 @@
-package com.orgzly.android.espresso;
+package com.orgzly.android.espresso.util;
+
+import static androidx.test.espresso.Espresso.onData;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
+import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.pressKey;
+import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.anyOf;
+import static org.hamcrest.CoreMatchers.endsWith;
+import static org.hamcrest.Matchers.anything;
 
 import android.content.res.Resources;
-import android.os.SystemClock;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ListView;
@@ -25,33 +42,11 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.orgzly.R;
 import com.orgzly.android.ui.SpanUtils;
-import com.orgzly.android.util.LogUtils;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
-import org.junit.Assume;
-
-import static androidx.test.espresso.Espresso.onData;
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
-import static androidx.test.espresso.Espresso.pressBack;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.pressKey;
-import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
-import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
-import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
-import static androidx.test.espresso.matcher.ViewMatchers.withHint;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.endsWith;
-import static org.hamcrest.Matchers.anything;
 
 /*
  * Few espresso-related notes:
@@ -61,19 +56,19 @@ import static org.hamcrest.Matchers.anything;
  *
  * - replaceText() is preferred over typeText() as it is much faster.
  */
-class EspressoUtils {
-    static ViewInteraction onListView() {
+public class EspressoUtils {
+    public static ViewInteraction onListView() {
         return onView(allOf(isAssignableFrom(ListView.class), isDisplayed()));
     }
 
-    static ViewInteraction onRecyclerView() {
+    public static ViewInteraction onRecyclerView() {
         return onView(allOf(isAssignableFrom(RecyclerView.class), isDisplayed()));
     }
 
     /**
      * Matcher for ListView with exactly specified number of items.
      */
-    static TypeSafeMatcher<View> listViewItemCount(final int count) {
+    public static TypeSafeMatcher<View> listViewItemCount(final int count) {
         return new TypeSafeMatcher<View>() {
             @Override
             public boolean matchesSafely(View view) {
@@ -87,7 +82,7 @@ class EspressoUtils {
         };
     }
 
-    static TypeSafeMatcher<View> recyclerViewItemCount(final int count) {
+    public static TypeSafeMatcher<View> recyclerViewItemCount(final int count) {
         return new TypeSafeMatcher<View>() {
             @Override
             public boolean matchesSafely(View view) {
@@ -102,7 +97,7 @@ class EspressoUtils {
         };
     }
 
-    static TypeSafeMatcher<View> toolbarItemCount(final int count) {
+    public static TypeSafeMatcher<View> toolbarItemCount(final int count) {
         return new TypeSafeMatcher<View>() {
             @Override
             public boolean matchesSafely(View view) {
@@ -257,7 +252,7 @@ class EspressoUtils {
         }
     }
 
-    static ViewInteraction onSnackbar() {
+    public static ViewInteraction onSnackbar() {
         return onView(withId(com.google.android.material.R.id.snackbar_text));
     }
 
@@ -284,7 +279,7 @@ class EspressoUtils {
     /**
      * Item could either be on the action bar (visible) or in the overflow menu.
      */
-    static void onActionItemClick(int id, int resourceId) {
+    public static void onActionItemClick(int id, int resourceId) {
         try {
             onView(withId(id)).perform(click());
 
@@ -304,11 +299,11 @@ class EspressoUtils {
                         hasDescendant(withText(title)), click()));
     }
 
-    static void settingsSetTodoKeywords(String keywords) {
+    public static void settingsSetTodoKeywords(String keywords) {
         settingsSetKeywords(R.id.todo_states, keywords);
     }
 
-    static void settingsSetDoneKeywords(String keywords) {
+    public static void settingsSetDoneKeywords(String keywords) {
         settingsSetKeywords(R.id.done_states, keywords);
     }
 
@@ -326,18 +321,18 @@ class EspressoUtils {
         pressBack();
     }
 
-    static ViewInteraction contextualToolbarOverflowMenu() {
+    public static ViewInteraction contextualToolbarOverflowMenu() {
         return onView(anyOf(
                 withContentDescription(R.string.abc_action_menu_overflow_description),
                 withClassName(endsWith("OverflowMenuButton"))));
     }
 
-    static void searchForText(String str) {
+    public static void searchForText(String str) {
         onView(allOf(withId(R.id.search_view), isDisplayed())).perform(click());
         onView(withId(R.id.search_src_text)).perform(replaceText(str), pressKey(KeyEvent.KEYCODE_ENTER));
     }
 
-    static ViewAction[] replaceTextCloseKeyboard(String str) {
+    public static ViewAction[] replaceTextCloseKeyboard(String str) {
         return new ViewAction[] { replaceText(str), closeSoftKeyboardWithDelay() };
     }
 
@@ -345,7 +340,7 @@ class EspressoUtils {
      * Give keyboard time to close, to avoid java.lang.SecurityException
      * if hidden button is clicked next.
      */
-    static ViewAction closeSoftKeyboardWithDelay() {
+    public static ViewAction closeSoftKeyboardWithDelay() {
         return new ViewAction() {
             /**
              * The delay time to allow the soft keyboard to dismiss.
@@ -379,7 +374,7 @@ class EspressoUtils {
      * Checks if view has a background set.
      * Used for checking if note is selected.
      */
-    static Matcher<View> isHighlighted() {
+    public static Matcher<View> isHighlighted() {
         return new TypeSafeMatcher<View>() {
             @Override
             public boolean matchesSafely(View view) {
@@ -445,5 +440,9 @@ class EspressoUtils {
                 throw new IllegalStateException("No clickable span found in " + spannable);
             }
         };
+    }
+
+    public static ViewAction scroll() {
+        return new NestedScrollViewExtension();
     }
 }

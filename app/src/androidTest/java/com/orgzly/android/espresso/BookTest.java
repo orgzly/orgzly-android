@@ -15,11 +15,12 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
-import static com.orgzly.android.espresso.EspressoUtils.contextualToolbarOverflowMenu;
-import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
-import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
-import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
+import static com.orgzly.android.espresso.util.EspressoUtils.closeSoftKeyboardWithDelay;
+import static com.orgzly.android.espresso.util.EspressoUtils.contextualToolbarOverflowMenu;
+import static com.orgzly.android.espresso.util.EspressoUtils.onActionItemClick;
+import static com.orgzly.android.espresso.util.EspressoUtils.onNoteInBook;
+import static com.orgzly.android.espresso.util.EspressoUtils.replaceTextCloseKeyboard;
+import static com.orgzly.android.espresso.util.EspressoUtils.scroll;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
@@ -430,7 +431,7 @@ public class BookTest extends OrgzlyTest {
     @Test
     public void testSetDeadlineTimeForNewNote() {
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.deadline_button)).perform(closeSoftKeyboardWithDelay(), scrollTo(), click());
+        onView(withId(R.id.deadline_button)).perform(closeSoftKeyboardWithDelay(), scroll(), click());
         onView(withId(R.id.date_picker_button)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
         onView(withText(android.R.string.ok)).perform(click());

@@ -8,7 +8,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.OrgzlyTest
-import com.orgzly.android.espresso.EspressoUtils.*
+import com.orgzly.android.espresso.util.EspressoUtils.*
 import com.orgzly.android.ui.main.MainActivity
 import org.hamcrest.Matchers.startsWith
 import org.junit.Test

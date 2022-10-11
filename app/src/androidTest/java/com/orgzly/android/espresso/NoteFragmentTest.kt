@@ -14,7 +14,7 @@ import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.orgzly.R
 import com.orgzly.android.OrgzlyTest
-import com.orgzly.android.espresso.EspressoUtils.*
+import com.orgzly.android.espresso.util.EspressoUtils.*
 import com.orgzly.android.ui.main.MainActivity
 import org.hamcrest.Matchers.*
 import org.junit.Before
@@ -346,7 +346,7 @@ class NoteFragmentTest : OrgzlyTest() {
         onView(withText(android.R.string.ok)).perform(click())
 
         /* Set time. */
-        onView(withId(R.id.time_picker_button)).perform(scrollTo(), click())
+        onView(withId(R.id.time_picker_button)).perform(scroll(), click())
         onView(withClassName(equalTo(TimePicker::class.java.name))).perform(setTime(15, 15))
         onView(withText(android.R.string.ok)).perform(click())
 
@@ -374,13 +374,13 @@ class NoteFragmentTest : OrgzlyTest() {
         onView(withText(android.R.string.ok)).perform(click())
 
         /* Set time. */
-        onView(withId(R.id.time_picker_button)).perform(scrollTo(), click())
+        onView(withId(R.id.time_picker_button)).perform(scroll(), click())
         onView(withClassName(equalTo(TimePicker::class.java.name))).perform(setTime(9, 15))
         onView(withText(android.R.string.ok)).perform(click())
 
         /* Set repeater. */
-        onView(withId(R.id.repeater_used_checkbox)).perform(scrollTo(), click())
-        onView(withId(R.id.repeater_picker_button)).perform(scrollTo(), click())
+        onView(withId(R.id.repeater_used_checkbox)).perform(scroll(), click())
+        onView(withId(R.id.repeater_picker_button)).perform(scroll(), click())
         onView(withId(R.id.value_picker)).perform(setNumber(3))
         onView(withText(R.string.ok)).perform(click())
 
@@ -477,7 +477,7 @@ class NoteFragmentTest : OrgzlyTest() {
     @Test
     fun testContentLineCountUpdatedOnNoteUpdate() {
         onNoteInBook(1).perform(click())
-        onView(withId(R.id.content)).perform(scrollTo()) // For smaller screens
+        onView(withId(R.id.content)).perform(scroll()) // For smaller screens
         onView(withId(R.id.content)).perform(click())
         onView(withId(R.id.content_edit)).perform(typeTextIntoFocusedView("a\nb\nc"))
         onView(withId(R.id.done)).perform(click()) // Note done

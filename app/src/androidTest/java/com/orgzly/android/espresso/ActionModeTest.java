@@ -21,8 +21,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
-import static com.orgzly.android.espresso.EspressoUtils.onNoteInSearch;
+import static com.orgzly.android.espresso.util.EspressoUtils.onNoteInBook;
+import static com.orgzly.android.espresso.util.EspressoUtils.onNoteInSearch;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 

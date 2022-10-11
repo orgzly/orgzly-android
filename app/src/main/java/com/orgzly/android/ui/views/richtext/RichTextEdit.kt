@@ -6,9 +6,9 @@ import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.View
-import android.widget.ScrollView
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.view.ancestors
+import androidx.core.widget.NestedScrollView
 import com.orgzly.BuildConfig
 import com.orgzly.android.ui.util.KeyboardUtils
 import com.orgzly.android.util.LogUtils
@@ -37,7 +37,7 @@ class RichTextEdit : AppCompatEditText {
     }
 
     private fun scrollForBetterCursorPosition(charOffset: Int) {
-        val scrollView = ancestors.firstOrNull { view -> view is ScrollView} as? ScrollView
+        val scrollView = ancestors.firstOrNull { view -> view is NestedScrollView } as? NestedScrollView
 
         if (scrollView != null) {
             post {
@@ -70,7 +70,7 @@ class RichTextEdit : AppCompatEditText {
                     scrollView.smoothScrollTo(0, scrollTo)
                 }
 
-//                if (BuildConfig.LOG_DEBUG) {
+                if (BuildConfig.LOG_DEBUG) {
 //                    fun pad(n: Any) = "$n".padEnd(5)
 //
 //                    LogUtils.d(TAG, pad(y), "this.y")
@@ -103,8 +103,8 @@ class RichTextEdit : AppCompatEditText {
 //                        LogUtils.d(TAG, pad(arr[1]), "scrollView.getLocationInWindow.y")
 //                    }
 //
-//                    LogUtils.d(TAG, "----- scrollTo:$scrollTo")
-//                }
+                    LogUtils.d(TAG, scrollTo)
+                }
             }
         }
     }

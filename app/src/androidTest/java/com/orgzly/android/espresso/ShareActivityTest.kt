@@ -6,14 +6,13 @@ import android.net.Uri
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import com.orgzly.R
 import com.orgzly.android.AppIntent
 import com.orgzly.android.OrgzlyTest
-import com.orgzly.android.espresso.EspressoUtils.*
+import com.orgzly.android.espresso.util.EspressoUtils.*
 import com.orgzly.android.ui.share.ShareActivity
 import org.hamcrest.Matchers.startsWith
 import org.junit.Assert.assertTrue
@@ -90,7 +89,7 @@ class ShareActivityTest : OrgzlyTest() {
             activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
 
-        onView(withId(R.id.location_button)).perform(scrollTo(), click())
+        onView(withId(R.id.location_button)).perform(scroll(), click())
         onView(withText("book-two")).perform(click())
         onView(withId(R.id.location_button)).check(matches(withText("book-two")))
 

@@ -12,11 +12,12 @@
         android:layout_height="match_parent"
         android:paddingTop="?attr/actionBarSize">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbarStyle="outsideOverlay">
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical">
 
             <!-- Entire note -->
             <LinearLayout
@@ -325,7 +326,7 @@
 
                 <View style="@style/HorizontalDivider" />
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <ScrollView
             android:layout_width="match_parent"

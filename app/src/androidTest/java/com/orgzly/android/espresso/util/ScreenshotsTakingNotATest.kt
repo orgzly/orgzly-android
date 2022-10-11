@@ -1,4 +1,4 @@
-package com.orgzly.android.espresso
+package com.orgzly.android.espresso.util
 
 import android.os.SystemClock
 import androidx.appcompat.app.AppCompatActivity
@@ -11,8 +11,8 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import com.orgzly.R
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.db.entity.SavedSearch
-import com.orgzly.android.espresso.EspressoUtils.clickSetting
-import com.orgzly.android.espresso.EspressoUtils.onNoteInBook
+import com.orgzly.android.espresso.util.EspressoUtils.clickSetting
+import com.orgzly.android.espresso.util.EspressoUtils.onNoteInBook
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.repos.RepoType
 import com.orgzly.android.ui.main.MainActivity
