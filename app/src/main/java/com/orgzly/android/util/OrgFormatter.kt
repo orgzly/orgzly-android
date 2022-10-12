@@ -418,37 +418,34 @@ object OrgFormatter {
     }
 
     fun drawerSpanned(name: String, content: CharSequence, isFolded: Boolean): Spanned {
-        val begin = if (isFolded) ":$name:…" else ":$name:"
-        val end = ":END:"
-
         val builder = SpannableStringBuilder()
 
-        // :START:
-        SpannableString(begin).run {
-            setSpan(
-                DrawerSpan(name, content, isFolded),
+        if (isFolded) {
+            builder.append(":$name:…")
+
+            builder.setSpan(
+                DrawerMarkerSpan.Start(),
                 0,
-                length,
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-            builder.append(this)
+                builder.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        } else {
+            builder.append(":$name:")
+
+            builder.setSpan(
+                DrawerMarkerSpan.Start(),
+                0,
+                builder.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+            builder.append("\n").append(content).append("\n").append(":END:")
         }
 
-        if (!isFolded) {
-            // Content
-            builder.append("\n").append(content)
-
-            // :END:
-            SpannableString(end).run {
-                setSpan(
-                    DrawerEndSpan(),
-                    0,
-                    length,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                builder.append("\n").append(this)
-            }
-        }
+        builder.setSpan(
+            DrawerSpan(name, content, isFolded),
+            0,
+            builder.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         return builder
     }

@@ -18,7 +18,7 @@ import com.orgzly.R
 import com.orgzly.android.ui.SpanUtils
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.ui.views.style.CheckboxSpan
-import com.orgzly.android.ui.views.style.DrawerSpan
+import com.orgzly.android.ui.views.style.DrawerMarkerSpan
 import com.orgzly.android.ui.views.style.Offsetting
 import com.orgzly.android.util.LogUtils
 
@@ -156,7 +156,7 @@ class RichTextView : AppCompatTextView, ActionableRichTextView {
                     return@allDone
                 }
                 spansChars += span.characterOffset
-                LogUtils.d(TAG, "Span", span, curr, next, tapCharOffset, span.characterOffset)
+                LogUtils.d(TAG, span, curr, next, tapCharOffset, span.characterOffset)
             }
         }
 
@@ -173,7 +173,7 @@ class RichTextView : AppCompatTextView, ActionableRichTextView {
     }
 
     // Just pass to RichView
-    override fun toggleDrawer(drawerSpan: DrawerSpan) {
+    override fun toggleDrawer(drawerSpan: DrawerMarkerSpan) {
         listeners.onActionListener?.toggleDrawer(drawerSpan)
     }
 

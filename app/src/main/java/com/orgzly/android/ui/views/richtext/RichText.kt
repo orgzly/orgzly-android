@@ -20,7 +20,7 @@ import com.orgzly.android.ui.ImageLoader
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.ui.views.style.CheckboxSpan
-import com.orgzly.android.ui.views.style.DrawerEndSpan
+import com.orgzly.android.ui.views.style.DrawerMarkerSpan
 import com.orgzly.android.ui.views.style.DrawerSpan
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.OrgFormatter
@@ -235,39 +235,29 @@ class RichText(context: Context, attrs: AttributeSet?) :
         richTextEdit.setOnEditorActionListener(any)
     }
 
-    override fun toggleDrawer(drawerSpan: DrawerSpan) {
+    override fun toggleDrawer(markerSpan: DrawerMarkerSpan) {
         val textSpanned = richTextView.text as Spanned
 
+        // Find a drawer at the place of the clicked span
+        val pos = textSpanned.getSpanStart(markerSpan)
+        val drawerSpan = textSpanned.getSpans(pos, pos, DrawerSpan::class.java).firstOrNull()
+
+        if (drawerSpan == null) {
+            Log.w(TAG, "No DrawerSpan found at the place of $markerSpan ($pos)")
+            return
+        }
+
         val drawerStart = textSpanned.getSpanStart(drawerSpan)
+        val drawerEnd = textSpanned.getSpanEnd(drawerSpan)
 
         val builder = SpannableStringBuilder(textSpanned)
 
-        if (drawerSpan.isFolded) { // Open drawer
-            val replacement = OrgFormatter.drawerSpanned(
-                drawerSpan.name, drawerSpan.content, isFolded = false)
+        val replacement = OrgFormatter.drawerSpanned(
+            drawerSpan.name, drawerSpan.content, isFolded = !drawerSpan.isFolded)
 
-            builder.removeSpan(drawerSpan)
-            builder.replace(drawerStart, textSpanned.getSpanEnd(drawerSpan), replacement)
-
-        } else { // Close drawer
-
-            // Get first DrawerEndSpan after DrawerSpan
-            val endSpans = textSpanned.getSpans(
-                drawerStart, textSpanned.length, DrawerEndSpan::class.java)
-            if (endSpans.isNotEmpty()) {
-                val endSpan = endSpans.first()
-
-                val replacement = OrgFormatter.drawerSpanned(
-                    drawerSpan.name, drawerSpan.content, isFolded = true)
-
-                builder.removeSpan(drawerSpan)
-                builder.removeSpan(endSpan)
-                builder.replace(drawerStart, textSpanned.getSpanEnd(endSpan), replacement)
-
-            } else {
-                Log.e(TAG, "Open drawer with no DrawerEndSpan")
-            }
-        }
+        builder.removeSpan(drawerSpan)
+        builder.removeSpan(markerSpan)
+        builder.replace(drawerStart, drawerEnd, replacement)
 
         richTextView.text = builder
     }
