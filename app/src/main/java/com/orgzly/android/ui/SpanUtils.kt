@@ -5,12 +5,12 @@ import android.text.Spanned
 
 object SpanUtils {
     @JvmStatic
-    fun <T>forEachSpan(
+    inline fun <T>forEachSpan(
         spanned: Spanned,
         type: Class<T>,
         start: Int = 0,
         end: Int = spanned.length,
-        action: (span: T, curr: Int, next: Int) -> Any) {
+        action: (span: T, curr: Int, next: Int) -> Unit) {
 
         forEachTransition(spanned, type, start, end) { spans, curr, next ->
             spans.forEach { span ->
@@ -20,12 +20,12 @@ object SpanUtils {
     }
 
     @JvmStatic
-    fun <T>forEachTransition(
+    inline fun <T>forEachTransition(
         spanned: Spanned,
         type: Class<T>,
         start: Int = 0,
         end: Int = spanned.length,
-        action: (spans: Array<T>, curr: Int, next: Int) -> Any) {
+        action: (spans: Array<T>, curr: Int, next: Int) -> Unit) {
 
         var curr = start
         while (curr < end) {

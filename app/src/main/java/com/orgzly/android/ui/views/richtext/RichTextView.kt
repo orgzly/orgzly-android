@@ -3,6 +3,7 @@ package com.orgzly.android.ui.views.richtext
 import android.annotation.SuppressLint
 import android.content.Context
 import android.text.Layout
+import android.text.Spannable
 import android.text.Spanned
 import android.text.TextUtils
 import android.text.style.ClickableSpan
@@ -14,9 +15,11 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.GestureDetectorCompat
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.ui.SpanUtils
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.ui.views.style.CheckboxSpan
 import com.orgzly.android.ui.views.style.DrawerSpan
+import com.orgzly.android.ui.views.style.Offsetting
 import com.orgzly.android.util.LogUtils
 
 class RichTextView : AppCompatTextView, ActionableRichTextView {
@@ -130,14 +133,34 @@ class RichTextView : AppCompatTextView, ActionableRichTextView {
         val isSingleTapUp = singleTapUpDetector.onTouchEvent(event)
 
         if (isSingleTapUp) {
-            val charOffset = getOffsetForPosition(event.x, event.y)
+            val tapCharOffset = getOffsetForPosition(event.x, event.y)
+
+            val spansChars = offsettingSpansOffset(tapCharOffset)
+
             if (BuildConfig.LOG_DEBUG && event.action != MotionEvent.ACTION_MOVE) {
-                LogUtils.d(TAG, charOffset, event)
+                LogUtils.d(TAG, tapCharOffset, spansChars, event)
             }
-            listeners.onTapUp?.onTapUp(event.x, event.y, charOffset)
+
+            listeners.onTapUp?.onTapUp(event.x, event.y, tapCharOffset + spansChars)
         }
 
         return super.onTouchEvent(event)
+    }
+
+    private fun offsettingSpansOffset(tapCharOffset: Int): Int {
+        var spansChars = 0
+
+        run allDone@ {
+            SpanUtils.forEachSpan(text as Spannable, Offsetting::class.java) { span, curr, next ->
+                if (tapCharOffset < next) {
+                    return@allDone
+                }
+                spansChars += span.characterOffset
+                LogUtils.d(TAG, "Span", span, curr, next, tapCharOffset, span.characterOffset)
+            }
+        }
+
+        return spansChars
     }
 
 

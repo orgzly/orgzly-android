@@ -5,7 +5,9 @@ import android.graphics.Typeface
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
-import android.text.style.*
+import android.text.style.CharacterStyle
+import android.text.style.StyleSpan
+import android.text.style.TypefaceSpan
 import com.orgzly.BuildConfig
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.views.style.*
@@ -176,13 +178,13 @@ object OrgFormatter {
 
         return when {
             link.startsWith("file:") ->
-                FileLinkSpan(linkType, link.substring(5), name)
+                FileLinkSpan(linkType, link, name)
 
             link.startsWith("id:") ->
-                IdLinkSpan(linkType, link.substring(3), name)
+                IdLinkSpan(linkType, link, name)
 
             link.startsWith("#") ->
-                CustomIdLinkSpan(linkType, link.substring(1), name)
+                CustomIdLinkSpan(linkType, link, name)
 
             link.matches("^(?:$SYSTEM_LINK_SCHEMES):.+".toRegex()) ->
                 UrlLinkSpan(linkType, link, name)
@@ -204,7 +206,8 @@ object OrgFormatter {
         BOLD,
         ITALIC,
         UNDERLINE,
-        MONOSPACE,
+        VERBATIM,
+        CODE,
         STRIKETHROUGH
     }
 
@@ -223,8 +226,8 @@ object OrgFormatter {
                     '*' -> SpanType.BOLD
                     '/' -> SpanType.ITALIC
                     '_' -> SpanType.UNDERLINE
-                    '=' -> SpanType.MONOSPACE
-                    '~' -> SpanType.MONOSPACE
+                    '=' -> SpanType.VERBATIM
+                    '~' -> SpanType.CODE
                     '+' -> SpanType.STRIKETHROUGH
                     else -> return found
                 }
@@ -240,11 +243,12 @@ object OrgFormatter {
 
     private fun newSpan(type: SpanType): CharacterStyle {
         return when (type) {
-            SpanType.BOLD -> StyleSpan(Typeface.BOLD)
-            SpanType.ITALIC -> StyleSpan(Typeface.ITALIC)
-            SpanType.UNDERLINE -> UnderlineSpan()
-            SpanType.MONOSPACE -> TypefaceSpan("monospace")
-            SpanType.STRIKETHROUGH -> StrikethroughSpan()
+            SpanType.BOLD -> BoldSpan()
+            SpanType.ITALIC -> ItalicSpan()
+            SpanType.UNDERLINE -> UnderlinedSpan()
+            SpanType.VERBATIM -> VerbatimSpan()
+            SpanType.CODE -> CodeSpan()
+            SpanType.STRIKETHROUGH -> StrikeSpan()
         }
     }
 
