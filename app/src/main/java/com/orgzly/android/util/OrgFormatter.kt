@@ -177,20 +177,20 @@ object OrgFormatter {
         val name = matchLink.name.value
 
         return when {
-            link.startsWith("file:") ->
+            link.startsWith(FileLinkSpan.PREFIX) ->
                 FileLinkSpan(linkType, link, name)
 
-            link.startsWith("id:") ->
+            link.startsWith(IdLinkSpan.PREFIX) ->
                 IdLinkSpan(linkType, link, name)
 
-            link.startsWith("#") ->
+            link.startsWith(CustomIdLinkSpan.PREFIX) ->
                 CustomIdLinkSpan(linkType, link, name)
 
             link.matches("^(?:$SYSTEM_LINK_SCHEMES):.+".toRegex()) ->
                 UrlLinkSpan(linkType, link, name)
 
             isFile(link) ->
-                FileLinkSpan(linkType, link, name)
+                FileOrNotLinkSpan(linkType, link, name)
 
             else ->
                 SearchLinkSpan(linkType, link, name)

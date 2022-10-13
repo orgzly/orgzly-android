@@ -3,7 +3,7 @@ package com.orgzly.android.ui.views.style
 import android.text.style.URLSpan
 import android.view.View
 
-class UrlLinkSpan(override val type: Int, val url: String, override val name: String?) : LinkSpan(type, url, name), Offsetting {
+class UrlLinkSpan(val type: Int, val url: String, val name: String?) : LinkSpan(), Offsetting {
     override val characterOffset = when (type) {
         TYPE_NO_BRACKETS -> 0
         TYPE_BRACKETS -> 4

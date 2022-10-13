@@ -36,6 +36,7 @@ class RichTextEdit : AppCompatEditText {
         addTextChangedListener(userEditingTextWatcher)
     }
 
+    // TODO: Handle closed drawers (and such)
     private fun scrollForBetterCursorPosition(charOffset: Int) {
         val scrollView = ancestors.firstOrNull { view -> view is NestedScrollView } as? NestedScrollView
 

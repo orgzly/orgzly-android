@@ -44,8 +44,8 @@ object ImageLoader {
         }
     }
 
-    private fun loadImage(textWithMarkup: TextView, span: FileLinkSpan) {
-        val path = span.path
+    private fun loadImage(textWithMarkup: TextView, fileLinkSpan: FileLinkSpan) {
+        val path = fileLinkSpan.path
 
         if (hasSupportedExtension(path)) {
             val text = textWithMarkup.text as Spannable
@@ -84,9 +84,9 @@ object ImageLoader {
                         .load(contentUri)
                         .into(object : CustomTarget<Bitmap>() {
 
-                            val start = text.getSpanStart(span)
-                            val end = text.getSpanEnd(span)
-                            val flags = text.getSpanFlags(span)
+                            val start = text.getSpanStart(fileLinkSpan)
+                            val end = text.getSpanEnd(fileLinkSpan)
+                            val flags = text.getSpanFlags(fileLinkSpan)
 
                             var placeholderSpan: ImageSpan? = null
 

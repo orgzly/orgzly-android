@@ -5,8 +5,8 @@ import android.util.Log
 import android.view.View
 import com.orgzly.android.ui.views.richtext.ActionableRichTextView
 
-class FileLinkSpan(val type: Int, val link: String, val name: String?) : LinkSpan(), Offsetting {
-    val path = link.substring(PREFIX.length)
+class FileOrNotLinkSpan(val type: Int, val link: String, val name: String?) : LinkSpan(), Offsetting {
+    private val path = link
 
     override val characterOffset = when (type) {
         TYPE_NO_BRACKETS -> 0
@@ -21,9 +21,5 @@ class FileLinkSpan(val type: Int, val link: String, val name: String?) : LinkSpa
                 view.followLinkToFile(path)
             }
         }
-    }
-
-    companion object {
-        const val PREFIX = "file:"
     }
 }
