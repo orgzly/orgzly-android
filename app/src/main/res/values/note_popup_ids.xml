@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <item type="id" name="note_popup_set_schedule" />
+    <item type="id" name="note_popup_set_deadline" />
+    <item type="id" name="note_popup_set_state" />
+    <item type="id" name="note_popup_toggle_state" />
+    <item type="id" name="note_popup_delete" />
+    <item type="id" name="note_popup_new_above" />
+    <item type="id" name="note_popup_new_under" />
+    <item type="id" name="note_popup_new_below" />
+    <item type="id" name="note_popup_refile" />
+    <item type="id" name="note_popup_focus" />
+</resources>

@@ -27,14 +27,13 @@ import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.ui.main.setupSearchView
+import com.orgzly.android.ui.notes.ItemGestureDetector
 import com.orgzly.android.ui.notes.NoteItemViewHolder
+import com.orgzly.android.ui.notes.NotePopup
 import com.orgzly.android.ui.notes.NotesFragment
 import com.orgzly.android.ui.notes.book.BookViewModel.Companion.APP_BAR_DEFAULT_MODE
 import com.orgzly.android.ui.notes.book.BookViewModel.Companion.APP_BAR_SELECTION_MODE
 import com.orgzly.android.ui.notes.book.BookViewModel.Companion.APP_BAR_SELECTION_MOVE_MODE
-import com.orgzly.android.ui.notes.quickbar.ItemGestureDetector
-import com.orgzly.android.ui.notes.quickbar.QuickBarListener
-import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.ui.refile.RefileFragment
 import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.util.ActivityUtils
@@ -53,8 +52,7 @@ class BookFragment :
         NotesFragment(),
         TimestampDialogFragment.OnDateTimeSetListener,
         DrawerItem,
-        BookAdapter.OnClickListener,
-        QuickBarListener {
+        BookAdapter.OnClickListener {
 
     private lateinit var binding: FragmentBookBinding
 
@@ -132,9 +130,7 @@ class BookFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
-        val quickBars = QuickBars(binding.root.context, true)
-
-        viewAdapter = BookAdapter(mBookId, binding.root.context, this, quickBars, inBook = true).apply {
+        viewAdapter = BookAdapter(mBookId, binding.root.context, this, inBook = true).apply {
             setHasStableIds(true)
         }
 
@@ -155,11 +151,11 @@ class BookFragment :
             rv.itemAnimator = null
 
             rv.addOnItemTouchListener(ItemGestureDetector(rv.context, object: ItemGestureDetector.Listener {
-                override fun onFling(direction: Int, x: Float, y: Float) {
-                    rv.findChildViewUnder(x, y)?.let { itemView ->
+                override fun onSwipe(direction: Int, e1: MotionEvent, e2: MotionEvent) {
+                    rv.findChildViewUnder(e1.x, e1.y)?.let { itemView ->
                         rv.findContainingViewHolder(itemView)?.let { vh ->
                             (vh as? NoteItemViewHolder)?.let {
-                                quickBars.onFling(it, direction, this@BookFragment)
+                                showPopupWindow(vh.itemId, direction, itemView, e1, e2)
                             }
                         }
                     }
@@ -280,6 +276,14 @@ class BookFragment :
         }
     }
 
+    private fun showPopupWindow(noteId: Long, direction: Int, itemView: View, e1: MotionEvent, e2: MotionEvent) {
+        val anchor = itemView.findViewById<View>(R.id.item_head_title)
+
+        NotePopup.showWindow(anchor, NotePopup.Location.BOOK, direction, e1, e2) { buttonId ->
+            handleActionItemClick(setOf(noteId), buttonId)
+        }
+    }
+
     private fun setFlipperDisplayedChild(notes: List<NoteView>?) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
@@ -329,10 +333,6 @@ class BookFragment :
                 "Passed book id $mBookId is not valid"
             }
         } ?: throw IllegalArgumentException("No arguments passed")
-    }
-
-    override fun onQuickBarButtonClick(buttonId: Int, itemId: Long) {
-        handleActionItemClick(setOf(itemId), buttonId)
     }
 
     /*
@@ -640,23 +640,19 @@ class BookFragment :
         }
 
         when (itemId) {
-            R.id.quick_bar_open -> {
-                openNote(ids.first())
-            }
-
-            R.id.quick_bar_new_above,
+            R.id.note_popup_new_above,
             R.id.new_note_above -> {
                 newNoteRelativeToSelection(Place.ABOVE, ids.first())
                 viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
-            R.id.quick_bar_new_under,
+            R.id.note_popup_new_under,
             R.id.new_note_under -> {
                 newNoteRelativeToSelection(Place.UNDER, ids.first())
                 viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
-            R.id.quick_bar_new_below,
+            R.id.note_popup_new_below,
             R.id.new_note_below -> {
                 newNoteRelativeToSelection(Place.BELOW, ids.first())
                 viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
@@ -670,7 +666,7 @@ class BookFragment :
             in deadlineTimeButtonIds() ->
                 displayTimestampDialog(itemId, ids)
 
-            R.id.quick_bar_delete,
+            R.id.note_popup_delete,
             R.id.delete_note -> {
                 delete(ids)
 
@@ -694,7 +690,7 @@ class BookFragment :
                 viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
-            R.id.quick_bar_refile,
+            R.id.note_popup_refile,
             R.id.refile ->
                 viewModel.refile(ids)
 
@@ -720,18 +716,18 @@ class BookFragment :
             R.id.notes_action_move_right ->
                 listener?.onNotesDemoteRequest(ids)
 
-            R.id.quick_bar_state,
+            R.id.note_popup_set_state,
             R.id.state ->
                 listener?.let {
                     openNoteStateDialog(it, ids, null)
                 }
 
-            R.id.quick_bar_done,
+            R.id.note_popup_toggle_state,
             R.id.toggle_state -> {
                 listener?.onStateToggleRequest(ids)
             }
 
-            R.id.quick_bar_focus,
+            R.id.note_popup_focus,
             R.id.focus ->
                 listener?.onNoteFocusInBookRequest(ids.first())
         }

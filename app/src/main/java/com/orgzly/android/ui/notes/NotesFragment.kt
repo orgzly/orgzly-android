@@ -79,8 +79,7 @@ abstract class NotesFragment : Fragment(), TimestampDialogFragment.OnDateTimeSet
         dialog = NoteStateDialog.show(
             requireContext(),
             currentState,
-            { state -> listener.
-            onStateChangeRequest(noteIds, state) },
+            { state -> listener.onStateChangeRequest(noteIds, state) },
             { listener.onStateChangeRequest(noteIds, null) })
     }
 
@@ -139,11 +138,11 @@ abstract class NotesFragment : Fragment(), TimestampDialogFragment.OnDateTimeSet
     }
 
     fun scheduledTimeButtonIds(): Set<Int> {
-        return setOf(R.id.schedule, R.id.quick_bar_schedule)
+        return setOf(R.id.schedule, R.id.note_popup_set_schedule)
     }
 
     fun deadlineTimeButtonIds(): Set<Int> {
-        return setOf(R.id.deadline, R.id.quick_bar_deadline)
+        return setOf(R.id.deadline, R.id.note_popup_set_deadline)
     }
 
     interface Listener {

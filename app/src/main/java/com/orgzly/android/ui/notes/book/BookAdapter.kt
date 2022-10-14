@@ -16,7 +16,6 @@ import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.Selection
 import com.orgzly.android.ui.notes.NoteItemViewBinder
 import com.orgzly.android.ui.notes.NoteItemViewHolder
-import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.databinding.ItemHeadBinding
 import com.orgzly.databinding.ItemPrefaceBinding
 
@@ -24,7 +23,6 @@ class BookAdapter(
     private val bookId: Long,
     private val context: Context,
     private val clickListener: OnClickListener,
-    private val quickBar: QuickBars,
     private val inBook: Boolean
 ) :
     ListAdapterWithHeaders<NoteView, RecyclerView.ViewHolder>(DIFF_CALLBACK, 1),
@@ -113,8 +111,6 @@ class BookAdapter(
                 val note = noteView.note
 
                 noteItemViewBinder.bind(holder, noteView)
-
-                quickBar.bind(holder)
 
                 getSelection().setBackgroundIfSelected(holder.itemView, note.id)
             }
