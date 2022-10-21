@@ -278,6 +278,10 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
                     R.id.books_context_menu_delete -> {
                         viewModel.deleteBookRequest(bookId)
                     }
+
+                    R.id.books_context_menu_show_diff -> {
+                        viewModel.showDiffBookRequest(bookId)
+                    }
                 }
 
                 viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
@@ -303,6 +307,35 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
     private fun exportBook(book: Book, format: BookFormat) {
         val defaultFileName = BookName.fileName(book.name, format)
         pickFileForBookExport.launch(defaultFileName)
+    }
+
+    private fun showDiffDialog(book: BookView) {
+        val dialogBinding = DialogBookDeleteBinding.inflate(LayoutInflater.from(context))
+
+        dialogBinding.deleteLinkedCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            dialogBinding.deleteLinkedUrl.isEnabled = isChecked
+        }
+
+        val dialogClickListener = DialogInterface.OnClickListener { _, which ->
+            when (which) {
+                DialogInterface.BUTTON_POSITIVE -> {
+                    val deleteLinked = dialogBinding.deleteLinkedCheckbox.isChecked
+                    viewModel.deleteBook(book.book.id, deleteLinked)
+                }
+            }
+        }
+
+        val builder = MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.delete_with_quoted_argument, book.book.name))
+            .setPositiveButton(R.string.delete, dialogClickListener)
+            .setNegativeButton(R.string.cancel, dialogClickListener)
+
+        if (book.syncedTo != null) {
+            dialogBinding.deleteLinkedUrl.text = book.syncedTo.uri.toString()
+            builder.setView(dialogBinding.root)
+        }
+
+        dialog = builder.show()
     }
 
     private fun deleteBookDialog(book: BookView) {
@@ -424,6 +457,12 @@ class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView
         viewModel.bookToDeleteEvent.observeSingle(viewLifecycleOwner, Observer { bookView ->
             if (bookView != null) {
                 deleteBookDialog(bookView)
+            }
+        })
+
+        viewModel.showDiffEvent.observeSingle(viewLifecycleOwner, Observer { bookView ->
+            if (bookView != null) {
+                showDiffDialog(bookView)
             }
         })
 
