@@ -89,7 +89,6 @@ public class ListWidgetProvider extends AppWidgetProvider {
                 remoteViews.setRemoteAdapter(R.id.list_widget_list_view, serviceIntent);
 
                 remoteViews.setEmptyView(R.id.list_widget_list_view, R.id.list_widget_empty_view);
-                remoteViews.setTextViewText(R.id.list_widget_empty_view, context.getString(R.string.no_notes_found_after_search));
 
                 // Rows - open note
                 final Intent onClickIntent = new Intent(context, ListWidgetProvider.class);
