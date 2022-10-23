@@ -15,6 +15,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.GestureDetectorCompat
 import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.SpanUtils
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.ui.views.style.CheckboxSpan
@@ -123,6 +124,8 @@ class RichTextView : AppCompatTextView, ActionableRichTextView {
         return event.x in left..right && event.y in top..bottom
     }
 
+    private val hideRichTextSymbols = !AppPreferences.styledTextWithMarks(context)
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         interceptClickableSpan(event)?.let { handled ->
@@ -135,7 +138,11 @@ class RichTextView : AppCompatTextView, ActionableRichTextView {
         if (isSingleTapUp) {
             val tapCharOffset = getOffsetForPosition(event.x, event.y)
 
-            val spansChars = offsettingSpansOffset(tapCharOffset)
+            val spansChars = if (hideRichTextSymbols) {
+                offsettingSpansOffset(tapCharOffset)
+            } else {
+                0
+            }
 
             if (BuildConfig.LOG_DEBUG && event.action != MotionEvent.ACTION_MOVE) {
                 LogUtils.d(TAG, tapCharOffset, spansChars, event)
