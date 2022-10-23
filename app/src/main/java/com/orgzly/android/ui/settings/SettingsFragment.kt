@@ -77,13 +77,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
         setDefaultStateForNewNote()
 
-        /* Disable changing the language if it's not supported in this version. */
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            preference(R.string.pref_key_ignore_system_locale)?.let {
-                preferenceScreen.removePreference(it)
-            }
-        }
-
         preference(R.string.pref_key_file_absolute_root)?.let {
             val pref = it as EditTextPreference
             pref.text = AppPreferences.fileAbsoluteRoot(context)
@@ -92,6 +85,16 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         preference(R.string.pref_key_file_relative_root)?.let {
             val pref = it as EditTextPreference
             pref.text = AppPreferences.fileRelativeRoot(context)
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            preference(R.string.pref_key_reminders_notification_settings_V26)?.let {
+                preferenceScreen.removePreference(it)
+            }
+        } else {
+            preference(R.string.pref_key_reminders_notification_settings_preV26)?.let {
+                preferenceScreen.removePreference(it)
+            }
         }
 
         /* Update preferences which depend on multiple others. */

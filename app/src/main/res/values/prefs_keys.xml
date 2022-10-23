@@ -307,6 +307,8 @@
 
     <string name="pref_key_reminders_channel_notification_settings" translatable="false">pref_key_reminders_channel_notification_settings</string>
     <string name="pref_key_reminders_notification_settings" translatable="false">pref_key_reminders_notification_settings</string>
+    <string name="pref_key_reminders_notification_settings_preV26" translatable="false">pref_key_reminders_notification_settings_pre_v26</string>
+    <string name="pref_key_reminders_notification_settings_V26" translatable="false">pref_key_reminders_notification_settings_v26</string>
 
     <string name="pref_key_show_sync_notifications" translatable="false">pref_key_show_sync_notifications</string>
     <bool name="pref_default_show_sync_notifications" translatable="false">false</bool>
