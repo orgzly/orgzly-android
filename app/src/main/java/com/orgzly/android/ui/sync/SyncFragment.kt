@@ -1,7 +1,6 @@
 package com.orgzly.android.ui.sync
 
 import android.app.Dialog
-import android.content.ClipData
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
@@ -23,7 +22,7 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.sync.SyncRunner
 import com.orgzly.android.sync.SyncState
 import com.orgzly.android.sync.SyncState.Companion.getInstance
-import com.orgzly.android.ui.util.getClipboardManager
+import com.orgzly.android.ui.util.copyPlainTextToClipboard
 import com.orgzly.android.usecase.UseCase
 import com.orgzly.android.usecase.UseCaseResult
 import com.orgzly.android.usecase.UseCaseRunner
@@ -252,7 +251,7 @@ class SyncFragment : Fragment() {
                     val dialog: Dialog = MaterialAlertDialogBuilder(requireContext())
                         .setPositiveButton(R.string.ok, null)
                         .setNeutralButton(R.string.copy) { _: DialogInterface?, _: Int ->
-                            copyToClipboard("Sync output", binding.syncButtonText.text)
+                            context.copyPlainTextToClipboard("Sync output", binding.syncButtonText.text)
                         }
                         .setMessage(binding.syncButtonText.text)
                         .show()
@@ -267,13 +266,6 @@ class SyncFragment : Fragment() {
         dialog.window?.let { window ->
             val textView = window.decorView.findViewById<TextView>(android.R.id.message)
             textView?.setTextIsSelectable(true)
-        }
-    }
-
-    private fun copyToClipboard(label: CharSequence, text: CharSequence) {
-        context?.getClipboardManager()?.let { clipboardManager ->
-            val clip = ClipData.newPlainText(label, text)
-            clipboardManager.setPrimaryClip(clip)
         }
     }
 

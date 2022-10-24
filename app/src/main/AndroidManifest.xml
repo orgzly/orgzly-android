@@ -170,6 +170,11 @@
             android:name=".android.ui.SyncShortcutActivity"
             android:taskAffinity="" />
 
+        <activity
+            android:name=".android.ui.LogsActivity"
+            android:exported="false"
+            android:label="@string/logs" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

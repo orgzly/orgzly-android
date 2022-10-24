@@ -331,6 +331,12 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_reminders_use_alarm_clock_for_tod_reminders));
     }
 
+    public static boolean logMajorEvents(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_log_major_events),
+                context.getResources().getBoolean(R.bool.pref_default_log_major_events));
+    }
+
     public static boolean showSyncNotifications(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_show_sync_notifications),

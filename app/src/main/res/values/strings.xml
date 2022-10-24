@@ -403,7 +403,7 @@
     <string name="displayed_book_details_detected_encoding">Detected encoding</string>
     <string name="displayed_book_details_used_encoding">Used encoding</string>
     <string name="displayed_book_details_last_action">Last action</string>
-    <string name="displayed_book_details_notes_count" >Notes count</string>
+    <string name="displayed_book_details_notes_count">Notes count</string>
 
     <string name="color_scheme_system">System</string>
     <string name="color_scheme_dynamic">Dynamic color</string>
@@ -716,4 +716,9 @@
 
     <string name="use_alarm_clock_for_tod_reminders">Use alarm clock</string>
     <string name="use_alarm_clock_for_tod_reminders_summary">For reminders with the time of day set</string>
+
+    <string name="log_major_events">Log major events</string>
+    <string name="logs">Logs</string>
+    <string name="share">Share</string>
+    <string name="refresh_data">Refresh</string>
 </resources>

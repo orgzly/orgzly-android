@@ -1,6 +1,5 @@
 package com.orgzly.android.reminders
 
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -19,6 +18,7 @@ import com.orgzly.android.ui.notifications.Notifications
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.ActivityUtils.mainActivityPendingIntent
 import com.orgzly.android.ui.util.getNotificationManager
+import com.orgzly.android.util.LogMajorEvents
 import com.orgzly.android.util.OrgFormatter
 import com.orgzly.android.util.UserTimeFormatter
 
@@ -112,6 +112,13 @@ object RemindersNotifications {
             builder.extend(wearableExtender)
 
             notificationManager.notify(notificationTag, Notifications.REMINDER_ID, builder.build())
+
+            if (LogMajorEvents.isEnabled()) {
+                LogMajorEvents.log(
+                    LogMajorEvents.REMINDERS,
+                    "Notified (tag:$notificationTag id:${Notifications.REMINDER_ID}): ${noteReminder.payload.title}"
+                )
+            }
         }
 
         // Create a group summary notification, but only if notifications can be grouped

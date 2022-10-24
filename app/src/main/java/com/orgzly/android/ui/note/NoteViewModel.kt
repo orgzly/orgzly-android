@@ -38,7 +38,7 @@ class NoteViewModel(
     private val title = initialData.title
     private val content = initialData.content
 
-    val bookView: MutableLiveData<BookView> = MutableLiveData()
+    val bookView: MutableLiveData<BookView?> = MutableLiveData()
 
     val tags: LiveData<List<String>> by lazy {
         dataRepository.selectAllTagsLiveData()
