@@ -69,13 +69,17 @@ object RemindersScheduler {
 
         // TODO: Add preferences to control *how* to schedule the alarms
         if (hasTime) {
-            // scheduleAlarmClock(alarmManager, intent, inMs)
+            if (AppPreferences.remindersUseAlarmClockForTodReminders(context)) {
+                scheduleAlarmClock(alarmManager, intent, inMs)
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                scheduleExactAndAllowWhileIdle(alarmManager, intent, inMs)
             } else {
-                scheduleExact(alarmManager, intent, inMs)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    scheduleExactAndAllowWhileIdle(alarmManager, intent, inMs)
+                } else {
+                    scheduleExact(alarmManager, intent, inMs)
+                }
             }
+
         } else {
             // Does not trigger while dozing
             scheduleExact(alarmManager, intent, inMs)

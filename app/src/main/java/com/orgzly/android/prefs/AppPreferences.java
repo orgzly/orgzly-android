@@ -325,6 +325,12 @@ public class AppPreferences {
         getDefaultSharedPreferences(context).edit().putInt(key, value).apply();
     }
 
+    public static boolean remindersUseAlarmClockForTodReminders(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_reminders_use_alarm_clock_for_tod_reminders),
+                context.getResources().getBoolean(R.bool.pref_default_reminders_use_alarm_clock_for_tod_reminders));
+    }
+
     public static boolean showSyncNotifications(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_show_sync_notifications),

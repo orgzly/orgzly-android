@@ -713,4 +713,7 @@
 
     <string name="select_notebook">Select notebook</string>
     <string name="highlight_rich_text_being_edited">Highlight rich text being edited</string>
+
+    <string name="use_alarm_clock_for_tod_reminders">Use alarm clock</string>
+    <string name="use_alarm_clock_for_tod_reminders_summary">For reminders with the time of day set</string>
 </resources>
