@@ -49,13 +49,13 @@ buildscript {
 
     versions.dagger = '2.44'
 
-    versions.gson = '2.9.1'
+    versions.gson = '2.10'
 
-    versions.dropbox_core_sdk = '5.4.2'
+    versions.dropbox_core_sdk = '5.4.4'
 
     versions.juniversalchardet = '1.0.3'
 
-    versions.joda_time = '2.11.1'
+    versions.joda_time = '2.12.0'
 
     versions.glide = '4.14.2'
 
