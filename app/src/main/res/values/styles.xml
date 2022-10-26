@@ -384,7 +384,7 @@
         <item name="android:layout_gravity">bottom</item>
     </style>
 
-    <style name="BottomToolbar">
+    <style name="BottomToolbar" parent="Widget.Material3.BottomAppBar.Legacy">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">bottom</item>
