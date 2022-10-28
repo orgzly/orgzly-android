@@ -27,7 +27,7 @@ object RemindersNotifications {
 
     private val LIGHTS = Triple(Color.BLUE, 1000, 5000)
 
-    fun showNotification(context: Context, notes: List<NoteReminder>) {
+    fun showNotifications(context: Context, notes: List<NoteReminder>) {
         val notificationManager = context.getNotificationManager()
 
         for (noteReminder in notes) {

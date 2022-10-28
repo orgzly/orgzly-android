@@ -273,7 +273,7 @@ class RichText(context: Context, attrs: AttributeSet?) :
         val newSource = richTextEdit.text
             ?.replaceRange(checkboxSpan.rawStart, checkboxSpan.rawEnd, replacement)
             ?.toString()
-            ?: ""
+            .orEmpty()
 
         listeners.onUserTextChange?.onUserTextChange(newSource)
     }

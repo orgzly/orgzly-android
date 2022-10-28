@@ -2,12 +2,12 @@ package com.orgzly.android.ui
 
 import android.os.Bundle
 import android.os.SystemClock
-import android.text.format.DateUtils
 import com.orgzly.R
 import com.orgzly.android.reminders.LastRun
 import com.orgzly.android.ui.util.copyPlainTextToClipboard
 import com.orgzly.android.ui.util.getAlarmManager
 import com.orgzly.android.ui.util.sharePlainText
+import com.orgzly.android.ui.util.userFriendlyPeriod
 import com.orgzly.android.util.LogMajorEvents
 import com.orgzly.databinding.ActivityLogsBinding
 import org.joda.time.DateTime
@@ -67,7 +67,7 @@ class LogsActivity : CommonActivity() {
 
         val bootAt = currentTime - bootElapsedMs
 
-        val bootElapsed = DateUtils.getRelativeTimeSpanString(bootAt.millis, currentTime.millis, 0)
+        val bootElapsed = bootElapsedMs.userFriendlyPeriod()
 
         val nextAlarmClock = getAlarmManager().nextAlarmClock.let { alarmClockInfo ->
             if (alarmClockInfo != null) {

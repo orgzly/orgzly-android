@@ -13,6 +13,8 @@ import androidx.annotation.StyleableRes
 import androidx.core.view.ViewCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.orgzly.android.sync.SyncRunner
+import org.joda.time.Period
+import org.joda.time.format.PeriodFormat
 
 fun <R> Context.styledAttributes(@StyleableRes attrs: IntArray, f: (typedArray: TypedArray) -> R): R {
     val typedArray = obtainStyledAttributes(attrs)
@@ -96,3 +98,7 @@ fun View.invisibleIf(condition: Boolean) {
 }
 
 fun View.invisibleUnless(condition: Boolean) = invisibleIf(!condition)
+
+fun Long.userFriendlyPeriod(): String {
+    return PeriodFormat.getDefault().print(Period(this))
+}

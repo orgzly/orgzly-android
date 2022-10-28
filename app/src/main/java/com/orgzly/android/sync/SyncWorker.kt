@@ -233,7 +233,7 @@ class SyncWorker(val context: Context, val params: WorkerParameters) :
                     e.printStackTrace()
                     dataRepository.setBookLastActionAndSyncStatus(
                         namesake.book.book.id,
-                        BookAction.forNow(BookAction.Type.ERROR, e.message ?: ""))
+                        BookAction.forNow(BookAction.Type.ERROR, e.message.orEmpty()))
                 }
 
                 sendProgress(SyncState.getInstance(

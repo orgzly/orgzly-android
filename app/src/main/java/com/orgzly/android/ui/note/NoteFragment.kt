@@ -518,7 +518,7 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
         // Replace new lines with spaces, in case multi-line text has been pasted
         val title = binding.title.getSourceText().toString().replace("\n".toRegex(), " ").trim { it <= ' ' }
 
-        val content = binding.content.getSourceText()?.toString() ?: ""
+        val content = binding.content.getSourceText()?.toString().orEmpty()
 
         // TODO: Create a function (extension?) for this
         val state = if (TextUtils.isEmpty(binding.stateButton.text))

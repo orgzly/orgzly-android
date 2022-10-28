@@ -8,6 +8,7 @@ import com.orgzly.android.App
 import com.orgzly.android.AppIntent
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.ui.util.userFriendlyPeriod
 import com.orgzly.android.util.LogMajorEvents
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.async
@@ -107,8 +108,11 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
                 context, dataRepository, now, lastRun, NoteReminders.INTERVAL_FROM_LAST_TO_NOW)
 
             if (notes.isNotEmpty()) {
-                "Triggered: Found ${notes.size} notes between $lastRun and $now".also {
-                    RemindersNotifications.showNotification(context, notes)
+                // TODO: Show less, show summary
+                val lastNotes = notes.takeLast(20)
+
+                "Triggered: Found ${notes.size} notes (showing ${lastNotes.size}) between $lastRun and $now".also {
+                    RemindersNotifications.showNotifications(context, lastNotes)
                 }
 
             } else {
@@ -148,14 +152,15 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
                 inMs = 1
             }
 
-            RemindersScheduler.scheduleReminder(context, inMs, hasTime)
-
             if (LogMajorEvents.isEnabled()) {
+                val inS = inMs.userFriendlyPeriod()
                 LogMajorEvents.log(
                     LogMajorEvents.REMINDERS,
-                    "Next: Found ${notes.size} notes between $lastRun and $now and scheduled first in ${inMs / 1000} sec: \"$title\" (id:$id)"
+                    "Next: Found ${notes.size} notes between $lastRun and $now and scheduling the first one in $inS ($inMs ms): \"$title\" (id:$id)"
                 )
             }
+
+            RemindersScheduler.scheduleReminder(context, inMs, hasTime)
 
         } else {
             if (LogMajorEvents.isEnabled()) {
@@ -178,6 +183,8 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
 
                 val orgDateTime = OrgDateTime.parse(noteTime.orgTimestampString)
 
+                val timestampDateTime = DateTime(timestamp)
+
                 val payload = NoteReminderPayload(
                     noteTime.noteId,
                     noteTime.bookId,
@@ -186,8 +193,6 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
                     noteTime.timeType,
                     orgDateTime)
 
-                val timestampDateTime = DateTime(timestamp)
-
                 reminders.add(NoteReminder(timestampDateTime, payload))
             }
         }
@@ -195,7 +200,7 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found ${reminders.size} notes")
 
         if (reminders.isNotEmpty()) {
-            RemindersNotifications.showNotification(context, reminders)
+            RemindersNotifications.showNotifications(context, reminders)
         }
     }
 

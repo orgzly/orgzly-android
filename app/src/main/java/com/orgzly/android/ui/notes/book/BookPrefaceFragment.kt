@@ -106,7 +106,7 @@ class BookPrefaceFragment : Fragment() {
 
                     R.id.done -> {
                         val source = binding.fragmentBookPrefaceContent.getSourceText()
-                        save(source?.toString() ?: "")
+                        save(source?.toString().orEmpty())
                     }
 
                 }

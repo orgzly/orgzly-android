@@ -12,7 +12,10 @@ import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.ui.*
+import com.orgzly.android.ui.CommonViewModel
+import com.orgzly.android.ui.NotePlace
+import com.orgzly.android.ui.Place
+import com.orgzly.android.ui.SingleLiveEvent
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.usecase.*
 import com.orgzly.android.util.MiscUtils
@@ -73,7 +76,7 @@ class NoteViewModel(
             }
 
             notePayload = if (isNew()) {
-                NoteBuilder.newPayload(App.getAppContext(), title ?: "", content)
+                NoteBuilder.newPayload(App.getAppContext(), title.orEmpty(), content)
             } else {
                 dataRepository.getNotePayload(noteId)
             }

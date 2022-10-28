@@ -33,14 +33,6 @@ object NoteReminders {
             if (isRelevantNoteTime(context, noteTime)) {
                 val orgDateTime = OrgDateTime.parse(noteTime.orgTimestampString)
 
-                val payload = NoteReminderPayload(
-                    noteTime.noteId,
-                    noteTime.bookId,
-                    noteTime.bookName,
-                    noteTime.title,
-                    noteTime.timeType,
-                    orgDateTime)
-
                 val interval = intervalToConsider(intervalType, now, lastRun, noteTime.timeType)
 
                 // Deadline warning period
@@ -72,6 +64,14 @@ object NoteReminders {
 //                    }
 
                 if (time != null) {
+                    val payload = NoteReminderPayload(
+                        noteTime.noteId,
+                        noteTime.bookId,
+                        noteTime.bookName,
+                        noteTime.title,
+                        noteTime.timeType,
+                        orgDateTime)
+
                     result.add(NoteReminder(time, payload))
                 }
             }

@@ -164,7 +164,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
     private fun getRepoScheme(): String {
         return try {
-            Uri.parse(binding.activityRepoGitUrl.text.toString()).scheme ?: ""
+            Uri.parse(binding.activityRepoGitUrl.text.toString()).scheme.orEmpty()
         } catch(_: Throwable) {
             ""
         }
@@ -175,7 +175,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         if ("https" != repoScheme) {
             return
         }
-        val userInfo = Uri.parse(binding.activityRepoGitUrl.text.toString()).userInfo ?: ""
+        val userInfo = Uri.parse(binding.activityRepoGitUrl.text.toString()).userInfo.orEmpty()
         // We don't want the password visible if it was copy-pasted to the remote address field
         var repoUrl = binding.activityRepoGitUrl.text.toString()
         repoUrl.replaceFirst(userInfo, "")
@@ -355,7 +355,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         return if (v != null && v.isNotEmpty()) {
             v
         } else {
-            AppPreferences.getStateSharedPreferences(this)?.getString(getSettingName(selector), "") ?: ""
+            AppPreferences.getStateSharedPreferences(this)?.getString(getSettingName(selector), "").orEmpty()
         }
     }
 
