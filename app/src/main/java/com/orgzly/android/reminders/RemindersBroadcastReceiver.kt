@@ -29,26 +29,19 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent, intent.action, intent.extras)
 
         async {
-            val now = DateTime()
-            val lastRun = LastRun.fromPreferences(context)
-
-            RemindersScheduler.cancelAll(context)
-
-            if (LogMajorEvents.isEnabled()) {
-                LogMajorEvents.log(
-                    LogMajorEvents.REMINDERS,
-                    "Canceled all reminders (now:$now last-run:$lastRun"
-                )
-            }
-
             when (intent.action) {
                 Intent.ACTION_BOOT_COMPLETED,
-                AppIntent.ACTION_REMINDER_DATA_CHANGED -> {
-                    // Nothing to do, just schedule the next alert below
-                }
-
+                AppIntent.ACTION_REMINDER_DATA_CHANGED,
                 AppIntent.ACTION_REMINDER_TRIGGERED -> {
-                    reminderTriggered(context, now, lastRun)
+                    val now = DateTime()
+                    val lastRun = LastRun.fromPreferences(context)
+
+                    RemindersScheduler.cancelAll(context)
+
+                    notifyForRemindersSinceLastRun(context, now, lastRun)
+
+                    scheduleNextReminder(context, now, lastRun)
+                    LastRun.toPreferences(context, now)
                 }
 
                 AppIntent.ACTION_REMINDER_SNOOZE_ENDED -> {
@@ -64,9 +57,6 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
                 }
             }
 
-            scheduleNextReminder(context, now, lastRun)
-
-            LastRun.toPreferences(context, now)
         }
     }
 
@@ -109,7 +99,7 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
     /**
      * Display reminders for all notes with times between previous run and now.
      */
-    private fun reminderTriggered(context: Context, now: DateTime, lastRun: LastRun?) {
+    private fun notifyForRemindersSinceLastRun(context: Context, now: DateTime, lastRun: LastRun?) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
         val msg = if (lastRun != null) {

@@ -31,6 +31,10 @@ object RemindersScheduler {
 
     fun cancelAll(context: Context) {
         context.getAlarmManager().cancel(reminderTriggeredIntent(context))
+
+        if (LogMajorEvents.isEnabled()) {
+            LogMajorEvents.log(LogMajorEvents.REMINDERS, "Canceled all reminders")
+        }
     }
 
     fun notifyDataSetChanged(context: Context) {
