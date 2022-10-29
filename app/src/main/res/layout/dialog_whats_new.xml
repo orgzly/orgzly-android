@@ -23,6 +23,32 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.8.10-beta.1"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Allow using alarm clock for scheduling reminders with a time of day" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Log and view major events (e.g. scheduling reminders)" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Check for reminders since the last run on boot and data-change" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Remove edit/view modes from note, single tap to edit and position the cursor correctly" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text='Replace "quick menu" with popup windows (primarily for performance)' />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.8.9"
             tools:ignore="HardcodedText" />
 
