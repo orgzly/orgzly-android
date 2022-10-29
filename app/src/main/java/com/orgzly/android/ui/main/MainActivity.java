@@ -31,9 +31,6 @@ import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.db.entity.Note;
 import com.orgzly.android.db.entity.SavedSearch;
 import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.query.Condition;
-import com.orgzly.android.query.Query;
-import com.orgzly.android.query.user.DottedQueryBuilder;
 import com.orgzly.android.sync.AutoSync;
 import com.orgzly.android.ui.AppSnackbarUtils;
 import com.orgzly.android.ui.CommonActivity;
@@ -82,7 +79,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Set;
 
 public class MainActivity extends CommonActivity
@@ -96,11 +92,6 @@ public class MainActivity extends CommonActivity
         BookPrefaceFragment.Listener {
 
     public static final String TAG = MainActivity.class.getName();
-
-    public static final String ORG_ID_GOTO = "org-id-goto";
-    public static final String ORGZLY_SEARCH = "orgzly-search";
-    public static final String ORG_SEARCH = "org-search";
-    public static final String ORG_PROTOCOL = "org-protocol";
 
     // TODO: Stop using SyncFragment, use ViewModel
     public SyncFragment mSyncFragment;
@@ -131,7 +122,8 @@ public class MainActivity extends CommonActivity
 
         super.onCreate(savedInstanceState);
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
+        if (BuildConfig.LOG_DEBUG)
+            LogUtils.d(TAG, getIntent(), getIntent().getExtras(), savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
@@ -185,8 +177,6 @@ public class MainActivity extends CommonActivity
      * Adds initial set of fragments, depending on intent extras
      */
     private void setupDisplay(Bundle savedInstanceState) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, getIntent().getExtras());
-
         if (savedInstanceState == null) { // Not a configuration change.
             long bookId = getIntent().getLongExtra(AppIntent.EXTRA_BOOK_ID, 0L);
             long noteId = getIntent().getLongExtra(AppIntent.EXTRA_NOTE_ID, 0L);
@@ -204,71 +194,30 @@ public class MainActivity extends CommonActivity
                 }
             } else if (queryString != null) {
                 DisplayManager.displayQuery(getSupportFragmentManager(), queryString);
-            }
 
-            Intent intent = getIntent();
-            if (intent.getAction().equalsIgnoreCase("android.intent.action.VIEW")) {
-                handleOrgProtocol(intent);
+            } else {
+                handleOrgProtocolIntent(getIntent());
             }
         }
     }
 
-    private void handleOrgProtocol(Intent intent) {
-        Uri data = intent.getData();
-        if (data == null) return;
-        String scheme = data.getScheme();
-        String host = data.getHost();
-        if (scheme.equalsIgnoreCase(ORG_PROTOCOL)) {
-            Intent newIntent;
-            switch (host.toLowerCase()) {
-                case ORG_ID_GOTO:
-                    String orgId = data.getQueryParameter("id");
-                    if (orgId == null)
-                        break;
-                    newIntent = new Intent(AppIntent.ACTION_OPEN_NOTE);
-                    newIntent.putExtra(AppIntent.EXTRA_PROPERTY_NAME, "ID");
-                    newIntent.putExtra(AppIntent.EXTRA_PROPERTY_VALUE, orgId);
-                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(newIntent);
-                    return;
-                case ORGZLY_SEARCH:
-                    String query = data.getQueryParameter("q");
-                    if (query == null)
-                        break;
-                    newIntent = new Intent(AppIntent.ACTION_OPEN_QUERY);
-                    newIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, query);
-                    receiver.onReceive(this, newIntent);
-                    return;
-                case ORG_SEARCH:
-                    ArrayList<Condition> conditions = new ArrayList<Condition>();
-                    DottedQueryBuilder builder = new DottedQueryBuilder();
-                    for (String param : data.getQueryParameterNames()) {
-                        String value = data.getQueryParameter(param);
-                        switch(param) {
-                            case "tag":
-                                conditions.add(new Condition.HasTag(value, false));
-                                break;
-                            case "text":
-                                conditions.add(new Condition.HasText(value, false));
-                                break;
-                            case "state":
-                                conditions.add(new Condition.HasState(value,false));
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    String newQuery = builder.build(new Query(new Condition.And(conditions)));
-                    newIntent = new Intent(AppIntent.ACTION_OPEN_QUERY);
-                    newIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, newQuery);
-                    receiver.onReceive(this, newIntent);
-                    return;
-                default:
-                    break;
+    private void handleOrgProtocolIntent(Intent intent) {
+        OrgProtocol.handleOrgProtocol(intent, new OrgProtocol.Listener() {
+            @Override
+            public void onNoteWithId(@NonNull String id) {
+                viewModel.followLinkToNoteWithProperty("ID", id);
             }
-        }
 
-        String msg = getString(R.string.no_such_link_target, "url", data.toString());
-        AppSnackbarUtils.showSnackbar(this, msg);
+            @Override
+            public void onQuery(@NonNull String query) {
+                viewModel.displayQuery(query);
+            }
+
+            @Override
+            public void onError(@NonNull String str) {
+                AppSnackbarUtils.showSnackbar(MainActivity.this, str);
+            }
+        });
     }
 
     private void setupDrawer() {
@@ -376,37 +325,45 @@ public class MainActivity extends CommonActivity
 
         viewModel.getNavigationActions().observeSingle(this, action -> {
             if (action instanceof MainNavigationAction.OpenBook) {
-                MainNavigationAction.OpenBook openBookAction =
+                MainNavigationAction.OpenBook thisAction =
                         (MainNavigationAction.OpenBook) action;
 
                 DisplayManager.displayBook(
                         getSupportFragmentManager(),
-                        openBookAction.getBookId(),
+                        thisAction.getBookId(),
                         0);
 
             } else if (action instanceof MainNavigationAction.OpenBookFocusNote) {
-                MainNavigationAction.OpenBookFocusNote openBookFocusNoteAction =
+                MainNavigationAction.OpenBookFocusNote thisAction =
                         (MainNavigationAction.OpenBookFocusNote) action;
 
                 DisplayManager.displayBook(
                         getSupportFragmentManager(),
-                        openBookFocusNoteAction.getBookId(),
-                        openBookFocusNoteAction.getNoteId());
+                        thisAction.getBookId(),
+                        thisAction.getNoteId());
 
             } else if (action instanceof MainNavigationAction.OpenNote) {
-                MainNavigationAction.OpenNote openNoteAction =
+                MainNavigationAction.OpenNote thisAction =
                         (MainNavigationAction.OpenNote) action;
 
                 DisplayManager.displayExistingNote(
                         getSupportFragmentManager(),
-                        openNoteAction.getBookId(),
-                        openNoteAction.getNoteId());
+                        thisAction.getBookId(),
+                        thisAction.getNoteId());
 
             } else if (action instanceof MainNavigationAction.OpenFile) {
-                MainNavigationAction.OpenFile openFileAction =
+                MainNavigationAction.OpenFile thisAction =
                         (MainNavigationAction.OpenFile) action;
 
-                openFileIfExists(openFileAction.getFile());
+                openFileIfExists(thisAction.getFile());
+
+            } else if (action instanceof MainNavigationAction.DisplayQuery) {
+                MainNavigationAction.DisplayQuery thisAction =
+                        (MainNavigationAction.DisplayQuery) action;
+
+                DisplayManager.displayQuery(
+                        getSupportFragmentManager(),
+                        thisAction.getQuery());
             }
         });
 
@@ -927,6 +884,12 @@ public class MainActivity extends CommonActivity
         Intent intent = new Intent(AppIntent.ACTION_FOLLOW_LINK_TO_NOTE_WITH_PROPERTY);
         intent.putExtra(AppIntent.EXTRA_PROPERTY_NAME, name);
         intent.putExtra(AppIntent.EXTRA_PROPERTY_VALUE, value);
+        LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
+    }
+
+    public static void openQuery(String query) {
+        Intent intent = new Intent(AppIntent.ACTION_OPEN_QUERY);
+        intent.putExtra(AppIntent.EXTRA_QUERY_STRING, query);
         LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
     }
 

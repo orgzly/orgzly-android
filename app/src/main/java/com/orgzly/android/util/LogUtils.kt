@@ -62,7 +62,7 @@ object LogUtils {
             }
 
             if (i < args.size - 1) {
-                s.append(" ")
+                s.append(" --- ")
             }
         }
 

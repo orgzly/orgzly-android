@@ -1,49 +1,32 @@
 package com.orgzly.android.espresso;
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+
 import android.content.Intent;
 import android.net.Uri;
-import android.support.test.espresso.ViewInteraction;
-import android.support.test.rule.ActivityTestRule;
-import android.view.View;
+import android.os.SystemClock;
+
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.ViewInteraction;
 
 import com.orgzly.R;
-import com.orgzly.android.AppIntent;
-import com.orgzly.android.NotePosition;
 import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.ui.MainActivity;
-import com.orgzly.android.ui.ShareActivity;
+import com.orgzly.android.ui.main.MainActivity;
 
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
-import static com.orgzly.android.espresso.EspressoUtils.toLandscape;
-import static com.orgzly.android.espresso.EspressoUtils.toPortrait;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.startsWith;
-import static org.junit.Assert.assertTrue;
-
-/**
- *
- */
-@SuppressWarnings("unchecked")
 public class OrgProtocolTest extends OrgzlyTest {
-    @Rule
-    public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class, true, false);
-
     @Before
     public void setUp() throws Exception {
         super.setUp();
 
-        shelfTestUtils.setupBook("book-a",
+        testUtils.setupBook("book-a",
                 "* Note [b-1]\n" +
                         ":PROPERTIES:\n" +
                         ":CUSTOM_ID: DIFFERENT case CUSTOM id\n" +
@@ -59,70 +42,53 @@ public class OrgProtocolTest extends OrgzlyTest {
                         ":END:\n" +
                         ""
         );
-        shelfTestUtils.setupBook("book-b",
+        testUtils.setupBook("book-b",
                 "* Note [b-4]\n" +
                         ":PROPERTIES:\n" +
                         ":ID: BDCE923B-C3CD-41ED-B58E-8BDF8BABA54F\n" +
                         ":END:\n" +
-
                         ""
         );
-
-    }
-    private void startActivityWithIntent(String action, Uri uri) {
-        Intent intent = new Intent();
-
-        if (action != null) {
-            intent.setAction(action);
-        }
-        intent.setData(uri);
-
-        activityRule.launchActivity(intent);
     }
 
     @Test
     public void testOrgProtocolOpensNote() {
-        Uri uri = Uri.parse("org-protocol://org-id-goto?id=BDCE923B-C3CD-41ED-B58E-8BDF8BABA54F");
-        startActivityWithIntent(Intent.ACTION_VIEW,  uri);
-        toPortrait(activityRule);
+        launchActivity("org-protocol://org-id-goto?id=BDCE923B-C3CD-41ED-B58E-8BDF8BABA54F");
 
-
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.fragment_note_location),
-                        isDisplayed()));
+        ViewInteraction textView = onView(allOf(withId(R.id.location_button), isDisplayed()));
         textView.check(matches(withText("book-b")));
 
-        ViewInteraction editText = onView(
-                allOf(withId(R.id.fragment_note_title),
-                        isDisplayed()));
+        ViewInteraction editText = onView(allOf(withId(R.id.title), isDisplayed()));
         editText.check(matches(withText("Note [b-4]")));
     }
 
     @Test
     public void testOrgProtocolBadLink1() {
-        Uri uri = Uri.parse("org-protocol://org-id-goto://BDCE923B-C3CD-41ED-B58E-8BDF8BABA54F");
-        startActivityWithIntent(Intent.ACTION_VIEW,  uri);
-        toPortrait(activityRule);
+        launchActivity("org-protocol://org-id-goto://BDCE923B-C3CD-41ED-B58E-8BDF8BABA54F");
 
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.snackbar_text),
-                        isDisplayed()));
+        ViewInteraction textView = onView(allOf(withId(R.id.snackbar_text), isDisplayed()));
 
         textView.check(matches(withText("Note with “ID” property set to “org-protocol://org-id-goto://BDCE923B-C3CD-41ED-B58E-8BDF8BABA54F” not found")));
 
     }
     @Test
     public void testOrgProtocolBadLink2() {
-        Uri uri = Uri.parse("org-protocol://some-other-protocol?x=1&y=2");
-        startActivityWithIntent(Intent.ACTION_VIEW,  uri);
-        toPortrait(activityRule);
+        launchActivity("org-protocol://some-other-protocol?x=1&y=2");
 
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.snackbar_text),
-                        isDisplayed()));
+        ViewInteraction textView = onView(allOf(withId(R.id.snackbar_text), isDisplayed()));
 
         textView.check(matches(withText("Note with “url” property set to “org-protocol://some-other-protocol?x=1&y=2” not found")));
-
     }
 
+    private void launchActivity(String uriString) {
+        Uri uri = Uri.parse(uriString);
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setData(uri);
+
+        ActivityScenario.launch(intent);
+
+        // SystemClock.sleep(5000);
+    }
 }
