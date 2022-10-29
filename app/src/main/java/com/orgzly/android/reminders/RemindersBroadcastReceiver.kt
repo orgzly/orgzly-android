@@ -169,7 +169,7 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
         } else {
             if (LogMajorEvents.isEnabled()) {
                 LogMajorEvents.log(
-                    LogMajorEvents.REMINDERS, "Next: No notes found between $lastRun and $now"
+                    LogMajorEvents.REMINDERS, "Next: No notes found from $now"
                 )
             }
         }
