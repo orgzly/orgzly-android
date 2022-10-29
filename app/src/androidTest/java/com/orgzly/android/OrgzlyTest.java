@@ -138,6 +138,9 @@ public class OrgzlyTest {
 
         /* Start with the light theme. */
         AppPreferences.colorTheme(context, "light");
+
+        /* Log major events. */
+        AppPreferences.logMajorEvents(context, true);
     }
 
     /**

@@ -114,9 +114,10 @@ object RemindersNotifications {
             notificationManager.notify(notificationTag, Notifications.REMINDER_ID, builder.build())
 
             if (LogMajorEvents.isEnabled()) {
+                val note = "\"${noteReminder.payload.title}\" (id:${noteReminder.payload.noteId})"
                 LogMajorEvents.log(
                     LogMajorEvents.REMINDERS,
-                    "Notified (tag:$notificationTag id:${Notifications.REMINDER_ID}): ${noteReminder.payload.title}"
+                    "Notified! (tag:$notificationTag id:${Notifications.REMINDER_ID}): $note"
                 )
             }
         }

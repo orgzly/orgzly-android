@@ -103,7 +103,7 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
     private fun notifyForRemindersSinceLastRun(context: Context, now: DateTime, lastRun: LastRun?) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        val msg = if (lastRun != null) {
+        if (lastRun != null) {
             val notes = NoteReminders.getNoteReminders(
                 context, dataRepository, now, lastRun, NoteReminders.INTERVAL_FROM_LAST_TO_NOW)
 
@@ -111,23 +111,27 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
                 // TODO: Show less, show summary
                 val lastNotes = notes.takeLast(20)
 
-                "Triggered: Found ${notes.size} notes (showing ${lastNotes.size}) between $lastRun and $now".also {
-                    RemindersNotifications.showNotifications(context, lastNotes)
+                if (LogMajorEvents.isEnabled()) {
+                    LogMajorEvents.log(
+                        LogMajorEvents.REMINDERS,
+                        "Since last run: Found ${notes.size} notes (showing ${lastNotes.size}) between $lastRun and $now")
                 }
 
+                RemindersNotifications.showNotifications(context, lastNotes)
+
             } else {
-                "Triggered: No notes found between $lastRun and $now"
+                if (LogMajorEvents.isEnabled()) {
+                    LogMajorEvents.log(
+                        LogMajorEvents.REMINDERS,
+                        "Since last run: No notes found between $lastRun and $now")
+                }
             }
 
         } else {
-            "Triggered: No previous run"
+            if (LogMajorEvents.isEnabled()) {
+                LogMajorEvents.log(LogMajorEvents.REMINDERS, "Since last run: No previous run")
+            }
         }
-
-        if (LogMajorEvents.isEnabled()) {
-            LogMajorEvents.log(LogMajorEvents.REMINDERS, msg)
-        }
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, msg)
     }
 
     /**
@@ -156,7 +160,7 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
                 val inS = inMs.userFriendlyPeriod()
                 LogMajorEvents.log(
                     LogMajorEvents.REMINDERS,
-                    "Next: Found ${notes.size} notes between $lastRun and $now and scheduling the first one in $inS ($inMs ms): \"$title\" (id:$id)"
+                    "Next: Found ${notes.size} notes from $now and scheduling first in $inS ($inMs ms): \"$title\" (id:$id)"
                 )
             }
 

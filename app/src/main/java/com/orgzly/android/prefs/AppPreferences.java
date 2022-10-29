@@ -337,6 +337,11 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_log_major_events));
     }
 
+    public static void logMajorEvents(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_log_major_events);
+        getDefaultSharedPreferences(context).edit().putBoolean(key, value).apply();
+    }
+
     public static boolean showSyncNotifications(Context context) {
         return getDefaultSharedPreferences(context).getBoolean(
                 context.getResources().getString(R.string.pref_key_show_sync_notifications),

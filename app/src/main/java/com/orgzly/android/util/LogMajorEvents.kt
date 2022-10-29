@@ -4,7 +4,7 @@ import android.util.Log
 import com.orgzly.BuildConfig
 import com.orgzly.android.App
 import com.orgzly.android.prefs.AppPreferences
-import org.joda.time.Instant
+import org.joda.time.DateTime
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
@@ -27,7 +27,7 @@ object LogMajorEvents {
 
             // Append to file
             OutputStreamWriter(FileOutputStream(file, true)).use {
-                val msg = "${Instant.now()} $name $str\n"
+                val msg = "${DateTime.now()} $name $str\n"
                 it.append(msg)
             }
 
