@@ -858,6 +858,21 @@ public class MainActivity extends CommonActivity
         LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
     }
 
+    @Override
+    public void onClockIn(@NonNull Set<Long> noteIds) {
+        viewModel.clockingUpdateRequest(noteIds, 0);
+    }
+
+    @Override
+    public void onClockOut(@NonNull Set<Long> noteIds) {
+        viewModel.clockingUpdateRequest(noteIds, 1);
+    }
+
+    @Override
+    public void onClockCancel(@NonNull Set<Long> noteIds) {
+        viewModel.clockingUpdateRequest(noteIds, 2);
+    }
+
     private class LocalBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {

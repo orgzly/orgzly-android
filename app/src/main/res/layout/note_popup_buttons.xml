@@ -34,6 +34,21 @@
             android:id="@id/note_popup_toggle_state"
             app:icon="@drawable/ic_check_circle_outline" />
 
+        <Button
+            style="@style/NotePopupButton"
+            android:id="@id/note_popup_clock_in"
+            app:icon="@drawable/ic_hourglass_top" />
+
+        <Button
+            style="@style/NotePopupButton"
+            android:id="@id/note_popup_clock_out"
+            app:icon="@drawable/ic_hourglass_bottom" />
+
+        <Button
+            style="@style/NotePopupButton"
+            android:id="@id/note_popup_clock_cancel"
+            app:icon="@drawable/ic_hourglass_disabled" />
+
         <!-- book left -->
 
         <Button

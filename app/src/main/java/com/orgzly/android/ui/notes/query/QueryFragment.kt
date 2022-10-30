@@ -95,6 +95,18 @@ abstract class QueryFragment :
                 listener?.onStateToggleRequest(ids)
             }
 
+            R.id.note_popup_clock_in -> {
+                listener?.onClockIn(ids)
+            }
+
+            R.id.note_popup_clock_out -> {
+                listener?.onClockOut(ids)
+            }
+
+            R.id.note_popup_clock_cancel -> {
+                listener?.onClockCancel(ids)
+            }
+
             R.id.note_popup_focus,
             R.id.focus ->
                 listener?.onNoteFocusInBookRequest(ids.first())

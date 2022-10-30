@@ -122,6 +122,14 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
         }
     }
 
+    fun clockingUpdateRequest(noteIds: Set<Long>, type: Int) {
+        App.EXECUTORS.diskIO().execute {
+            catchAndPostError {
+                UseCaseRunner.run(NoteUpdateClockingState(noteIds, type))
+            }
+        }
+    }
+
     companion object {
         private val TAG = MainActivityViewModel::class.java.name
     }

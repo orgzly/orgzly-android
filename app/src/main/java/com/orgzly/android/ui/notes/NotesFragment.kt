@@ -159,6 +159,9 @@ abstract class NotesFragment : Fragment(), TimestampDialogFragment.OnDateTimeSet
         fun onScheduledTimeUpdateRequest(noteIds: Set<Long>, time: OrgDateTime?)
         fun onDeadlineTimeUpdateRequest(noteIds: Set<Long>, time: OrgDateTime?)
 
+        fun onClockIn(noteIds: Set<Long>)
+        fun onClockOut(noteIds: Set<Long>)
+        fun onClockCancel(noteIds: Set<Long>)
     }
 
     companion object {

@@ -80,7 +80,10 @@ object NotePopup {
         R.id.note_popup_set_schedule,
         R.id.note_popup_set_deadline,
         R.id.note_popup_set_state,
-        R.id.note_popup_toggle_state
+        R.id.note_popup_toggle_state,
+        R.id.note_popup_clock_in,
+        R.id.note_popup_clock_out,
+        R.id.note_popup_clock_cancel,
     )
 
     private val bookLeft = arrayListOf(
@@ -95,7 +98,10 @@ object NotePopup {
         R.id.note_popup_set_schedule,
         R.id.note_popup_set_deadline,
         R.id.note_popup_set_state,
-        R.id.note_popup_toggle_state
+        R.id.note_popup_toggle_state,
+        R.id.note_popup_clock_in,
+        R.id.note_popup_clock_out,
+        R.id.note_popup_clock_cancel,
     )
 
     private val queryLeft = arrayListOf(
@@ -107,6 +113,9 @@ object NotePopup {
         R.id.note_popup_set_deadline,
         R.id.note_popup_set_state,
         R.id.note_popup_toggle_state,
+        R.id.note_popup_clock_in,
+        R.id.note_popup_clock_out,
+        R.id.note_popup_clock_cancel,
         R.id.note_popup_delete,
         R.id.note_popup_new_above,
         R.id.note_popup_new_under,
