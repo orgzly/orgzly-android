@@ -721,4 +721,9 @@
     <string name="logs">Logs</string>
     <string name="share">Share</string>
     <string name="refresh_data">Refresh</string>
+
+    <string name="clock">Clock</string>
+    <string name="clock_in">Clock in</string>
+    <string name="clock_out">Clock out</string>
+    <string name="clock_cancel">Clock cancel</string>
 </resources>

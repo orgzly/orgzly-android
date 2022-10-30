@@ -981,6 +981,33 @@ class DataRepository @Inject constructor(
         }
     }
 
+    fun setNotesClockingState(noteIds: Set<Long>, type: Int) {
+        var contentUpdated = false
+
+        noteIds.forEach { noteId ->
+            val content = db.note().get(noteId)?.content
+
+            val newContent = when (type) {
+                0 -> OrgFormatter.clockIn(content)
+                1 -> OrgFormatter.clockOut(content)
+                2 -> OrgFormatter.clockCancel(content)
+                else -> content
+            }
+
+            if (newContent !== content) {
+                val contentLineCount = MiscUtils.lineCount(newContent)
+                db.note().updateContent(noteId, newContent, contentLineCount)
+                contentUpdated = true
+            }
+        }
+
+        if (contentUpdated) {
+            db.note().get(noteIds).mapTo(hashSetOf()) { it.position.bookId }.let {
+                updateBookIsModified(it, true)
+            }
+        }
+    }
+
     fun toggleNoteFoldedState(noteId: Long): Int {
         return db.runInTransaction(Callable {
             val note = db.note().get(noteId) ?: return@Callable 0
@@ -1086,13 +1113,14 @@ class DataRepository @Inject constructor(
                     }
 
                     updated += db.note().update(
-                            note.noteId,
-                            title,
-                            content,
-                            scl.state,
-                            getOrgRangeId(scl.scheduled),
-                            getOrgRangeId(scl.deadline),
-                            getOrgRangeId(scl.closed))
+                        note.noteId,
+                        title,
+                        content,
+                        MiscUtils.lineCount(content),
+                        scl.state,
+                        getOrgRangeId(scl.scheduled),
+                        getOrgRangeId(scl.deadline),
+                        getOrgRangeId(scl.closed))
 
                     if (scl.isShifted) {
                         replaceNoteEvents(note.noteId, title, content)
@@ -1109,7 +1137,7 @@ class DataRepository @Inject constructor(
 
     fun updateNoteContent(bookId: Long, noteId: Long, content: String?) {
         db.runInTransaction {
-            db.note().updateContent(noteId, content)
+            db.note().updateContent(noteId, content, MiscUtils.lineCount(content))
 
             updateBookIsModified(bookId, true)
         }
@@ -1819,7 +1847,11 @@ class DataRepository @Inject constructor(
 
         val startId = getOrgDateTimeId(range.startTime)
 
-        val rangeEndTime = if (range.endTime != null) { range.endTime } else { null }
+        val rangeEndTime = if (range.endTime != null) {
+            range.endTime
+        } else {
+            null
+        }
         val endId = if (rangeEndTime != null) getOrgDateTimeId(rangeEndTime) else null
 
         return db.orgRange().insert(OrgRange(0, str, startId, endId))

@@ -39,6 +39,7 @@ import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.share.ShareActivity
 import com.orgzly.android.ui.util.*
 import com.orgzly.android.util.LogUtils
+import com.orgzly.android.util.OrgFormatter
 import com.orgzly.android.util.SpaceTokenizer
 import com.orgzly.android.util.UserTimeFormatter
 import com.orgzly.databinding.FragmentNoteBinding
@@ -293,12 +294,22 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 userSave()
             }
 
-            R.id.keep_screen_on -> {
-                dialog = ActivityUtils.keepScreenOnToggle(activity, menuItem)
+            R.id.clock_in -> {
+                val content = binding.content.getSourceText()?.toString()
+                val newContent = OrgFormatter.clockIn(content)
+                binding.content.setSourceText(newContent)
             }
 
-            R.id.delete -> {
-                userDelete()
+            R.id.clock_out -> {
+                val content = binding.content.getSourceText()?.toString()
+                val newContent = OrgFormatter.clockOut(content)
+                binding.content.setSourceText(newContent)
+            }
+
+            R.id.clock_cancel -> {
+                val content = binding.content.getSourceText()?.toString()
+                val newContent = OrgFormatter.clockCancel(content)
+                binding.content.setSourceText(newContent)
             }
 
             R.id.metadata_show_all -> {
@@ -317,6 +328,14 @@ class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.O
                 menuItem.isChecked = !menuItem.isChecked
                 AppPreferences.alwaysShowSetNoteMetadata(context, menuItem.isChecked)
                 setMetadataViewsVisibility()
+            }
+
+            R.id.keep_screen_on -> {
+                dialog = ActivityUtils.keepScreenOnToggle(activity, menuItem)
+            }
+
+            R.id.delete -> {
+                userDelete()
             }
 
             R.id.sync -> {

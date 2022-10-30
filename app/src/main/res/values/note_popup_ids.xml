@@ -5,6 +5,9 @@
     <item type="id" name="note_popup_set_deadline" />
     <item type="id" name="note_popup_set_state" />
     <item type="id" name="note_popup_toggle_state" />
+    <item type="id" name="note_popup_clock_in" />
+    <item type="id" name="note_popup_clock_out" />
+    <item type="id" name="note_popup_clock_cancel" />
     <item type="id" name="note_popup_delete" />
     <item type="id" name="note_popup_new_above" />
     <item type="id" name="note_popup_new_under" />
