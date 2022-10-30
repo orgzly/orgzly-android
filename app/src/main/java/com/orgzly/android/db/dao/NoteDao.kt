@@ -166,15 +166,15 @@ abstract class NoteDao : BaseDao<Note> {
     """)
     abstract fun updateDescendantsCountForAncestors(ids: Set<Long>, ignoreIds: Set<Long> = emptySet())
 
-    @Query("UPDATE notes SET content = :content WHERE id = :id")
-    abstract fun updateContent(id: Long, content: String?)
+    @Query("UPDATE notes SET content = :content, content_line_count = :contentLineCount WHERE id = :id")
+    abstract fun updateContent(id: Long, content: String?, contentLineCount: Int)
 
     @Query("""
         UPDATE notes
-        SET title = :title, content = :content, state = :state, scheduled_range_id = :scheduled, deadline_range_id = :deadline, closed_range_id = :closed
+        SET title = :title, content = :content, content_line_count = :contentLineCount, state = :state, scheduled_range_id = :scheduled, deadline_range_id = :deadline, closed_range_id = :closed
         WHERE id = :id
     """)
-    abstract fun update(id: Long, title: String, content: String?, state: String?, scheduled: Long?, deadline: Long?, closed: Long?): Int
+    abstract fun update(id: Long, title: String, content: String?, contentLineCount: Int, state: String?, scheduled: Long?, deadline: Long?, closed: Long?): Int
 
     @Query("UPDATE notes SET title = :title, state = :state, priority = :priority WHERE id = :id")
     abstract fun update(id: Long, title: String, state: String?, priority: String?): Int
