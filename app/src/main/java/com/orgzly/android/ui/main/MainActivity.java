@@ -122,7 +122,8 @@ public class MainActivity extends CommonActivity
 
         super.onCreate(savedInstanceState);
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
+        if (BuildConfig.LOG_DEBUG)
+            LogUtils.d(TAG, getIntent(), getIntent().getExtras(), savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
@@ -176,8 +177,6 @@ public class MainActivity extends CommonActivity
      * Adds initial set of fragments, depending on intent extras
      */
     private void setupDisplay(Bundle savedInstanceState) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, getIntent().getExtras());
-
         if (savedInstanceState == null) { // Not a configuration change.
             long bookId = getIntent().getLongExtra(AppIntent.EXTRA_BOOK_ID, 0L);
             long noteId = getIntent().getLongExtra(AppIntent.EXTRA_NOTE_ID, 0L);
@@ -195,8 +194,30 @@ public class MainActivity extends CommonActivity
                 }
             } else if (queryString != null) {
                 DisplayManager.displayQuery(getSupportFragmentManager(), queryString);
+
+            } else {
+                handleOrgProtocolIntent(getIntent());
             }
         }
+    }
+
+    private void handleOrgProtocolIntent(Intent intent) {
+        OrgProtocol.handleOrgProtocol(intent, new OrgProtocol.Listener() {
+            @Override
+            public void onNoteWithId(@NonNull String id) {
+                viewModel.followLinkToNoteWithProperty("ID", id);
+            }
+
+            @Override
+            public void onQuery(@NonNull String query) {
+                viewModel.displayQuery(query);
+            }
+
+            @Override
+            public void onError(@NonNull String str) {
+                AppSnackbarUtils.showSnackbar(MainActivity.this, str);
+            }
+        });
     }
 
     private void setupDrawer() {
@@ -304,37 +325,45 @@ public class MainActivity extends CommonActivity
 
         viewModel.getNavigationActions().observeSingle(this, action -> {
             if (action instanceof MainNavigationAction.OpenBook) {
-                MainNavigationAction.OpenBook openBookAction =
+                MainNavigationAction.OpenBook thisAction =
                         (MainNavigationAction.OpenBook) action;
 
                 DisplayManager.displayBook(
                         getSupportFragmentManager(),
-                        openBookAction.getBookId(),
+                        thisAction.getBookId(),
                         0);
 
             } else if (action instanceof MainNavigationAction.OpenBookFocusNote) {
-                MainNavigationAction.OpenBookFocusNote openBookFocusNoteAction =
+                MainNavigationAction.OpenBookFocusNote thisAction =
                         (MainNavigationAction.OpenBookFocusNote) action;
 
                 DisplayManager.displayBook(
                         getSupportFragmentManager(),
-                        openBookFocusNoteAction.getBookId(),
-                        openBookFocusNoteAction.getNoteId());
+                        thisAction.getBookId(),
+                        thisAction.getNoteId());
 
             } else if (action instanceof MainNavigationAction.OpenNote) {
-                MainNavigationAction.OpenNote openNoteAction =
+                MainNavigationAction.OpenNote thisAction =
                         (MainNavigationAction.OpenNote) action;
 
                 DisplayManager.displayExistingNote(
                         getSupportFragmentManager(),
-                        openNoteAction.getBookId(),
-                        openNoteAction.getNoteId());
+                        thisAction.getBookId(),
+                        thisAction.getNoteId());
 
             } else if (action instanceof MainNavigationAction.OpenFile) {
-                MainNavigationAction.OpenFile openFileAction =
+                MainNavigationAction.OpenFile thisAction =
                         (MainNavigationAction.OpenFile) action;
 
-                openFileIfExists(openFileAction.getFile());
+                openFileIfExists(thisAction.getFile());
+
+            } else if (action instanceof MainNavigationAction.DisplayQuery) {
+                MainNavigationAction.DisplayQuery thisAction =
+                        (MainNavigationAction.DisplayQuery) action;
+
+                DisplayManager.displayQuery(
+                        getSupportFragmentManager(),
+                        thisAction.getQuery());
             }
         });
 
@@ -855,6 +884,12 @@ public class MainActivity extends CommonActivity
         Intent intent = new Intent(AppIntent.ACTION_FOLLOW_LINK_TO_NOTE_WITH_PROPERTY);
         intent.putExtra(AppIntent.EXTRA_PROPERTY_NAME, name);
         intent.putExtra(AppIntent.EXTRA_PROPERTY_VALUE, value);
+        LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
+    }
+
+    public static void openQuery(String query) {
+        Intent intent = new Intent(AppIntent.ACTION_OPEN_QUERY);
+        intent.putExtra(AppIntent.EXTRA_QUERY_STRING, query);
         LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
     }
 
