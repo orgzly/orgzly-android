@@ -36,7 +36,7 @@ object NotePopup {
 
         val thisLocationButtons = getButtonsForLocation(location, direction)
 
-        buttons.forEach { buttonId ->
+        availableButtons.forEach { buttonId ->
             popupView.findViewById<Button>(buttonId)?.let { button ->
                 if (thisLocationButtons.contains(buttonId)) {
                     button.setOnClickListener {
@@ -64,7 +64,7 @@ object NotePopup {
     }
 
     // TODO: Move to preferences.
-    // TODO: Allow selecting the action only, instead of opening the popup (e.g. swipe right to toggle state).
+    // TODO: Allow selecting the action only, without showing the popup (e.g. swipe right to toggle state).
     private fun getButtonsForLocation(location: Location, direction: Int): ArrayList<Int> {
         return when {
             location == Location.BOOK && direction > 0 -> bookRight
@@ -81,9 +81,9 @@ object NotePopup {
         R.id.note_popup_set_deadline,
         R.id.note_popup_set_state,
         R.id.note_popup_toggle_state,
-        R.id.note_popup_clock_in,
-        R.id.note_popup_clock_out,
-        R.id.note_popup_clock_cancel,
+//        R.id.note_popup_clock_in,
+//        R.id.note_popup_clock_out,
+//        R.id.note_popup_clock_cancel,
     )
 
     private val bookLeft = arrayListOf(
@@ -99,16 +99,16 @@ object NotePopup {
         R.id.note_popup_set_deadline,
         R.id.note_popup_set_state,
         R.id.note_popup_toggle_state,
-        R.id.note_popup_clock_in,
-        R.id.note_popup_clock_out,
-        R.id.note_popup_clock_cancel,
+//        R.id.note_popup_clock_in,
+//        R.id.note_popup_clock_out,
+//        R.id.note_popup_clock_cancel,
     )
 
     private val queryLeft = arrayListOf(
         R.id.note_popup_focus
     )
 
-    private val buttons = arrayListOf(
+    private val availableButtons = arrayListOf(
         R.id.note_popup_set_schedule,
         R.id.note_popup_set_deadline,
         R.id.note_popup_set_state,

@@ -161,16 +161,17 @@ class AgendaFragment : QueryFragment(), OnViewHolderClickListener<AgendaItem> {
     private fun topToolbarToMainSelection() {
         binding.topToolbar.run {
             menu.clear()
-
-            // Hide buttons that can't be used when multiple notes are selected
-            listOf(R.id.focus).forEach { id ->
-                menu.findItem(id)?.isVisible = viewAdapter.getSelection().count == 1
-            }
+            inflateMenu(R.menu.query_cab_top)
 
             setNavigationIcon(R.drawable.ic_arrow_back)
 
             setNavigationOnClickListener {
                 viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
+            }
+
+            setOnMenuItemClickListener { menuItem ->
+                handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
+                true
             }
 
             // Number of selected notes as a title
@@ -181,9 +182,17 @@ class AgendaFragment : QueryFragment(), OnViewHolderClickListener<AgendaItem> {
 
     private fun bottomToolbarToMainSelection() {
         binding.bottomToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.query_cab_bottom)
+
             setOnMenuItemClickListener { menuItem ->
                 handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
                 true
+            }
+
+            // Hide buttons that can't be used when multiple notes are selected
+            listOf(R.id.focus).forEach { id ->
+                menu.findItem(id)?.isVisible = viewAdapter.getSelection().count == 1
             }
 
             visibility = View.VISIBLE

@@ -95,15 +95,18 @@ abstract class QueryFragment :
                 listener?.onStateToggleRequest(ids)
             }
 
-            R.id.note_popup_clock_in -> {
+            R.id.note_popup_clock_in,
+            R.id.clock_in -> {
                 listener?.onClockIn(ids)
             }
 
-            R.id.note_popup_clock_out -> {
+            R.id.note_popup_clock_out,
+            R.id.clock_out -> {
                 listener?.onClockOut(ids)
             }
 
-            R.id.note_popup_clock_cancel -> {
+            R.id.note_popup_clock_cancel,
+            R.id.clock_cancel -> {
                 listener?.onClockCancel(ids)
             }
 
