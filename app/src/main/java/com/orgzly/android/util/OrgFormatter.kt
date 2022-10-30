@@ -444,11 +444,9 @@ object OrgFormatter {
                 val pos = getLastClockInPosition(logbookContent)
 
                 // If we cannot find an already clocked entry, we add one
-                if(pos.isEmpty()) {
+                if (pos.isEmpty()) {
                     StringBuilder(content).insert(m.start(2), clockStr + "\n").toString()
-                }
-                // Otherwise, we just return the original content
-                else {
+                } else {
                     content
                 }
             } else {
@@ -459,8 +457,8 @@ object OrgFormatter {
 
     @JvmStatic
     fun clockOut(content: String?): String {
-        val clock_out = OrgDateTime(false)
-        val currentTime = clock_out.toString()
+        val clockOut = OrgDateTime(false)
+        val currentTime = clockOut.toString()
 
         return if (content.isNullOrEmpty()) {
             ""
@@ -472,18 +470,18 @@ object OrgFormatter {
                 val pos = getLastClockInPosition(logbookContent)
 
                 // If we find an already clocked entry, we clock-out
-                if(pos.isNotEmpty()) {
+                if (pos.isNotEmpty()) {
                     // Find the timestamp to compute the difference
                     val m2 = Pattern.compile(INACTIVE_DATETIME).matcher(logbookContent.substring(pos[0], pos[1]))
 
                     if (m2.find()) {
-                        val clock_in = OrgDateTime.parseOrNull(m2.group(1))
+                        val clockIn = OrgDateTime.parseOrNull(m2.group(1))
 
-                        val time_in = clock_in.getCalendar()
-                        val time_out = clock_out.getCalendar()
+                        val timeIn = clockIn.calendar
+                        val timeOut = clockOut.calendar
 
                         // Reported times are in milliseconds
-                        val diff = time_out.time.time - time_in.time.time
+                        val diff = timeOut.time.time - timeIn.time.time
 
                         val minute = 1000 * 60
                         val hour = minute * 60
@@ -493,21 +491,15 @@ object OrgFormatter {
                         val elapsedMinutes: Long = diff2 / minute
 
                         StringBuilder(content).insert(m.start(2) + pos[1], "--" + currentTime + " => " + elapsedHours + ":" + String.format("%02d", elapsedMinutes)).toString()
-                    }
-                    // This should never happen, but put as a precaution<
-                    else
-                    {
+
+                    } else { // This should never happen, but put as a precaution
                         StringBuilder(content).insert(m.start(2) + pos[1], "--" + currentTime).toString()
                     }
 
-                }
-                // Otherwise, we just return the original content
-                else {
+                } else {
                     content
                 }
-            }
-            // Otherwise, we just return the original content
-            else {
+            } else {
                 content
             }
         }
@@ -518,7 +510,6 @@ object OrgFormatter {
         return if (content.isNullOrEmpty()) {
             ""
         } else {
-
             val m = LOGBOOK_DRAWER_PATTERN.matcher(content)
 
             if (m.find()) {
@@ -526,26 +517,21 @@ object OrgFormatter {
                 val pos = getLastClockInPosition(logbookContent)
 
                 // If we find an already clocked entry, we cancel it
-                if(pos.isNotEmpty()) {
+                if (pos.isNotEmpty()) {
                     val updatedContent = StringBuilder(content).delete(m.start(2) + pos[0], m.start(2) + pos[1] + 1).toString()
 
                     // If the LOGBOOK ends up being empty
                     // We delete it like Org would do
                     val endPos = updatedContent.indexOf(":END:", m.start(2))
-                    if( endPos == (m.start(2)) ) {
+                    if (endPos == (m.start(2)) ) {
                         StringBuilder(updatedContent).delete(m.start(0), m.start(0) + endPos + ":END:".length + 2).toString()
-                    }
-                    else {
+                    } else {
                         updatedContent
                     }
-                }
-                // Otherwise, we just return the original content
-                else {
+                } else {
                     content
                 }
-            }
-            // Otherwise, we just return the original content
-            else {
+            } else {
                 content
             }
         }
