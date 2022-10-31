@@ -6,9 +6,9 @@ Welcome to Orgzly!
 
 You can select multiple notes.
 
-** Fling note right to open its quick-menu
+** Fling the note right to open its popup menu
 
-Fling it left to open a different menu.
+Fling the note left to open a different menu.
 
 ** Fold a note which contains sub-notes by clicking the icon next to it
 
