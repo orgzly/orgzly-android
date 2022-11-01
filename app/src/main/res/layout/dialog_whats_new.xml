@@ -44,7 +44,7 @@
 
         <com.orgzly.android.ui.views.WhatsNewChange
             style="@style/WhatsNewChange"
-            app:text='Replace "quick menu" with popup windows (primarily for performance)' />
+            app:text="Replace quick menus with popup windows" />
 
 
         <TextView

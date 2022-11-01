@@ -29,10 +29,11 @@ object NotePopup {
         val width = LinearLayout.LayoutParams.WRAP_CONTENT
         val height = LinearLayout.LayoutParams.WRAP_CONTENT
 
-        // TODO: Use false, dismiss on any tap outside, for smoother scrolling experience?
-        val focusable = true
+        val focusable = false
 
-        val popupWindow = PopupWindow(popupView, width, height, focusable)
+        val popupWindow = PopupWindow(popupView, width, height, focusable).apply {
+            isOutsideTouchable = true
+        }
 
         val thisLocationButtons = getButtonsForLocation(location, direction)
 
