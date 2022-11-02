@@ -597,4 +597,11 @@
     <string name="git_repository_type">Typ repozytorium Git</string>
     <string name="in_development">W trakcie rozwoju</string>
     <string name="select_notebook">Wybierz notatnik</string>
+    <string name="highlight_rich_text_being_edited">Podświetl edytowany bogaty tekst</string>
+    <string name="use_alarm_clock_for_tod_reminders">Użyj budzika</string>
+    <string name="use_alarm_clock_for_tod_reminders_summary">Dla przypomnień o ustawionej porze dnia</string>
+    <string name="log_major_events">Rejestruj główne wydarzenia</string>
+    <string name="logs">Dzienniki</string>
+    <string name="share">Udostępnij</string>
+    <string name="refresh_data">Odśwież</string>
 </resources>

@@ -575,4 +575,11 @@
     <string name="git_repository_type">Git repository type</string>
     <string name="in_development">In ontwikkeling</string>
     <string name="select_notebook">Selecteer notitieboekje</string>
+    <string name="highlight_rich_text_being_edited">Markeer tekst die bewerkt wordt</string>
+    <string name="use_alarm_clock_for_tod_reminders">Gebruik wekker</string>
+    <string name="use_alarm_clock_for_tod_reminders_summary">Voor herinneringen met ingestelde tijd</string>
+    <string name="log_major_events">Log belangrijke gebeurtenissen</string>
+    <string name="logs">Logboeken</string>
+    <string name="share">Delen</string>
+    <string name="refresh_data">Ververs</string>
 </resources>

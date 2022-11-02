@@ -575,4 +575,11 @@
     <string name="git_repository_type">Git adattároló típusa</string>
     <string name="in_development">Fejlesztés alatt</string>
     <string name="select_notebook">Jegyzetfüzet kiválasztása</string>
+    <string name="highlight_rich_text_being_edited">A szerkesztés alatt álló szöveg kiemelése</string>
+    <string name="use_alarm_clock_for_tod_reminders">Használjon ébresztőórát az emlékeztetőkhöz</string>
+    <string name="use_alarm_clock_for_tod_reminders_summary">Használjon ébresztőórát az emlékeztetők összesítő jelentéséhez</string>
+    <string name="log_major_events">Főbb események naplózása</string>
+    <string name="logs">Naplók</string>
+    <string name="share">Megosztás</string>
+    <string name="refresh_data">Adatok frissítése</string>
 </resources>

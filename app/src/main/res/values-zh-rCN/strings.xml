@@ -564,4 +564,11 @@
     <string name="git_repository_type">Git 仓库类型</string>
     <string name="in_development">开发中</string>
     <string name="select_notebook">选择笔记本</string>
+    <string name="highlight_rich_text_being_edited">高亮正被编辑的富文本</string>
+    <string name="use_alarm_clock_for_tod_reminders">使用闹钟</string>
+    <string name="use_alarm_clock_for_tod_reminders_summary">对于设置了几点几分的提醒</string>
+    <string name="log_major_events">记录重要事件</string>
+    <string name="logs">日志</string>
+    <string name="share">分享</string>
+    <string name="refresh_data">刷新</string>
 </resources>

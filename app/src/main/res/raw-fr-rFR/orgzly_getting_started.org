@@ -18,7 +18,7 @@ Appuyez longuement pour ouvrir toute la sous-arborescence.
 **** Utilisez ceci pour mieux organiser vos notes
 
 ** Les notes peuvent avoir des étiquettes :tag1:tag2:
-*** Les sous-notes héritent des étiquettes des parents :tag3:
+*** Les sous-notes héritent des étiquettes parentes :tag3:
 
 Si vous recherchez des notes avec le tag “tag1” en utilisant la requête “t.tag1”, cette note sera incluse dans les résultats de recherche.
 
