@@ -25,4 +25,10 @@
         <a href="https://crowdin.com/project/orgzly">translate</a>
         the app on Crowdin.
     ]]></string>
+
+    <string name="whats_new_outro"><![CDATA[
+        Visit
+        <a href="http://www.orgzly.com/changelog">Changelog</a>
+        for the full list.
+    ]]></string>
 </resources>

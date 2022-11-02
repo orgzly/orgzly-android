@@ -191,10 +191,12 @@ abstract class CommonActivity : AppCompatActivity() {
     protected fun displayWhatsNewDialog() {
         whatsNewDialog?.dismiss()
 
-        whatsNewDialog = WhatsNewDialog.create(this)
-        whatsNewDialog?.let {
-            it.setOnDismissListener { whatsNewDialog = null }
-            it.show()
+        whatsNewDialog = WhatsNewDialog.create(this).apply {
+            setOnDismissListener {
+                whatsNewDialog = null
+            }
+
+            show()
         }
     }
 
