@@ -23,6 +23,16 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.8.10-beta.2"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Make note popup outside touchable (use outside click, don't require click to dismiss)" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.8.10-beta.1"
             tools:ignore="HardcodedText" />
 
