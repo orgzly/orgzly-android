@@ -52,11 +52,11 @@ Vous pouvez modifier le nombre de priorités dans les paramètres. Vous pouvez �
 
 ** Les notes peuvent inclure des liens
 
-Composer un numéro de téléphone (tel:555-0199), envoyer un SMS (sms:555-0199), écrire un courriel (mailto:support@orgzly.com) ou aller à une page web ([[http://www.orgzly.com][Orgzly.com]]).
+Composer un numéro de téléphone (tel:555-0199), envoyer un SMS (sms:555-0199), écrire un courriel (mailto:support@orgzly.com) ou aller à une page web ([[https://www.orgzly.com][Orgzly.com]]).
 
 Vous pouvez également lier une autre note ou un autre bloc-note de l'application.
 
-Voir http://www.orgzly.com/help#links pour de plus amples informations (en anglais).
+Voir https://www.orgzly.com/help#links pour de plus amples informations (en anglais).
 
 ** Les formatages de base sont supportés
 
@@ -75,7 +75,7 @@ Un appui sur la case à cocher change son état. Un retour à la ligne crée une
 
 Vous pouvez rechercher des notes par état, étiquette, planification, échéance, etc.
 
-Voir http://www.orgzly.com/help#search pour en savoir plus.
+Voir https://www.orgzly.com/help#search pour en savoir plus.
 
 ** Les recherches peuvent être enregistrées pour un accès rapide
 

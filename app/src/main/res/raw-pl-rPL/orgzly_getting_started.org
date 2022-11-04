@@ -52,11 +52,11 @@ Możesz zmienić liczbę poziomów priorytetów w ustawieniach. Możesz równie�
 
 ** Notatka może zawierać łącza
 
-Wybierz numer telefonu (tel:123-456-789), wyślij wiadomość SMS (sms:123-456-789), napisz e-mail (mailto:support@orgzly.com) lub odwiedź stronę internetową ([[http://www.orgzly.com][Orgzly.com]]).
+Wybierz numer telefonu (tel:123-456-789), wyślij wiadomość SMS (sms:123-456-789), napisz e-mail (mailto:support@orgzly.com) lub odwiedź stronę internetową ([[https://www.orgzly.com][Orgzly.com]]).
 
 Możesz również zamieszczać łącza do innych notatek lub notatników w aplikacji.
 
-Zobacz http://www.orgzly.com/help#links, aby uzyskać więcej informacji.
+Zobacz https://www.orgzly.com/help#links, aby uzyskać więcej informacji.
 
 ** Orgzly wspiera podstawowe formatowanie tekstu
 
@@ -75,7 +75,7 @@ Kliknij pole wyboru, aby je przełączyć. Naciśnij klawisz ENTER na końcu lin
 
 Możesz wyszukiwać notatki według stanu, znaczników, zaplanowanego lub ostatecznego terminu itp.
 
-Zobacz http://www.orgzly.com/help#search, aby dowiedzieć się więcej.
+Zobacz https://www.orgzly.com/help#search, aby dowiedzieć się więcej.
 
 ** Aby uzyskać szybki dostęp do wyszukań, można je zapisać
 

@@ -4,7 +4,7 @@
 
     <string name="whats_new_intro"><![CDATA[
         Visit
-        <a href="http://www.orgzly.com">Orgzly.com</a>
+        <a href="https://www.orgzly.com">Orgzly.com</a>
         for documentation.
 
         <br><br>
@@ -28,7 +28,7 @@
 
     <string name="whats_new_outro"><![CDATA[
         Visit
-        <a href="http://www.orgzly.com/changelog">Changelog</a>
+        <a href="https://www.orgzly.com/changelog">Changelog</a>
         for the full list.
     ]]></string>
 </resources>

@@ -85,7 +85,7 @@ class OrgFormatterLinkTest(private val param: Parameter) : OrgFormatterTest() {
                 Parameter("[[id:a][b]][[id:1][2]]", "b2", listOf(Span(0, 1, IdLinkSpan::class.java), Span(1, 2, IdLinkSpan::class.java))),
 
                 // Do not linkify
-                Parameter("strhttp://orgzly.com/", "strhttp://orgzly.com/", emptyList()),
+                Parameter("strhttps://www.orgzly.com/", "strhttps://www.orgzly.com/", emptyList()),
                 Parameter("Need activity with <action android:name=\"android.intent.action.VIEW\"/>", "Need activity with <action android:name=\"android.intent.action.VIEW\"/>", emptyList())
             )
         }

@@ -52,11 +52,11 @@ You can change the number of priorities in Settings. You can also change default
 
 ** Note can include links
 
-Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[http://www.orgzly.com][Orgzly.com]]).
+Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[https://www.orgzly.com][Orgzly.com]]).
 
 You can also link to another note or notebook within the app.
 
-See http://www.orgzly.com/help#links for more information.
+See https://www.orgzly.com/help#links for more information.
 
 ** Dasar tekanan typografi di dukung
 
@@ -75,7 +75,7 @@ Ada banyak operator pencarian yang didukung
 
 Anda dapat mencari catatan menurut negara, tag, jadal atau tanggal waktu dll.
 
-See http://www.orgzly.com/help#search to learn more.
+See https://www.orgzly.com/help#search to learn more.
 
 pertanyaan penelusuran dapat disimpan untuk akses cepat
 

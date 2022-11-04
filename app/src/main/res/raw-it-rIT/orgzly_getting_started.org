@@ -52,11 +52,11 @@ Sono disabilitati di default e devono essere abilitati nelle impostazioni.
 
 ** Le note possono includere link
 
-Digita un numero di telefono (tel:555-0199), invia SMS (sms:555-0199), componi un'email (mailto:support@orgzly.com) o visita una pagina web ([[http://www.orgzly.com][Orgzly.com]]).
+Digita un numero di telefono (tel:555-0199), invia SMS (sms:555-0199), componi un'email (mailto:support@orgzly.com) o visita una pagina web ([[https://www.orgzly.com][Orgzly.com]]).
 
 Puoi anche collegarti a un'altra nota o a un taccuino all'interno dell'app.
 
-Vai su http://www.orgzly.com/help#links per maggiori informazioni.
+Vai su https://www.orgzly.com/help#links per maggiori informazioni.
 
 ** Sono supportati i livelli di formattazione base
 
@@ -75,7 +75,7 @@ Fare clic sulla casella per cambiare lo stato. Premere il pulsante nuova riga al
 
 Puoi cercare nelle note a seconda dello stato, del tag, della programmazione o della scadenza ecc.
 
-Vai su http://www.orgzly.com/help#search per saperne di più.
+Vai su https://www.orgzly.com/help#search per saperne di più.
 
 ** Le stringhe di ricerca possono essere salvate per un rapido accesso
 

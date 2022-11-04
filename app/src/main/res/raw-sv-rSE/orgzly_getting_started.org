@@ -52,11 +52,11 @@ You can change the number of priorities in Settings. You can also change default
 
 ** Note can include links
 
-Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[http://www.orgzly.com][Orgzly.com]]).
+Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[https://www.orgzly.com][Orgzly.com]]).
 
 You can also link to another note or notebook within the app.
 
-See http://www.orgzly.com/help#links for more information.
+See https://www.orgzly.com/help#links for more information.
 
 ** Basic typographical emphasis is supported
 
@@ -75,7 +75,7 @@ Click the checkbox to toggle it. Press new-line button at the end of the line to
 
 You can search notes by state, tag, scheduled or deadline time etc.
 
-See http://www.orgzly.com/help#search to learn more.
+See https://www.orgzly.com/help#search to learn more.
 
 ** Search queries can be saved for quick access
 
