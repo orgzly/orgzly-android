@@ -1,5 +1,7 @@
 package com.orgzly.android.ui.notes
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
@@ -33,6 +35,9 @@ object NotePopup {
 
         val popupWindow = PopupWindow(popupView, width, height, focusable).apply {
             isOutsideTouchable = true
+
+            // Required on API 21 and 22 (Lollipop) so it can be dismissed on outside click
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
 
         val thisLocationButtons = getButtonsForLocation(location, direction)
