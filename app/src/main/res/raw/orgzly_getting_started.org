@@ -6,9 +6,9 @@ Welcome to Orgzly!
 
 You can select multiple notes.
 
-** Fling note right to open its quick-menu
+** Fling the note right to open its popup menu
 
-Fling it left to open a different menu.
+Fling the note left to open a different menu.
 
 ** Fold a note which contains sub-notes by clicking the icon next to it
 
@@ -59,11 +59,11 @@ You can change the number of priorities in Settings. You can also change default
 
 ** Note can include links
 
-Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[http://www.orgzly.com][Orgzly.com]]).
+Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mailto:support@orgzly.com) or visit a webpage ([[https://www.orgzly.com][Orgzly.com]]).
 
 You can also link to another note or notebook within the app.
 
-See http://www.orgzly.com/help#links for more information.
+See https://www.orgzly.com/help#links for more information.
 
 ** Basic typographical emphasis is supported
 
@@ -82,7 +82,7 @@ Click the checkbox to toggle it. Press the new-line button at the end of the lin
 
 You can search notes by state, tag, scheduled, deadline or event times, etc.
 
-See http://www.orgzly.com/help#search to learn more.
+See https://www.orgzly.com/help#search to learn more.
 
 ** Search queries can be saved for quick access
 

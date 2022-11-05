@@ -52,11 +52,11 @@ Você pode alterar a quantidade de prioridades nas Configurações. Você també
 
 ** Notas podem conter links
 
-Ligar para um número (tel:555-0199), enviar SMS (sms:555-0199), enviar emails (mailto:support@orgzly.com) ou acessar uma página da web ([[http://www.orgzly.com][Orgzly.com]]).
+Ligar para um número (tel:555-0199), enviar SMS (sms:555-0199), enviar emails (mailto:support@orgzly.com) ou acessar uma página da web ([[https://www.orgzly.com][Orgzly.com]]).
 
 Você também pode criar um link para outra nota ou bloco de notas dentro do aplicativo.
 
-Acesse http://www.orgzly.com/help#links para mais informações (conteúdo em inglês).
+Acesse https://www.orgzly.com/help#links para mais informações (conteúdo em inglês).
 
 ** Ênfase tipográfica básica é suportada
 
@@ -75,7 +75,7 @@ Selecione a caixa de seleção para marcá-la / desmarcá-la. Pressione o botão
 
 Você pode buscar notas por estado, etiqueta, agendas ou datas limite etc.
 
-Acesse http://orgzly.com/help#search para saber mais (em inglês).
+Acesse https://www.orgzly.com/help#search para saber mais (em inglês).
 
 ** Consultas de busca podem ser salvas para acesso rápido
 

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
+import androidx.test.espresso.action.*
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.contrib.DrawerActions.open
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -23,6 +24,17 @@ import org.junit.BeforeClass
 import org.junit.Ignore
 import org.junit.Test
 import java.io.File
+
+
+/*
+ * 1) Copy notebooks to the emulator:
+ * adb -e push miscellaneous.org README.org android/changelog.org /data/data/com.orgzly/cache/
+ * adb -e push android/getting-started.org /data/data/com.orgzly/cache/Getting\ Started.org
+ *
+ * 2) Set a breakpoint in takeScreenshot()
+ *
+ * 3) Take the screenshots from emulator's UI, with "Show Device Frame"
+ */
 
 @Ignore("Not a test")
 class ScreenshotsTakingNotATest : OrgzlyTest() {
@@ -54,8 +66,6 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
 
         importBooks()
 
-        AppPreferences.colorTheme(context, "system")
-
         AppPreferences.displayedBookDetails(
             context,
             listOf(
@@ -86,7 +96,7 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
          * changelog.org
          * miscellaneous.org
          */
-        testUtils.setupRepo(RepoType.DIRECTORY, "file:/data/data/com.orgzly/cache");
+        testUtils.setupRepo(RepoType.DIRECTORY, "file:/data/data/com.orgzly/cache")
 
         testUtils.sync()
         testUtils.sync() // For "No change"
@@ -101,7 +111,7 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
         onView(withId(R.id.drawer_layout)).perform(open())
         onView(withId(R.id.sync_button_container)).perform(click()) // Sync for fresh "Last sync"
 
-        takeScreenshot("navigation-drawer.png")
+        takeScreenshot("drawer.png")
 
         onView(allOf(
             isDescendantOfA(withId(R.id.drawer_navigation_view)),
@@ -109,35 +119,32 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
         ))
             .perform(click())
 
-        // Open quick-menu
-        // Not working
-        onNoteInBook(4).perform(swipeRight())
-        onNoteInBook(4).perform(swipeRight())
+        // Open the popup menu
+        // FIXME: Not working
+        // onNoteInBook(4, R.id.item_head_title).perform(swipeRight())
 
         // Fold a note
-        onView(allOf(
-            withId(R.id.item_head_fold_button_text),
-            hasSibling(withText("There is no limit to the number of levels you can have"))
-        )).perform(click())
+        // "There is no limit to the number of levels you can have"
+        onNoteInBook(6, R.id.item_head_fold_button).perform(click())
 
         // Select a note
+        // "Click and hold the note to select it"
         onNoteInBook(3).perform(longClick())
 
         takeScreenshot("book.png")
 
-        // Deselect
+        // Deselect note
         pressBack()
 
         // Enter note
         onNoteInBook(10).perform(click())
-        pressBack() // Exit edit mode
 
         takeScreenshot("note.png")
 
         onView(withId(R.id.drawer_layout)).perform(open())
         onView(withText(R.string.searches)).perform(click())
 
-        takeScreenshot("saved-searches.png")
+        takeScreenshot("searches.png")
 
         onView(withId(R.id.drawer_layout)).perform(open())
 
@@ -155,7 +162,7 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
         onView(withId(R.id.drawer_layout)).perform(open())
         onView(withId(R.id.sync_button_container)).perform(click()) // Sync for fresh "Last sync"
 
-        takeScreenshot("navigation-drawer-dark.png")
+        takeScreenshot("dark.png")
     }
 
     @Test
@@ -165,18 +172,17 @@ class ScreenshotsTakingNotATest : OrgzlyTest() {
         clickSetting("", R.string.sync)
         clickSetting("", R.string.repositories)
 
-        takeScreenshot("repositories.png")
+        takeScreenshot("repos.png")
     }
 
     private fun startActivity(activityClass: Class<out AppCompatActivity>, nightMode: Boolean = false) {
         if (nightMode) {
-            // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-
             AppPreferences.colorTheme(context, "dark")
             AppPreferences.darkColorScheme(context, "dynamic")
 
         } else {
-            // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            AppPreferences.colorTheme(context, "light")
+            AppPreferences.lightColorScheme(context, "dynamic")
         }
 
         scenario = ActivityScenario.launch(activityClass)

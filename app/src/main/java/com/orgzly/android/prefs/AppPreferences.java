@@ -365,6 +365,11 @@ public class AppPreferences {
                 context.getResources().getString(R.string.pref_default_light_color_scheme));
     }
 
+    public static void lightColorScheme(Context context, String value) {
+        String key = context.getResources().getString(R.string.pref_key_light_color_scheme);
+        getDefaultSharedPreferences(context).edit().putString(key, value).apply();
+    }
+
     public static String darkColorScheme(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_dark_color_scheme),

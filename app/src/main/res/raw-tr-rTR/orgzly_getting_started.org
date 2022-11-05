@@ -52,11 +52,11 @@ Hatırlatıcılar başlangıçta devredışı olacak şekilde tanımlandılar ve
 
 ** Not bağlantılar içerebilir
 
-Bir telefon numarası çevirin (tel:555-0199), SMS gönderin (sms:555-0199), e-posta oluşturun (mailto:support@orgzly.com) veya bir web sayfasını ziyaret edin ([[http://www.orgzly.com][Orgzly.com]]).
+Bir telefon numarası çevirin (tel:555-0199), SMS gönderin (sms:555-0199), e-posta oluşturun (mailto:support@orgzly.com) veya bir web sayfasını ziyaret edin ([[https://www.orgzly.com][Orgzly.com]]).
 
 Ayrıca uygulama içinde başka bir nota veya not defterine bağlantı verebilirsiniz.
 
-Daha fazla bilgi için http://www.orgzly.com/help#links adresine bakın.
+Daha fazla bilgi için https://www.orgzly.com/help#links adresine bakın.
 
 ** Temel yazı karakteri önemi desteklenmektedir
 
@@ -75,7 +75,7 @@ Değiştirmek için onay kutusunu tıklayın. Yeni bir öğe oluşturmak için s
 
 Notları sınıfına, etiketine, zamanlanmış veya son teslim zamanı vb. Göre arayabilirsiniz.
 
-Daha fazlası için http://www.orgzly.com/help#search siteyi görün.
+Daha fazlası için https://www.orgzly.com/help#search siteyi görün.
 
 ** Arama sorguları hızlı sorgu için kaydedilebilir
 

@@ -52,11 +52,11 @@ DEADLINE: <2015-02-20 Fri>
 
 ** 笔记可以包含链接
 
-拨打电话 (tel:555-0199)， 发送短信 (sms:555-0199)， 写邮件 (mailto:support@orgzly.com) 或访问网页 ([[http://www.orgzly.com][Orgzly.com]])。
+拨打电话 (tel:555-0199)， 发送短信 (sms:555-0199)， 写邮件 (mailto:support@orgzly.com) 或访问网页 ([[https://www.orgzly.com][Orgzly.com]])。
 
 也可以在应用程序内链接到其他笔记或笔记本。
 
-访问 http://www.orgzly.com/help#links 了解更多信息。
+访问 https://www.orgzly.com/help#links 了解更多信息。
 
 ** 支持基本的排版强调
 
@@ -75,7 +75,7 @@ DEADLINE: <2015-02-20 Fri>
 
 可通过状态，标签，计划时间或截止时间等搜索笔记
 
-访问 http://www.orgzly.com/help#search 了解更多。
+访问 https://www.orgzly.com/help#search 了解更多。
 
 ** 可保存搜索查询串以便快速访问
 

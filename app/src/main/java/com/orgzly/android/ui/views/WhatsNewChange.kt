@@ -16,11 +16,11 @@ class WhatsNewChange(context: Context, attrs: AttributeSet) : LinearLayout(conte
             typedArray.getString(R.styleable.WhatsNewChange_text)
         }
 
-        val view = context.getLayoutInflater().inflate(R.layout.text_list_item, this, true)
+        val layoutView = context.getLayoutInflater().inflate(R.layout.text_list_item, this, true)
 
-        val c = view.findViewById<TextView>(R.id.content)
-        c.text = MiscUtils.fromHtml(content)
-        c.movementMethod = LinkMovementMethod.getInstance()
+        layoutView.findViewById<TextView>(R.id.content).apply {
+            text = MiscUtils.fromHtml(content)
+            movementMethod = LinkMovementMethod.getInstance()
+        }
     }
 }
-

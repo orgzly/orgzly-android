@@ -131,7 +131,7 @@ class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<
                     }
 
                     R.id.saved_searches_help -> {
-                        val uri = Uri.parse("http://www.orgzly.com/help#search")
+                        val uri = Uri.parse("https://www.orgzly.com/help#search")
                         val intent = Intent(Intent.ACTION_VIEW, uri)
                         startActivity(intent)
                     }
