@@ -2,86 +2,17 @@
 
 <HorizontalScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:scrollbars="none">
 
     <LinearLayout
+        android:id="@+id/group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <!-- book right -->
-
-        <Button
-            style="@style/NotePopupButton"
-            android:id="@id/note_popup_set_schedule"
-            app:icon="@drawable/ic_today" />
-
-        <Button
-            style="@style/NotePopupButton"
-            android:id="@id/note_popup_set_deadline"
-            app:icon="@drawable/ic_alarm" />
-
-        <Button
-            style="@style/NotePopupButton"
-            android:id="@id/note_popup_set_state"
-            app:icon="@drawable/ic_flag" />
-
-        <Button
-            style="@style/NotePopupButton"
-            android:id="@id/note_popup_toggle_state"
-            app:icon="@drawable/ic_check_circle_outline" />
-
-        <Button
-            style="@style/NotePopupButton"
-            android:id="@id/note_popup_clock_in"
-            app:icon="@drawable/ic_hourglass_top" />
-
-        <Button
-            style="@style/NotePopupButton"
-            android:id="@id/note_popup_clock_out"
-            app:icon="@drawable/ic_hourglass_bottom" />
-
-        <Button
-            style="@style/NotePopupButton"
-            android:id="@id/note_popup_clock_cancel"
-            app:icon="@drawable/ic_hourglass_disabled" />
-
-        <!-- book left -->
-
-        <Button
-            style="@style/NotePopupButton"
-            android:id="@id/note_popup_delete"
-            app:icon="@drawable/ic_delete" />
-
-        <Button
-            style="@style/NotePopupButton"
-            android:id="@id/note_popup_new_above"
-            app:icon="@drawable/cic_new_above" />
-
-        <Button
-            style="@style/NotePopupButton"
-            android:id="@id/note_popup_new_under"
-            app:icon="@drawable/cic_new_under" />
-
-        <Button
-            style="@style/NotePopupButton"
-            android:id="@id/note_popup_new_below"
-            app:icon="@drawable/cic_new_below" />
-
-        <Button
-            style="@style/NotePopupButton"
-            android:id="@id/note_popup_refile"
-            app:icon="@drawable/ic_move_to_inbox" />
-
-        <!-- query left -->
-
-        <Button
-            style="@style/NotePopupButton"
-            android:id="@id/note_popup_focus"
-            app:icon="@drawable/ic_center_focus_strong" />
+        <!-- Programmatically added -->
 
     </LinearLayout>
 </HorizontalScrollView>

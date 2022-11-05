@@ -22,9 +22,9 @@ class IntegerPreferenceFragment : EditTextPreferenceDialogFragmentCompat() {
         val FRAGMENT_TAG: String = IntegerPreferenceFragment::class.java.name
 
         fun getInstance(preference: Preference): PreferenceDialogFragmentCompat {
-            return IntegerPreferenceFragment().also { fragment ->
-                fragment.arguments = Bundle(1).also { bundle ->
-                    bundle.putString(PreferenceDialogFragmentCompat.ARG_KEY, preference.key)
+            return IntegerPreferenceFragment().apply {
+                arguments = Bundle(1).apply {
+                    putString(ARG_KEY, preference.key)
                 }
             }
         }

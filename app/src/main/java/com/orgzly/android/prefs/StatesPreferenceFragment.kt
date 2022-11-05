@@ -112,13 +112,11 @@ class StatesPreferenceFragment : PreferenceDialogFragmentCompat() {
         val FRAGMENT_TAG: String = StatesPreferenceFragment::class.java.name
 
         fun getInstance(preference: Preference): PreferenceDialogFragmentCompat {
-            val fragment = StatesPreferenceFragment()
-
-            fragment.arguments = Bundle().apply {
-                putString("key", preference.key)
+            return StatesPreferenceFragment().apply {
+                arguments = Bundle(1).apply {
+                    putString(ARG_KEY, preference.key)
+                }
             }
-
-            return fragment
         }
     }
 }

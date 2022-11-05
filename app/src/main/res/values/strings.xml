@@ -726,4 +726,6 @@
     <string name="clock_in">Clock in</string>
     <string name="clock_out">Clock out</string>
     <string name="clock_cancel">Clock cancel</string>
+    <string name="search_results">Search results</string>
+    <string name="popup_menu_buttons">Popup menu buttons</string>
 </resources>

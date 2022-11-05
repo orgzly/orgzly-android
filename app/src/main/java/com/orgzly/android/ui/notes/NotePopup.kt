@@ -1,15 +1,19 @@
 package com.orgzly.android.ui.notes
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Button
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.PopupWindow
+import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
+import com.google.android.material.button.MaterialButton
 import com.orgzly.R
+import com.orgzly.android.prefs.NotePopupPreference
 import com.orgzly.android.ui.util.getLayoutInflater
 
 
@@ -40,19 +44,23 @@ object NotePopup {
             setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
 
-        val thisLocationButtons = getButtonsForLocation(location, direction)
+        val actions = getActionsForLocation(context, location, direction)
 
-        availableButtons.forEach { buttonId ->
-            popupView.findViewById<Button>(buttonId)?.let { button ->
-                if (thisLocationButtons.contains(buttonId)) {
-                    button.setOnClickListener {
-                        listener.onPopupButtonClick(buttonId)
-                        popupWindow.dismiss()
-                    }
-                } else {
-                    button.visibility = View.GONE
-                }
+        val group = popupView.findViewById<ViewGroup>(R.id.group)
+
+        val inflater = context.getLayoutInflater()
+
+        actions.forEach { action ->
+            val button = inflater.inflate(R.layout.note_popup_button, null) as MaterialButton
+
+            button.setOnClickListener {
+                listener.onPopupButtonClick(action.id)
+                popupWindow.dismiss()
             }
+
+            button.setIconResource(action.icon)
+
+            group.addView(button)
         }
 
 //        popupWindow.setOnDismissListener {
@@ -69,65 +77,41 @@ object NotePopup {
         popupWindow.showAtLocation(anchor, gravity, x, y)
     }
 
-    // TODO: Move to preferences.
     // TODO: Allow selecting the action only, without showing the popup (e.g. swipe right to toggle state).
-    private fun getButtonsForLocation(location: Location, direction: Int): ArrayList<Int> {
+    private fun getActionsForLocation(context: Context, location: Location, direction: Int): List<Action> {
+        val keyId = preferenceKeyForLocation(location, direction)
+        val key = context.getString(keyId)
+
+        return NotePopupPreference.getSelected(context, key)
+    }
+
+    private fun preferenceKeyForLocation(location: Location, direction: Int): Int {
         return when {
-            location == Location.BOOK && direction > 0 -> bookRight
-            location == Location.BOOK && direction < 0 -> bookLeft
-            location == Location.QUERY && direction > 0 -> queryRight
-            location == Location.QUERY && direction < 0 -> queryLeft
+            location == Location.BOOK && direction < 0 -> R.string.pref_key_note_popup_buttons_in_book_left
+            location == Location.BOOK && direction > 0 -> R.string.pref_key_note_popup_buttons_in_book_right
+            location == Location.QUERY && direction < 0 -> R.string.pref_key_note_popup_buttons_in_query_left
+            location == Location.QUERY && direction > 0 -> R.string.pref_key_note_popup_buttons_in_query_right
 
             else -> throw IllegalArgumentException("No buttons for $location/$direction")
         }
     }
 
-    private val bookRight = arrayListOf(
-        R.id.note_popup_set_schedule,
-        R.id.note_popup_set_deadline,
-        R.id.note_popup_set_state,
-        R.id.note_popup_toggle_state,
-//        R.id.note_popup_clock_in,
-//        R.id.note_popup_clock_out,
-//        R.id.note_popup_clock_cancel,
-    )
+    data class Action(@IdRes val id : Int, @DrawableRes val icon: Int, val name: String)
 
-    private val bookLeft = arrayListOf(
-        R.id.note_popup_delete,
-        R.id.note_popup_new_above,
-        R.id.note_popup_new_under,
-        R.id.note_popup_new_below,
-        R.id.note_popup_refile
-    )
-
-    private val queryRight = arrayListOf(
-        R.id.note_popup_set_schedule,
-        R.id.note_popup_set_deadline,
-        R.id.note_popup_set_state,
-        R.id.note_popup_toggle_state,
-//        R.id.note_popup_clock_in,
-//        R.id.note_popup_clock_out,
-//        R.id.note_popup_clock_cancel,
-    )
-
-    private val queryLeft = arrayListOf(
-        R.id.note_popup_focus
-    )
-
-    private val availableButtons = arrayListOf(
-        R.id.note_popup_set_schedule,
-        R.id.note_popup_set_deadline,
-        R.id.note_popup_set_state,
-        R.id.note_popup_toggle_state,
-        R.id.note_popup_clock_in,
-        R.id.note_popup_clock_out,
-        R.id.note_popup_clock_cancel,
-        R.id.note_popup_delete,
-        R.id.note_popup_new_above,
-        R.id.note_popup_new_under,
-        R.id.note_popup_new_below,
-        R.id.note_popup_refile,
-        R.id.note_popup_focus
+    val allActions = listOf(
+        Action(R.id.note_popup_set_schedule, R.drawable.ic_today, "set-schedule"),
+        Action(R.id.note_popup_set_deadline, R.drawable.ic_alarm, "set-deadline"),
+        Action(R.id.note_popup_set_state, R.drawable.ic_flag, "set-state"),
+        Action(R.id.note_popup_toggle_state, R.drawable.ic_check_circle_outline, "toggle-state"),
+        Action(R.id.note_popup_clock_in, R.drawable.ic_hourglass_top, "clock-in"),
+        Action(R.id.note_popup_clock_out, R.drawable.ic_hourglass_bottom, "clock-out"),
+        Action(R.id.note_popup_clock_cancel, R.drawable.ic_hourglass_disabled, "clock-cancel"),
+        Action(R.id.note_popup_delete, R.drawable.ic_delete, "delete"),
+        Action(R.id.note_popup_new_above, R.drawable.cic_new_above, "new-above"),
+        Action(R.id.note_popup_new_under, R.drawable.cic_new_under, "new-under"),
+        Action(R.id.note_popup_new_below, R.drawable.cic_new_below, "new-below"),
+        Action(R.id.note_popup_refile, R.drawable.ic_move_to_inbox, "refile"),
+        Action(R.id.note_popup_focus, R.drawable.ic_center_focus_strong, "focus"),
     )
 
     private val TAG = NotePopup::class.java.name

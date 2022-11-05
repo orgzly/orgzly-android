@@ -74,13 +74,11 @@ class TimePreferenceFragment : PreferenceDialogFragmentCompat() {
         val FRAGMENT_TAG: String = TimePreferenceFragment::class.java.name
 
         fun getInstance(preference: Preference): PreferenceDialogFragmentCompat {
-            val fragment = TimePreferenceFragment()
-
-            fragment.arguments = Bundle().apply {
-                putString("key", preference.key)
+            return TimePreferenceFragment().apply {
+                arguments = Bundle(1).apply {
+                    putString(ARG_KEY, preference.key)
+                }
             }
-
-            return fragment
         }
     }
 }

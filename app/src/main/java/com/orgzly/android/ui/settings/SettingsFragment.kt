@@ -136,6 +136,12 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
                         TimePreferenceFragment.getInstance(preference),
                         TimePreferenceFragment.FRAGMENT_TAG)
 
+            is NotePopupPreference ->
+                displayCustomPreferenceDialogFragment(
+                    NotePopupPreferenceFragment.getInstance(preference),
+                    NotePopupPreferenceFragment.FRAGMENT_TAG)
+
+
             else -> super.onDisplayPreferenceDialog(preference)
         }
     }
@@ -184,6 +190,15 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         val activity = activity as? CommonActivity ?: return
 
         when (key) {
+            getString(R.string.pref_key_note_popup_buttons_in_book_left),
+            getString(R.string.pref_key_note_popup_buttons_in_book_right),
+            getString(R.string.pref_key_note_popup_buttons_in_query_left),
+            getString(R.string.pref_key_note_popup_buttons_in_query_right) -> {
+                findPreference<NotePopupPreference>(key)?.summary =
+                    sharedPreferences.getString(key, "")
+
+            }
+
             // State keywords
             getString(R.string.pref_key_states) -> {
                 AppPreferences.updateStaticKeywords(context)

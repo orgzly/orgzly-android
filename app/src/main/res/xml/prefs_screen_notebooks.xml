@@ -109,6 +109,29 @@
             android:entryValues="@array/preface_in_book_entry_values"
             android:defaultValue="@string/pref_default_preface_in_book"
             app:useSimpleSummaryProvider="true"/>
+
+        <PreferenceCategory android:title="@string/popup_menu_buttons">
+            <com.orgzly.android.prefs.NotePopupPreference
+                android:title="@string/notebook"
+                android:icon="@drawable/ic_swipe_left"
+                android:key="@string/pref_key_note_popup_buttons_in_book_left" />
+
+            <com.orgzly.android.prefs.NotePopupPreference
+                android:title="@string/notebook"
+                android:icon="@drawable/ic_swipe_right"
+                android:key="@string/pref_key_note_popup_buttons_in_book_right" />
+
+            <com.orgzly.android.prefs.NotePopupPreference
+                android:title="@string/search_results"
+                android:icon="@drawable/ic_swipe_left"
+                android:key="@string/pref_key_note_popup_buttons_in_query_left" />
+
+            <com.orgzly.android.prefs.NotePopupPreference
+                android:title="@string/search_results"
+                android:icon="@drawable/ic_swipe_right"
+                android:key="@string/pref_key_note_popup_buttons_in_query_right" />
+
+        </PreferenceCategory>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/note">
