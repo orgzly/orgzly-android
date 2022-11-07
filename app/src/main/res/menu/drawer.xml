@@ -4,22 +4,25 @@
     <group android:id="@+id/drawer_group" android:checkableBehavior="single">
         <item
             android:id="@+id/searches"
-            android:icon="?attr/ic_search_24dp"
+            android:icon="@drawable/ic_search"
             android:title="@string/searches"
             android:checkable="true"
             android:orderInCategory="0"/>
 
         <item
             android:id="@+id/books"
-            android:icon="?attr/ic_library_books_24dp"
+            android:icon="@drawable/ic_library_books"
             android:title="@string/notebooks"
             android:checkable="true"
             android:orderInCategory="2"/>
 
         <item
             android:id="@+id/settings"
-            android:icon="?attr/ic_settings_24dp"
+            android:icon="@drawable/ic_settings"
             android:title="@string/settings"
             android:orderInCategory="4"/>
+
+        <!-- FIXME: Space for sync button and progress bar -->
+        <item android:title="" android:enabled="false" android:orderInCategory="6" />
     </group>
 </menu>

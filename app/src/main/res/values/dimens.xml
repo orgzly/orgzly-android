@@ -46,9 +46,11 @@
     <dimen name="widget_post_title_text_size_16">14sp</dimen>
     <dimen name="widget_header_text_size_16">17sp</dimen>
 
+    <dimen name="widget_metadata_icon_alpha">0.87</dimen>
+
     <dimen name="widget_padding">2dp</dimen>
 
-    <dimen name="bullet_margin">6dp</dimen>
+    <dimen name="bullet_margin">8dp</dimen>
 
     <!-- Duration of animation for opening, closing and switching a quick bar -->
     <integer name="quick_bar_animation_duration">150</integer>

@@ -14,12 +14,12 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.navigation.NavigationView;
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
@@ -43,11 +43,11 @@ import com.orgzly.android.ui.note.NoteFragment;
 import com.orgzly.android.ui.notes.book.BookFragment;
 import com.orgzly.android.ui.notes.book.BookPrefaceFragment;
 import com.orgzly.android.ui.notifications.Notifications;
-import com.orgzly.android.ui.repos.ReposActivity;
 import com.orgzly.android.ui.savedsearch.SavedSearchFragment;
 import com.orgzly.android.ui.savedsearches.SavedSearchesFragment;
 import com.orgzly.android.ui.settings.SettingsActivity;
-import com.orgzly.android.ui.util.ActivityUtils;
+import com.orgzly.android.ui.sync.SyncFragment;
+import com.orgzly.android.ui.util.KeyboardUtils;
 import com.orgzly.android.usecase.BookExport;
 import com.orgzly.android.usecase.BookImportGettingStarted;
 import com.orgzly.android.usecase.BookSparseTreeForNote;
@@ -122,7 +122,8 @@ public class MainActivity extends CommonActivity
 
         super.onCreate(savedInstanceState);
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);
+        if (BuildConfig.LOG_DEBUG)
+            LogUtils.d(TAG, getIntent(), getIntent().getExtras(), savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
@@ -143,7 +144,7 @@ public class MainActivity extends CommonActivity
         setupDisplay(savedInstanceState);
 
         if (AppPreferences.newNoteNotification(this)) {
-            Notifications.createNewNoteNotification(this);
+            Notifications.showNewNoteNotification(this);
         }
 
         activityForResult = new ActivityForResult(this) {
@@ -176,8 +177,6 @@ public class MainActivity extends CommonActivity
      * Adds initial set of fragments, depending on intent extras
      */
     private void setupDisplay(Bundle savedInstanceState) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, getIntent().getExtras());
-
         if (savedInstanceState == null) { // Not a configuration change.
             long bookId = getIntent().getLongExtra(AppIntent.EXTRA_BOOK_ID, 0L);
             long noteId = getIntent().getLongExtra(AppIntent.EXTRA_NOTE_ID, 0L);
@@ -195,8 +194,30 @@ public class MainActivity extends CommonActivity
                 }
             } else if (queryString != null) {
                 DisplayManager.displayQuery(getSupportFragmentManager(), queryString);
+
+            } else {
+                handleOrgProtocolIntent(getIntent());
             }
         }
+    }
+
+    private void handleOrgProtocolIntent(Intent intent) {
+        OrgProtocol.handleOrgProtocol(intent, new OrgProtocol.Listener() {
+            @Override
+            public void onNoteWithId(@NonNull String id) {
+                viewModel.followLinkToNoteWithProperty("ID", id);
+            }
+
+            @Override
+            public void onQuery(@NonNull String query) {
+                viewModel.displayQuery(query);
+            }
+
+            @Override
+            public void onError(@NonNull String str) {
+                AppSnackbarUtils.showSnackbar(MainActivity.this, str);
+            }
+        });
     }
 
     private void setupDrawer() {
@@ -304,37 +325,45 @@ public class MainActivity extends CommonActivity
 
         viewModel.getNavigationActions().observeSingle(this, action -> {
             if (action instanceof MainNavigationAction.OpenBook) {
-                MainNavigationAction.OpenBook openBookAction =
+                MainNavigationAction.OpenBook thisAction =
                         (MainNavigationAction.OpenBook) action;
 
                 DisplayManager.displayBook(
                         getSupportFragmentManager(),
-                        openBookAction.getBookId(),
+                        thisAction.getBookId(),
                         0);
 
             } else if (action instanceof MainNavigationAction.OpenBookFocusNote) {
-                MainNavigationAction.OpenBookFocusNote openBookFocusNoteAction =
+                MainNavigationAction.OpenBookFocusNote thisAction =
                         (MainNavigationAction.OpenBookFocusNote) action;
 
                 DisplayManager.displayBook(
                         getSupportFragmentManager(),
-                        openBookFocusNoteAction.getBookId(),
-                        openBookFocusNoteAction.getNoteId());
+                        thisAction.getBookId(),
+                        thisAction.getNoteId());
 
             } else if (action instanceof MainNavigationAction.OpenNote) {
-                MainNavigationAction.OpenNote openNoteAction =
+                MainNavigationAction.OpenNote thisAction =
                         (MainNavigationAction.OpenNote) action;
 
                 DisplayManager.displayExistingNote(
                         getSupportFragmentManager(),
-                        openNoteAction.getBookId(),
-                        openNoteAction.getNoteId());
+                        thisAction.getBookId(),
+                        thisAction.getNoteId());
 
             } else if (action instanceof MainNavigationAction.OpenFile) {
-                MainNavigationAction.OpenFile openFileAction =
+                MainNavigationAction.OpenFile thisAction =
                         (MainNavigationAction.OpenFile) action;
 
-                openFileIfExists(openFileAction.getFile());
+                openFileIfExists(thisAction.getFile());
+
+            } else if (action instanceof MainNavigationAction.DisplayQuery) {
+                MainNavigationAction.DisplayQuery thisAction =
+                        (MainNavigationAction.DisplayQuery) action;
+
+                DisplayManager.displayQuery(
+                        getSupportFragmentManager(),
+                        thisAction.getQuery());
             }
         });
 
@@ -356,7 +385,7 @@ public class MainActivity extends CommonActivity
     private void drawerOpened() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
-        ActivityUtils.closeSoftKeyboard(this);
+        KeyboardUtils.closeSoftKeyboard(this);
     }
 
     private void drawerClosed() {
@@ -500,9 +529,9 @@ public class MainActivity extends CommonActivity
         }
 
         // Collapse search view if expanded
-        BottomAppBar bottomAppBar = findViewById(R.id.bottomAppBar);
-        if (bottomAppBar != null) {
-            MenuItem menuItem = bottomAppBar.getMenu().findItem(R.id.search_view);
+        Toolbar toolbar = findViewById(R.id.top_toolbar);
+        if (toolbar != null) {
+            MenuItem menuItem = toolbar.getMenu().findItem(R.id.search_view);
             if (menuItem != null) {
                 if (menuItem.isActionViewExpanded()) {
                     menuItem.collapseActionView();
@@ -563,17 +592,20 @@ public class MainActivity extends CommonActivity
     public void onNoteCreated(Note note) {
         popBackStackAndCloseKeyboard();
 
-        // Display Snackbar with an action (create new note below just created one)
-        AppSnackbarUtils.showSnackbar(this, R.string.message_note_created, R.string.new_below, () -> {
-            NotePlace notePlace = new NotePlace(
-                    note.getPosition().getBookId(),
-                    note.getId(),
-                    Place.BELOW);
+        // FIXME: Gives time for backstack pop to avoid displaying the snackbar on top of FAB
+        new Handler(getMainLooper()).postDelayed(() -> {
+            // Display Snackbar with an action (create new note below just created one)
+            AppSnackbarUtils.showSnackbar(MainActivity.this, R.string.message_note_created, R.string.new_below, () -> {
+                NotePlace notePlace = new NotePlace(
+                        note.getPosition().getBookId(),
+                        note.getId(),
+                        Place.BELOW);
 
-            DisplayManager.displayNewNote(getSupportFragmentManager(), notePlace);
+                DisplayManager.displayNewNote(getSupportFragmentManager(), notePlace);
 
-            return null;
-        });
+                return null;
+            });
+        }, 100);
     }
 
     @Override
@@ -636,26 +668,6 @@ public class MainActivity extends CommonActivity
     @Override
     public void onNotesPasteRequest(long bookId, long noteId, Place place) {
         mSyncFragment.run(new NotePaste(bookId, noteId, place));
-    }
-
-    /**
-     * Sync finished.
-     *
-     * Display Snackbar with a message.  If it makes sense also set action to open a repository.
-     *
-     * @param msg Error message if syncing failed, null if it was successful
-     */
-    @Override
-    public void onSyncFinished(String msg) {
-        if (msg != null) {
-            AppSnackbarUtils.showSnackbar(
-                    this, getString(R.string.sync_with_argument, msg), R.string.repositories, () -> {
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setClass(this, ReposActivity.class);
-                        startActivity(intent);
-                        return null;
-                    });
-        }
     }
 
     @Override
@@ -780,7 +792,7 @@ public class MainActivity extends CommonActivity
 
     public void popBackStackAndCloseKeyboard() {
         getSupportFragmentManager().popBackStack();
-        ActivityUtils.closeSoftKeyboard(this);
+        KeyboardUtils.closeSoftKeyboard(this);
     }
 
     /**
@@ -873,6 +885,27 @@ public class MainActivity extends CommonActivity
         intent.putExtra(AppIntent.EXTRA_PROPERTY_NAME, name);
         intent.putExtra(AppIntent.EXTRA_PROPERTY_VALUE, value);
         LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
+    }
+
+    public static void openQuery(String query) {
+        Intent intent = new Intent(AppIntent.ACTION_OPEN_QUERY);
+        intent.putExtra(AppIntent.EXTRA_QUERY_STRING, query);
+        LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
+    }
+
+    @Override
+    public void onClockIn(@NonNull Set<Long> noteIds) {
+        viewModel.clockingUpdateRequest(noteIds, 0);
+    }
+
+    @Override
+    public void onClockOut(@NonNull Set<Long> noteIds) {
+        viewModel.clockingUpdateRequest(noteIds, 1);
+    }
+
+    @Override
+    public void onClockCancel(@NonNull Set<Long> noteIds) {
+        viewModel.clockingUpdateRequest(noteIds, 2);
     }
 
     private class LocalBroadcastReceiver extends BroadcastReceiver {

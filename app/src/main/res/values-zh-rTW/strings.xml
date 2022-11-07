@@ -154,8 +154,9 @@
     <string name="searches">搜尋</string>
     <string name="search">搜尋</string>
     <string name="new_search">新搜尋</string>
-    <string name="no_repos">未配置資料庫</string>
     <string name="multiple_repos">存在多個資料庫</string>
+    <string name="no_repos">未配置資料庫</string>
+    <string name="no_books">沒有找到筆記本</string>
     <string name="book_encoding">筆記本的編碼</string>
     <string name="collecting_notebooks_in_progress">正在收集筆記..</string>
     <string name="syncing_in_progress">正在同步...</string>
@@ -278,6 +279,10 @@
     <string name="notebooks_sort_order">筆記本排序順序</string>
     <string name="font_size">字型大小</string>
     <string name="color_scheme">色彩配置</string>
+    <string name="other">其他</string>
+    <string name="theme">佈景主題</string>
+    <string name="light_scheme">亮色方案</string>
+    <string name="dark_scheme">暗色方案</string>
     <string name="monospaced_font">等寬字型</string>
     <string name="monospaced_font_summary">使用等寬字型做為筆記的內容和筆記本的前言</string>
     <string name="reversed_note_click_action">反轉筆記的點擊操作</string>
@@ -345,6 +350,7 @@
     <string name="displayed_book_details_last_action">最後一次操作</string>
     <string name="displayed_book_details_notes_count">筆記數量</string>
     <string name="color_scheme_system">系统</string>
+    <string name="color_scheme_dynamic">動態取色</string>
     <string name="color_scheme_light">亮色</string>
     <string name="color_scheme_dark">暗色</string>
     <string name="color_scheme_black">黑色</string>
@@ -557,4 +563,12 @@
     <string name="developer_options">開發人員選項</string>
     <string name="git_repository_type">Git 儲存庫型式</string>
     <string name="in_development">開發中</string>
+    <string name="select_notebook">選擇筆記本</string>
+    <string name="highlight_rich_text_being_edited">高光正在編輯的富文本</string>
+    <string name="use_alarm_clock_for_tod_reminders">使用鬧鐘</string>
+    <string name="use_alarm_clock_for_tod_reminders_summary">一天中的時間設定提醒</string>
+    <string name="log_major_events">記錄重大事件</string>
+    <string name="logs">記錄日誌</string>
+    <string name="share">分享</string>
+    <string name="refresh_data">重新整理</string>
 </resources>

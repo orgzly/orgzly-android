@@ -1,19 +1,5 @@
 package com.orgzly.android.espresso;
 
-import android.content.pm.ActivityInfo;
-import android.widget.DatePicker;
-
-import androidx.test.core.app.ActivityScenario;
-
-import com.orgzly.R;
-import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.ui.main.MainActivity;
-
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -29,17 +15,31 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.closeSoftKeyboardWithDelay;
-import static com.orgzly.android.espresso.EspressoUtils.contextualToolbarOverflowMenu;
-import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
-import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
-import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
+import static com.orgzly.android.espresso.util.EspressoUtils.closeSoftKeyboardWithDelay;
+import static com.orgzly.android.espresso.util.EspressoUtils.contextualToolbarOverflowMenu;
+import static com.orgzly.android.espresso.util.EspressoUtils.onActionItemClick;
+import static com.orgzly.android.espresso.util.EspressoUtils.onNoteInBook;
+import static com.orgzly.android.espresso.util.EspressoUtils.replaceTextCloseKeyboard;
+import static com.orgzly.android.espresso.util.EspressoUtils.scroll;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
+
+import android.content.pm.ActivityInfo;
+import android.widget.DatePicker;
+
+import androidx.test.core.app.ActivityScenario;
+
+import com.orgzly.R;
+import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.prefs.AppPreferences;
+import com.orgzly.android.ui.main.MainActivity;
+
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 public class BookTest extends OrgzlyTest {
     private ActivityScenario<MainActivity> scenario;
@@ -109,7 +109,7 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testNoteExists() {
-        onNoteInBook(7, R.id.item_head_title).check(matches(withText("Note #7.")));
+        onNoteInBook(7, R.id.item_head_title_view).check(matches(withText("Note #7.")));
     }
 
     @Test
@@ -128,8 +128,7 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(9, R.id.item_head_scheduled_text).check(matches(allOf(withText(userDateTime("<2014-05-26 Mon>")), isDisplayed())));
 
         onNoteInBook(9).perform(longClick());
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.schedule)).perform(click());
+        onView(withId(R.id.schedule)).perform(click());
         onView(withText(R.string.set)).perform(click());
 
         onNoteInBook(9, R.id.item_head_scheduled_text).check(matches(allOf(withText(userDateTime("<2014-05-26 Mon>")), isDisplayed())));
@@ -143,8 +142,7 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(8).perform(longClick());
         onNoteInBook(9).perform(click());
 
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.schedule)).perform(click());
+        onView(withId(R.id.schedule)).perform(click());
         onView(withText(R.string.clear)).perform(click());
 
         onNoteInBook(8, R.id.item_head_scheduled_text).check(matches(not(isDisplayed())));
@@ -153,30 +151,28 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testRemovingDoneState() {
-        onNoteInBook(5, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
-        onNoteInBook(8, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
+        onNoteInBook(5, R.id.item_head_title_view).check(matches(withText(startsWith("DONE"))));
+        onNoteInBook(8, R.id.item_head_title_view).check(matches(withText(startsWith("DONE"))));
 
         onNoteInBook(5).perform(longClick());
         onNoteInBook(8).perform(click());
 
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.state)).perform(click());
+        onView(withId(R.id.state)).perform(click());
         onView(withText("TODO")).perform(click());
 
-        onNoteInBook(5, R.id.item_head_title).check(matches(withText(startsWith("TODO"))));
-        onNoteInBook(8, R.id.item_head_title).check(matches(withText(startsWith("TODO"))));
+        onNoteInBook(5, R.id.item_head_title_view).check(matches(withText(startsWith("TODO"))));
+        onNoteInBook(8, R.id.item_head_title_view).check(matches(withText(startsWith("TODO"))));
     }
 
     @Test
     public void testClearStateTitleUnchanged() {
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note #1.")));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText("Note #1.")));
 
         onNoteInBook(1).perform(longClick());
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.state)).perform(click());
+        onView(withId(R.id.state)).perform(click());
         onView(withText(R.string.clear)).perform(click());
 
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note #1.")));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText("Note #1.")));
     }
 
     @Test
@@ -197,7 +193,6 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(40).check(matches(isDisplayed())); // Scroll to note
         onView(withText("Note #40.")).check(matches(isDisplayed()));
         onView(withText("Note #40.")).perform(click());
-        pressBack(); // Close keyboard
         pressBack(); // Leave note
         onView(withText("Note #40.")).check(matches(isDisplayed()));
     }
@@ -260,12 +255,12 @@ public class BookTest extends OrgzlyTest {
         onActionItemClick(R.id.move, R.string.move);
         onView(withId(R.id.notes_action_move_down)).perform(click());
 
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
-        onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #2."))));
-        onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #4."))));
-        onNoteInBook(4, R.id.item_head_title).check(matches(withText(endsWith("Note #5."))));
-        onNoteInBook(5, R.id.item_head_title).check(matches(withText(endsWith("Note #6."))));
-        onNoteInBook(6, R.id.item_head_title).check(matches(withText(endsWith("Note #3."))));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(2, R.id.item_head_title_view).check(matches(withText(endsWith("Note #2."))));
+        onNoteInBook(3, R.id.item_head_title_view).check(matches(withText(endsWith("Note #4."))));
+        onNoteInBook(4, R.id.item_head_title_view).check(matches(withText(endsWith("Note #5."))));
+        onNoteInBook(5, R.id.item_head_title_view).check(matches(withText(endsWith("Note #6."))));
+        onNoteInBook(6, R.id.item_head_title_view).check(matches(withText(endsWith("Note #3."))));
     }
 
     @Test
@@ -299,23 +294,23 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(2).perform(longClick());
         onActionItemClick(R.id.cut, R.string.cut);
 
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
-        onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #8."))));
-        onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #9."))));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(2, R.id.item_head_title_view).check(matches(withText(endsWith("Note #8."))));
+        onNoteInBook(3, R.id.item_head_title_view).check(matches(withText(endsWith("Note #9."))));
 
         onNoteInBook(1).perform(longClick());
         onActionItemClick(R.id.paste, R.string.paste);
         onView(withText(R.string.heads_action_menu_item_paste_above)).perform(click());
 
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #2."))));
-        onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #3."))));
-        onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #4."))));
-        onNoteInBook(4, R.id.item_head_title).check(matches(withText(endsWith("Note #5."))));
-        onNoteInBook(5, R.id.item_head_title).check(matches(withText(endsWith("Note #6."))));
-        onNoteInBook(6, R.id.item_head_title).check(matches(withText(endsWith("Note #7."))));
-        onNoteInBook(7, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
-        onNoteInBook(8, R.id.item_head_title).check(matches(withText(endsWith("Note #8."))));
-        onNoteInBook(9, R.id.item_head_title).check(matches(withText(endsWith("Note #9."))));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText(endsWith("Note #2."))));
+        onNoteInBook(2, R.id.item_head_title_view).check(matches(withText(endsWith("Note #3."))));
+        onNoteInBook(3, R.id.item_head_title_view).check(matches(withText(endsWith("Note #4."))));
+        onNoteInBook(4, R.id.item_head_title_view).check(matches(withText(endsWith("Note #5."))));
+        onNoteInBook(5, R.id.item_head_title_view).check(matches(withText(endsWith("Note #6."))));
+        onNoteInBook(6, R.id.item_head_title_view).check(matches(withText(endsWith("Note #7."))));
+        onNoteInBook(7, R.id.item_head_title_view).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(8, R.id.item_head_title_view).check(matches(withText(endsWith("Note #8."))));
+        onNoteInBook(9, R.id.item_head_title_view).check(matches(withText(endsWith("Note #9."))));
     }
 
     @Test
@@ -323,20 +318,20 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(2).perform(longClick());
         onActionItemClick(R.id.cut, R.string.cut);
 
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
-        onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #8."))));
-        onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #9."))));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(2, R.id.item_head_title_view).check(matches(withText(endsWith("Note #8."))));
+        onNoteInBook(3, R.id.item_head_title_view).check(matches(withText(endsWith("Note #9."))));
 
         onNoteInBook(2).perform(longClick());
         onActionItemClick(R.id.paste, R.string.paste);
         onView(withText(R.string.heads_action_menu_item_paste_under)).perform(click());
 
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
-        onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #8."))));
-        onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #9."))));
-        onNoteInBook(4, R.id.item_head_title).check(matches(withText(endsWith("Note #10."))));
-        onNoteInBook(35, R.id.item_head_title).check(matches(withText(endsWith("Note #2."))));
-        onNoteInBook(36, R.id.item_head_title).check(matches(withText(endsWith("Note #3."))));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(2, R.id.item_head_title_view).check(matches(withText(endsWith("Note #8."))));
+        onNoteInBook(3, R.id.item_head_title_view).check(matches(withText(endsWith("Note #9."))));
+        onNoteInBook(4, R.id.item_head_title_view).check(matches(withText(endsWith("Note #10."))));
+        onNoteInBook(35, R.id.item_head_title_view).check(matches(withText(endsWith("Note #2."))));
+        onNoteInBook(36, R.id.item_head_title_view).check(matches(withText(endsWith("Note #3."))));
     }
 
     @Test
@@ -348,18 +343,18 @@ public class BookTest extends OrgzlyTest {
         onActionItemClick(R.id.paste, R.string.paste);
         onView(withText(R.string.heads_action_menu_item_paste_below)).perform(click());
 
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
-        onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
-        onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #2."))));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(2, R.id.item_head_title_view).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(3, R.id.item_head_title_view).check(matches(withText(endsWith("Note #2."))));
     }
 
     @Test
     public void testFoldNotes() {
         onNoteInBook(2, R.id.item_head_fold_button).perform(click());
 
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
-        onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #2."))));
-        onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #8."))));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(2, R.id.item_head_title_view).check(matches(withText(endsWith("Note #2."))));
+        onNoteInBook(3, R.id.item_head_title_view).check(matches(withText(endsWith("Note #8."))));
     }
 
     @Test
@@ -371,13 +366,13 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(2).perform(longClick());
         onActionItemClick(R.id.new_note, R.string.new_note);
         onView(withText(R.string.new_under)).perform(click());
-        onView(withId(R.id.title)).perform(replaceTextCloseKeyboard("Created"));
+        onView(withId(R.id.title_edit)).perform(replaceTextCloseKeyboard("Created"));
         onView(withId(R.id.done)).perform(click()); // Note done
 
         /* New note should not be visible. */
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("Note #1."))));
-        onNoteInBook(2, R.id.item_head_title).check(matches(withText(endsWith("Note #2."))));
-        onNoteInBook(3, R.id.item_head_title).check(matches(withText(endsWith("Note #8."))));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText(endsWith("Note #1."))));
+        onNoteInBook(2, R.id.item_head_title_view).check(matches(withText(endsWith("Note #2."))));
+        onNoteInBook(3, R.id.item_head_title_view).check(matches(withText(endsWith("Note #8."))));
     }
 
     @Test
@@ -390,7 +385,7 @@ public class BookTest extends OrgzlyTest {
 
         // Create a new note
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.title)).perform(replaceTextCloseKeyboard("Title"));
+        onView(withId(R.id.title_edit)).perform(replaceTextCloseKeyboard("Title"));
         onView(withId(R.id.done)).perform(click()); // Note done
 
         // Enter note
@@ -422,8 +417,7 @@ public class BookTest extends OrgzlyTest {
         onView(withId(R.id.view_flipper)).check(matches(isDisplayed()));
         onView(withText(R.string.note_does_not_exist_anymore)).check(matches(isDisplayed()));
         onView(withId(R.id.done)).check(doesNotExist());
-        onView(withId(R.id.to_edit_mode)).check(doesNotExist());
-        onView(withId(R.id.to_view_mode)).check(doesNotExist());
+        onView(withId(R.id.delete)).check(doesNotExist());
 
         // Rotate
         scenario.onActivity(activity -> {
@@ -437,10 +431,10 @@ public class BookTest extends OrgzlyTest {
     @Test
     public void testSetDeadlineTimeForNewNote() {
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.deadline_button)).perform(closeSoftKeyboardWithDelay(), scrollTo(), click());
+        onView(withId(R.id.deadline_button)).perform(closeSoftKeyboardWithDelay(), scroll(), click());
         onView(withId(R.id.date_picker_button)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
-        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
         onView(withText(R.string.set)).perform(click());
         onView(withId(R.id.deadline_button)).check(matches(withText(userDateTime("<2014-04-01 Tue>"))));
     }
@@ -449,10 +443,10 @@ public class BookTest extends OrgzlyTest {
     public void testToggleState() {
         onNoteInBook(1).perform(longClick());
         onView(withId(R.id.toggle_state)).perform(click());
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText(startsWith("DONE"))));
 
         onView(withId(R.id.toggle_state)).perform(click());
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText(startsWith("TODO"))));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText(startsWith("TODO"))));
     }
 
     @Test
@@ -461,8 +455,8 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(8).perform(click());
         onView(withId(R.id.toggle_state)).perform(click());
 
-        onNoteInBook(5, R.id.item_head_title).check(matches(withText(startsWith("TODO"))));
-        onNoteInBook(8, R.id.item_head_title).check(matches(withText(startsWith("TODO"))));
+        onNoteInBook(5, R.id.item_head_title_view).check(matches(withText(startsWith("TODO"))));
+        onNoteInBook(8, R.id.item_head_title_view).check(matches(withText(startsWith("TODO"))));
     }
 
     @Test
@@ -471,8 +465,8 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(2).perform(click());
         onView(withId(R.id.toggle_state)).perform(click());
 
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
-        onNoteInBook(2, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText(startsWith("DONE"))));
+        onNoteInBook(2, R.id.item_head_title_view).check(matches(withText(startsWith("DONE"))));
     }
 
     @Test
@@ -481,8 +475,8 @@ public class BookTest extends OrgzlyTest {
         onNoteInBook(5).perform(click());
         onView(withId(R.id.toggle_state)).perform(click());
 
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
-        onNoteInBook(5, R.id.item_head_title).check(matches(withText(startsWith("DONE"))));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText(startsWith("DONE"))));
+        onNoteInBook(5, R.id.item_head_title_view).check(matches(withText(startsWith("DONE"))));
     }
 
     @Ignore("Not implemented yet")
@@ -490,8 +484,7 @@ public class BookTest extends OrgzlyTest {
     public void testPreselectedStateOfSelectedNote() {
         onNoteInBook(3).perform(longClick());
 
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.state)).perform(click());
+        onView(withId(R.id.state)).perform(click());
 
         onView(withText("TODO")).check(matches(isChecked()));
     }

@@ -154,8 +154,9 @@
     <string name="searches">Pencarian</string>
     <string name="search">Cari</string>
     <string name="new_search">Cari lagi</string>
-    <string name="no_repos">Tidak ada repositori yang dikonfigurasi</string>
     <string name="multiple_repos">Beberapa repositori ada</string>
+    <string name="no_repos">Tidak ada repositori yang dikonfigurasi</string>
+    <string name="no_books">No notebooks found</string>
     <string name="book_encoding">Pengkodean notebook</string>
     <string name="collecting_notebooks_in_progress">Collecting notebooks…</string>
     <string name="syncing_in_progress">Sinkronisasi…</string>
@@ -278,6 +279,10 @@
     <string name="notebooks_sort_order">Urut berdasarkan notebook</string>
     <string name="font_size">Ukuran huruf</string>
     <string name="color_scheme">Skema warna</string>
+    <string name="other">Other</string>
+    <string name="theme">Theme</string>
+    <string name="light_scheme">Light scheme</string>
+    <string name="dark_scheme">Dark scheme</string>
     <string name="monospaced_font">Huruf monospace</string>
     <string name="monospaced_font_summary">Gunakan huruf monospace untuk konten catatan dan kata pengantar buku</string>
     <string name="reversed_note_click_action">Swap note click and long-click actions</string>
@@ -345,6 +350,7 @@
     <string name="displayed_book_details_last_action">Tindakan terakhir</string>
     <string name="displayed_book_details_notes_count">Hitungan catatan</string>
     <string name="color_scheme_system">System</string>
+    <string name="color_scheme_dynamic">Dynamic color</string>
     <string name="color_scheme_light">Terang</string>
     <string name="color_scheme_dark">Gelap</string>
     <string name="color_scheme_black">Hitam</string>
@@ -557,4 +563,12 @@
     <string name="developer_options">Developer options</string>
     <string name="git_repository_type">Git repository type</string>
     <string name="in_development">In development</string>
+    <string name="select_notebook">Select notebook</string>
+    <string name="highlight_rich_text_being_edited">Highlight rich text being edited</string>
+    <string name="use_alarm_clock_for_tod_reminders">Use alarm clock</string>
+    <string name="use_alarm_clock_for_tod_reminders_summary">For reminders with the time of day set</string>
+    <string name="log_major_events">Log major events</string>
+    <string name="logs">Logs</string>
+    <string name="share">Share</string>
+    <string name="refresh_data">Refresh</string>
 </resources>

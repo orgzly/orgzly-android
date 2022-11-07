@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="?attr/ic_sync_18dp"
+                    android:src="@drawable/ic_sync"
                     android:layout_gravity="center"
                     android:contentDescription="@string/sync"/>
 
@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="?attr/ic_sync_problem_18dp"
+                    android:src="@drawable/ic_sync_problem"
                     android:layout_gravity="center"
                     android:contentDescription="@string/sync"/>
 
@@ -89,8 +89,7 @@
 
                 <ImageView
                     style="@style/BookItemInfoIcon"
-                    android:src="?attr/ic_access_time_18dp"
-                    android:alpha="?attr/active_unfocused_icon_alpha"
+                    android:src="@drawable/ic_access_time"
                     android:contentDescription="@string/book_mtime"/>
 
                 <TextView
@@ -111,8 +110,7 @@
 
                 <ImageView
                     style="@style/BookItemInfoIcon"
-                    android:src="?attr/ic_format_list_bulleted_18dp"
-                    android:alpha="?attr/active_unfocused_icon_alpha"
+                    android:src="@drawable/ic_format_list_bulleted"
                     android:contentDescription="@string/book_notes_count"/>
 
                 <TextView
@@ -140,8 +138,7 @@
 
                     <ImageView
                         style="@style/BookItemInfoIcon"
-                        android:src="?attr/ic_link_18dp"
-                        android:alpha="?attr/active_unfocused_icon_alpha"
+                        android:src="@drawable/ic_link"
                         android:contentDescription="@string/book_link_details"/>
 
                     <TextView
@@ -150,7 +147,6 @@
                         android:layout_height="wrap_content"
                         android:gravity="start|center_vertical"
                         android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
                         tools:text="@string/repo_url_sample"
                         android:textSize="?attr/item_book_details_text_size"/>
                 </LinearLayout>
@@ -176,8 +172,7 @@
 
                     <ImageView
                         style="@style/BookItemInfoIcon"
-                        android:src="?attr/ic_sync_18dp"
-                        android:alpha="?attr/active_unfocused_icon_alpha"
+                        android:src="@drawable/ic_sync"
                         android:contentDescription="@string/book_link_details"/>
 
                     <TextView
@@ -199,8 +194,7 @@
 
                     <ImageView
                         style="@style/BookItemInfoIcon"
-                        android:src="?attr/ic_sync_18dp"
-                        android:alpha="?attr/active_unfocused_icon_alpha"
+                        android:src="@drawable/ic_sync"
                         android:contentDescription="@string/book_link_details"/>
 
                     <TextView
@@ -222,8 +216,7 @@
 
                     <ImageView
                         style="@style/BookItemInfoIcon"
-                        android:src="?attr/ic_sync_18dp"
-                        android:alpha="?attr/active_unfocused_icon_alpha"
+                        android:src="@drawable/ic_sync"
                         android:contentDescription="@string/book_link_details"/>
 
                     <TextView
@@ -246,8 +239,7 @@
 
                     <ImageView
                         style="@style/BookItemInfoIcon"
-                        android:src="?attr/ic_sync_18dp"
-                        android:alpha="?attr/active_unfocused_icon_alpha"
+                        android:src="@drawable/ic_sync"
                         android:contentDescription="@string/book_link_details"/>
 
                     <TextView
@@ -271,8 +263,7 @@
 
                 <ImageView
                     style="@style/BookItemInfoIcon"
-                    android:src="?attr/ic_language_18dp"
-                    android:alpha="?attr/active_unfocused_icon_alpha"
+                    android:src="@drawable/ic_language"
                     android:contentDescription="@string/book_encoding"/>
 
                 <TextView
@@ -293,8 +284,7 @@
 
                 <ImageView
                     style="@style/BookItemInfoIcon"
-                    android:src="?attr/ic_language_18dp"
-                    android:alpha="?attr/active_unfocused_icon_alpha"
+                    android:src="@drawable/ic_language"
                     android:contentDescription="@string/book_encoding"/>
 
                 <TextView
@@ -316,8 +306,7 @@
 
                 <ImageView
                     style="@style/BookItemInfoIcon"
-                    android:src="?attr/ic_language_18dp"
-                    android:alpha="?attr/active_unfocused_icon_alpha"
+                    android:src="@drawable/ic_language"
                     android:contentDescription="@string/book_encoding"/>
 
                 <TextView
@@ -339,8 +328,7 @@
 
                 <ImageView
                     style="@style/BookItemInfoIcon"
-                    android:src="?attr/ic_info_outline_18dp"
-                    android:alpha="?attr/active_unfocused_icon_alpha"
+                    android:src="@drawable/ic_info_outline"
                     android:contentDescription="@string/book_last_action"/>
 
                 <TextView

@@ -70,7 +70,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             binding.activityReposFlipper.displayedChild =
                     if (repos != null && repos.isNotEmpty()) 0 else 1
 
-            appBarToDefault()
+            topToolbarToDefault()
         })
 
         viewModel.openRepoRequestEvent.observeSingle(this, Observer { repo ->
@@ -91,22 +91,23 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
             registerForContextMenu(it)
         }
 
-        appBarToDefault()
+        topToolbarToDefault()
     }
 
-    private fun appBarToDefault() {
-        binding.bottomAppBar.run {
+    private fun topToolbarToDefault() {
+        binding.topToolbar.run {
             if (listAdapter.count > 0) {
-                replaceMenu(R.menu.repos_actions)
+                menu.clear()
+                inflateMenu(R.menu.repos_actions)
 
-                val newRepos = menu.findItem(R.id.repos_options_menu_item_new).subMenu
+                menu.findItem(R.id.repos_options_menu_item_new).subMenu?.let { newRepos ->
+                    if (!BuildConfig.IS_DROPBOX_ENABLED) {
+                        newRepos.removeItem(R.id.repos_options_menu_item_new_dropbox)
+                    }
 
-                if (!BuildConfig.IS_DROPBOX_ENABLED) {
-                    newRepos.removeItem(R.id.repos_options_menu_item_new_dropbox)
-                }
-
-                if (!AppPreferences.gitIsEnabled(App.getAppContext())) {
-                    newRepos.removeItem(R.id.repos_options_menu_item_new_git)
+                    if (!AppPreferences.gitIsEnabled(App.getAppContext())) {
+                        newRepos.removeItem(R.id.repos_options_menu_item_new_git)
+                    }
                 }
             } else {
                 menu.clear()

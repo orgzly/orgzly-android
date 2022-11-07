@@ -1,6 +1,5 @@
 package com.orgzly.android.espresso
 
-import android.os.SystemClock
 import androidx.annotation.StringRes
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.*
@@ -9,7 +8,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.orgzly.R
 import com.orgzly.android.OrgzlyTest
-import com.orgzly.android.espresso.EspressoUtils.*
+import com.orgzly.android.espresso.util.EspressoUtils.*
 import com.orgzly.android.ui.main.MainActivity
 import org.hamcrest.Matchers.not
 import org.junit.Before
@@ -49,10 +48,11 @@ class BookPrefaceTest : OrgzlyTest() {
     @Test
     fun testUpdatingBookPreface() {
         onPreface().perform(click())
-        onView(withId(R.id.fragment_book_preface_content)).perform(*replaceTextCloseKeyboard("New content"))
+        onView(withId(R.id.fragment_book_preface_content)).perform(click())
+        onView(withId(R.id.fragment_book_preface_content_edit)).perform(*replaceTextCloseKeyboard("New content"))
         onView(withId(R.id.done)).perform(click()) // Preface done
         onPreface().perform(click())
-        onView(withId(R.id.fragment_book_preface_content)).check(matches(withText("New content")))
+        onView(withId(R.id.fragment_book_preface_content_view)).check(matches(withText("New content")))
     }
 
     @Test
@@ -71,7 +71,7 @@ class BookPrefaceTest : OrgzlyTest() {
     @Test
     fun testPrefaceFullDisplayed() {
         setPrefaceSetting(R.string.preface_in_book_full)
-        onPreface(R.id.fragment_book_header_text).check(matches(withText("Line 1\nLine 2\nLine 3\nLine 4\nLine 5")))
+        onPreface(R.id.item_preface_text_view).check(matches(withText("Line 1\nLine 2\nLine 3\nLine 4\nLine 5")))
         // onView(withText("Line 1\nLine 2\nLine 3\nLine 4\nLine 5")).check(matches(isDisplayed()))
     }
 

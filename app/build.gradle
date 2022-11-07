@@ -4,14 +4,16 @@ apply plugin: 'kotlin-kapt'
 
 
 android {
-    compileSdkVersion 31
+    namespace 'com.orgzly'
+
+    compileSdkVersion 32
 
     defaultConfig {
         minSdkVersion 21 // Lollipop (5.0)
-        targetSdkVersion 31 // Android 12
+        targetSdkVersion 32 // Android 12L
         applicationId "com.orgzly"
-        versionCode 161
-        versionName "1.8.6"
+        versionCode 171
+        versionName "1.8.10"
 
         testInstrumentationRunner "com.orgzly.android.OrgzlyTestRunner"
         // testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -47,6 +49,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             buildConfigField "boolean", "LOG_DEBUG", "false"
+
+            // signingConfig signingConfigs.debug
         }
 
         debug {
@@ -128,7 +132,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$versions.android_room"
 
     // Lifecycle
-    implementation "androidx.lifecycle:lifecycle-extensions:$versions.android_lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.android_lifecycle"
 
     androidTestImplementation "androidx.annotation:annotation:$versions.android_annotation"
 

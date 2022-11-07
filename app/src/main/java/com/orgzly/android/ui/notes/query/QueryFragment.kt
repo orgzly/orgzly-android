@@ -4,15 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import com.orgzly.BuildConfig
 import com.orgzly.R
+import com.orgzly.android.sync.SyncRunner
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
+import com.orgzly.android.ui.notes.NotePopup
 import com.orgzly.android.ui.notes.NotesFragment
 import com.orgzly.android.ui.settings.SettingsActivity
-import com.orgzly.android.util.LogUtils
 
 /**
  * Displays query results.
@@ -57,6 +59,16 @@ abstract class QueryFragment :
         setHasOptionsMenu(true)
     }
 
+    protected fun showPopupWindow(noteId: Long, direction: Int, itemView: View, e1: MotionEvent, e2: MotionEvent) {
+        val anchor = itemView.findViewById<View>(R.id.item_head_title)
+
+        NotePopup.showWindow(anchor, NotePopup.Location.QUERY, direction, e1, e2) { buttonId ->
+            onNotePopupButtonClick(buttonId, noteId)
+        }
+    }
+
+    abstract fun onNotePopupButtonClick(buttonId: Int, itemId: Long)
+
     protected fun handleActionItemClick(actionId: Int, ids: Set<Long>) {
         if (ids.isEmpty()) {
             Log.e(TAG, "Cannot handle action when there are no items selected")
@@ -64,30 +76,46 @@ abstract class QueryFragment :
         }
 
         when (actionId) {
-            R.id.quick_bar_schedule,
+            R.id.note_popup_set_schedule,
             R.id.schedule ->
                 displayTimestampDialog(R.id.schedule, ids)
 
-            R.id.quick_bar_deadline,
+            R.id.note_popup_set_deadline,
             R.id.deadline ->
                 displayTimestampDialog(R.id.deadline, ids)
 
-            R.id.quick_bar_state,
+            R.id.note_popup_set_state,
             R.id.state ->
                 listener?.let {
                     openNoteStateDialog(it, ids, null)
                 }
 
-            R.id.quick_bar_focus,
+            R.id.note_popup_toggle_state,
+            R.id.toggle_state -> {
+                listener?.onStateToggleRequest(ids)
+            }
+
+            R.id.note_popup_clock_in,
+            R.id.clock_in -> {
+                listener?.onClockIn(ids)
+            }
+
+            R.id.note_popup_clock_out,
+            R.id.clock_out -> {
+                listener?.onClockOut(ids)
+            }
+
+            R.id.note_popup_clock_cancel,
+            R.id.clock_cancel -> {
+                listener?.onClockCancel(ids)
+            }
+
+            R.id.note_popup_focus,
             R.id.focus ->
                 listener?.onNoteFocusInBookRequest(ids.first())
 
-            R.id.quick_bar_open ->
-                listener?.onNoteOpen(ids.first())
-
-            R.id.quick_bar_done,
-            R.id.toggle_state -> {
-                listener?.onStateToggleRequest(ids)
+            R.id.sync -> {
+                SyncRunner.startSync()
             }
 
             R.id.activity_action_settings -> {

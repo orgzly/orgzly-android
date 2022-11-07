@@ -5,27 +5,37 @@
     tools:ignore="AlwaysShowAction">
 
     <item
-        android:id="@+id/search_view"
-        android:title="@string/options_menu_item_search"
-        android:icon="?attr/ic_search_24dp"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="collapseActionView|always" tools:ignore="AlwaysShowAction"/>
-
-    <item
-        android:id="@+id/to_edit_mode"
-        android:title="@string/edit"
-        android:icon="?attr/ic_edit_24dp"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/done"
         android:title="@string/done"
-        android:icon="?attr/ic_done_24dp"
+        android:icon="@drawable/ic_done"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/clock"
+        android:icon="@drawable/ic_hourglass_empty"
+        app:showAsAction="never"
+        android:title="@string/clock">
+        <menu>
+            <item
+                android:id="@+id/clock_in"
+                android:icon="@drawable/ic_hourglass_top"
+                android:title="@string/clock_in" />
+
+            <item
+                android:id="@+id/clock_out"
+                android:icon="@drawable/ic_hourglass_bottom"
+                android:title="@string/clock_out" />
+
+            <item
+                android:id="@+id/clock_cancel"
+                android:icon="@drawable/ic_hourglass_disabled"
+                android:title="@string/clock_cancel" />
+        </menu>
+    </item>
 
     <item
         android:id="@+id/metadata"
-        android:icon="?attr/ic_info_outline_24dp"
+        android:icon="@drawable/ic_info_outline"
         app:showAsAction="never"
         android:title="@string/metadata">
         <menu>
@@ -53,9 +63,14 @@
 
     <item
         android:id="@+id/delete"
-        android:icon="?attr/ic_delete_24dp"
+        android:icon="@drawable/ic_delete"
         app:showAsAction="never"
         android:title="@string/delete" />
+
+    <item
+        android:id="@+id/sync"
+        app:showAsAction="never"
+        android:title="@string/sync"/>
 
     <item
         android:id="@+id/activity_action_settings"

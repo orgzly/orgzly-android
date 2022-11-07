@@ -13,7 +13,6 @@ import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.db.entity.SavedSearch
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.SingleLiveEvent
 import com.orgzly.android.usecase.*
@@ -63,6 +62,10 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
                 }
             }
         }
+    }
+
+    fun displayQuery(query: String) {
+        navigationActions.postValue(MainNavigationAction.DisplayQuery(query))
     }
 
     fun followLinkToNoteWithProperty(name: String, value: String) {
@@ -122,6 +125,14 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
         }
     }
 
+    fun clockingUpdateRequest(noteIds: Set<Long>, type: Int) {
+        App.EXECUTORS.diskIO().execute {
+            catchAndPostError {
+                UseCaseRunner.run(NoteUpdateClockingState(noteIds, type))
+            }
+        }
+    }
+
     companion object {
         private val TAG = MainActivityViewModel::class.java.name
     }
@@ -132,4 +143,5 @@ sealed class MainNavigationAction {
     data class OpenBookFocusNote(val bookId: Long, val noteId: Long, val foldRest: Boolean) : MainNavigationAction()
     data class OpenNote(val bookId: Long, val noteId: Long) : MainNavigationAction()
     data class OpenFile(val file: File) : MainNavigationAction()
+    data class DisplayQuery(val query: String) : MainNavigationAction()
 }

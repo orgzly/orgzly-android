@@ -51,7 +51,8 @@ public class BookChooserActivity extends CommonActivity
 
     private void setupFragments(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            BooksFragment mBooksFragment = BooksFragment.Companion.getInstance(false, false);
+            BooksFragment mBooksFragment = BooksFragment.getInstance(false);
+
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.activity_bookchooser_main, mBooksFragment, BooksFragment.Companion.getFRAGMENT_TAG())

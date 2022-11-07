@@ -4,7 +4,6 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.longClick;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerActions.open;
@@ -16,21 +15,21 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.clickClickableSpan;
-import static com.orgzly.android.espresso.EspressoUtils.clickSetting;
-import static com.orgzly.android.espresso.EspressoUtils.isHighlighted;
-import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
-import static com.orgzly.android.espresso.EspressoUtils.onBook;
-import static com.orgzly.android.espresso.EspressoUtils.onListItem;
-import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
-import static com.orgzly.android.espresso.EspressoUtils.onPreface;
-import static com.orgzly.android.espresso.EspressoUtils.onSavedSearch;
-import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
-import static com.orgzly.android.espresso.EspressoUtils.searchForText;
-import static com.orgzly.android.espresso.EspressoUtils.settingsSetDoneKeywords;
-import static com.orgzly.android.espresso.EspressoUtils.settingsSetTodoKeywords;
+import static com.orgzly.android.espresso.util.EspressoUtils.clickClickableSpan;
+import static com.orgzly.android.espresso.util.EspressoUtils.clickSetting;
+import static com.orgzly.android.espresso.util.EspressoUtils.isHighlighted;
+import static com.orgzly.android.espresso.util.EspressoUtils.onActionItemClick;
+import static com.orgzly.android.espresso.util.EspressoUtils.onBook;
+import static com.orgzly.android.espresso.util.EspressoUtils.onListItem;
+import static com.orgzly.android.espresso.util.EspressoUtils.onNoteInBook;
+import static com.orgzly.android.espresso.util.EspressoUtils.onPreface;
+import static com.orgzly.android.espresso.util.EspressoUtils.onSavedSearch;
+import static com.orgzly.android.espresso.util.EspressoUtils.replaceTextCloseKeyboard;
+import static com.orgzly.android.espresso.util.EspressoUtils.scroll;
+import static com.orgzly.android.espresso.util.EspressoUtils.searchForText;
+import static com.orgzly.android.espresso.util.EspressoUtils.settingsSetDoneKeywords;
+import static com.orgzly.android.espresso.util.EspressoUtils.settingsSetTodoKeywords;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
@@ -122,7 +121,7 @@ public class MiscTest extends OrgzlyTest {
 
         onBook(0).perform(click());
         onView(withId(R.id.fragment_book_view_flipper)).check(matches(isDisplayed()));
-        onNoteInBook(15, R.id.item_head_title)
+        onNoteInBook(15, R.id.item_head_title_view)
                 .check(matches(allOf(withText("15"), isDisplayed())));
     }
 
@@ -141,36 +140,35 @@ public class MiscTest extends OrgzlyTest {
 
         onView(allOf(withText("book-name"), isDisplayed())).perform(click());
 
-        onNoteInBook(1, R.id.item_head_title).check(matches(allOf(withText("Note #1."), isDisplayed())));
-        onNoteInBook(2, R.id.item_head_title).check(matches(allOf(withText("Note #2."), isDisplayed())));
-        onNoteInBook(3, R.id.item_head_title).check(matches(allOf(withText("TODO  Note #3."), isDisplayed())));
-        onNoteInBook(4, R.id.item_head_title).check(matches(allOf(withText("Note #4."), isDisplayed())));
-        onNoteInBook(5, R.id.item_head_title).check(matches(allOf(withText("DONE  Note #5."), isDisplayed())));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(allOf(withText("Note #1."), isDisplayed())));
+        onNoteInBook(2, R.id.item_head_title_view).check(matches(allOf(withText("Note #2."), isDisplayed())));
+        onNoteInBook(3, R.id.item_head_title_view).check(matches(allOf(withText("TODO  Note #3."), isDisplayed())));
+        onNoteInBook(4, R.id.item_head_title_view).check(matches(allOf(withText("Note #4."), isDisplayed())));
+        onNoteInBook(5, R.id.item_head_title_view).check(matches(allOf(withText("DONE  Note #5."), isDisplayed())));
 
         onNoteInBook(1).perform(longClick());
         onNoteInBook(2).perform(click());
         onNoteInBook(3).perform(click());
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.state)).perform(click());
+        onView(withId(R.id.state)).perform(click());
         onView(withText("DONE")).perform(click());
 
-        onNoteInBook(1, R.id.item_head_title).check(matches(allOf(withText("DONE  Note #1."), isDisplayed())));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(allOf(withText("DONE  Note #1."), isDisplayed())));
         onNoteInBook(1, R.id.item_head_closed_text).check(matches(isDisplayed()));
         onNoteInBook(1).check(matches(isHighlighted()));
 
-        onNoteInBook(2, R.id.item_head_title).check(matches(allOf(withText("DONE  Note #2."), isDisplayed())));
+        onNoteInBook(2, R.id.item_head_title_view).check(matches(allOf(withText("DONE  Note #2."), isDisplayed())));
         onNoteInBook(2, R.id.item_head_closed_text).check(matches(isDisplayed()));
         onNoteInBook(2).check(matches(isHighlighted()));
 
-        onNoteInBook(3, R.id.item_head_title).check(matches(allOf(withText("DONE  Note #3."), isDisplayed())));
+        onNoteInBook(3, R.id.item_head_title_view).check(matches(allOf(withText("DONE  Note #3."), isDisplayed())));
         onNoteInBook(3, R.id.item_head_closed_text).check(matches(isDisplayed()));
         onNoteInBook(3).check(matches(isHighlighted()));
 
-        onNoteInBook(4, R.id.item_head_title).check(matches(allOf(withText("Note #4."), isDisplayed())));
+        onNoteInBook(4, R.id.item_head_title_view).check(matches(allOf(withText("Note #4."), isDisplayed())));
         onNoteInBook(4, R.id.item_head_closed_text).check(matches(not(isDisplayed())));
         onNoteInBook(4).check(matches(not(isHighlighted())));
 
-        onNoteInBook(5, R.id.item_head_title).check(matches(allOf(withText("DONE  Note #5."), isDisplayed())));
+        onNoteInBook(5, R.id.item_head_title_view).check(matches(allOf(withText("DONE  Note #5."), isDisplayed())));
         onNoteInBook(5, R.id.item_head_closed_text).check(matches(isDisplayed()));
         onNoteInBook(5).check(matches(not(isHighlighted())));
     }
@@ -199,14 +197,13 @@ public class MiscTest extends OrgzlyTest {
         onNoteInBook(1).perform(longClick());
         onNoteInBook(2).perform(click());
         onNoteInBook(3).perform(click());
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.schedule)).perform(click());
+        onView(withId(R.id.schedule)).perform(click());
         onView(withId(R.id.date_picker_button)).perform(click());
         onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(2014, 4, 1));
-        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
-        onView(withId(R.id.time_picker_button)).perform(scrollTo(), click());
+        onView(withText(android.R.string.ok)).perform(click());
+        onView(withId(R.id.time_picker_button)).perform(scroll(), click());
         onView(withClassName(equalTo(TimePicker.class.getName()))).perform(setTime(9, 15));
-        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
         onView(withText(R.string.set)).perform(click());
 
         onNoteInBook(1, R.id.item_head_scheduled_text).check(matches(allOf(isDisplayed(), withText(userDateTime("<2014-04-01 Tue 09:15>")))));
@@ -223,10 +220,10 @@ public class MiscTest extends OrgzlyTest {
         onBook(0).perform(click());
         onView(withId(R.id.fab)).perform(click());
 
-        onView(withId(R.id.title))
+        onView(withId(R.id.title_edit))
                 .perform(replaceTextCloseKeyboard("    Title with empty spaces all around   "));
         onView(withId(R.id.done)).perform(click()); // Note done
-        onNoteInBook(4, R.id.item_head_title).check(matches(withText("Title with empty spaces all around")));
+        onNoteInBook(4, R.id.item_head_title_view).check(matches(withText("Title with empty spaces all around")));
     }
 
     @Test
@@ -262,7 +259,7 @@ public class MiscTest extends OrgzlyTest {
 
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(allOf(withText("book-one"), isDescendantOfA(withId(R.id.drawer_navigation_view)))).perform(click());
-        onView(allOf(withText("book-one"), isDescendantOfA(withId(R.id.toolbar)))).check(matches(isDisplayed()));
+        onView(allOf(withText("book-one"), isDescendantOfA(withId(R.id.top_toolbar)))).check(matches(isDisplayed()));
     }
 
     @Test
@@ -283,7 +280,7 @@ public class MiscTest extends OrgzlyTest {
 
         onView(withId(R.id.scheduled_button)).perform(click());
         onView(withId(R.id.time_picker_button)).check(matches(withText(containsString(s))));
-        onView(withId(R.id.time_used_checkbox)).perform(scrollTo(), click());
+        onView(withId(R.id.time_used_checkbox)).perform(scroll(), click());
         onView(withId(R.id.time_picker_button)).check(matches(withText(containsString(s))));
         onView(withId(R.id.time_used_checkbox)).perform(click());
         onView(withId(R.id.time_picker_button)).check(matches(withText(containsString(s))));
@@ -320,34 +317,30 @@ public class MiscTest extends OrgzlyTest {
         onNoteInBook(1).perform(longClick());
 
         /* TO DO -> DONE */
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.state)).perform(click());
+        onView(withId(R.id.state)).perform(click());
         onView(withText("DONE")).perform(click());
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText(startsWith("TODO"))));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText(startsWith("TODO"))));
         onNoteInBook(1, R.id.item_head_closed_text).check(matches(not(isDisplayed())));
         onNoteInBook(1, R.id.item_head_scheduled_text).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
 
         /* DONE -> NOTE */
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.state)).perform(click());
+        onView(withId(R.id.state)).perform(click());
         onView(withText(R.string.clear)).perform(click());
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText(startsWith("Note"))));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText(startsWith("Note"))));
         onNoteInBook(1, R.id.item_head_closed_text).check(matches(not(isDisplayed())));
         onNoteInBook(1, R.id.item_head_scheduled_text).check(matches(withText(userDateTime("<2015-01-24 Sat 04:05 +6d>"))));
 
         /* NOTE -> DONE */
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.state)).perform(click());
+        onView(withId(R.id.state)).perform(click());
         onView(withText("DONE")).perform(click());
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText(startsWith("Note"))));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText(startsWith("Note"))));
         onNoteInBook(1, R.id.item_head_closed_text).check(matches(not(isDisplayed())));
         onNoteInBook(1, R.id.item_head_scheduled_text).check(matches(withText(userDateTime("<2015-01-30 Fri 04:05 +6d>"))));
 
         /* NOTE -> OLD */
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.state)).perform(click());
+        onView(withId(R.id.state)).perform(click());
         onView(withText("OLD")).perform(click());
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText(startsWith("Note"))));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText(startsWith("Note"))));
         onNoteInBook(1, R.id.item_head_closed_text).check(matches(not(isDisplayed())));
         onNoteInBook(1, R.id.item_head_scheduled_text).check(matches(withText(userDateTime("<2015-02-05 Thu 04:05 +6d>"))));
     }
@@ -401,24 +394,23 @@ public class MiscTest extends OrgzlyTest {
 
         onView(allOf(withText("booky"), isDisplayed())).perform(click());
 
-        onNoteInBook(1, R.id.item_head_title).check(matches(allOf(withText("TODO  Note 1"), isDisplayed())));
-        onNoteInBook(2, R.id.item_head_title).check(matches(allOf(withText("Note 2"), isDisplayed())));
-        onNoteInBook(3, R.id.item_head_title).check(matches(allOf(withText("Note 3"), isDisplayed())));
-        onNoteInBook(4, R.id.item_head_title).check(matches(allOf(withText("Note 4"), isDisplayed())));
-        onNoteInBook(5, R.id.item_head_title).check(matches(allOf(withText("TODO  Note 5"), isDisplayed())));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(allOf(withText("TODO  Note 1"), isDisplayed())));
+        onNoteInBook(2, R.id.item_head_title_view).check(matches(allOf(withText("Note 2"), isDisplayed())));
+        onNoteInBook(3, R.id.item_head_title_view).check(matches(allOf(withText("Note 3"), isDisplayed())));
+        onNoteInBook(4, R.id.item_head_title_view).check(matches(allOf(withText("Note 4"), isDisplayed())));
+        onNoteInBook(5, R.id.item_head_title_view).check(matches(allOf(withText("TODO  Note 5"), isDisplayed())));
 
         onNoteInBook(1).perform(longClick());
         onNoteInBook(2).perform(click());
         onNoteInBook(3).perform(click());
-        onActionItemClick(R.id.edit, R.string.edit);
-        onView(withText(R.string.state)).perform(click());
+        onView(withId(R.id.state)).perform(click());
         onView(withText("TODO")).perform(click());
 
-        onNoteInBook(1, R.id.item_head_title).check(matches(allOf(withText("TODO  Note 1"), isDisplayed())));
-        onNoteInBook(2, R.id.item_head_title).check(matches(allOf(withText("TODO  Note 2"), isDisplayed())));
-        onNoteInBook(3, R.id.item_head_title).check(matches(allOf(withText("TODO  Note 3"), isDisplayed())));
-        onNoteInBook(4, R.id.item_head_title).check(matches(allOf(withText("Note 4"), isDisplayed())));
-        onNoteInBook(5, R.id.item_head_title).check(matches(allOf(withText("TODO  Note 5"), isDisplayed())));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(allOf(withText("TODO  Note 1"), isDisplayed())));
+        onNoteInBook(2, R.id.item_head_title_view).check(matches(allOf(withText("TODO  Note 2"), isDisplayed())));
+        onNoteInBook(3, R.id.item_head_title_view).check(matches(allOf(withText("TODO  Note 3"), isDisplayed())));
+        onNoteInBook(4, R.id.item_head_title_view).check(matches(allOf(withText("Note 4"), isDisplayed())));
+        onNoteInBook(5, R.id.item_head_title_view).check(matches(allOf(withText("TODO  Note 5"), isDisplayed())));
     }
 
     /**
@@ -446,7 +438,6 @@ public class MiscTest extends OrgzlyTest {
         // Note
         onView(withText("Note")).perform(click());
         fragmentTest(activity, false, withId(R.id.scroll_view));
-        pressBack();
         pressBack();
 
         // Preface
@@ -548,7 +539,7 @@ public class MiscTest extends OrgzlyTest {
         ActivityScenario.launch(MainActivity.class);
 
         onView(allOf(withText("Notebook Title"), isDisplayed())).perform(click());
-        onNoteInBook(0, R.id.fragment_book_header_text)
+        onNoteInBook(0, R.id.item_preface_text_view)
                 .check(matches(withText(containsString("#+TITLE: Notebook Title"))));
     }
 
@@ -562,7 +553,8 @@ public class MiscTest extends OrgzlyTest {
         /* Set #+TITLE */
         onView(allOf(withText("book-name"), isDisplayed())).perform(click());
         onActionItemClick(R.id.books_options_menu_book_preface, R.string.edit_book_preface);
-        onView(withId(R.id.fragment_book_preface_content))
+        onView(withId(R.id.fragment_book_preface_content)).perform(click());
+        onView(withId(R.id.fragment_book_preface_content_edit))
                 .perform(replaceTextCloseKeyboard("#+TITLE: Notebook Title"));
         onView(withId(R.id.done)).perform(click()); // Preface done
         pressBack();
@@ -580,9 +572,10 @@ public class MiscTest extends OrgzlyTest {
 
         onBook(0).perform(click());
         onPreface().perform(click());
-        onView(withId(R.id.fragment_book_preface_content)).perform(replaceTextCloseKeyboard("#+TTL: Notebook Title"));
+        onView(withId(R.id.fragment_book_preface_content)).perform(click());
+        onView(withId(R.id.fragment_book_preface_content_edit)).perform(replaceTextCloseKeyboard("#+TTL: Notebook Title"));
         onView(withId(R.id.done)).perform(click()); // Preface done
-        onNoteInBook(0, R.id.fragment_book_header_text)
+        onNoteInBook(0, R.id.item_preface_text_view)
                 .check(matches(withText(containsString("#+TTL: Notebook Title"))));
         pressBack();
 
@@ -610,16 +603,16 @@ public class MiscTest extends OrgzlyTest {
         ActivityScenario.launch(MainActivity.class);
 
         onBook(0).perform(click());
-        onNoteInBook(8, R.id.item_head_title)
+        onNoteInBook(8, R.id.item_head_title_view)
                 .check(matches(withText(startsWith("ANTIVIVISECTIONISTS "))))
                 .perform(click());
-        onView(withId(R.id.title)).check(matches(withText("ANTIVIVISECTIONISTS Note #8.")));
+        onView(withId(R.id.title_view)).check(matches(withText("ANTIVIVISECTIONISTS Note #8.")));
         settingsSetTodoKeywords("TODO ANTIVIVISECTIONISTS");
         /* Must go to books and back, or the click below will not work for some reason. */
         pressBack(); // Leave book
         onView(allOf(withText("book-name"), isDisplayed())).perform(click());
         onNoteInBook(8).perform(click());
-        onView(withId(R.id.title)).check(matches(withText("Note #8.")));
+        onView(withId(R.id.title_view)).check(matches(withText("Note #8.")));
     }
 
     @Test
@@ -686,7 +679,45 @@ public class MiscTest extends OrgzlyTest {
         ActivityScenario.launch(MainActivity.class);
 
         onBook(0).perform(click());
-        onNoteInBook(1, R.id.item_head_title).perform(clickClickableSpan("[ ]"));
+        onNoteInBook(1, R.id.item_head_title_view).perform(clickClickableSpan("[ ]"));
+    }
+
+    @Test
+    public void testCheckboxWithFoldedDrawerBeforeIt() {
+        testUtils.setupBook("book-name", ":DRAWER:\ndrawer\n:END:\n\n- [ ] Item");
+        ActivityScenario.launch(MainActivity.class);
+
+        onBook(0).perform(click());
+
+        onView(withId(R.id.item_preface_text_view)).perform(clickClickableSpan("[ ]"));
+
+        onView(allOf(withId(R.id.item_preface_text_view), withText(containsString("- [X] Item"))))
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testClickingCheckboxInNoteDetails() {
+        testUtils.setupBook("book-name", "* Title\n\n- [ ] Item");
+        ActivityScenario.launch(MainActivity.class);
+
+        onBook(0).perform(click());
+        onNoteInBook(1).perform(click());
+
+        onView(withId(R.id.content_view)).perform(clickClickableSpan("[ ]"));
+
+        onView(allOf(withId(R.id.content_view), withText(containsString("- [X] Item"))))
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testDrawerWithFoldedDrawerBeforeIt() {
+        testUtils.setupBook("book-name", ":DRAWER1:\ndrawer1\n:END:\n\n:DRAWER2:\ndrawer2\n:END:");
+        ActivityScenario.launch(MainActivity.class);
+
+        onBook(0).perform(click());
+
+        onView(withId(R.id.item_preface_text_view)).perform(clickClickableSpan("DRAWER2"));
+        onView(withId(R.id.item_preface_text_view)).perform(clickClickableSpan("DRAWER1"));
     }
 
     @Test

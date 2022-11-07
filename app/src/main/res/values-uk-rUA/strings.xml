@@ -163,8 +163,9 @@
     <string name="searches">Пошукові запити</string>
     <string name="search">Пошук</string>
     <string name="new_search">Новий пошук</string>
-    <string name="no_repos">Нема налаштованих репозиторіїв</string>
     <string name="multiple_repos">Існує декілька репозиторіїв</string>
+    <string name="no_repos">Нема налаштованих репозиторіїв</string>
+    <string name="no_books">Записники не знайдені</string>
     <string name="book_encoding">Кодування записника</string>
     <string name="collecting_notebooks_in_progress">Збирання записників…</string>
     <string name="syncing_in_progress">Синхронізування…</string>
@@ -287,6 +288,10 @@
     <string name="notebooks_sort_order">Порядок сортування записників</string>
     <string name="font_size">Розмір шрифту</string>
     <string name="color_scheme">Кольорова схема</string>
+    <string name="other">Інше</string>
+    <string name="theme">Тема</string>
+    <string name="light_scheme">Світла тема</string>
+    <string name="dark_scheme">Темна тема</string>
     <string name="monospaced_font">Моношириний шрифт</string>
     <string name="monospaced_font_summary">Використовувати моноширний шрифт для вмісту нотаток і передмови до записників</string>
     <string name="reversed_note_click_action">Зміна дії при клацанні по нотатці</string>
@@ -354,6 +359,7 @@
     <string name="displayed_book_details_last_action">Остання дія</string>
     <string name="displayed_book_details_notes_count">Кількість нотаток</string>
     <string name="color_scheme_system">Система</string>
+    <string name="color_scheme_dynamic">Динамічний колір</string>
     <string name="color_scheme_light">Світла</string>
     <string name="color_scheme_dark">Темна</string>
     <string name="color_scheme_black">Чорна</string>
@@ -590,4 +596,12 @@
     <string name="developer_options">Параметри розробника</string>
     <string name="git_repository_type">Тип git-репозиторію</string>
     <string name="in_development">У розробці</string>
+    <string name="select_notebook">Оберіть записник</string>
+    <string name="highlight_rich_text_being_edited">Підсвічувати текст, який редагується</string>
+    <string name="use_alarm_clock_for_tod_reminders">Використовувати будильник</string>
+    <string name="use_alarm_clock_for_tod_reminders_summary">Для нагадувань із встановленим часом дня</string>
+    <string name="log_major_events">Журналювати основні події</string>
+    <string name="logs">Журнали</string>
+    <string name="share">Поділитися</string>
+    <string name="refresh_data">Оновити</string>
 </resources>

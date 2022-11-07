@@ -154,8 +154,9 @@
     <string name="searches">찾기</string>
     <string name="search">찾기</string>
     <string name="new_search">새로 검색</string>
-    <string name="no_repos">구성된 저장소가 없습니다.</string>
     <string name="multiple_repos">여러 개의 저장소가 존재합니다.</string>
+    <string name="no_repos">구성된 저장소가 없습니다.</string>
+    <string name="no_books">No notebooks found</string>
     <string name="book_encoding">인코딩</string>
     <string name="collecting_notebooks_in_progress">메모장 수집 중 …</string>
     <string name="syncing_in_progress">동기화 중...</string>
@@ -278,6 +279,10 @@
     <string name="notebooks_sort_order">메모장 정렬 순서</string>
     <string name="font_size">글자 크기</string>
     <string name="color_scheme">색상 구성</string>
+    <string name="other">Other</string>
+    <string name="theme">Theme</string>
+    <string name="light_scheme">Light scheme</string>
+    <string name="dark_scheme">Dark scheme</string>
     <string name="monospaced_font">고정 폭 글꼴</string>
     <string name="monospaced_font_summary">메모에 고정 폭 글꼴 사용</string>
     <string name="reversed_note_click_action">클릭과 길게 클릭의 동작 바꾸기</string>
@@ -345,6 +350,7 @@
     <string name="displayed_book_details_last_action">최근 작업</string>
     <string name="displayed_book_details_notes_count">메모 개수</string>
     <string name="color_scheme_system">System</string>
+    <string name="color_scheme_dynamic">Dynamic color</string>
     <string name="color_scheme_light">밝은</string>
     <string name="color_scheme_dark">어두운</string>
     <string name="color_scheme_black">검은</string>
@@ -558,4 +564,12 @@
     <string name="developer_options">Developer options</string>
     <string name="git_repository_type">Git repository type</string>
     <string name="in_development">In development</string>
+    <string name="select_notebook">Select notebook</string>
+    <string name="highlight_rich_text_being_edited">Highlight rich text being edited</string>
+    <string name="use_alarm_clock_for_tod_reminders">Use alarm clock</string>
+    <string name="use_alarm_clock_for_tod_reminders_summary">For reminders with the time of day set</string>
+    <string name="log_major_events">Log major events</string>
+    <string name="logs">Logs</string>
+    <string name="share">Share</string>
+    <string name="refresh_data">Refresh</string>
 </resources>

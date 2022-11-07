@@ -1,16 +1,12 @@
 package com.orgzly.android.ui.notes.book
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -23,6 +19,7 @@ import com.orgzly.android.db.NotesClipboard
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.sync.SyncRunner
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.NotePlace
 import com.orgzly.android.ui.Place
@@ -30,17 +27,17 @@ import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.ui.main.setupSearchView
+import com.orgzly.android.ui.notes.ItemGestureDetector
 import com.orgzly.android.ui.notes.NoteItemViewHolder
+import com.orgzly.android.ui.notes.NotePopup
 import com.orgzly.android.ui.notes.NotesFragment
 import com.orgzly.android.ui.notes.book.BookViewModel.Companion.APP_BAR_DEFAULT_MODE
 import com.orgzly.android.ui.notes.book.BookViewModel.Companion.APP_BAR_SELECTION_MODE
 import com.orgzly.android.ui.notes.book.BookViewModel.Companion.APP_BAR_SELECTION_MOVE_MODE
-import com.orgzly.android.ui.notes.quickbar.ItemGestureDetector
-import com.orgzly.android.ui.notes.quickbar.QuickBarListener
-import com.orgzly.android.ui.notes.quickbar.QuickBars
 import com.orgzly.android.ui.refile.RefileFragment
 import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.ui.util.setDecorFitsSystemWindowsForBottomToolbar
 import com.orgzly.android.ui.util.setup
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.util.LogUtils
@@ -55,8 +52,7 @@ class BookFragment :
         NotesFragment(),
         TimestampDialogFragment.OnDateTimeSetListener,
         DrawerItem,
-        BookAdapter.OnClickListener,
-        QuickBarListener {
+        BookAdapter.OnClickListener {
 
     private lateinit var binding: FragmentBookBinding
 
@@ -132,9 +128,9 @@ class BookFragment :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val quickBars = QuickBars(binding.root.context, true)
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
-        viewAdapter = BookAdapter(binding.root.context, this, quickBars, inBook = true).apply {
+        viewAdapter = BookAdapter(mBookId, binding.root.context, this, inBook = true).apply {
             setHasStableIds(true)
         }
 
@@ -155,11 +151,11 @@ class BookFragment :
             rv.itemAnimator = null
 
             rv.addOnItemTouchListener(ItemGestureDetector(rv.context, object: ItemGestureDetector.Listener {
-                override fun onFling(direction: Int, x: Float, y: Float) {
-                    rv.findChildViewUnder(x, y)?.let { itemView ->
+                override fun onSwipe(direction: Int, e1: MotionEvent, e2: MotionEvent) {
+                    rv.findChildViewUnder(e1.x, e1.y)?.let { itemView ->
                         rv.findContainingViewHolder(itemView)?.let { vh ->
                             (vh as? NoteItemViewHolder)?.let {
-                                quickBars.onFling(it, direction, this@BookFragment)
+                                showPopupWindow(vh.itemId, direction, itemView, e1, e2)
                             }
                         }
                     }
@@ -168,16 +164,6 @@ class BookFragment :
         }
 
         binding.swipeContainer.setup()
-    }
-
-    override fun onQuickBarButtonClick(buttonId: Int, itemId: Long) {
-        handleActionItemClick(buttonId, setOf(itemId))
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         viewModel.flipperDisplayedChild.observe(viewLifecycleOwner, Observer { child ->
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed flipper displayed child: $child")
@@ -191,10 +177,6 @@ class BookFragment :
                     else -> 1
                 }
             }
-        })
-
-        viewModel.title.observe(viewLifecycleOwner, Observer { title ->
-            binding.toolbar.title = title
         })
 
         viewModel.data.observe(viewLifecycleOwner, Observer { data ->
@@ -226,7 +208,7 @@ class BookFragment :
 
         viewModel.refileRequestEvent.observeSingle(viewLifecycleOwner, Observer {
             RefileFragment.getInstance(it.selected, it.count)
-                    .show(requireFragmentManager(), RefileFragment.FRAGMENT_TAG)
+                    .show(childFragmentManager, RefileFragment.FRAGMENT_TAG)
         })
 
         viewModel.notesDeleteRequest.observeSingle(viewLifecycleOwner, Observer { pair ->
@@ -248,68 +230,57 @@ class BookFragment :
         viewModel.appBar.mode.observeSingle(viewLifecycleOwner) { mode ->
             when (mode) {
                 APP_BAR_DEFAULT_MODE -> {
-                    appBarToDefault()
+                    viewAdapter.clearSelection()
+
+                    topToolbarToDefault()
+                    bottomToolbarToDefault()
+
+                    binding.fab.run {
+                        if (currentBook != null) {
+                            setOnClickListener {
+                                listener?.onNoteNewRequest(NotePlace(mBookId))
+                            }
+                            show()
+                        } else {
+                            hide()
+                        }
+                    }
 
                     sharedMainActivityViewModel.unlockDrawer()
 
                     appBarBackPressHandler.isEnabled = false
-
-                    // Hide bar's title
-                    binding.bottomAppBarTitle.visibility = View.GONE
-
-                    binding.toolbar.menu.clear()
-
-                    viewModel.setTitle(BookUtils.getFragmentTitleForBook(currentBook))
                 }
 
                 APP_BAR_SELECTION_MODE -> {
-                    appBarToMainSelection()
+                    topToolbarToMainSelection()
+                    bottomToolbarToMainSelection()
+
+                    binding.fab.hide()
 
                     sharedMainActivityViewModel.lockDrawer()
 
                     appBarBackPressHandler.isEnabled = true
-
-                    // Set bar's title
-                    binding.bottomAppBarTitle.run {
-                        text = viewAdapter.getSelection().count.toString()
-                        visibility = View.VISIBLE
-                    }
-
-                    binding.toolbar.menu.clear()
-                    binding.toolbar.inflateMenu(R.menu.book_cab_top)
-                    hideMenuItemsBasedOnSelection(binding.toolbar.menu)
-                    binding.toolbar.setOnMenuItemClickListener { menuItem ->
-                        handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
-                        true
-                    }
-
-                    viewModel.hideTitle()
                 }
 
                 APP_BAR_SELECTION_MOVE_MODE -> {
-                    appBarToNextSelection()
+                    topToolbarToNextSelection()
+                    bottomToolbarToNextSelection()
+
+                    binding.fab.hide()
 
                     sharedMainActivityViewModel.lockDrawer()
 
                     appBarBackPressHandler.isEnabled = true
-
-                    // Set bar's title
-                    binding.bottomAppBarTitle.run {
-                        text = viewAdapter.getSelection().count.toString()
-                        visibility = View.VISIBLE
-                    }
-
-                    binding.toolbar.menu.clear()
-                    binding.toolbar.inflateMenu(R.menu.book_cab_moving)
-                    hideMenuItemsBasedOnSelection(binding.toolbar.menu)
-                    binding.toolbar.setOnMenuItemClickListener { menuItem ->
-                        handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
-                        true
-                    }
-
-                    viewModel.hideTitle()
                 }
             }
+        }
+    }
+
+    private fun showPopupWindow(noteId: Long, direction: Int, itemView: View, e1: MotionEvent, e2: MotionEvent) {
+        val anchor = itemView.findViewById<View>(R.id.item_head_title)
+
+        NotePopup.showWindow(anchor, NotePopup.Location.BOOK, direction, e1, e2) { buttonId ->
+            handleActionItemClick(setOf(noteId), buttonId)
         }
     }
 
@@ -322,7 +293,7 @@ class BookFragment :
         } else if (notes == null) {
             viewModel.setFlipperDisplayedChild(BookViewModel.FlipperDisplayedChild.LOADING)
 
-        } else if (viewAdapter.isPrefaceDisplayed() || !notes.isNullOrEmpty()) {
+        } else if (notes.isNotEmpty() || viewAdapter.isPrefaceDisplayed()) {
             viewModel.setFlipperDisplayedChild(BookViewModel.FlipperDisplayedChild.LOADED)
 
         } else {
@@ -363,12 +334,6 @@ class BookFragment :
             }
         } ?: throw IllegalArgumentException("No arguments passed")
     }
-
-//    override fun onPrepareOptionsMenu(menu: Menu) {
-//        super.onPrepareOptionsMenu(menu)
-//
-//
-//    }
 
     /*
      * Actions
@@ -505,19 +470,16 @@ class BookFragment :
         }
     }
 
-    private fun appBarToDefault() {
+    private fun topToolbarToDefault() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        viewAdapter.clearSelection()
-
-        binding.bottomAppBar.run {
-            replaceMenu(R.menu.book_actions)
+        binding.topToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.book_actions)
 
             ActivityUtils.keepScreenOnUpdateMenuItem(activity, menu)
 
-            setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
-                typedArray.getResourceId(R.styleable.Icons_ic_menu_24dp, 0)
-            })
+            setNavigationIcon(R.drawable.ic_menu)
 
             setNavigationOnClickListener {
                 sharedMainActivityViewModel.openDrawer()
@@ -546,97 +508,119 @@ class BookFragment :
                 }
             }
 
-            setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.books_options_menu_item_cycle_visibility -> {
-                        viewModel.cycleVisibility()
-                    }
-
-                    R.id.book_actions_paste -> {
-                        pasteNotes(Place.UNDER, 0)
-                    }
-
-                    R.id.books_options_menu_book_preface -> {
-                        onPrefaceClick()
-                    }
-
-                    R.id.keep_screen_on -> {
-                        val item = menu.findItem(R.id.keep_screen_on)
-                        dialog = ActivityUtils.keepScreenOnToggle(activity, item)
-                    }
-
-                    R.id.activity_action_settings -> {
-                        startActivity(Intent(context, SettingsActivity::class.java))
-                    }
-                }
-
+            binding.topToolbar.setOnMenuItemClickListener { menuItem ->
+                handleActionItemClick(menuItem.itemId, menuItem)
                 true
             }
 
             requireActivity().setupSearchView(menu)
-        }
 
-        binding.fab.run {
-            if (currentBook != null) {
-                setOnClickListener {
-                    listener?.onNoteNewRequest(NotePlace(mBookId))
-                }
-                show()
-            } else {
-                hide()
+            setOnClickListener {
+                scrollToPosition(0)
             }
+
+            title = BookUtils.getFragmentTitleForBook(currentBook)
         }
     }
 
-    private fun appBarToMainSelection() {
+    private fun bottomToolbarToDefault() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        binding.bottomAppBar.run {
-            replaceMenu(R.menu.book_cab)
+        binding.bottomToolbar.visibility = View.GONE
 
+        activity?.setDecorFitsSystemWindowsForBottomToolbar(binding.bottomToolbar.visibility)
+    }
+
+    private fun topToolbarToMainSelection() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+
+        binding.topToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.book_cab_top)
             hideMenuItemsBasedOnSelection(menu)
 
-            setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
-                typedArray.getResourceId(R.styleable.Icons_ic_arrow_back_24dp, 0)
-            })
+            setNavigationIcon(R.drawable.ic_arrow_back)
 
             setNavigationOnClickListener {
-                viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
+                viewModel.appBar.handleOnBackPressed()
             }
 
             setOnMenuItemClickListener { menuItem ->
-                handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
-
+                handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId, menuItem)
                 true
             }
-        }
 
-        binding.fab.hide()
+            setOnClickListener(null)
+
+            title = viewAdapter.getSelection().count.toString()
+        }
     }
 
-    private fun appBarToNextSelection() {
+    private fun bottomToolbarToMainSelection() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        binding.bottomAppBar.run {
-            replaceMenu(R.menu.book_cab)
-
+        binding.bottomToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.book_cab_bottom)
             hideMenuItemsBasedOnSelection(menu)
 
-            setNavigationIcon(context.styledAttributes(R.styleable.Icons) { typedArray ->
-                typedArray.getResourceId(R.styleable.Icons_ic_arrow_back_24dp, 0)
-            })
+            setOnMenuItemClickListener { menuItem ->
+                handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId, menuItem)
+                true
+            }
+
+            visibility = View.VISIBLE
+
+            activity?.setDecorFitsSystemWindowsForBottomToolbar(visibility)
+        }
+    }
+
+    private fun topToolbarToNextSelection() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+
+        binding.topToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.book_cab_moving)
+            hideMenuItemsBasedOnSelection(menu)
+
+            setNavigationIcon(R.drawable.ic_arrow_back)
 
             setNavigationOnClickListener {
-                viewModel.appBar.toMode(APP_BAR_SELECTION_MODE)
+                viewModel.appBar.handleOnBackPressed()
             }
 
             setOnMenuItemClickListener { menuItem ->
-                handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
+                handleActionItemClick(
+                    viewAdapter.getSelection().getIds(),
+                    menuItem.itemId,
+                    menuItem
+                )
+                true
+            }
+
+            setOnClickListener(null)
+
+            title = viewAdapter.getSelection().count.toString()
+        }
+    }
+
+    private fun bottomToolbarToNextSelection() {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
+
+        binding.bottomToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.book_cab_bottom)
+            hideMenuItemsBasedOnSelection(menu)
+
+            setOnMenuItemClickListener { menuItem ->
+                handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId, menuItem)
                 false
             }
-        }
 
-        binding.fab.hide()
+            visibility = View.VISIBLE
+
+            activity?.setDecorFitsSystemWindowsForBottomToolbar(visibility)
+        }
     }
 
     private fun hideMenuItemsBasedOnSelection(menu: Menu) {
@@ -646,8 +630,8 @@ class BookFragment :
         }
     }
 
-    private fun handleActionItemClick(actionId: Int, ids: Set<Long>) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, actionId, ids)
+    private fun handleActionItemClick(ids: Set<Long>, itemId: Int, item: MenuItem? = null) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, ids, itemId, item)
 
         if (ids.isEmpty()) {
             Log.e(TAG, "Cannot handle action when there are no items selected")
@@ -655,24 +639,20 @@ class BookFragment :
             return
         }
 
-        when (actionId) {
-            R.id.quick_bar_open -> {
-                openNote(ids.first())
-            }
-
-            R.id.quick_bar_new_above,
+        when (itemId) {
+            R.id.note_popup_new_above,
             R.id.new_note_above -> {
                 newNoteRelativeToSelection(Place.ABOVE, ids.first())
                 viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
-            R.id.quick_bar_new_under,
+            R.id.note_popup_new_under,
             R.id.new_note_under -> {
                 newNoteRelativeToSelection(Place.UNDER, ids.first())
                 viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
-            R.id.quick_bar_new_below,
+            R.id.note_popup_new_below,
             R.id.new_note_below -> {
                 newNoteRelativeToSelection(Place.BELOW, ids.first())
                 viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
@@ -684,9 +664,9 @@ class BookFragment :
 
             in scheduledTimeButtonIds(),
             in deadlineTimeButtonIds() ->
-                displayTimestampDialog(actionId, ids)
+                displayTimestampDialog(itemId, ids)
 
-            R.id.quick_bar_delete,
+            R.id.note_popup_delete,
             R.id.delete_note -> {
                 delete(ids)
 
@@ -710,7 +690,7 @@ class BookFragment :
                 viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
-            R.id.quick_bar_refile,
+            R.id.note_popup_refile,
             R.id.refile ->
                 viewModel.refile(ids)
 
@@ -736,20 +716,67 @@ class BookFragment :
             R.id.notes_action_move_right ->
                 listener?.onNotesDemoteRequest(ids)
 
-            R.id.quick_bar_state,
+            R.id.note_popup_set_state,
             R.id.state ->
                 listener?.let {
                     openNoteStateDialog(it, ids, null)
                 }
 
-            R.id.quick_bar_done,
+            R.id.note_popup_toggle_state,
             R.id.toggle_state -> {
                 listener?.onStateToggleRequest(ids)
             }
 
-            R.id.quick_bar_focus,
+            R.id.note_popup_clock_in,
+            R.id.clock_in -> {
+                listener?.onClockIn(ids)
+            }
+
+            R.id.note_popup_clock_out,
+            R.id.clock_out -> {
+                listener?.onClockOut(ids)
+            }
+
+            R.id.note_popup_clock_cancel,
+            R.id.clock_cancel -> {
+                listener?.onClockCancel(ids)
+            }
+
+            R.id.note_popup_focus,
             R.id.focus ->
                 listener?.onNoteFocusInBookRequest(ids.first())
+        }
+    }
+
+    private fun handleActionItemClick(itemId: Int, item: MenuItem? = null) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, itemId, item)
+
+        when (itemId) {
+            R.id.books_options_menu_item_cycle_visibility -> {
+                viewModel.cycleVisibility()
+            }
+
+            R.id.book_actions_paste -> {
+                pasteNotes(Place.UNDER, 0)
+            }
+
+            R.id.books_options_menu_book_preface -> {
+                onPrefaceClick()
+            }
+
+            R.id.keep_screen_on -> {
+                if (item != null) {
+                    dialog = ActivityUtils.keepScreenOnToggle(activity, item)
+                }
+            }
+
+            R.id.sync -> {
+                SyncRunner.startSync()
+            }
+
+            R.id.activity_action_settings -> {
+                startActivity(Intent(context, SettingsActivity::class.java))
+            }
         }
     }
 

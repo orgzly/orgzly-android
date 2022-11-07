@@ -20,7 +20,7 @@
     <string name="remove_notebook_link">Supprimer le lien</string>
     <string name="browse">Parcourir</string>
     <string name="dropbox">Dropbox</string>
-    <string name="view">Vue</string>
+    <string name="view">Voir</string>
     <string name="edit">Modifier</string>
     <string name="edit_note">Modifier la note</string>
     <string name="delete">Supprimer</string>
@@ -30,7 +30,7 @@
     <string name="done">Fini</string>
     <string name="mark_as_done">Marquer comme fait</string>
     <string name="mark_as_done_with_repeater">Replanifier %s</string>
-    <string name="reminder_snooze">Reporter l\'alarme</string>
+    <string name="reminder_snooze">Reporter</string>
     <string name="close">Fermer</string>
     <string name="import_">Importer</string>
     <!-- Reserved keyword -->
@@ -138,7 +138,7 @@
     <string name="repo_dropbox_button_linked">Dissocier de Dropbox</string>
     <string name="fragment_settings_title">Paramètres</string>
     <string name="notes_update_needed_dialog_title">La préférence influence les notes</string>
-    <string name="notes_update_needed_dialog_message">Actualiser les notes pour reflechir les changements ?</string>
+    <string name="notes_update_needed_dialog_message">Actualiser les notes pour prendre en compte les changements ?</string>
     <string name="updating_notes">Mise à jour des notes...</string>
     <string name="failure">Oups</string>
     <string name="no_notes_found_after_search">Votre recherche ne correspond à aucune note</string>
@@ -157,8 +157,9 @@
     <string name="searches">Recherches</string>
     <string name="search">Chercher</string>
     <string name="new_search">Nouvelle recherche</string>
-    <string name="no_repos">Aucun dépôt configuré</string>
     <string name="multiple_repos">Il existe plusieurs dépôts</string>
+    <string name="no_repos">Aucun dépôt configuré</string>
+    <string name="no_books">Aucun bloc-notes trouvé</string>
     <string name="book_encoding">Encodage du bloc-notes</string>
     <string name="collecting_notebooks_in_progress">Récupération des blocs-notes…</string>
     <string name="syncing_in_progress">Synchronisation en cours…</string>
@@ -168,7 +169,7 @@
     <string name="canceled">Annulé</string>
     <string name="canceling">Annulation en cours…</string>
     <string name="directory">Dossier</string>
-    <string name="fragment_repo_dropbox_directory_desc">Dossier à l’intérieur de Dropbox (par exemple « / Documents/Orgzly »)</string>
+    <string name="fragment_repo_dropbox_directory_desc">Dossier à l’intérieur de Dropbox (par exemple « /Documents/Orgzly »)</string>
     <string name="directory_uri">URI du répertoire</string>
     <string name="git_clone_progress">Cloner le dépôt</string>
     <string name="git_verifying_settings">S\'assurer que les paramètres du dépôt fonctionnent.</string>
@@ -195,7 +196,7 @@
     <string name="git_clone_error_invalid_target_dir">Le répertoire cible n\'existe pas</string>
     <string name="git_clone_error_target_not_empty">Le répertoire cible n\'est pas vide</string>
     <string name="git_clone_error_uri_not_supported">L\'adresse distante n\'est pas supportée</string>
-    <string name="webdav_url_hint">URL (ex: webdavs://example.com/mon-org-files/)</string>
+    <string name="webdav_url_hint">URL (ex: webdavs://exemple.com/mes-fichiers-org/)</string>
     <string name="webdav_auth_username_hint">Nom d\'utilisateur</string>
     <string name="webdav_auth_password_hint">Mot de passe</string>
     <string name="webdav_test_error_auth">Le nom d´utilisateur ou le mot de passe est incorrect</string>
@@ -215,8 +216,8 @@
     <string name="next_state">État suivant</string>
     <string name="new_above">Avant</string>
     <string name="new_under">En dessous</string>
-    <string name="new_below">Créer sous-note</string>
-    <string name="confirm_unlinking_from_dropbox_title">Dissocier de Dropbox?</string>
+    <string name="new_below">Après</string>
+    <string name="confirm_unlinking_from_dropbox_title">Dissocier de Dropbox ?</string>
     <string name="confirm_unlinking_from_dropbox_message">Vous ne serez plus en mesure de synchroniser avec Dropbox tant que vous ne l\'aurez pas associé à nouveau.</string>
     <string name="note_book_not_set">Bloc-notes non configuré</string>
     <string name="title_can_not_be_empty">Le champ \"Titre\" ne peut pas être vide</string>
@@ -255,14 +256,14 @@
     <string name="done_states">Mots clés pour les tâches terminées (done)</string>
     <string name="created_at">Créé le</string>
     <string name="insert_note_creation_time">Insérer l’heure de création de la note</string>
-    <string name="use_created_at_property">Utilise la propriété pour l\'heure du crée-pour</string>
-    <string name="use_created_at_property_summary">Synchronise l\'heure du créé-pour en utilisant une propriété</string>
-    <string name="created_at_property">Propriété du créé-pour</string>
+    <string name="use_created_at_property">Date de création dans une propriété</string>
+    <string name="use_created_at_property_summary">Synchronise la date de création via une propriété</string>
+    <string name="created_at_property">Propriété pour la date de création</string>
     <string name="properties">Propriétés</string>
     <string name="property_name">Nom de la propriété</string>
     <string name="property_value">Valeur de la propriété</string>
     <string name="reminder_for_scheduled">Planifiée : %s</string>
-    <string name="reminder_for_deadline">Échéance %s</string>
+    <string name="reminder_for_deadline">Échéance : %s</string>
     <string name="reminder_for_event">Événement : %s</string>
     <string name="scheduled_new_notes_for_today">Planifier les nouvelles notes pour aujourd\'hui</string>
     <string name="fold_content">Replier le contenu</string>
@@ -281,6 +282,10 @@
     <string name="notebooks_sort_order">Ordre de tri des bloc-notes</string>
     <string name="font_size">Taille de police</string>
     <string name="color_scheme">Jeu de couleurs</string>
+    <string name="other">Autre</string>
+    <string name="theme">Thème</string>
+    <string name="light_scheme">Thème clair</string>
+    <string name="dark_scheme">Thème sombre</string>
     <string name="monospaced_font">Police à chasse fixe</string>
     <string name="monospaced_font_summary">Utiliser une police à chasse fixe pour le contenu des notes et la préface du bloc-notes</string>
     <string name="reversed_note_click_action">Échanger les actions des clics court et long sur les notes</string>
@@ -311,9 +316,9 @@
     <string name="separate_header_and_content_with_new_line_summary">Séparer l\'entête et le contenu avec une ligne vide</string>
     <string name="tags_indent">Indentation des tags</string>
     <string name="tags_indent_summary">Option contrôlant l\'indentation des tags</string>
-    <string name="tags_column">Colonne de tags (org-tags-column)</string>
+    <string name="tags_column">Colonne des tags (org-tags-column)</string>
     <string name="org_indent_mode">Ajuster en fonction du mode d\'indentation</string>
-    <string name="org_indent_mode_summary">Prendre compte de la valeur org-indent-mode</string>
+    <string name="org_indent_mode_summary">Prendre en compte la valeur de org-indent-mode</string>
     <string name="org_indent_indentation_per_level">Indentation par niveau</string>
     <string name="add_property">Ajouter une propriété</string>
     <string name="priority_a_highest">A (Priorité la plus haute)</string>
@@ -336,7 +341,7 @@
     <string name="delay_description_affects_all">Affecte toutes les occurrences</string>
     <string name="delay_description_affects_first">Affecte seulement la première occurrence planifiée</string>
     <string name="warning_period_dialog_title">Période d\'avertissement</string>
-    <string name="warning_period_description">Avertir de la date limite approchée ou manquée</string>
+    <string name="warning_period_description">Avertir lorsqu’une échéance approche ou est passée</string>
     <string name="displayed_book_details_local_mtime">Date de modification locale</string>
     <string name="displayed_book_details_link_url">URL du lien</string>
     <string name="displayed_book_details_sync_url">URL de synchronisation</string>
@@ -348,6 +353,7 @@
     <string name="displayed_book_details_last_action">Dernière action</string>
     <string name="displayed_book_details_notes_count">Nombre de notes</string>
     <string name="color_scheme_system">Système</string>
+    <string name="color_scheme_dynamic">Couleurs dynamiques</string>
     <string name="color_scheme_light">Clair</string>
     <string name="color_scheme_dark">Sombre</string>
     <string name="color_scheme_black">Noir</string>
@@ -384,9 +390,9 @@
     <string name="display_notebook_name">Afficher le nom du bloc-note</string>
     <string name="display_inherited_tags_in_search_results">Tags hérités dans les résultats de recherche</string>
     <string name="display_inherited_tags_in_search_results_summary">Afficher les tags hérités dans les résultats de recherche</string>
-    <string name="ongoing_notification">Continues</string>
+    <string name="ongoing_notification">Notification permanente</string>
     <string name="ongoing_notification_summary">Créer rapidement une nouvelle note ou synchroniser les bloc-notes depuis le volet de notification</string>
-    <string name="ongoing_notification_priority">Priorité actuelle</string>
+    <string name="ongoing_notification_priority">Priorité de la notification permanente</string>
     <string name="show_sync_notifications_title">Échec de synchronisation</string>
     <string name="show_sync_notifications_summary">Affiche une notification si la synchronisation échoue</string>
     <string name="prefs_title_reminders">Rappels</string>
@@ -448,7 +454,7 @@
     <string name="not_modified">Aucune modification</string>
     <string name="notes_count_zero">Ne contient aucune note</string>
     <plurals name="notes_count_nonzero">
-        <item quantity="one">Contient une note</item>
+        <item quantity="one">Contient <b>%d</b> note</item>
         <item quantity="other">Contient <b>%d</b> notes</item>
     </plurals>
     <plurals name="found_number_of_notebooks">
@@ -520,7 +526,7 @@
     <string name="share_target_service">Partager vers un bloc-note Orgzly</string>
     <string name="under">Sous</string>
     <string name="above">Au-dessus</string>
-    <string name="below">En dessous</string>
+    <string name="below">En-dessous</string>
     <string name="loading">Chargement…</string>
     <string name="go_to">Aller à</string>
     <string name="cannot_refile_to_the_same_subtree">Reclassement impossible dans la même sous-arborescence</string>
@@ -535,7 +541,7 @@
     <string name="notebook_and_scroll_to_note">Carnet (faire défiler vers la note)</string>
     <string name="notebook_and_focus_on_note">Bloc-note (activer la note)</string>
     <plurals name="refile_notes">
-        <item quantity="one"><b>%d</b> notes reclassées</item>
+        <item quantity="one"><b>%d</b> note reclassée</item>
         <item quantity="other"><b>%d</b> notes reclassées</item>
     </plurals>
     <string name="display_checkmarks">Afficher les marques</string>
@@ -563,9 +569,17 @@
     <string name="overdue">En retard</string>
     <string name="help">Aide</string>
     <string name="content">Contenu</string>
-    <string name="prepend">Prepend</string>
+    <string name="prepend">Ajouter au début</string>
     <string name="insert_new_note_at_beginning">Insérer une nouvelle note au début</string>
     <string name="developer_options">Options développeur</string>
     <string name="git_repository_type">Type de dépôt Git</string>
     <string name="in_development">En développement</string>
+    <string name="select_notebook">Choisir le bloc-notes</string>
+    <string name="highlight_rich_text_being_edited">Mettre en valeur le texte enrichi en cours d\'édition</string>
+    <string name="use_alarm_clock_for_tod_reminders">Utiliser un réveil</string>
+    <string name="use_alarm_clock_for_tod_reminders_summary">Pour les rappels ayant une heure de définie</string>
+    <string name="log_major_events">Journaliser les événements importants</string>
+    <string name="logs">Journaux</string>
+    <string name="share">Partager</string>
+    <string name="refresh_data">Rafraîchir</string>
 </resources>

@@ -20,6 +20,9 @@ abstract class BookDao : BaseDao<Book> {
     @Query("SELECT * FROM books WHERE id = :id")
     abstract fun getLiveData(id: Long): LiveData<Book> // null not allowed, use List
 
+    @Query("SELECT * FROM books WHERE last_action_type = :type")
+    abstract fun getWithActionType(type: BookAction.Type): List<Book>
+
     @Insert
     abstract fun insertBooks(vararg books: Book): LongArray
 
@@ -35,6 +38,9 @@ abstract class BookDao : BaseDao<Book> {
     @Query("UPDATE books SET last_action_type = :type, last_action_message = :message, last_action_timestamp = :timestamp, sync_status = :status WHERE id = :id")
     abstract fun updateLastActionAndSyncStatus(id: Long, type: BookAction.Type, message: String, timestamp: Long, status: String?): Int
 
+    @Query("UPDATE books SET last_action_type = :type, last_action_message = :message, last_action_timestamp = :timestamp, sync_status = :status WHERE last_action_type = :whereType")
+    abstract fun updateStatusToCanceled(whereType: BookAction.Type, type: BookAction.Type, message: String, timestamp: Long, status: String?): Int
+
     @Query("UPDATE books SET name = :name WHERE id = :id")
     abstract fun updateName(id: Long, name: String): Int
 
@@ -46,6 +52,8 @@ abstract class BookDao : BaseDao<Book> {
 
     @Query("UPDATE books SET is_modified = 0 WHERE id IN (:ids)")
     abstract fun setIsNotModified(ids: Set<Long>): Int
+
+
 
     fun getOrInsert(name: String): Long =
             get(name).let {

@@ -6,13 +6,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
+    <!-- Content -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="?android:colorBackground">
 
         <FrameLayout
             android:id="@+id/single_pane_container"
@@ -20,13 +21,26 @@
             android:layout_height="match_parent"
             tools:context="com.orgzly.android.ui.main.MainActivity"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:ignore="MergeRootFrame"/>
-
-        <include layout="@layout/snackbar_anchor" />
+            tools:ignore="MergeRootFrame" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <!--<include layout="@layout/drawer"/>-->
-    <include layout="@layout/drawer_navigation_view"/>
+    <!-- Drawer -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/drawer_navigation_view"
+        android:theme="@style/DrawerNavigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/drawer">
+
+        <!-- Sync button. -->
+        <FrameLayout
+            android:id="@+id/drawer_sync_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"/>
+
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

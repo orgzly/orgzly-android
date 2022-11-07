@@ -16,24 +16,24 @@ import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.Selection
 import com.orgzly.android.ui.notes.NoteItemViewBinder
 import com.orgzly.android.ui.notes.NoteItemViewHolder
-import com.orgzly.android.ui.notes.quickbar.QuickBars
-import com.orgzly.databinding.ItemHeadBookPrefaceBinding
 import com.orgzly.databinding.ItemHeadBinding
+import com.orgzly.databinding.ItemPrefaceBinding
 
 class BookAdapter(
-        private val context: Context,
-        private val clickListener: OnClickListener,
-        private val quickBar: QuickBars,
-        private val inBook: Boolean
+    private val bookId: Long,
+    private val context: Context,
+    private val clickListener: OnClickListener,
+    private val inBook: Boolean
 ) :
-        ListAdapterWithHeaders<NoteView, RecyclerView.ViewHolder>(DIFF_CALLBACK, 1),
-        SelectableItemAdapter {
+    ListAdapterWithHeaders<NoteView, RecyclerView.ViewHolder>(DIFF_CALLBACK, 1),
+    SelectableItemAdapter {
 
     private var currentPreface: String? = null
 
     private val adapterSelection = Selection()
 
     private val noteItemViewBinder = NoteItemViewBinder(context, inBook)
+    private val prefaceItemViewBinder = PrefaceItemViewBinder(context)
 
     private val noteViewHolderListener = object: NoteItemViewHolder.ClickListener {
         override fun onClick(view: View, position: Int) {
@@ -46,8 +46,8 @@ class BookAdapter(
 
     inner class FoldedViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
-    inner class PrefaceViewHolder(val binding: ItemHeadBookPrefaceBinding) :
-            RecyclerView.ViewHolder(binding.root) {
+    inner class PrefaceViewHolder(val binding: ItemPrefaceBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.root.setOnClickListener {
@@ -58,7 +58,7 @@ class BookAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when {
-            position == 0 -> R.layout.item_head_book_preface
+            position == 0 -> R.layout.item_preface
             isVisible(getItem(position).note) -> VISIBLE_ITEM_TYPE
             else -> HIDDEN_ITEM_TYPE
         }
@@ -70,9 +70,10 @@ class BookAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.item_head_book_preface -> {
-                val binding = ItemHeadBookPrefaceBinding.inflate(
-                        LayoutInflater.from(context), parent, false)
+            R.layout.item_preface -> {
+                val binding = ItemPrefaceBinding.inflate(
+                    LayoutInflater.from(context), parent, false)
+
                 PrefaceViewHolder(binding)
             }
 
@@ -81,7 +82,8 @@ class BookAdapter(
             }
 
             else -> {
-                val binding = ItemHeadBinding.inflate(LayoutInflater.from(context), parent, false)
+                val binding = ItemHeadBinding.inflate(
+                    LayoutInflater.from(context), parent, false)
 
                 NoteItemViewBinder.setupSpacingForDensitySetting(context, binding)
 
@@ -95,27 +97,7 @@ class BookAdapter(
             position == 0 -> {
                 val holder = h as PrefaceViewHolder
 
-                if (!isPrefaceDisplayed()) {
-                    holder.binding.fragmentBookHeaderText.visibility = View.GONE
-
-                } else {
-                    if (context.getString(R.string.pref_value_preface_in_book_few_lines) ==
-                            AppPreferences.prefaceDisplay(context)) {
-
-                        holder.binding.fragmentBookHeaderText.maxLines = 3
-                        holder.binding.fragmentBookHeaderText.ellipsize = TextUtils. TruncateAt.END
-
-                    } else {
-                        holder.binding.fragmentBookHeaderText.maxLines = Integer.MAX_VALUE
-                        holder.binding.fragmentBookHeaderText.ellipsize = null
-                    }
-
-                    currentPreface?.let {
-                        holder.binding.fragmentBookHeaderText.setSourceText(it)
-                    }
-
-                    holder.binding.fragmentBookHeaderText.visibility = View.VISIBLE
-                }
+                prefaceItemViewBinder.bind(holder, bookId, currentPreface, isPrefaceDisplayed())
             }
 
             h.itemViewType == HIDDEN_ITEM_TYPE -> {
@@ -125,16 +107,12 @@ class BookAdapter(
 
             else -> {
                 val holder = h as NoteItemViewHolder
-
                 val noteView = getItem(position)
-
                 val note = noteView.note
 
                 noteItemViewBinder.bind(holder, noteView)
 
-                quickBar.bind(holder)
-
-                getSelection().setIsSelectedBackground(holder.itemView, note.id)
+                getSelection().setBackgroundIfSelected(holder.itemView, note.id)
             }
         }
     }
@@ -165,8 +143,8 @@ class BookAdapter(
 
     fun isPrefaceDisplayed(): Boolean {
         val hidden =
-                context.getString(R.string.pref_value_preface_in_book_hide) ==
-                        AppPreferences.prefaceDisplay(context)
+            context.getString(R.string.pref_value_preface_in_book_hide) ==
+                    AppPreferences.prefaceDisplay(context)
 
         return !TextUtils.isEmpty(currentPreface) && !hidden
     }
@@ -186,14 +164,14 @@ class BookAdapter(
         const val VISIBLE_ITEM_TYPE = 1
 
         private val DIFF_CALLBACK: DiffUtil.ItemCallback<NoteView> =
-                object : DiffUtil.ItemCallback<NoteView>() {
-                    override fun areItemsTheSame(oldItem: NoteView, newItem: NoteView): Boolean {
-                        return oldItem.note.id == newItem.note.id
-                    }
-
-                    override fun areContentsTheSame(oldItem: NoteView, newItem: NoteView): Boolean {
-                        return oldItem == newItem
-                    }
+            object : DiffUtil.ItemCallback<NoteView>() {
+                override fun areItemsTheSame(oldItem: NoteView, newItem: NoteView): Boolean {
+                    return oldItem.note.id == newItem.note.id
                 }
+
+                override fun areContentsTheSame(oldItem: NoteView, newItem: NoteView): Boolean {
+                    return oldItem == newItem
+                }
+            }
     }
 }

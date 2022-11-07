@@ -105,7 +105,7 @@
     <string name="copy">Kopieren</string>
     <string name="paste">Plakken</string>
     <string name="heads_action_menu_item_paste_above">Plak erboven</string>
-    <string name="heads_action_menu_item_paste_under">Plak eronder</string>
+    <string name="heads_action_menu_item_paste_under">Plak erbij</string>
     <string name="heads_action_menu_item_paste_below">Plak eronder</string>
     <string name="heads_moving_action_menu_item_promote">Bevorderen</string>
     <string name="heads_moving_action_menu_item_down">Omlaag</string>
@@ -157,8 +157,9 @@
     <string name="searches">Zoekopdrachten</string>
     <string name="search">Zoeken</string>
     <string name="new_search">Nieuwe zoekopdracht</string>
-    <string name="no_repos">Geen opslagruimtes ingesteld</string>
     <string name="multiple_repos">Er bestaan meerdere opslagruimtes</string>
+    <string name="no_repos">Geen opslagruimtes ingesteld</string>
+    <string name="no_books">Geen notitieboekjes gevonden</string>
     <string name="book_encoding">Encodering van notitieboekje</string>
     <string name="collecting_notebooks_in_progress">Notitieboeken verzamelen…</string>
     <string name="syncing_in_progress">Synchroniseren…</string>
@@ -214,7 +215,7 @@
     <string name="prev_state">Vorige toestand</string>
     <string name="next_state">Volgende Toestand</string>
     <string name="new_above">Nieuwe erboven</string>
-    <string name="new_under">Nieuwe eronder</string>
+    <string name="new_under">Nieuwe erbij</string>
     <string name="new_below">Nieuwe eronder</string>
     <string name="confirm_unlinking_from_dropbox_title">Ontkoppel van Dropbox?</string>
     <string name="confirm_unlinking_from_dropbox_message">Je kunt niet kunnen synchroniseren met Dropbox totdat je er opnieuw mee verbindt.</string>
@@ -281,6 +282,10 @@
     <string name="notebooks_sort_order">Notitieboekjes-sorteervolgorde</string>
     <string name="font_size">Lettertypegrootte</string>
     <string name="color_scheme">Kleurenschema</string>
+    <string name="other">Anders</string>
+    <string name="theme">Thema</string>
+    <string name="light_scheme">Licht thema</string>
+    <string name="dark_scheme">Donker thema</string>
     <string name="monospaced_font">Monospaced-lettertype</string>
     <string name="monospaced_font_summary">Gebruik monospaced lettertype voor notitie-inhoud en notitieboekjevoorwoord</string>
     <string name="reversed_note_click_action">Draai notitie klik en lange-klik acties om</string>
@@ -348,6 +353,7 @@
     <string name="displayed_book_details_last_action">Laatste actie</string>
     <string name="displayed_book_details_notes_count">Aantal notities</string>
     <string name="color_scheme_system">Systeem</string>
+    <string name="color_scheme_dynamic">Dynamische kleur</string>
     <string name="color_scheme_light">Licht</string>
     <string name="color_scheme_dark">Donker</string>
     <string name="color_scheme_black">Zwart</string>
@@ -568,4 +574,12 @@
     <string name="developer_options">Ontwikkelaarsopties</string>
     <string name="git_repository_type">Git repository type</string>
     <string name="in_development">In ontwikkeling</string>
+    <string name="select_notebook">Selecteer notitieboekje</string>
+    <string name="highlight_rich_text_being_edited">Markeer tekst die bewerkt wordt</string>
+    <string name="use_alarm_clock_for_tod_reminders">Gebruik wekker</string>
+    <string name="use_alarm_clock_for_tod_reminders_summary">Voor herinneringen met ingestelde tijd</string>
+    <string name="log_major_events">Log belangrijke gebeurtenissen</string>
+    <string name="logs">Logboeken</string>
+    <string name="share">Delen</string>
+    <string name="refresh_data">Ververs</string>
 </resources>

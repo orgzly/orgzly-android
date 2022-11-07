@@ -5,28 +5,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_content"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    style="@style/CoordinatorLayoutFitsSystemWindows">
 
     <FrameLayout
         android:id="@+id/activity_settings_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="?attr/actionBarSize"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="com.orgzly.android.ui.settings.SettingsActivity" />
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
-        style="@style/BottomAppBar.FabAlignEnd.WithBack">
+    <!-- Top toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        style="@style/AppBarLayoutStyle">
 
-        <TextView
-            android:id="@+id/bottomAppBarTitle"
-            style="@style/BottomAppBarTitle"
-            android:text="@string/settings" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_toolbar"
+            app:title="@string/settings"
+            style="@style/TopToolbar"
+            app:navigationIcon="@drawable/ic_arrow_back"/>
 
-    </com.google.android.material.bottomappbar.BottomAppBar>
-
-    <include layout="@layout/snackbar_anchor" />
+    </com.google.android.material.appbar.AppBarLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

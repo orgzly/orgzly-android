@@ -76,9 +76,4 @@ public class App extends Application {
     public static void setCurrentActivity(CommonActivity currentCommonActivity) {
         currentActivity = currentCommonActivity;
     }
-
-    @Nullable
-    public static CommonActivity getCurrentActivity() {
-        return currentActivity;
-    }
 }

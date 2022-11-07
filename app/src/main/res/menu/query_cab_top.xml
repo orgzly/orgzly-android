@@ -1,0 +1,28 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/clock"
+        android:icon="@drawable/ic_hourglass_empty"
+        app:showAsAction="never"
+        android:title="@string/clock">
+        <menu>
+            <item
+                android:id="@+id/clock_in"
+                android:icon="@drawable/ic_hourglass_top"
+                android:title="@string/clock_in" />
+
+            <item
+                android:id="@+id/clock_out"
+                android:icon="@drawable/ic_hourglass_bottom"
+                android:title="@string/clock_out" />
+
+            <item
+                android:id="@+id/clock_cancel"
+                android:icon="@drawable/ic_hourglass_disabled"
+                android:title="@string/clock_cancel" />
+        </menu>
+    </item>
+
+</menu>

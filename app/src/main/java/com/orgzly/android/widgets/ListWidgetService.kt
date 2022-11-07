@@ -38,7 +38,7 @@ class ListWidgetService : RemoteViewsService() {
     override fun onGetViewFactory(intent: Intent): RemoteViewsFactory {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        val queryString = intent.getStringExtra(AppIntent.EXTRA_QUERY_STRING) ?: ""
+        val queryString = intent.getStringExtra(AppIntent.EXTRA_QUERY_STRING).orEmpty()
 
         return ListWidgetViewsFactory(applicationContext, queryString)
     }
@@ -69,8 +69,6 @@ class ListWidgetService : RemoteViewsService() {
             UserTimeFormatter(context)
         }
 
-        private lateinit var titleGenerator: TitleGenerator
-
         private var dataList: List<WidgetEntry> = emptyList()
 
         override fun onCreate() {
@@ -87,10 +85,6 @@ class ListWidgetService : RemoteViewsService() {
 
         override fun onDataSetChanged() {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
-
-            // Refresh title generator (for changed settings)
-            val attrs = WidgetStyle.getTitleAttributes(context)
-            titleGenerator = TitleGenerator(context, false, attrs)
 
             val notes = dataRepository.selectNotesFromQuery(query)
 
@@ -177,7 +171,8 @@ class ListWidgetService : RemoteViewsService() {
             val displayBookName = AppPreferences.widgetDisplayBookName(context)
             val doneStates = AppPreferences.doneKeywordsSet(context)
 
-            // Title
+            // Title (colors depend on current theme)
+            val titleGenerator = TitleGenerator(context, false, WidgetStyle.getTitleAttributes(context))
             row.setTextViewText(R.id.item_list_widget_title, titleGenerator.generateTitle(noteView))
 
             // Notebook name

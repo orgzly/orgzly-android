@@ -52,11 +52,11 @@ DEADLINE: <2015-02-20 Fri>
 
 ** メモにはリンクを含めることができます
 
-電話をかける (tel:555-0199), SMS送信 (sms:555-0199), メール編集 (mailto:support@orgzly.com) Webページを開く ([[http://www.orgzly.com][Orgzly.com]]).
+電話をかける (tel:555-0199), SMS送信 (sms:555-0199), メール編集 (mailto:support@orgzly.com) Webページを開く ([[https://www.orgzly.com][Orgzly.com]]).
 
 アプリ内の、別のメモやメモ帳にも、リンクができます。
 
-詳しくは http://www.orgzly.com/help#links を見てください。
+詳しくは https://www.orgzly.com/help#links を見てください。
 
 ** 基本的なタイポグラフィをサポートします
 
@@ -75,7 +75,7 @@ DEADLINE: <2015-02-20 Fri>
 
 状態、タグ、予定日時、期限日時などで、メモを検索できます。
 
-詳しくは http://www.orgzly.com/help#search を見てください。
+詳しくは https://www.orgzly.com/help#search を見てください。
 
 ** 検索クエリは、クイックアクセスに保存できます
 

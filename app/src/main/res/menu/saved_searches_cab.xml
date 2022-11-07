@@ -7,21 +7,21 @@
 
     <item
         android:id="@+id/saved_searches_cab_move_down"
-        android:icon="?attr/ic_arrow_downward_24dp"
+        android:icon="@drawable/ic_arrow_downward"
         app:showAsAction="always"
         android:showAsAction="always" tools:ignore="AppCompatResource"
         android:title="@string/down"/>
 
     <item
         android:id="@+id/saved_searches_cab_move_up"
-        android:icon="?attr/ic_arrow_upward_24dp"
+        android:icon="@drawable/ic_arrow_upward"
         app:showAsAction="always"
         android:showAsAction="always" tools:ignore="AppCompatResource"
         android:title="@string/up"/>
 
     <item
         android:id="@+id/saved_searches_cab_delete"
-        android:icon="?attr/ic_delete_24dp"
+        android:icon="@drawable/ic_delete"
         app:showAsAction="never"
         android:showAsAction="never" tools:ignore="AppCompatResource"
         android:title="@string/delete"/>

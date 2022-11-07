@@ -1,25 +1,25 @@
 package com.orgzly.android.di
 
 import com.orgzly.android.NewNoteBroadcastReceiver
+import com.orgzly.android.SharingShortcutsManager
 import com.orgzly.android.TimeChangeBroadcastReceiver
 import com.orgzly.android.di.module.ApplicationModule
 import com.orgzly.android.di.module.DataModule
 import com.orgzly.android.di.module.DatabaseModule
-import com.orgzly.android.reminders.RemindersBroadcastReceiver
 import com.orgzly.android.reminders.NoteReminders
-import com.orgzly.android.sync.SyncService
+import com.orgzly.android.reminders.RemindersBroadcastReceiver
+import com.orgzly.android.sync.SyncWorker
 import com.orgzly.android.ui.BookChooserActivity
 import com.orgzly.android.ui.TemplateChooserActivity
 import com.orgzly.android.ui.books.BooksFragment
 import com.orgzly.android.ui.main.MainActivity
-import com.orgzly.android.SharingShortcutsManager
+import com.orgzly.android.ui.sync.SyncFragment
 import com.orgzly.android.ui.note.NoteFragment
 import com.orgzly.android.ui.notes.NotesFragment
 import com.orgzly.android.ui.notes.book.BookFragment
 import com.orgzly.android.ui.notes.book.BookPrefaceFragment
 import com.orgzly.android.ui.notes.query.agenda.AgendaFragment
 import com.orgzly.android.ui.notes.query.search.SearchFragment
-import com.orgzly.android.ui.notifications.SyncStatusBroadcastReceiver
 import com.orgzly.android.ui.refile.RefileFragment
 import com.orgzly.android.ui.repo.BrowserActivity
 import com.orgzly.android.ui.repo.directory.DirectoryRepoActivity
@@ -38,7 +38,6 @@ import com.orgzly.android.widgets.ListWidgetSelectionActivity
 import com.orgzly.android.widgets.ListWidgetService
 import dagger.Component
 import javax.inject.Singleton
-import com.orgzly.android.ui.main.SyncFragment as SyncFragment
 
 
 @Singleton
@@ -73,8 +72,7 @@ interface AppComponent {
     fun inject(arg: RefileFragment)
     fun inject(arg: SyncFragment)
 
-    fun inject(arg: SyncService)
-    fun inject(arg: SyncStatusBroadcastReceiver)
+    fun inject(arg: SyncWorker)
     fun inject(arg: NoteReminders)
     fun inject(arg: UseCaseRunner.Factory)
     fun inject(arg: UseCaseWorker)

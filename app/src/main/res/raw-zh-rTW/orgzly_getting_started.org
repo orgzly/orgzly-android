@@ -52,11 +52,11 @@ DEADLINE: <2018-02-20 Sat>
 
 ** 筆記可以包含連結
 
-撥打電話號碼 (tel:555-0199), 傳送簡訊 (sms:555-0199), 撰寫電子郵件 (mailto:support@orgzly.com) 或訪問網頁 ([[http://www.orgzly.com][Orgzly.com]])。
+撥打電話號碼 (tel:555-0199), 傳送簡訊 (sms:555-0199), 撰寫電子郵件 (mailto:support@orgzly.com) 或訪問網頁 ([[https://www.orgzly.com][Orgzly.com]])。
 
 你還可以連結到其他筆記或筆記本。
 
-有關詳細資訊, 請參閱 http://www.orgzly.com/help#links。
+有關詳細資訊, 請參閱 https://www.orgzly.com/help#links。
 
 ** 筆記支持基本的標記重點
 
@@ -75,7 +75,7 @@ DEADLINE: <2018-02-20 Sat>
 
 您可以按狀態、標籤、日程“schedule"或截止時間"deadline"等來搜索筆記。
 
-請參閱 http://www.orgzly.com/help#search 瞭解更多。
+請參閱 https://www.orgzly.com/help#search 瞭解更多。
 
 ** 可以將搜尋保存以便快速訪問
 

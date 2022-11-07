@@ -8,7 +8,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.orgzly.R
 import com.orgzly.android.OrgzlyTest
-import com.orgzly.android.espresso.EspressoUtils.*
+import com.orgzly.android.espresso.util.EspressoUtils.*
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.org.datetime.OrgDateTime
 import org.hamcrest.Matchers.not
@@ -234,7 +234,7 @@ class NoteEventsTest : OrgzlyTest() {
 
         searchForText("e.today")
         onNotesInSearch().check(matches(recyclerViewItemCount(1)))
-        onNoteInSearch(0, R.id.item_head_title).check(matches(withText(startsWith("Note A-01"))))
+        onNoteInSearch(0, R.id.item_head_title_view).check(matches(withText(startsWith("Note A-01"))))
     }
 
     @Test
@@ -251,8 +251,8 @@ class NoteEventsTest : OrgzlyTest() {
 
         searchForText("e.lt.now o.e")
         onNotesInSearch().check(matches(recyclerViewItemCount(2)))
-        onNoteInSearch(0, R.id.item_head_title).check(matches(withText(startsWith("Note A-01"))))
-        onNoteInSearch(1, R.id.item_head_title).check(matches(withText(startsWith("Note A-02"))))
+        onNoteInSearch(0, R.id.item_head_title_view).check(matches(withText(startsWith("Note A-01"))))
+        onNoteInSearch(1, R.id.item_head_title_view).check(matches(withText(startsWith("Note A-02"))))
     }
 
     @Test
@@ -269,8 +269,8 @@ class NoteEventsTest : OrgzlyTest() {
 
         searchForText("e.lt.now .o.e")
         onNotesInSearch().check(matches(recyclerViewItemCount(2)))
-        onNoteInSearch(0, R.id.item_head_title).check(matches(withText(startsWith("Note A-01"))))
-        onNoteInSearch(1, R.id.item_head_title).check(matches(withText(startsWith("Note A-02"))))
+        onNoteInSearch(0, R.id.item_head_title_view).check(matches(withText(startsWith("Note A-01"))))
+        onNoteInSearch(1, R.id.item_head_title_view).check(matches(withText(startsWith("Note A-02"))))
     }
 
     @Test
@@ -279,10 +279,10 @@ class NoteEventsTest : OrgzlyTest() {
         ActivityScenario.launch(MainActivity::class.java)
 
         onBook(0).perform(click())
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note A-01 <2000-01-10 +1d>")))
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText("Note A-01 <2000-01-10 +1d>")))
         onNoteInBook(1).perform(longClick())
         onView(withId(R.id.toggle_state)).perform(click())
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note A-01 <2000-01-11 Tue +1d>")))
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText("Note A-01 <2000-01-11 Tue +1d>")))
     }
 
     @Test
@@ -292,10 +292,10 @@ class NoteEventsTest : OrgzlyTest() {
 
         onBook(0).perform(click())
         onNoteInBook(1).perform(click())
-        onView(withId(R.id.title)).check(matches(withText("Note A-01 <2000-01-10 +1d>")))
+        onView(withId(R.id.title_view)).check(matches(withText("Note A-01 <2000-01-10 +1d>")))
         onView(withId(R.id.state_button)).perform(click())
         onView(withText("DONE")).perform(click())
-        onView(withId(R.id.title)).check(matches(withText("Note A-01 <2000-01-11 Tue +1d>")))
+        onView(withId(R.id.title_view)).check(matches(withText("Note A-01 <2000-01-11 Tue +1d>")))
     }
 
     @Test
@@ -311,6 +311,6 @@ class NoteEventsTest : OrgzlyTest() {
         searchForText(".it.done ad.7 o.e")
 
         onNotesInAgenda().check(matches(recyclerViewItemCount(8)))
-        onItemInAgenda(2, R.id.item_head_title).check(matches(withText(startsWith("Note A-01"))))
+        onItemInAgenda(2, R.id.item_head_title_view).check(matches(withText(startsWith("Note A-01"))))
     }
 }

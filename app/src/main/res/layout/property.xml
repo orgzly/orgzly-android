@@ -8,8 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/property"
-        android:src="?attr/ic_outline_abc_24dp"
-        android:alpha="?attr/active_unfocused_icon_alpha"/>
+        android:src="@drawable/ic_abc" />
 
     <EditText
         android:id="@+id/name"
@@ -27,7 +26,6 @@
     <EditText
         android:id="@+id/value"
         style="@style/NoteFragmentMetadataItemValueButton"
-        android:layout_marginLeft="0dp"
         android:layout_marginStart="0dp"
         android:maxLines="1"
         android:inputType="text"
@@ -36,8 +34,8 @@
         android:text=""/>
 
     <ImageButton
-        android:id="@+id/delete"
+        android:id="@+id/remove"
         style="@style/NoteFragmentMetadataItemButton"
-        android:src="?attr/ic_close_24dp" />
+        android:src="@drawable/ic_close" />
 
 </LinearLayout>

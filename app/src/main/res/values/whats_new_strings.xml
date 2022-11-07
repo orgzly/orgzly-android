@@ -4,7 +4,7 @@
 
     <string name="whats_new_intro"><![CDATA[
         Visit
-        <a href="http://www.orgzly.com">Orgzly.com</a>
+        <a href="https://www.orgzly.com">Orgzly.com</a>
         for documentation.
 
         <br><br>
@@ -26,5 +26,9 @@
         the app on Crowdin.
     ]]></string>
 
-    <string name="target_11_warning">If you encounter any permission issues due to Android\'s new scoped storage please let us know.</string>
+    <string name="whats_new_outro"><![CDATA[
+        Visit
+        <a href="https://www.orgzly.com/changelog">Changelog</a>
+        for the full list.
+    ]]></string>
 </resources>

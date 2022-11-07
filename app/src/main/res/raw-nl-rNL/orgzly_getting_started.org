@@ -52,11 +52,11 @@ U kunt het aantal prioriteiten in Instellingen wijzigen. U kunt ook de standaard
 
 ** Een notitie kan links gebruiken
 
-Bel een telefoonnummer (tel:555-0199), stuur een SMS (sms:555-0199), stel een e-mail op (mailto:support@orgzly.com) of bezoek een webpagina ([[http://www.orgzly.com][Orgzly.com]]).
+Bel een telefoonnummer (tel:555-0199), stuur een SMS (sms:555-0199), stel een e-mail op (mailto:support@orgzly.com) of bezoek een webpagina ([[https://www.orgzly.com][Orgzly.com]]).
 
 U kunt ook naar een andere notitie of notebook binnen de app linken.
 
-Zie http://www.orgzly.com/help#links voor meer informatie.
+Zie https://www.orgzly.com/help#links voor meer informatie.
 
 ** Typografische basisaccentuering wordt ondersteund
 
@@ -75,7 +75,7 @@ Klik op de checkbox om het aan te vinken. Druk op de nieuwe-lijnknop aan het ein
 
 Je kunt notities doorzoeken op status, label, geplande- of deadlinetijd etc.
 
-Zie http://www.orgzly.com/help#search voor meer informatie.
+Zie https://www.orgzly.com/help#search voor meer informatie.
 
 ** Zoekopdrachten kunnen worden opgeslagen voor snelle toegang
 

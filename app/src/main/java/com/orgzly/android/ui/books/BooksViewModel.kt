@@ -159,18 +159,6 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
         }
     }
 
-    fun exportBook() {
-        val (book, format) = lastBook.value ?: return
-
-        App.EXECUTORS.diskIO().execute {
-            catchAndPostError {
-                val result = UseCaseRunner.run(BookExport(book.id, format))
-                val file = result.userData as File
-                bookExportedEvent.postValue(file.absolutePath)
-            }
-        }
-    }
-
     fun exportBook(uri: Uri) {
         val (book, format) = lastBook.value ?: return
 

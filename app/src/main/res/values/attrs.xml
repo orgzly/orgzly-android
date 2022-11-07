@@ -7,10 +7,6 @@
         <attr name="menu_for_fling_left" format="integer"/>
     </declare-styleable>
 
-    <declare-styleable name="TextViewWithMarkup">
-        <attr name="parse_checkboxes" format="boolean" />
-    </declare-styleable>
-
     <declare-styleable name="IntegerRange">
         <attr name="min" format="integer"/>
         <attr name="max" format="integer"/>
@@ -49,91 +45,25 @@
     <declare-styleable name="ColorScheme">
         <attr name="item_head_state_done_color" format="color"/>
         <attr name="item_head_state_todo_color" format="color"/>
-        <attr name="item_head_state_unknown_color" format="color"/>
     </declare-styleable>
 
-    <declare-styleable name="Icons">
-        <attr name="ic_access_time_18dp" format="reference"/>
-        <attr name="ic_access_time_24dp" format="reference"/>
-        <attr name="ic_add_24dp" format="reference"/>
-        <attr name="ic_alarm_18dp" format="reference"/>
-        <attr name="ic_alarm_24dp" format="reference"/>
-        <attr name="ic_arrow_back_24dp" format="reference"/>
-        <attr name="ic_arrow_downward_24dp" format="reference"/>
-        <attr name="ic_arrow_forward_24dp" format="reference"/>
-        <attr name="ic_arrow_upward_24dp" format="reference"/>
-        <attr name="ic_cancel_24dp" format="reference"/>
-        <attr name="ic_cancel_outline_24dp" format="reference"/>
-        <attr name="ic_center_focus_strong_24dp" format="reference"/>
-        <attr name="ic_close_24dp" format="reference"/>
-        <attr name="ic_content_copy_24dp" format="reference"/>
-        <attr name="ic_content_cut_24dp" format="reference"/>
-        <attr name="ic_content_paste_24dp" format="reference"/>
-        <attr name="ic_create_new_folder_24dp" format="reference"/>
-        <attr name="ic_delete_24dp" format="reference"/>
-        <attr name="ic_done_18dp" format="reference"/>
-        <attr name="ic_done_24dp" format="reference"/>
-        <attr name="ic_edit_24dp" format="reference"/>
-        <attr name="ic_event_24dp" format="reference"/>
-        <attr name="ic_help_outline_24dp" format="reference"/>
-        <attr name="ic_history_24dp" format="reference"/>
-        <attr name="ic_file_download_24dp" format="reference"/>
-        <attr name="ic_file_upload_24dp" format="reference"/>
-        <attr name="ic_flag_24dp" format="reference"/>
-        <attr name="ic_folder_open_18dp" format="reference"/>
-        <attr name="ic_folder_open_24dp" format="reference"/>
-        <attr name="ic_folder_open_48dp" format="reference"/>
-        <attr name="ic_format_list_bulleted_18dp" format="reference"/>
-        <attr name="ic_info_outline_18dp" format="reference"/>
-        <attr name="ic_info_outline_24dp" format="reference"/>
-        <attr name="ic_insert_drive_file_24dp" format="reference"/>
-        <attr name="ic_keyboard_arrow_down_24dp" format="reference"/>
-        <attr name="ic_keyboard_arrow_up_24dp" format="reference"/>
-        <attr name="ic_label_outline_24dp" format="reference"/>
-        <attr name="ic_language_18dp" format="reference"/>
-        <attr name="ic_library_books_24dp" format="reference"/>
-        <attr name="ic_link_18dp" format="reference"/>
-        <attr name="ic_menu_24dp" format="reference"/>
-        <attr name="ic_menu_open_24dp" format="reference"/>
-        <attr name="ic_more_horiz_24dp" format="reference"/>
-        <attr name="ic_move_to_inbox_24dp" format="reference"/>
-        <attr name="ic_notifications_none_24dp" format="reference"/>
-        <attr name="ic_open_in_new_24dp" format="reference"/>
-        <attr name="ic_outline_abc_24dp" format="reference"/>
-        <attr name="ic_outline_check_circle_18dp" format="reference"/>
-        <attr name="ic_outline_check_circle_24dp" format="reference"/>
-        <attr name="ic_outline_cloud_48dp" format="reference"/>
-        <attr name="ic_outline_cloud_download_24dp" format="reference"/>
-        <attr name="ic_outline_cloud_upload_24dp" format="reference"/>
-        <attr name="ic_outline_notes_24dp" format="reference"/>
-        <attr name="ic_palette_24dp" format="reference"/>
-        <attr name="ic_remove_red_eye_24dp" format="reference"/>
-        <attr name="ic_repeat_24dp" format="reference"/>
-        <attr name="ic_rotate_left_24dp" format="reference"/>
-        <attr name="ic_rotate_right_24dp" format="reference"/>
-        <attr name="ic_search_24dp" format="reference"/>
-        <attr name="ic_send_24dp" format="reference"/>
-        <attr name="ic_settings_24dp" format="reference"/>
-        <attr name="ic_storage_24dp" format="reference"/>
-        <attr name="ic_swap_vert_24dp" format="reference"/>
-        <attr name="ic_sync_18dp" format="reference"/>
-        <attr name="ic_sync_24dp" format="reference"/>
-        <attr name="ic_sync_problem_18dp" format="reference"/>
-        <attr name="ic_today_18dp" format="reference"/>
-        <attr name="ic_today_24dp" format="reference"/>
-        <attr name="ic_star_border_24dp" format="reference"/>
-        <attr name="ic_unfold_more_24dp" format="reference"/>
-        <attr name="ic_warning_24dp" format="reference"/>
-        <attr name="ic_widgets_24dp" format="reference"/>
+    <declare-styleable name="RichText">
+        <attr name="android:textSize"/>
+        <attr name="android:hint"/>
+        <attr name="android:inputType"/>
+        <attr name="android:minLines"/>
+        <attr name="android:maxLines"/>
+        <attr name="android:gravity"/>
+        <attr name="android:minHeight"/>
+        <attr name="android:imeOptions"/>
 
-        <attr name="oic_dropbox_linked" format="reference"/>
-        <attr name="oic_dropbox_not_linked" format="reference"/>
-        <attr name="oic_git_48dp" format="reference"/>
-        <attr name="oic_new_above_24dp" format="reference"/>
-        <attr name="oic_new_below_24dp" format="reference"/>
-        <attr name="oic_new_under_24dp" format="reference"/>
+        <attr name="view_id" format="reference"/>
+        <attr name="edit_id" format="reference"/>
 
-        <attr name="active_focused_icon_alpha" format="float"/>
-        <attr name="active_unfocused_icon_alpha" format="float"/>
+        <attr name="parse_checkboxes" format="boolean"/>
+        <attr name="linkify" format="boolean"/>
+        <attr name="editable" format="boolean"/>
+        <attr name="paddingHorizontal" format="dimension"/>
+        <attr name="paddingVertical" format="dimension"/>
     </declare-styleable>
 </resources>

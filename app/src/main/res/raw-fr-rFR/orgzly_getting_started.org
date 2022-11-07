@@ -12,13 +12,13 @@ Vous pouvez sélectionner plusieurs notes.
 
 ** Dépliez une note qui contient des sous-notes en cliquant sur l'icône à droite
 
-Appuyiez longuement pour ouvrir toute la sous-arborescence.
+Appuyez longuement pour ouvrir toute la sous-arborescence.
 
 *** Il n’y a pas de limite au nombre de niveaux que vous pouvez avoir
 **** Utilisez ceci pour mieux organiser vos notes
 
 ** Les notes peuvent avoir des étiquettes :tag1:tag2:
-*** Les sous-notes héritent des étiquettes des parents :tag3:
+*** Les sous-notes héritent des étiquettes parentes :tag3:
 
 Si vous recherchez des notes avec le tag “tag1” en utilisant la requête “t.tag1”, cette note sera incluse dans les résultats de recherche.
 
@@ -52,11 +52,11 @@ Vous pouvez modifier le nombre de priorités dans les paramètres. Vous pouvez �
 
 ** Les notes peuvent inclure des liens
 
-Composer un numéro de téléphone (tel:555-0199), envoyer un SMS (sms:555-0199), écrire un courriel (mailto:support@orgzly.com) ou aller à une page web ([[http://www.orgzly.com][Orgzly.com]]).
+Composer un numéro de téléphone (tel:555-0199), envoyer un SMS (sms:555-0199), écrire un courriel (mailto:support@orgzly.com) ou aller à une page web ([[https://www.orgzly.com][Orgzly.com]]).
 
 Vous pouvez également lier une autre note ou un autre bloc-note de l'application.
 
-Voir http://www.orgzly.com/help#links pour de plus amples informations (en anglais).
+Voir https://www.orgzly.com/help#links pour de plus amples informations (en anglais).
 
 ** Les formatages de base sont supportés
 
@@ -75,7 +75,7 @@ Un appui sur la case à cocher change son état. Un retour à la ligne crée une
 
 Vous pouvez rechercher des notes par état, étiquette, planification, échéance, etc.
 
-Voir http://www.orgzly.com/help#search pour en savoir plus.
+Voir https://www.orgzly.com/help#search pour en savoir plus.
 
 ** Les recherches peuvent être enregistrées pour un accès rapide
 

@@ -2,8 +2,8 @@
 
 package com.orgzly.android.db
 
-import androidx.room.TypeConverter
 import android.net.Uri
+import androidx.room.TypeConverter
 import com.orgzly.android.db.entity.BookAction
 import com.orgzly.android.repos.RepoType
 

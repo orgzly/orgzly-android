@@ -1,15 +1,5 @@
 package com.orgzly.android.espresso;
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
-
-import com.orgzly.R;
-import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.prefs.AppPreferences;
-import com.orgzly.android.ui.main.MainActivity;
-
-import org.junit.Rule;
-import org.junit.Test;
-
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
@@ -20,17 +10,31 @@ import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.clickSetting;
-import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
-import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
-import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
+import static com.orgzly.android.espresso.util.EspressoUtils.clickSetting;
+import static com.orgzly.android.espresso.util.EspressoUtils.onActionItemClick;
+import static com.orgzly.android.espresso.util.EspressoUtils.onNoteInBook;
+import static com.orgzly.android.espresso.util.EspressoUtils.replaceTextCloseKeyboard;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasToString;
 
+import androidx.test.core.app.ActivityScenario;
+
+import com.orgzly.R;
+import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.prefs.AppPreferences;
+import com.orgzly.android.ui.main.MainActivity;
+
+import org.junit.Before;
+import org.junit.Test;
+
 public class SettingsFragmentTest extends OrgzlyTest {
-    @Rule
-    public ActivityScenarioRule<MainActivity> rule = new ActivityScenarioRule<>(MainActivity.class);
+    @Before
+    public void setUp() throws Exception {
+        super.setUp();
+
+        ActivityScenario.launch(MainActivity.class);
+    }
 
     @Test
     public void testImportingGettingStartedFromGettingStartedNotebook() {
@@ -61,7 +65,7 @@ public class SettingsFragmentTest extends OrgzlyTest {
 
         onView(withId(R.id.todo_states)).perform(replaceTextCloseKeyboard("TODO AAA BBB CCC"));
 
-        onView(withText(R.string.ok)).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
         onView(withText(R.string.not_now)).perform(click());
 
         clickSetting("pref_key_new_note_state", R.string.state);
@@ -77,7 +81,7 @@ public class SettingsFragmentTest extends OrgzlyTest {
         clickSetting("pref_key_states", R.string.states);
 
         onView(withId(R.id.todo_states)).perform(replaceTextCloseKeyboard("TODO CCC"));
-        onView(withText(R.string.ok)).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
         onView(withText(R.string.not_now)).perform(click());
 
         clickSetting("pref_key_new_note_state", R.string.state);
@@ -93,7 +97,7 @@ public class SettingsFragmentTest extends OrgzlyTest {
         clickSetting("prefs_screen_notebooks", R.string.pref_title_notebooks);
         clickSetting("pref_key_states", R.string.states);
         onView(withId(R.id.todo_states)).perform(replaceTextCloseKeyboard("TODO"));
-        onView(withText(R.string.ok)).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
         onView(withText(R.string.not_now)).perform(click());
         onView(allOf(withText(R.string.states), hasSibling(withText("TODO |")))).check(matches(isDisplayed()));
     }
@@ -172,7 +176,7 @@ public class SettingsFragmentTest extends OrgzlyTest {
 
         onView(withId(R.id.todo_states)).perform(replaceTextCloseKeyboard("TODO NEXT wait"));
 
-        onView(withText(R.string.ok)).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
         onView(withText(R.string.not_now)).perform(click());
 
         onView(allOf(withText(R.string.states), hasSibling(withText("TODO NEXT WAIT | DONE"))))

@@ -157,8 +157,9 @@
     <string name="searches">Pesquisas</string>
     <string name="search">Pesquisa</string>
     <string name="new_search">Nova Pesquisa</string>
-    <string name="no_repos">Nenhum repositório configurado</string>
     <string name="multiple_repos">Múltiplos repositórios existentes</string>
+    <string name="no_repos">Nenhum repositório configurado</string>
+    <string name="no_books">No notebooks found</string>
     <string name="book_encoding">Codificação dos cadernos</string>
     <string name="collecting_notebooks_in_progress">Coletando cadernos…</string>
     <string name="syncing_in_progress">Sincronizando…</string>
@@ -281,6 +282,10 @@
     <string name="notebooks_sort_order">Ordem dos cadernos</string>
     <string name="font_size">Tamanho da fonte</string>
     <string name="color_scheme">Tema</string>
+    <string name="other">Other</string>
+    <string name="theme">Theme</string>
+    <string name="light_scheme">Light scheme</string>
+    <string name="dark_scheme">Dark scheme</string>
     <string name="monospaced_font">Fonte monoespaçada</string>
     <string name="monospaced_font_summary">Usar fonte monoespaçada para o conteúdo das notas e prefácio dos cadernos</string>
     <string name="reversed_note_click_action">Inverter ações de clique curto e longo</string>
@@ -348,6 +353,7 @@
     <string name="displayed_book_details_last_action">Última ação</string>
     <string name="displayed_book_details_notes_count">Contagem das notas</string>
     <string name="color_scheme_system">System</string>
+    <string name="color_scheme_dynamic">Dynamic color</string>
     <string name="color_scheme_light">Claro</string>
     <string name="color_scheme_dark">Escuro</string>
     <string name="color_scheme_black">Preto</string>
@@ -565,7 +571,15 @@
     <string name="content">Conteúdo</string>
     <string name="prepend">Fixar ao topo</string>
     <string name="insert_new_note_at_beginning">Inserir nova nota no início</string>
-    <string name="developer_options">Developer options</string>
+    <string name="developer_options">Opções de desenvolvedor</string>
     <string name="git_repository_type">Git repository type</string>
-    <string name="in_development">In development</string>
+    <string name="in_development">Em desenvolvimento</string>
+    <string name="select_notebook">Select notebook</string>
+    <string name="highlight_rich_text_being_edited">Highlight rich text being edited</string>
+    <string name="use_alarm_clock_for_tod_reminders">Use alarm clock</string>
+    <string name="use_alarm_clock_for_tod_reminders_summary">For reminders with the time of day set</string>
+    <string name="log_major_events">Log major events</string>
+    <string name="logs">Logs</string>
+    <string name="share">Share</string>
+    <string name="refresh_data">Refresh</string>
 </resources>

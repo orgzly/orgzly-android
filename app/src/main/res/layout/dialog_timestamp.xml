@@ -22,11 +22,12 @@
         <!-- Date label -->
         <TextView
             android:id="@+id/date_picker_label"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center"
             android:textSize="?attr/font_micro"
             android:textAllCaps="true"
             android:text="@string/timestamp_dialog_day"/>
@@ -43,11 +44,13 @@
         <!-- Time label -->
         <TextView
             android:id="@+id/time_picker_label"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/tomorrow_button"
-            app:layout_constraintStart_toStartOf="@+id/date_picker_label"
+            app:layout_constraintStart_toStartOf="@+id/time_picker_button"
+            app:layout_constraintEnd_toEndOf="@+id/time_picker_button"
+            android:gravity="center"
             android:textSize="?attr/font_micro"
             android:textAllCaps="true"
             android:text="@string/timestamp_dialog_time"/>
@@ -65,19 +68,20 @@
             android:id="@+id/time_used_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/time_picker_button"
             app:layout_constraintBottom_toBottomOf="@+id/time_picker_button"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toTopOf="@+id/time_picker_button" />
+            app:layout_constraintEnd_toStartOf="@+id/guideline" />
 
         <!-- End time label -->
         <TextView
             android:id="@+id/end_time_picker_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="@+id/time_picker_label"
             app:layout_constraintBottom_toBottomOf="@+id/time_picker_label"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="@+id/end_time_picker_button"
+            app:layout_constraintEnd_toEndOf="@+id/end_time_picker_button"
+            android:gravity="center"
             android:textSize="?attr/font_micro"
             android:textAllCaps="true"
             android:text="@string/timestamp_dialog_end_time"/>
@@ -86,28 +90,30 @@
         <Button
             android:id="@+id/end_time_picker_button"
             style="@style/Button.TimestampDialog"
-            app:layout_constraintBottom_toBottomOf="@+id/time_picker_button"
-            app:layout_constraintEnd_toStartOf="@+id/end_time_used_checkbox"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="@+id/time_picker_button"
+            app:layout_constraintBottom_toBottomOf="@+id/time_picker_button"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintEnd_toStartOf="@+id/end_time_used_checkbox"
             tools:text="@string/dialog_timestamp_time_sample" />
 
         <CheckBox
             android:id="@+id/end_time_used_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/end_time_picker_button"
             app:layout_constraintBottom_toBottomOf="@+id/end_time_picker_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/end_time_picker_button" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <!-- Repeater label -->
         <TextView
             android:id="@+id/repeater_picker_label"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/time_picker_button"
-            app:layout_constraintStart_toStartOf="@+id/time_picker_label"
+            app:layout_constraintStart_toStartOf="@+id/repeater_picker_button"
+            app:layout_constraintEnd_toEndOf="@+id/repeater_picker_button"
+            android:gravity="center"
             android:textSize="?attr/font_micro"
             android:textAllCaps="true"
             android:text="@string/timestamp_dialog_repeater"/>
@@ -135,11 +141,13 @@
         <!-- Delay or warning period label -->
         <TextView
             android:id="@+id/delay_picker_label"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/repeater_picker_button"
-            app:layout_constraintStart_toStartOf="@+id/time_picker_label"
+            app:layout_constraintStart_toStartOf="@+id/delay_picker_button"
+            app:layout_constraintEnd_toEndOf="@+id/delay_picker_button"
+            android:gravity="center"
             android:textSize="?attr/font_micro"
             android:textAllCaps="true"
             android:text="@string/timestamp_dialog_delay"/>
@@ -180,8 +188,8 @@
             style="@style/Button.TimestampDialog"
             android:text="@string/tomorrow"
             android:singleLine="true"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintStart_toEndOf="@+id/today_button"
             app:layout_constraintEnd_toStartOf="@+id/next_week_button"
             app:layout_constraintTop_toBottomOf="@id/date_picker_button" />

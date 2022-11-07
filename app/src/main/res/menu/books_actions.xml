@@ -7,15 +7,20 @@
     <item
         android:id="@+id/search_view"
         android:title="@string/options_menu_item_search"
-        android:icon="?attr/ic_search_24dp"
+        android:icon="@drawable/ic_search"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|always" tools:ignore="AlwaysShowAction"/>
 
     <item
         android:id="@+id/books_options_menu_item_import_book"
-        android:icon="?attr/ic_folder_open_24dp"
+        android:icon="@drawable/ic_folder_open"
         app:showAsAction="never"
         android:title="@string/import_org_file"/>
+
+    <item
+        android:id="@+id/sync"
+        app:showAsAction="never"
+        android:title="@string/sync"/>
 
     <item
         android:id="@+id/activity_action_settings"

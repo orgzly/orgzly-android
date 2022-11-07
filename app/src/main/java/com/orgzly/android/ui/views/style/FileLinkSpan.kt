@@ -1,16 +1,29 @@
 package com.orgzly.android.ui.views.style
 
 import android.os.Handler
-import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.View
-import com.orgzly.android.ui.views.TextViewWithMarkup
+import com.orgzly.android.ui.views.richtext.ActionableRichTextView
 
-class FileLinkSpan(override val type: Int, val path: String, override val name: String?) : LinkSpan(type, path, name) {
-    override fun onClick(widget: View) {
-        if (widget is TextViewWithMarkup) {
+class FileLinkSpan(val type: Int, val link: String, val name: String?) : LinkSpan(), Offsetting {
+    val path = link.substring(PREFIX.length)
+
+    override val characterOffset = when (type) {
+        TYPE_NO_BRACKETS -> 0
+        TYPE_BRACKETS -> 4
+        TYPE_BRACKETS_WITH_NAME -> 6 + link.length
+        else -> 0
+    }
+
+    override fun onClick(view: View) {
+        if (view is ActionableRichTextView) {
             Handler().post { // Run after onClick to prevent Snackbar from closing immediately
-                widget.followLinkToFile(path)
+                view.followLinkToFile(path)
             }
         }
+    }
+
+    companion object {
+        const val PREFIX = "file:"
     }
 }

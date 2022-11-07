@@ -6,7 +6,7 @@
 
     <Preference
         android:selectable="false"
-        android:icon="?attr/ic_warning_24dp"
+        android:icon="@drawable/ic_warning"
         android:summary="@string/auto_sync_warning"/>
 
     <SwitchPreference

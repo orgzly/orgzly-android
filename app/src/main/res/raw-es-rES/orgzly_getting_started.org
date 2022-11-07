@@ -52,11 +52,11 @@ Puedes cambiar el número de prioridades en Configuración. También puedes camb
 
 ** Una nota puede incluir enlaces
 
-Marcar un número de teléfono (tel:555-0199), enviar SMS (sms:555-0199), componer un correo electrónico (mailto:support@orgzly.com) o visitar una página web ([[http://www.orgzly.com][Orgzly.com]]).
+Marcar un número de teléfono (tel:555-0199), enviar SMS (sms:555-0199), componer un correo electrónico (mailto:support@orgzly.com) o visitar una página web ([[https://www.orgzly.com][Orgzly.com]]).
 
 También puede enlazar a otra nota o bloc de notas dentro de la aplicación.
 
-Consulte http://www.orgzly.com/help#links para obtener más información.
+Consulte https://www.orgzly.com/help#links para obtener más información.
 
 ** Están soportados formatos tipográficos básicos
 
@@ -75,7 +75,7 @@ Pulsa la caja de verificación para alternar su estado. Pulsa el botón de nueva
 
 Puede buscar notas por estado, etiqueta, fecha de inicio, fecha límite, etc.
 
-Visite http://www.orgzly.com/help#search para aprender más.
+Visite https://www.orgzly.com/help#search para aprender más.
 
 ** Las consultas se pueden guardar como accesos rápidos
 

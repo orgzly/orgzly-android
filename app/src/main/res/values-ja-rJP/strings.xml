@@ -154,8 +154,9 @@
     <string name="searches">検索</string>
     <string name="search">検索</string>
     <string name="new_search">新しい検索</string>
-    <string name="no_repos">リポジトリが設定されていません</string>
     <string name="multiple_repos">複数のリポジトリが存在します</string>
+    <string name="no_repos">リポジトリが設定されていません</string>
+    <string name="no_books">No notebooks found</string>
     <string name="book_encoding">メモ帳のエンコーディング</string>
     <string name="collecting_notebooks_in_progress">メモ帳を集めています…</string>
     <string name="syncing_in_progress">同期中…</string>
@@ -278,6 +279,10 @@
     <string name="notebooks_sort_order">メモ帳の並び順</string>
     <string name="font_size">フォントサイズ</string>
     <string name="color_scheme">カラースキーム</string>
+    <string name="other">Other</string>
+    <string name="theme">Theme</string>
+    <string name="light_scheme">Light scheme</string>
+    <string name="dark_scheme">Dark scheme</string>
     <string name="monospaced_font">等幅フォント</string>
     <string name="monospaced_font_summary">メモの内容とメモ帳の表紙に等幅フォントを使う</string>
     <string name="reversed_note_click_action">メモのタップとロングタップを入れ替える</string>
@@ -345,6 +350,7 @@
     <string name="displayed_book_details_last_action">最後のアクション</string>
     <string name="displayed_book_details_notes_count">メモの数</string>
     <string name="color_scheme_system">システム</string>
+    <string name="color_scheme_dynamic">Dynamic color</string>
     <string name="color_scheme_light">ライト</string>
     <string name="color_scheme_dark">ダーク</string>
     <string name="color_scheme_black">ブラック</string>
@@ -557,4 +563,12 @@
     <string name="developer_options">開発者オプション</string>
     <string name="git_repository_type">リポジトリの種類</string>
     <string name="in_development">開発中</string>
+    <string name="select_notebook">Select notebook</string>
+    <string name="highlight_rich_text_being_edited">Highlight rich text being edited</string>
+    <string name="use_alarm_clock_for_tod_reminders">Use alarm clock</string>
+    <string name="use_alarm_clock_for_tod_reminders_summary">For reminders with the time of day set</string>
+    <string name="log_major_events">Log major events</string>
+    <string name="logs">Logs</string>
+    <string name="share">Share</string>
+    <string name="refresh_data">Refresh</string>
 </resources>

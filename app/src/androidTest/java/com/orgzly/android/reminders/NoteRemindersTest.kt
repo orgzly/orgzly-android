@@ -23,7 +23,7 @@ class NoteRemindersTest : OrgzlyTest() {
         val now = Instant.parse("2017-03-15")
 
         val notes = getNoteReminders(
-                context, dataRepository, now, LastRun(), NoteReminders.TIME_FROM_NOW)
+                context, dataRepository, now, LastRun(), NoteReminders.INTERVAL_FROM_NOW)
 
         Assert.assertEquals(1, notes.size.toLong())
     }
@@ -45,7 +45,7 @@ class NoteRemindersTest : OrgzlyTest() {
         val now = Instant.parse("2017-03-15T13:00:00") // Wed
 
         val notes = getNoteReminders(
-                context, dataRepository, now, LastRun(), NoteReminders.TIME_FROM_NOW)
+                context, dataRepository, now, LastRun(), NoteReminders.INTERVAL_FROM_NOW)
 
         Assert.assertEquals(2, notes.size.toLong())
 
@@ -74,7 +74,7 @@ class NoteRemindersTest : OrgzlyTest() {
         val now = Instant.parse("2017-03-15T13:00:00") // Wed
 
         val notes = getNoteReminders(
-                context, dataRepository, now, LastRun(), NoteReminders.TIME_FROM_NOW)
+                context, dataRepository, now, LastRun(), NoteReminders.INTERVAL_FROM_NOW)
 
         Assert.assertEquals(2, notes.size.toLong())
 
@@ -103,7 +103,7 @@ class NoteRemindersTest : OrgzlyTest() {
         val now = Instant.parse("2017-03-16T07:00:00")
 
         val notes = getNoteReminders(
-                context, dataRepository, now, LastRun(), NoteReminders.TIME_FROM_NOW)
+                context, dataRepository, now, LastRun(), NoteReminders.INTERVAL_FROM_NOW)
 
         Assert.assertEquals(1, notes.size.toLong())
 

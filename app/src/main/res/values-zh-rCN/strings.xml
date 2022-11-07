@@ -154,8 +154,9 @@
     <string name="searches">搜索</string>
     <string name="search">搜索</string>
     <string name="new_search">新建搜索</string>
-    <string name="no_repos">无已配置的存储库</string>
     <string name="multiple_repos">存在多个存储库</string>
+    <string name="no_repos">无已配置的存储库</string>
+    <string name="no_books">未找到笔记本</string>
     <string name="book_encoding">笔记本编码</string>
     <string name="collecting_notebooks_in_progress">收藏笔记本...</string>
     <string name="syncing_in_progress">正在同步…</string>
@@ -278,6 +279,10 @@
     <string name="notebooks_sort_order">笔记本排序方式</string>
     <string name="font_size">字体大小</string>
     <string name="color_scheme">颜色主题</string>
+    <string name="other">其他</string>
+    <string name="theme">主题</string>
+    <string name="light_scheme">明亮配色方案</string>
+    <string name="dark_scheme">暗色方案</string>
     <string name="monospaced_font">等宽字体</string>
     <string name="monospaced_font_summary">为笔记内容和笔记本序言使用等宽字体</string>
     <string name="reversed_note_click_action">反转笔记点击动作</string>
@@ -345,6 +350,7 @@
     <string name="displayed_book_details_last_action">最后的操作</string>
     <string name="displayed_book_details_notes_count">笔记数量</string>
     <string name="color_scheme_system">系统</string>
+    <string name="color_scheme_dynamic">动态颜色</string>
     <string name="color_scheme_light">亮</string>
     <string name="color_scheme_dark">暗</string>
     <string name="color_scheme_black">黑色</string>
@@ -557,4 +563,12 @@
     <string name="developer_options">开发者选项</string>
     <string name="git_repository_type">Git 仓库类型</string>
     <string name="in_development">开发中</string>
+    <string name="select_notebook">选择笔记本</string>
+    <string name="highlight_rich_text_being_edited">高亮正被编辑的富文本</string>
+    <string name="use_alarm_clock_for_tod_reminders">使用闹钟</string>
+    <string name="use_alarm_clock_for_tod_reminders_summary">对于设置了几点几分的提醒</string>
+    <string name="log_major_events">记录重要事件</string>
+    <string name="logs">日志</string>
+    <string name="share">分享</string>
+    <string name="refresh_data">刷新</string>
 </resources>

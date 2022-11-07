@@ -16,8 +16,8 @@ import java.util.*
 object NoteReminders {
     // private val TAG: String = NoteReminders::class.java.name
 
-    const val TIME_BEFORE_NOW = 1
-    const val TIME_FROM_NOW = 2
+    const val INTERVAL_FROM_LAST_TO_NOW = 1
+    const val INTERVAL_FROM_NOW = 2
 
     @JvmStatic
     fun getNoteReminders(
@@ -25,7 +25,7 @@ object NoteReminders {
         dataRepository: DataRepository,
         now: ReadableInstant,
         lastRun: LastRun,
-        beforeOrAfter: Int): List<NoteReminder> {
+        intervalType: Int): List<NoteReminder> {
 
         val result: MutableList<NoteReminder> = ArrayList()
 
@@ -33,15 +33,7 @@ object NoteReminders {
             if (isRelevantNoteTime(context, noteTime)) {
                 val orgDateTime = OrgDateTime.parse(noteTime.orgTimestampString)
 
-                val payload = NoteReminderPayload(
-                    noteTime.noteId,
-                    noteTime.bookId,
-                    noteTime.bookName,
-                    noteTime.title,
-                    noteTime.timeType,
-                    orgDateTime)
-
-                val interval = intervalToConsider(beforeOrAfter, now, lastRun, noteTime.timeType)
+                val interval = intervalToConsider(intervalType, now, lastRun, noteTime.timeType)
 
                 // Deadline warning period
 
@@ -72,6 +64,14 @@ object NoteReminders {
 //                    }
 
                 if (time != null) {
+                    val payload = NoteReminderPayload(
+                        noteTime.noteId,
+                        noteTime.bookId,
+                        noteTime.bookName,
+                        noteTime.title,
+                        noteTime.timeType,
+                        orgDateTime)
+
                     result.add(NoteReminder(time, payload))
                 }
             }
@@ -103,11 +103,11 @@ object NoteReminders {
     }
 
     private fun intervalToConsider(
-        beforeOrAfter: Int, now: ReadableInstant, lastRun: LastRun, timeType: Int
+        intervalType: Int, now: ReadableInstant, lastRun: LastRun, timeType: Int
     ): Pair<ReadableInstant, ReadableInstant?> {
 
-        when (beforeOrAfter) {
-            TIME_BEFORE_NOW -> {
+        when (intervalType) {
+            INTERVAL_FROM_LAST_TO_NOW -> {
                 val from = when (timeType) {
                     ReminderTimeDao.SCHEDULED_TIME -> {
                         lastRun.scheduled
@@ -123,7 +123,7 @@ object NoteReminders {
                 return Pair(from ?: now, now)
             }
 
-            TIME_FROM_NOW -> {
+            INTERVAL_FROM_NOW -> {
                 return Pair(now, null)
             }
 

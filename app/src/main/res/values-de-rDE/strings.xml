@@ -157,8 +157,9 @@
     <string name="searches">Suchen</string>
     <string name="search">Suche</string>
     <string name="new_search">Neue Suche</string>
-    <string name="no_repos">Keine Ablageorte eingerichtet</string>
     <string name="multiple_repos">Es existieren mehrere Ablageorte</string>
+    <string name="no_repos">Keine Ablageorte eingerichtet</string>
+    <string name="no_books">Keine Notizbücher gefunden</string>
     <string name="book_encoding">Zeichensatz für das Notizbuch</string>
     <string name="collecting_notebooks_in_progress">Notizbücher werden gesammelt …</string>
     <string name="syncing_in_progress">Synchronisation läuft …</string>
@@ -281,6 +282,10 @@
     <string name="notebooks_sort_order">Sortierreihenfolge für Notizbücher</string>
     <string name="font_size">Schriftgröße</string>
     <string name="color_scheme">Farbschema</string>
+    <string name="other">Sonstiges</string>
+    <string name="theme">Design</string>
+    <string name="light_scheme">Helles Schema</string>
+    <string name="dark_scheme">Dunkles Schema</string>
     <string name="monospaced_font">Nichtproportionale Schriftart</string>
     <string name="monospaced_font_summary">Für Notizinhalt und Notizbucheinleitung nichtproportionale Schriftart verwenden</string>
     <string name="reversed_note_click_action">Notizklick- und Langklick-Aktionen tauschen</string>
@@ -348,6 +353,7 @@
     <string name="displayed_book_details_last_action">Letzte Aktion</string>
     <string name="displayed_book_details_notes_count">Notizenanzahl</string>
     <string name="color_scheme_system">System</string>
+    <string name="color_scheme_dynamic">Dynamische Farbe</string>
     <string name="color_scheme_light">Hell</string>
     <string name="color_scheme_dark">Dunkel</string>
     <string name="color_scheme_black">Schwarz</string>
@@ -435,7 +441,7 @@
     <string name="list_widget_nothing_selected">Keine Suche ausgewählt</string>
     <string name="auto_sync">Auto-Synchronisation</string>
     <string name="auto_sync_experimental_summary">Wird nur für lokale Ablageorte verwendet</string>
-    <string name="auto_sync_summary">Not supported for Dropbox</string>
+    <string name="auto_sync_summary">Für Dropbox nicht unterstützt</string>
     <string name="auto_sync_warning">Je nach dem welche Optionen gewählt wurden, kann die Synchronisierung sehr oft durchgeführt werden. Nach dem Bearbeiten eines Notizbuches wird der gesamte Inhalt zum Ablageort übertragen. Einige Operationen werden verzögert ausgeführt, wenn gerade ein Synchronisierungs-Vorgang läuft.</string>
     <string name="pref_title_sync_after_note_create">Notiz erstellt</string>
     <string name="pref_summary_sync_after_note_create">Nach Erstellen einer neuen Notiz synchronisieren</string>
@@ -565,7 +571,15 @@
     <string name="content">Inhalt</string>
     <string name="prepend">Voranstellen</string>
     <string name="insert_new_note_at_beginning">Neue Notiz am Anfang einfügen</string>
-    <string name="developer_options">Developer options</string>
-    <string name="git_repository_type">Git repository type</string>
-    <string name="in_development">In development</string>
+    <string name="developer_options">Entwickleroptionen</string>
+    <string name="git_repository_type">Typ des Git-Repositories</string>
+    <string name="in_development">In Entwicklung</string>
+    <string name="select_notebook">Notizbuch auswählen</string>
+    <string name="highlight_rich_text_being_edited">Bearbeiteten Rich-Text hervorheben</string>
+    <string name="use_alarm_clock_for_tod_reminders">Wecker verwenden</string>
+    <string name="use_alarm_clock_for_tod_reminders_summary">Für Erinnerungen mit festgelegter Uhrzeit</string>
+    <string name="log_major_events">Hauptereignisse protokollieren</string>
+    <string name="logs">Protokolle</string>
+    <string name="share">Teilen</string>
+    <string name="refresh_data">Aktualisieren</string>
 </resources>

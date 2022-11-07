@@ -64,7 +64,7 @@ class SavedSearchesAdapter(
             name.text = savedSearch.name
             query.text = savedSearch.query
 
-            getSelection().setIsSelectedBackground(container, savedSearch.id)
+            getSelection().setBackgroundIfSelected(container, savedSearch.id)
         }
     }
 

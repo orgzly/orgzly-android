@@ -13,7 +13,10 @@ import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.ui.*
+import com.orgzly.android.ui.CommonViewModel
+import com.orgzly.android.ui.NotePlace
+import com.orgzly.android.ui.Place
+import com.orgzly.android.ui.SingleLiveEvent
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.share.ShareActivity
 import com.orgzly.android.usecase.*
@@ -43,18 +46,7 @@ class NoteViewModel(
     private val content = initialData.content
     private val attachmentUri = initialData.attachmentUri
 
-    enum class ViewEditMode {
-        VIEW,
-        EDIT,
-        EDIT_TITLE_WITH_KEYBOARD,
-        EDIT_CONTENT_WITH_KEYBOARD
-    }
-
-    val viewEditMode = MutableLiveData(startMode())
-
-
-    val bookView: MutableLiveData<BookView> = MutableLiveData()
-
+    val bookView: MutableLiveData<BookView?> = MutableLiveData()
 
     val tags: LiveData<List<String>> by lazy {
         dataRepository.selectAllTagsLiveData()
@@ -75,15 +67,6 @@ class NoteViewModel(
 
     private var originalHash: Long = 0L
 
-    companion object {
-        const val APP_BAR_DEFAULT_MODE = 0
-        const val APP_BAR_EDIT_MODE = 1
-    }
-
-    val appBar: AppBar = AppBar(mapOf(
-        APP_BAR_DEFAULT_MODE to null,
-        APP_BAR_EDIT_MODE to APP_BAR_DEFAULT_MODE))
-
     fun loadData() {
         App.EXECUTORS.diskIO().execute {
             val book = dataRepository.getBookView(bookId)
@@ -98,7 +81,7 @@ class NoteViewModel(
             }
 
             if (isNew()) {
-                notePayload = NoteBuilder.newPayload(App.getAppContext(), title ?: "", content, attachmentUri)
+                notePayload = NoteBuilder.newPayload(App.getAppContext(), title.orEmpty(), content, attachmentUri)
                 // Auto generate ID property if it has attachment.
                 if (attachmentUri != null && AppPreferences.attachMethod(App.getAppContext()) == ShareActivity.ATTACH_METHOD_COPY_ID) {
                     updatePayloadCreateIdProperty()
@@ -143,61 +126,6 @@ class NoteViewModel(
         App.EXECUTORS.diskIO().execute {
             bookChangeRequestEvent.postValue(dataRepository.getBooks())
         }
-    }
-
-    private fun startMode(): ViewEditMode {
-        // Always start new notes in edit mode
-        if (isNew()) {
-            return ViewEditMode.EDIT_TITLE_WITH_KEYBOARD
-        }
-
-        return when (AppPreferences.noteDetailsOpeningMode(App.getAppContext())) {
-            "last" ->
-                return when (AppPreferences.noteDetailsLastMode(App.getAppContext())) {
-                    "view" -> ViewEditMode.VIEW
-                    "edit" -> ViewEditMode.EDIT
-                    else -> ViewEditMode.EDIT
-                }
-            "view" -> ViewEditMode.VIEW
-            "edit" -> ViewEditMode.EDIT
-            else -> ViewEditMode.EDIT
-        }
-    }
-
-    fun toEditTitleMode(saveMode: Boolean = true) {
-        viewEditMode.postValue(ViewEditMode.EDIT_TITLE_WITH_KEYBOARD)
-        if (saveMode) {
-            saveCurrentMode(ViewEditMode.EDIT_TITLE_WITH_KEYBOARD)
-        }
-    }
-
-    fun toEditContentMode() {
-        viewEditMode.postValue(ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD)
-        saveCurrentMode(ViewEditMode.EDIT_CONTENT_WITH_KEYBOARD)
-    }
-
-    fun toViewMode() {
-        viewEditMode.postValue(ViewEditMode.VIEW)
-        saveCurrentMode(ViewEditMode.VIEW)
-
-    }
-
-    fun toEditMode() {
-        viewEditMode.postValue(ViewEditMode.EDIT)
-        saveCurrentMode(ViewEditMode.EDIT)
-    }
-
-    private fun saveCurrentMode(mode: ViewEditMode) {
-        // Only remember last mode when opening existing notes
-        if (isNew()) {
-            return
-        }
-
-        val context = App.getAppContext()
-
-        AppPreferences.noteDetailsLastMode(
-            context, if (mode == ViewEditMode.VIEW) "view" else "edit")
-
     }
 
     fun savePayloadToBundle(outState: Bundle) {
@@ -385,5 +313,8 @@ class NoteViewModel(
         } else {
             true
         }
+    }
+
+    companion object {
     }
 }

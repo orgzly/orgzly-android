@@ -28,7 +28,7 @@ public class NewNoteBroadcastReceiver extends BroadcastReceiver {
             App.EXECUTORS.diskIO().execute(() ->
                     UseCaseRunner.run(new NoteCreateFromNotification(title)));
 
-            Notifications.createNewNoteNotification(context);
+            Notifications.showNewNoteNotification(context);
         }
     }
 

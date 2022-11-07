@@ -2,35 +2,40 @@ package com.orgzly.android.ui
 
 import android.text.Spanned
 
+
 object SpanUtils {
     @JvmStatic
-    fun <T>forEachSpan(
+    inline fun <T>forEachSpan(
         spanned: Spanned,
         type: Class<T>,
-        action: (span: T, start: Int, end: Int) -> Any) {
+        start: Int = 0,
+        end: Int = spanned.length,
+        action: (span: T, curr: Int, next: Int) -> Unit) {
 
-        forEachTransition(spanned, type) { spans, start, end ->
+        forEachTransition(spanned, type, start, end) { spans, curr, next ->
             spans.forEach { span ->
-                action(span, start, end)
+                action(span, curr, next)
             }
         }
     }
 
     @JvmStatic
-    fun <T>forEachTransition(
+    inline fun <T>forEachTransition(
         spanned: Spanned,
         type: Class<T>,
-        action: (spans: Array<T>, start: Int, end: Int) -> Any) {
+        start: Int = 0,
+        end: Int = spanned.length,
+        action: (spans: Array<T>, curr: Int, next: Int) -> Unit) {
 
-        var i = 0
-        while (i < spanned.length) {
-            val next = spanned.nextSpanTransition(i, spanned.length, type)
+        var curr = start
+        while (curr < end) {
+            val next = spanned.nextSpanTransition(curr, end, type)
 
-            val spans = spanned.getSpans(i, next, type)
+            val spans = spanned.getSpans(curr, next, type)
 
-            action(spans, i, next)
+            action(spans, curr, next)
 
-            i = next
+            curr = next
         }
     }
 

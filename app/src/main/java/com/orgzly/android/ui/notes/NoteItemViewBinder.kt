@@ -2,21 +2,17 @@ package com.orgzly.android.ui.notes
 
 import android.content.Context
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.res.ResourcesCompat
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.AttachmentSpanLoader
-import com.orgzly.android.ui.ImageLoader
 import com.orgzly.android.ui.TimeType
 import com.orgzly.android.ui.util.TitleGenerator
 import com.orgzly.android.ui.util.styledAttributes
@@ -27,7 +23,6 @@ import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.UserTimeFormatter
 import com.orgzly.databinding.ItemAgendaDividerBinding
 import com.orgzly.databinding.ItemHeadBinding
-import java.lang.IllegalStateException
 
 class NoteItemViewBinder(private val context: Context, private val inBook: Boolean) {
     private val attrs: Attrs = Attrs.obtain(context)
@@ -41,7 +36,6 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
         val titleAttributes = TitleGenerator.TitleAttributes(
                 attrs.todoColor,
                 attrs.doneColor,
-                attrs.unknownColor,
                 attrs.postTitleTextSize,
                 attrs.postTitleTextColor)
 
@@ -51,21 +45,13 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
     }
 
     fun bind(holder: NoteItemViewHolder, noteView: NoteView, agendaTimeType: TimeType? = null) {
-
         setupTitle(holder, noteView)
-
         setupBookName(holder, noteView)
-
         setupPlanningTimes(holder, noteView, agendaTimeType)
-
         setupContent(holder, noteView.note)
-
         setupIndent(holder, noteView.note)
-
         setupBullet(holder, noteView.note)
-
         setupFoldingButtons(holder, noteView.note)
-
         setupAlpha(holder, noteView)
     }
 
@@ -104,7 +90,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
     }
 
     private fun setupTitle(holder: NoteItemViewHolder, noteView: NoteView) {
-        holder.binding.itemHeadTitle.setText(generateTitle(noteView))
+        holder.binding.itemHeadTitle.setVisibleText(generateTitle(noteView))
     }
 
     fun generateTitle(noteView: NoteView): CharSequence {
@@ -112,31 +98,22 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
     }
 
     private fun setupContent(holder: NoteItemViewHolder, note: Note) {
-        holder.binding.itemHeadContent.setText(note.content)
-
         if (note.hasContent() && titleGenerator.shouldDisplayContent(note)) {
             if (AppPreferences.isFontMonospaced(context)) {
-                holder.binding.itemHeadContent.typeface = Typeface.MONOSPACE
+                holder.binding.itemHeadContent.setTypeface(Typeface.MONOSPACE)
             }
 
+            holder.binding.itemHeadContent.noteId = note.id
             holder.binding.itemHeadContent.setSourceText(note.content)
 
             /* If content changes (for example by toggling the checkbox), update the note. */
-            holder.binding.itemHeadContent.onUserTextChangeListener = Runnable {
-                if (holder.binding.itemHeadContent.getSourceText() != null) {
-                    val useCase = NoteUpdateContent(
-                            note.position.bookId,
-                            note.id,
-                            holder.binding.itemHeadContent.getSourceText()?.toString())
+            holder.binding.itemHeadContent.setOnUserTextChangeListener { str ->
+                val useCase = NoteUpdateContent(note.position.bookId, note.id, str)
 
-                    App.EXECUTORS.diskIO().execute {
-                        UseCaseRunner.run(useCase)
-                    }
+                App.EXECUTORS.diskIO().execute {
+                    UseCaseRunner.run(useCase)
                 }
             }
-
-            AttachmentSpanLoader.loadAttachmentPaths(note.id, holder.binding.itemHeadContent)
-            ImageLoader.loadImages(holder.binding.itemHeadContent)
 
             holder.binding.itemHeadContent.visibility = View.VISIBLE
 
@@ -491,7 +468,6 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
     private data class Attrs(
         @ColorInt val todoColor: Int,
         @ColorInt val doneColor: Int,
-        @ColorInt val unknownColor: Int,
         val postTitleTextSize: Int,
         @ColorInt val postTitleTextColor: Int
     ) {
@@ -502,16 +478,14 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
                     intArrayOf(
                         R.attr.item_head_state_todo_color,
                         R.attr.item_head_state_done_color,
-                        R.attr.item_head_state_unknown_color,
                         R.attr.item_head_post_title_text_size,
                         android.R.attr.textColorTertiary)) { typedArray ->
 
                     Attrs(
                         typedArray.getColor(0, 0),
                         typedArray.getColor(1, 0),
-                        typedArray.getColor(2, 0),
-                        typedArray.getDimensionPixelSize(3, 0),
-                        typedArray.getColor(4, 0))
+                        typedArray.getDimensionPixelSize(2, 0),
+                        typedArray.getColor(3, 0))
                 }
             }
         }

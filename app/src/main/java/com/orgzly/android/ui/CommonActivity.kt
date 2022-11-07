@@ -55,18 +55,6 @@ abstract class CommonActivity : AppCompatActivity() {
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Received broadcast: $intent")
 
             when (intent.action) {
-                AppIntent.ACTION_DB_UPGRADE_STARTED -> {
-                    whatsNewDialog?.getButton(AlertDialog.BUTTON_POSITIVE)?.setText(R.string.running_database_update)
-                    whatsNewDialog?.getButton(DialogInterface.BUTTON_POSITIVE)?.isEnabled = false
-                    whatsNewDialog?.setCancelable(false)
-                }
-
-                AppIntent.ACTION_DB_UPGRADE_ENDED -> {
-                    whatsNewDialog?.getButton(AlertDialog.BUTTON_POSITIVE)?.setText(R.string.ok)
-                    whatsNewDialog?.getButton(DialogInterface.BUTTON_POSITIVE)?.isEnabled = true
-                    whatsNewDialog?.setCancelable(true)
-                }
-
                 AppIntent.ACTION_BOOK_IMPORTED ->
                     showSnackbar(R.string.notebook_imported)
 
@@ -153,15 +141,11 @@ abstract class CommonActivity : AppCompatActivity() {
         setupTheme()
 
         // Required to immediately change layout direction after locale change
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            window.decorView.layoutDirection = baseContext.resources.configuration.layoutDirection
-        }
+        window.decorView.layoutDirection = baseContext.resources.configuration.layoutDirection
 
         super.onCreate(savedInstanceState)
 
         val intentFilter = IntentFilter()
-        intentFilter.addAction(AppIntent.ACTION_DB_UPGRADE_STARTED)
-        intentFilter.addAction(AppIntent.ACTION_DB_UPGRADE_ENDED)
         intentFilter.addAction(AppIntent.ACTION_BOOK_IMPORTED)
         intentFilter.addAction(AppIntent.ACTION_DB_CLEARED)
         intentFilter.addAction(AppIntent.ACTION_UPDATING_NOTES_STARTED)
@@ -207,10 +191,12 @@ abstract class CommonActivity : AppCompatActivity() {
     protected fun displayWhatsNewDialog() {
         whatsNewDialog?.dismiss()
 
-        whatsNewDialog = WhatsNewDialog.create(this)
-        whatsNewDialog?.let {
-            it.setOnDismissListener { whatsNewDialog = null }
-            it.show()
+        whatsNewDialog = WhatsNewDialog.create(this).apply {
+            setOnDismissListener {
+                whatsNewDialog = null
+            }
+
+            show()
         }
     }
 
@@ -224,22 +210,44 @@ abstract class CommonActivity : AppCompatActivity() {
     }
 
     private fun setupTheme() {
-        // Set theme (color scheme)
-        when (AppPreferences.colorScheme(this)) {
-            getString(R.string.pref_value_color_scheme_system) ->
-                setTheme(R.style.AppDayNightTheme)
+        setColorScheme()
+        applyFontStyle()
+    }
 
-            getString(R.string.pref_value_color_scheme_dark) ->
-                setTheme(R.style.AppDarkTheme_Dark)
+    private fun setColorScheme() {
+        when (AppPreferences.colorTheme(this)) {
+            "light" ->
+                setLightScheme()
 
-            getString(R.string.pref_value_color_scheme_black) ->
-                setTheme(R.style.AppDarkTheme_Black)
+            "dark" ->
+                setDarkScheme()
 
-            else ->
-                setTheme(R.style.AppLightTheme_Light)
+            else -> { // "system"
+                if ("day" == theme.resources.getString(R.string.day_night)) {
+                    setLightScheme()
+                } else {
+                    setDarkScheme()
+                }
+            }
         }
+    }
 
-        // Apply font style based on preferences
+    private fun setLightScheme() {
+        when (AppPreferences.lightColorScheme(this)) {
+            "dynamic" -> setTheme(R.style.AppLightTheme)
+            "light" -> setTheme(R.style.AppLightTheme_Light)
+        }
+    }
+
+    private fun setDarkScheme() {
+        when (AppPreferences.darkColorScheme(this)) {
+            "dynamic" -> setTheme(R.style.AppDarkTheme)
+            "dark" -> setTheme(R.style.AppDarkTheme_Dark)
+            "black" -> setTheme(R.style.AppDarkTheme_Black)
+        }
+    }
+
+    private fun applyFontStyle() {
         when (AppPreferences.fontSize(this)) {
             getString(R.string.pref_value_font_size_large) ->
                 theme.applyStyle(R.style.FontSize_Large, true)
@@ -338,7 +346,9 @@ abstract class CommonActivity : AppCompatActivity() {
 
         private val PREFS_REQUIRE_IMMEDIATE_ACTIVITY_RECREATE = listOf(
             R.string.pref_key_font_size,
-            R.string.pref_key_color_scheme,
+            R.string.pref_key_color_theme,
+            R.string.pref_key_light_color_scheme,
+            R.string.pref_key_dark_color_scheme,
             R.string.pref_key_ignore_system_locale
         )
     }

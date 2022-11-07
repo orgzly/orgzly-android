@@ -8,11 +8,12 @@ import com.orgzly.android.App
 import com.orgzly.android.AppIntent
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.ui.util.userFriendlyPeriod
+import com.orgzly.android.util.LogMajorEvents
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.async
 import com.orgzly.org.datetime.OrgDateTime
 import org.joda.time.DateTime
-import java.util.*
 import javax.inject.Inject
 
 class RemindersBroadcastReceiver : BroadcastReceiver() {
@@ -22,28 +23,26 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         App.appComponent.inject(this)
 
-        if (!areRemindersEnabled(context)) {
+        if (!anyRemindersEnabled(context, intent)) {
             return
         }
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent, intent.action, intent.extras)
 
         async {
-            val now = DateTime()
-            val lastRun = LastRun.fromPreferences(context)
-
-            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "now:$now lastRun: $lastRun")
-
-            RemindersScheduler.cancelAll(context)
-
             when (intent.action) {
                 Intent.ACTION_BOOT_COMPLETED,
-                AppIntent.ACTION_REMINDER_DATA_CHANGED -> {
-                    // Nothing to do, just schedule the next alert below
-                }
-
+                AppIntent.ACTION_REMINDER_DATA_CHANGED,
                 AppIntent.ACTION_REMINDER_TRIGGERED -> {
-                    reminderTriggered(context, now, lastRun)
+                    val now = DateTime()
+                    val lastRun = LastRun.fromPreferences(context)
+
+                    RemindersScheduler.cancelAll(context)
+
+                    notifyForRemindersSinceLastRun(context, now, lastRun)
+
+                    scheduleNextReminder(context, now, lastRun)
+                    LastRun.toPreferences(context, now)
                 }
 
                 AppIntent.ACTION_REMINDER_SNOOZE_ENDED -> {
@@ -59,19 +58,41 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
                 }
             }
 
-            scheduleNextReminder(context, now, lastRun)
-
-            LastRun.toPreferences(context, now)
         }
     }
 
-    private fun areRemindersEnabled(context: Context): Boolean {
-        return if (AppPreferences.remindersForScheduledEnabled(context)
-            || AppPreferences.remindersForDeadlineEnabled(context)
-            || AppPreferences.remindersForEventsEnabled(context)) {
+    private fun anyRemindersEnabled(context: Context, intent: Intent): Boolean {
+        return if (AppPreferences.remindersForScheduledEnabled(context)) {
+            if (LogMajorEvents.isEnabled()) {
+                LogMajorEvents.log(
+                    LogMajorEvents.REMINDERS,
+                    "Intent accepted - scheduled time reminder is enabled: $intent"
+                )
+            }
+            true
+        } else if (AppPreferences.remindersForDeadlineEnabled(context)) {
+            if (LogMajorEvents.isEnabled()) {
+                LogMajorEvents.log(
+                    LogMajorEvents.REMINDERS,
+                    "Intent accepted - deadline time reminder is enabled: $intent"
+                )
+            }
+            true
+        } else if (AppPreferences.remindersForEventsEnabled(context)) {
+            if (LogMajorEvents.isEnabled()) {
+                LogMajorEvents.log(
+                    LogMajorEvents.REMINDERS,
+                    "Intent accepted - events reminder is enabled: $intent"
+                )
+            }
             true
         } else {
-            logAction("All reminders are disabled")
+            if (LogMajorEvents.isEnabled()) {
+                LogMajorEvents.log(
+                    LogMajorEvents.REMINDERS,
+                    "Intent ignored - all reminders are disabled: $intent"
+                )
+            }
             false
         }
     }
@@ -79,27 +100,38 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
     /**
      * Display reminders for all notes with times between previous run and now.
      */
-    private fun reminderTriggered(context: Context, now: DateTime, lastRun: LastRun?) {
+    private fun notifyForRemindersSinceLastRun(context: Context, now: DateTime, lastRun: LastRun?) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        val msg = if (lastRun != null) {
-            val reminders = NoteReminders.getNoteReminders(
-                context, dataRepository, now, lastRun, NoteReminders.TIME_BEFORE_NOW)
+        if (lastRun != null) {
+            val notes = NoteReminders.getNoteReminders(
+                context, dataRepository, now, lastRun, NoteReminders.INTERVAL_FROM_LAST_TO_NOW)
 
-            if (reminders.isNotEmpty()) {
-                RemindersNotifications.showNotification(context, reminders)
+            if (notes.isNotEmpty()) {
+                // TODO: Show less, show summary
+                val lastNotes = notes.takeLast(20)
 
-                "Found ${reminders.size} notes between $lastRun and $now"
+                if (LogMajorEvents.isEnabled()) {
+                    LogMajorEvents.log(
+                        LogMajorEvents.REMINDERS,
+                        "Since last run: Found ${notes.size} notes (showing ${lastNotes.size}) between $lastRun and $now")
+                }
+
+                RemindersNotifications.showNotifications(context, lastNotes)
 
             } else {
-                "No notes found between $lastRun and $now"
+                if (LogMajorEvents.isEnabled()) {
+                    LogMajorEvents.log(
+                        LogMajorEvents.REMINDERS,
+                        "Since last run: No notes found between $lastRun and $now")
+                }
             }
 
         } else {
-            "No previous run"
+            if (LogMajorEvents.isEnabled()) {
+                LogMajorEvents.log(LogMajorEvents.REMINDERS, "Since last run: No previous run")
+            }
         }
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, msg)
     }
 
     /**
@@ -107,12 +139,13 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
      */
     private fun scheduleNextReminder(context: Context, now: DateTime, lastRun: LastRun) {
         val notes = NoteReminders.getNoteReminders(
-            context, dataRepository, now, lastRun, NoteReminders.TIME_FROM_NOW)
+            context, dataRepository, now, lastRun, NoteReminders.INTERVAL_FROM_NOW)
 
         if (notes.isNotEmpty()) {
             // Schedule only the first upcoming time
             val firstNote = notes.first()
 
+            val id = firstNote.payload.noteId
             val title = firstNote.payload.title
             val runAt = firstNote.runTime.millis
             val hasTime = firstNote.payload.orgDateTime.hasTime()
@@ -123,24 +156,23 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
                 inMs = 1
             }
 
-            RemindersScheduler.cancelAll(context)
+            if (LogMajorEvents.isEnabled()) {
+                val inS = inMs.userFriendlyPeriod()
+                LogMajorEvents.log(
+                    LogMajorEvents.REMINDERS,
+                    "Next: Found ${notes.size} notes from $now and scheduling first in $inS ($inMs ms): \"$title\" (id:$id)"
+                )
+            }
+
             RemindersScheduler.scheduleReminder(context, inMs, hasTime)
 
-            logForDebuggingScheduled(inMs, title)
-
         } else {
-            logAction("No notes found")
+            if (LogMajorEvents.isEnabled()) {
+                LogMajorEvents.log(
+                    LogMajorEvents.REMINDERS, "Next: No notes found from $now"
+                )
+            }
         }
-    }
-
-    private fun logForDebuggingScheduled(exactMs: Long, title: String) {
-        val log = String.format(
-            Locale.getDefault(),
-            "In %d sec for note \"%s\"",
-            exactMs / 1000,
-            title)
-
-        logAction(log)
     }
 
     private fun snoozeEnded(context: Context, noteId: Long, noteTimeType: Int, timestamp: Long) {
@@ -155,6 +187,8 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
 
                 val orgDateTime = OrgDateTime.parse(noteTime.orgTimestampString)
 
+                val timestampDateTime = DateTime(timestamp)
+
                 val payload = NoteReminderPayload(
                     noteTime.noteId,
                     noteTime.bookId,
@@ -163,8 +197,6 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
                     noteTime.timeType,
                     orgDateTime)
 
-                val timestampDateTime = DateTime(timestamp)
-
                 reminders.add(NoteReminder(timestampDateTime, payload))
             }
         }
@@ -172,29 +204,8 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Found ${reminders.size} notes")
 
         if (reminders.isNotEmpty()) {
-            RemindersNotifications.showNotification(context, reminders)
+            RemindersNotifications.showNotifications(context, reminders)
         }
-    }
-
-    /**
-     * Display notification on every attempt to schedule a reminder.
-     * Used for debugging.
-     */
-    private fun logAction(msg: String) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, msg)
-
-        //        NotificationManager notificationManager =
-//                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//
-//        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-//                .setCategory(NotificationCompat.CATEGORY_REMINDER)
-//                .setPriority(NotificationCompat.PRIORITY_MAX)
-//                .setColor(ContextCompat.getColor(this, R.color.notification))
-//                .setSmallIcon(R.drawable.cic_orgzly_notification)
-//                .setContentTitle("Next reminder")
-//                .setContentText(msg);
-//
-//        notificationManager.notify(Notifications.REMINDER_SCHEDULED, builder.build());
     }
 
     companion object {

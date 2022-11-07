@@ -6,11 +6,7 @@ import android.widget.TimePicker
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.*
 import androidx.test.espresso.Espresso.pressBack
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.longClick
-import androidx.test.espresso.action.ViewActions.replaceText
-import androidx.test.espresso.action.ViewActions.scrollTo
-import androidx.test.espresso.action.ViewActions.swipeUp
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.PickerActions.setDate
 import androidx.test.espresso.contrib.PickerActions.setTime
@@ -18,12 +14,11 @@ import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.orgzly.R
 import com.orgzly.android.OrgzlyTest
-import com.orgzly.android.espresso.EspressoUtils.*
+import com.orgzly.android.espresso.util.EspressoUtils.*
 import com.orgzly.android.ui.main.MainActivity
 import org.hamcrest.Matchers.*
 import org.junit.Before
 import org.junit.Test
-
 
 class NoteFragmentTest : OrgzlyTest() {
     private lateinit var scenario: ActivityScenario<MainActivity>
@@ -89,16 +84,16 @@ class NoteFragmentTest : OrgzlyTest() {
 
     @Test
     fun testUpdateNoteTitle() {
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note #1.")))
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText("Note #1.")))
 
         onNoteInBook(1).perform(click())
 
-        onView(withId(R.id.title))
-                .perform(*replaceTextCloseKeyboard("Note title changed"))
+        onView(withId(R.id.title)).perform(click())
+        onView(withId(R.id.title_edit)).perform(*replaceTextCloseKeyboard("Note title changed"))
 
         onView(withId(R.id.done)).perform(click()); // Note done
 
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note title changed")))
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText("Note title changed")))
     }
 
     @Test
@@ -232,7 +227,8 @@ class NoteFragmentTest : OrgzlyTest() {
     @Test
     fun testTitleCanNotBeEmptyForExistingNote() {
         onNoteInBook(1).perform(click())
-        onView(withId(R.id.title)).perform(*replaceTextCloseKeyboard(""))
+        onView(withId(R.id.title)).perform(click())
+        onView(withId(R.id.title_edit)).perform(*replaceTextCloseKeyboard(""))
         onView(withId(R.id.done)).perform(click()); // Note done
         onSnackbar().check(matches(withText(R.string.title_can_not_be_empty)))
     }
@@ -347,12 +343,12 @@ class NoteFragmentTest : OrgzlyTest() {
         /* Set date. */
         onView(withId(R.id.date_picker_button)).perform(click())
         onView(withClassName(equalTo(DatePicker::class.java.name))).perform(setDate(2014, 4, 1))
-        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click())
+        onView(withText(android.R.string.ok)).perform(click())
 
         /* Set time. */
-        onView(withId(R.id.time_picker_button)).perform(scrollTo(), click())
+        onView(withId(R.id.time_picker_button)).perform(scroll(), click())
         onView(withClassName(equalTo(TimePicker::class.java.name))).perform(setTime(15, 15))
-        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click())
+        onView(withText(android.R.string.ok)).perform(click())
 
         onView(withText(R.string.set)).perform(click())
 
@@ -375,16 +371,16 @@ class NoteFragmentTest : OrgzlyTest() {
         /* Set date. */
         onView(withId(R.id.date_picker_button)).perform(click())
         onView(withClassName(equalTo(DatePicker::class.java.name))).perform(setDate(2014, 4, 1))
-        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click())
+        onView(withText(android.R.string.ok)).perform(click())
 
         /* Set time. */
-        onView(withId(R.id.time_picker_button)).perform(scrollTo(), click())
+        onView(withId(R.id.time_picker_button)).perform(scroll(), click())
         onView(withClassName(equalTo(TimePicker::class.java.name))).perform(setTime(9, 15))
-        onView(anyOf(withText(R.string.ok), withText(R.string.done))).perform(click())
+        onView(withText(android.R.string.ok)).perform(click())
 
         /* Set repeater. */
-        onView(withId(R.id.repeater_used_checkbox)).perform(scrollTo(), click())
-        onView(withId(R.id.repeater_picker_button)).perform(scrollTo(), click())
+        onView(withId(R.id.repeater_used_checkbox)).perform(scroll(), click())
+        onView(withId(R.id.repeater_picker_button)).perform(scroll(), click())
         onView(withId(R.id.value_picker)).perform(setNumber(3))
         onView(withText(R.string.ok)).perform(click())
 
@@ -481,11 +477,12 @@ class NoteFragmentTest : OrgzlyTest() {
     @Test
     fun testContentLineCountUpdatedOnNoteUpdate() {
         onNoteInBook(1).perform(click())
-        onView(withId(R.id.content_edit)).perform(scrollTo()) // For smaller screens
-        onView(withId(R.id.content_edit)).perform(*replaceTextCloseKeyboard("a\nb\nc"))
-        onView(withId(R.id.done)).perform(click()); // Note done
+        onView(withId(R.id.content)).perform(scroll()) // For smaller screens
+        onView(withId(R.id.content)).perform(click())
+        onView(withId(R.id.content_edit)).perform(typeTextIntoFocusedView("a\nb\nc"))
+        onView(withId(R.id.done)).perform(click()) // Note done
         onNoteInBook(1, R.id.item_head_fold_button).perform(click())
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText(endsWith("3"))))
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText(endsWith("3"))))
     }
 
     @Test
@@ -504,7 +501,7 @@ class NoteFragmentTest : OrgzlyTest() {
     fun testBreadcrumbsFollowToNote() {
         onNoteInBook(3).perform(click())
         onView(withId(R.id.breadcrumbs_text)).perform(clickClickableSpan("Note #2."))
-        onView(withId(R.id.title)).check(matches(withText("Note #2.")))
+        onView(withId(R.id.title_view)).check(matches(withText("Note #2.")))
     }
 
     @Test
@@ -512,7 +509,7 @@ class NoteFragmentTest : OrgzlyTest() {
         onNoteInBook(1).perform(longClick())
         onActionItemClick(R.id.new_note, R.string.new_note);
         onView(withText(R.string.new_under)).perform(click())
-        onView(withId(R.id.title)).perform(*replaceTextCloseKeyboard("1.1"))
+        onView(withId(R.id.title_edit)).perform(*replaceTextCloseKeyboard("1.1"))
         onView(withId(R.id.breadcrumbs_text)).perform(clickClickableSpan("Note #1."))
 
         // Dialog is displayed
@@ -523,7 +520,7 @@ class NoteFragmentTest : OrgzlyTest() {
         onView(withText(R.string.cancel)).perform(click())
 
         // Title remains the same
-        onView(withId(R.id.title)).check(matches(withText("1.1")))
+        onView(withId(R.id.title_edit)).check(matches(withText("1.1")))
     }
 
     // https://github.com/orgzly/orgzly-android/issues/605
@@ -535,7 +532,6 @@ class NoteFragmentTest : OrgzlyTest() {
         onView(withText(R.string.metadata)).perform(click())
         onView(withText(R.string.show_selected)).perform(click())
         onView(withText("CREATED")).check(matches(isDisplayed()))
-        pressBack()
         pressBack()
         onNoteInBook(10).perform(click())
         onView(withText("CREATED")).check(matches(isDisplayed()))

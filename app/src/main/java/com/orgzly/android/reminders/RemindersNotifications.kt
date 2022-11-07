@@ -1,6 +1,5 @@
 package com.orgzly.android.reminders
 
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -18,6 +17,8 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.notifications.Notifications
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.ActivityUtils.mainActivityPendingIntent
+import com.orgzly.android.ui.util.getNotificationManager
+import com.orgzly.android.util.LogMajorEvents
 import com.orgzly.android.util.OrgFormatter
 import com.orgzly.android.util.UserTimeFormatter
 
@@ -26,9 +27,8 @@ object RemindersNotifications {
 
     private val LIGHTS = Triple(Color.BLUE, 1000, 5000)
 
-    fun showNotification(context: Context, notes: List<NoteReminder>) {
-        val notificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    fun showNotifications(context: Context, notes: List<NoteReminder>) {
+        val notificationManager = context.getNotificationManager()
 
         for (noteReminder in notes) {
             val wearableExtender = NotificationCompat.WearableExtender()
@@ -42,7 +42,7 @@ object RemindersNotifications {
                     .setCategory(NotificationCompat.CATEGORY_REMINDER)
                     .setPriority(NotificationCompat.PRIORITY_MAX)
                     .setColor(ContextCompat.getColor(context, R.color.notification))
-                    .setSmallIcon(R.drawable.ic_logo_for_notification)
+                    .setSmallIcon(R.drawable.cic_logo_for_notification)
 
             if (canGroupReminders()) {
                 builder.setGroup(Notifications.REMINDERS_GROUP)
@@ -89,7 +89,7 @@ object RemindersNotifications {
             } else {
                 context.getString(R.string.mark_as_done)
             }
-            val markAsDoneAction = NotificationCompat.Action(R.drawable.ic_done_white_24dp,
+            val markAsDoneAction = NotificationCompat.Action(R.drawable.ic_done,
                     doneActionText,
                     markNoteAsDonePendingIntent(
                             context, noteReminder.payload.noteId, notificationTag))
@@ -98,7 +98,7 @@ object RemindersNotifications {
 
             // Snooze action
             val snoozeActionText = context.getString(R.string.reminder_snooze)
-            val snoozeAction = NotificationCompat.Action(R.drawable.ic_snooze_white_24dp,
+            val snoozeAction = NotificationCompat.Action(R.drawable.ic_snooze,
                     snoozeActionText,
                     reminderSnoozePendingIntent(
                             context,
@@ -112,6 +112,14 @@ object RemindersNotifications {
             builder.extend(wearableExtender)
 
             notificationManager.notify(notificationTag, Notifications.REMINDER_ID, builder.build())
+
+            if (LogMajorEvents.isEnabled()) {
+                val note = "\"${noteReminder.payload.title}\" (id:${noteReminder.payload.noteId})"
+                LogMajorEvents.log(
+                    LogMajorEvents.REMINDERS,
+                    "Notified! (tag:$notificationTag id:${Notifications.REMINDER_ID}): $note"
+                )
+            }
         }
 
         // Create a group summary notification, but only if notifications can be grouped
@@ -119,7 +127,7 @@ object RemindersNotifications {
             if (notes.isNotEmpty()) {
                 val builder = NotificationCompat.Builder(context, NotificationChannels.REMINDERS)
                         .setAutoCancel(true)
-                        .setSmallIcon(R.drawable.ic_logo_for_notification)
+                        .setSmallIcon(R.drawable.cic_logo_for_notification)
                         .setGroup(Notifications.REMINDERS_GROUP)
                         .setGroupSummary(true)
 

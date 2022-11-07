@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_list_widget_layout"
+    android:theme="@style/ListWidgetTheme"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -15,7 +16,6 @@
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingLeft="8dp"
         android:paddingStart="8dp"
         android:paddingTop="4dp"
         android:paddingBottom="4dp"
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             tools:text="@string/head_title_sample"
-            android:textColor="@color/widget_light_title_color"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="@dimen/widget_title_text_size_14"
             android:maxLines="1" />
 
@@ -46,8 +46,8 @@
                 android:id="@+id/item_list_widget_book_icon"
                 android:layout_height="14dp"
                 android:layout_width="14dp"
-                android:alpha="0.55"
-                android:src="@drawable/ic_folder_open_black_18dp"
+                android:alpha="@dimen/widget_metadata_icon_alpha"
+                android:src="@drawable/ic_folder_open"
                 android:contentDescription="@string/notebook" />
 
             <TextView
@@ -55,10 +55,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="@string/book_name_sample"
-                android:textColor="@color/widget_light_post_title_color"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/widget_post_title_text_size_14"
                 android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
                 android:maxLines="1"
                 android:ellipsize="end" />
         </LinearLayout>
@@ -77,8 +76,8 @@
                 android:id="@+id/item_list_widget_scheduled_icon"
                 android:layout_height="14dp"
                 android:layout_width="14dp"
-                android:alpha="0.55"
-                android:src="@drawable/ic_today_black_18dp"
+                android:alpha="@dimen/widget_metadata_icon_alpha"
+                android:src="@drawable/ic_today"
                 android:contentDescription="@string/schedule" />
 
             <TextView
@@ -86,10 +85,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="@string/note_scheduled_sample"
-                android:textColor="@color/widget_light_post_title_color"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/widget_post_title_text_size_14"
                 android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
                 android:maxLines="1"
                 android:ellipsize="end" />
         </LinearLayout>
@@ -108,8 +106,8 @@
                 android:id="@+id/item_list_widget_deadline_icon"
                 android:layout_height="14dp"
                 android:layout_width="14dp"
-                android:alpha="0.55"
-                android:src="@drawable/ic_alarm_black_18dp"
+                android:alpha="@dimen/widget_metadata_icon_alpha"
+                android:src="@drawable/ic_alarm"
                 android:contentDescription="@string/deadline" />
 
             <TextView
@@ -117,10 +115,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="@string/note_deadline_sample"
-                android:textColor="@color/widget_light_post_title_color"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/widget_post_title_text_size_14"
                 android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
                 android:maxLines="1"
                 android:ellipsize="end" />
         </LinearLayout>
@@ -139,8 +136,8 @@
                 android:id="@+id/item_list_widget_event_icon"
                 android:layout_height="14dp"
                 android:layout_width="14dp"
-                android:alpha="0.55"
-                android:src="@drawable/ic_access_time_black_18dp"
+                android:alpha="@dimen/widget_metadata_icon_alpha"
+                android:src="@drawable/ic_access_time"
                 android:contentDescription="@string/event" />
 
             <TextView
@@ -148,10 +145,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="@string/note_deadline_sample"
-                android:textColor="@color/widget_light_post_title_color"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/widget_post_title_text_size_14"
                 android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
                 android:maxLines="1"
                 android:ellipsize="end" />
         </LinearLayout>
@@ -170,8 +166,8 @@
                 android:id="@+id/item_list_widget_closed_icon"
                 android:layout_height="14dp"
                 android:layout_width="14dp"
-                android:alpha="0.55"
-                android:src="@drawable/outline_check_circle_black_18"
+                android:alpha="@dimen/widget_metadata_icon_alpha"
+                android:src="@drawable/ic_check_circle_outline"
                 android:contentDescription="@string/closed" />
 
             <TextView
@@ -179,10 +175,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="@string/note_closed_sample"
-                android:textColor="@color/widget_light_post_title_color"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/widget_post_title_text_size_14"
                 android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
                 android:maxLines="1"
                 android:ellipsize="end" />
         </LinearLayout>
@@ -196,9 +191,9 @@
         android:minWidth="0dp"
         android:paddingTop="@dimen/widget_padding"
         android:paddingBottom="0dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/outline_check_circle_black_24" />
+        android:src="@drawable/ic_check_circle_outline" />
 </LinearLayout>

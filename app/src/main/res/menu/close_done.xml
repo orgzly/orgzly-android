@@ -6,13 +6,13 @@
 
     <item
         android:id="@+id/close"
-        android:icon="?attr/ic_close_24dp"
+        android:icon="@drawable/ic_close"
         app:showAsAction="always"
         android:title="@string/close"/>
 
     <item
         android:id="@+id/done"
-        android:icon="?attr/ic_done_24dp"
+        android:icon="@drawable/ic_done"
         app:showAsAction="always"
         android:title="@string/done"/>
 </menu>

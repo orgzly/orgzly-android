@@ -57,7 +57,6 @@ public class BookName {
                 TAG,
                 uri,
                 documentFile,
-                documentFile != null ? documentFile.getName() : "no-doc-no-name",
                 fileName);
 
         return fileName;

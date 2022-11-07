@@ -1,8 +1,6 @@
 package com.orgzly.android;
 
 public class AppIntent {
-    public static final String ACTION_DB_UPGRADE_STARTED = "com.orgzly.intent.action.DB_UPGRADE_STARTED";
-    public static final String ACTION_DB_UPGRADE_ENDED = "com.orgzly.intent.action.DB_UPGRADE_ENDED";
     public static final String ACTION_BOOK_IMPORTED = "com.orgzly.intent.action.BOOK_IMPORTED";
     public static final String ACTION_DB_CLEARED = "com.orgzly.intent.action.DB_CLEARED";
     public static final String ACTION_UPDATING_NOTES_STARTED = "com.orgzly.intent.action.UPDATING_NOTES_STARTED";

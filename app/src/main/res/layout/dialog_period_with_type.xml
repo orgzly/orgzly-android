@@ -41,8 +41,7 @@
                 android:id="@+id/type_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/space_between_content_areas"
-                android:layout_marginRight="@dimen/space_between_content_areas" />
+                android:layout_marginEnd="@dimen/space_between_content_areas" />
 
             <NumberPicker
                 android:id="@+id/value_picker"
@@ -53,8 +52,7 @@
                 android:id="@+id/unit_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_between_content_areas"
-                android:layout_marginLeft="@dimen/space_between_content_areas" />
+                android:layout_marginStart="@dimen/space_between_content_areas" />
 
         </LinearLayout>
 

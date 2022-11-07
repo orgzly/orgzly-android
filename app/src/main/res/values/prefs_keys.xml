@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Overwrite system Locale -->
     <string name="pref_key_ignore_system_locale" translatable="false">pref_key_ignore_system_locale</string>
     <bool name="pref_default_ignore_system_locale" translatable="false">false</bool>
 
     <!-- How to display notebook's preface in notebook -->
     <string name="pref_key_preface_in_book" translatable="false">pref_key_preface_in_book</string>
-    <string name="pref_default_preface_in_book" translatable="false">@string/pref_value_preface_in_book_hide</string>
+    <string name="pref_default_preface_in_book" translatable="false">@string/pref_value_preface_in_book_full</string>
     <string name="pref_value_preface_in_book_hide" translatable="false">hide</string>
     <string name="pref_value_preface_in_book_full" translatable="false">full</string>
     <string name="pref_value_preface_in_book_few_lines" translatable="false">few_lines</string>
@@ -100,24 +100,47 @@
         <item>@string/pref_value_list_density_compact</item>
     </string-array>
 
-    <!-- Color scheme. -->
-    <string name="pref_key_color_scheme" translatable="false">pref_key_color_scheme</string>
-    <string name="pref_default_color_scheme" translatable="false">@string/pref_value_color_scheme_system</string>
-    <string name="pref_value_color_scheme_system" translatable="false">system</string>
-    <string name="pref_value_color_scheme_light" translatable="false">light</string>
-    <string name="pref_value_color_scheme_dark" translatable="false">dark</string>
-    <string name="pref_value_color_scheme_black" translatable="false">black</string>
-    <string-array name="color_scheme">
-        <item>@string/color_scheme_system</item>
+    <!-- Theme -->
+    <string name="color_theme_system_default">System default</string>
+    <string name="color_theme_light">Light</string>
+    <string name="color_theme_dark">Dark</string>
+    <string name="pref_key_color_theme" translatable="false">pref_key_color_theme</string>
+    <string name="pref_default_color_theme" translatable="false">system</string>
+    <string-array name="color_theme">
+        <item>@string/color_theme_system_default</item>
+        <item>@string/color_theme_light</item>
+        <item>@string/color_theme_dark</item>
+    </string-array>
+    <string-array name="color_theme_values">
+        <item>system</item>
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+
+    <!-- Light theme scheme -->
+    <string name="pref_key_light_color_scheme">pref_key_light_color_scheme</string>
+    <string name="pref_default_light_color_scheme">dynamic</string>
+    <string-array name="light_color_scheme_list">
+        <item>@string/color_scheme_dynamic</item>
         <item>@string/color_scheme_light</item>
+    </string-array>
+    <string-array name="light_color_scheme_list_values">
+        <item>dynamic</item>
+        <item>light</item>
+    </string-array>
+    
+    <!-- Dark theme scheme -->
+    <string name="pref_key_dark_color_scheme">pref_key_dark_color_scheme</string>
+    <string name="pref_default_dark_color_scheme">dynamic</string>
+    <string-array name="dark_color_scheme_list">
+        <item>@string/color_scheme_dynamic</item>
         <item>@string/color_scheme_dark</item>
         <item>@string/color_scheme_black</item>
     </string-array>
-    <string-array name="color_scheme_values">
-        <item>@string/pref_value_color_scheme_system</item>
-        <item>@string/pref_value_color_scheme_light</item>
-        <item>@string/pref_value_color_scheme_dark</item>
-        <item>@string/pref_value_color_scheme_black</item>
+    <string-array name="dark_color_scheme_list_values">
+        <item>dynamic</item>
+        <item>dark</item>
+        <item>black</item>
     </string-array>
 
     <!-- Font size. -->
@@ -145,6 +168,7 @@
         <item>@string/pref_value_book_details_last_action</item>
     </string-array>
     <string name="pref_value_book_details_mtime" translatable="false">book_details_mtime</string>
+    <string name="pref_value_book_details_notes_count" translatable="false">book_details_notes_count</string>
     <string name="pref_value_book_details_link_url" translatable="false">book_details_link_url</string>
     <string name="pref_value_book_details_sync_url" translatable="false">book_details_sync_url</string>
     <string name="pref_value_book_details_sync_mtime" translatable="false">book_details_sync_mtime</string>
@@ -153,7 +177,6 @@
     <string name="pref_value_book_details_encoding_detected" translatable="false">book_details_encoding_detected</string>
     <string name="pref_value_book_details_encoding_used" translatable="false">book_details_encoding_used</string>
     <string name="pref_value_book_details_last_action" translatable="false">book_details_last_action</string>
-    <string name="pref_value_book_details_notes_count" translatable="false">book_details_notes_count</string>
     <string-array name="displayed_book_details">
         <item>@string/displayed_book_details_local_mtime</item>
         <item>@string/displayed_book_details_notes_count</item>
@@ -241,6 +264,9 @@
     <!-- Time in minutes after midnight. 540 minutes == 9 o'clock -->
     <integer name="pref_default_daily_reminder_time" translatable="false">540</integer>
 
+    <string name="pref_key_reminders_use_alarm_clock_for_tod_reminders" translatable="false">pref_key_reminders_use_alarm_clock_for_tod_reminders</string>
+    <bool name="pref_default_reminders_use_alarm_clock_for_tod_reminders" translatable="false">false</bool>
+
     <!-- Auto-sync -->
 
     <string name="pref_key_auto_sync" translatable="false">pref_key_auto_sync</string>
@@ -284,6 +310,8 @@
 
     <string name="pref_key_reminders_channel_notification_settings" translatable="false">pref_key_reminders_channel_notification_settings</string>
     <string name="pref_key_reminders_notification_settings" translatable="false">pref_key_reminders_notification_settings</string>
+    <string name="pref_key_reminders_notification_settings_preV26" translatable="false">pref_key_reminders_notification_settings_pre_v26</string>
+    <string name="pref_key_reminders_notification_settings_V26" translatable="false">pref_key_reminders_notification_settings_v26</string>
 
     <string name="pref_key_show_sync_notifications" translatable="false">pref_key_show_sync_notifications</string>
     <bool name="pref_default_show_sync_notifications" translatable="false">false</bool>
@@ -324,24 +352,6 @@
         <item>tags</item>
         <item>state</item>
         <item>scheduled_time</item>
-    </string-array>
-
-    <string name="pref_key_note_details_last_mode" translatable="false">pref_key_note_details_last_mode</string>
-    <string name="pref_default_note_details_last_mode" translatable="false">edit</string>
-
-    <string name="pref_key_note_details_opening_mode" translatable="false">pref_key_note_details_opening_mode</string>
-    <string name="pref_default_note_details_opening_mode" translatable="false">last</string>
-
-    <string-array name="note_details_opening_mode">
-        <item>@string/view</item>
-        <item>@string/edit</item>
-        <item>@string/last_used</item>
-    </string-array>
-
-    <string-array name="note_details_opening_mode_values">
-        <item>view</item>
-        <item>edit</item>
-        <item>last</item>
     </string-array>
 
     <string name="pref_key_states" translatable="false">pref_key_states</string>
@@ -503,6 +513,16 @@
 
     <string name="pref_key_widget_color_scheme" translatable="false">pref_key_widget_color_scheme</string>
     <string name="pref_default_widget_color_scheme" translatable="false">light</string>
+    <string-array name="widget_color_scheme" tools:ignore="InconsistentArrays">
+        <item>@string/color_scheme_light</item>
+        <item>@string/color_scheme_dark</item>
+        <item>@string/color_scheme_black</item>
+    </string-array>
+    <string-array name="widget_color_scheme_values" tools:ignore="InconsistentArrays">
+        <item>light</item>
+        <item>dark</item>
+        <item>black</item>
+    </string-array>
 
     <string name="pref_key_widget_opacity" translatable="false">pref_key_widget_opacity</string>
     <string name="pref_default_widget_opacity" translatable="false">98</string>
@@ -539,9 +559,10 @@
     <string name="pref_key_widget_display_book_name" translatable="false">pref_key_widget_display_book_name</string>
     <bool name="pref_default_widget_display_book_name" translatable="false">false</bool>
 
+    <string name="pref_key_highlight_edited_rich_text" translatable="false">pref_key_highlight_edited_rich_text</string>
+    <bool name="pref_default_highlight_edited_rich_text" translatable="false">false</bool>
+
     <!-- Git preferences -->
-    <string name="pref_key_git_is_enabled" translatable="false">pref_key_git_is_enabled</string>
-    <bool name="pref_default_git_is_enabled" translatable="false">false</bool>
     <string name="pref_key_git_author" traslatable="false">pref_key_git_author</string>
     <string name="pref_key_git_email" traslatable="false">pref_key_git_email</string>
     <string name="pref_key_git_https_username" translatable="false">pref_key_git_https_username</string>
@@ -551,6 +572,16 @@
     <string name="pref_key_git_remote_name" traslatable="false">pref_key_git_remote_name</string>
     <string name="pref_key_git_branch_name" traslatable="false">pref_key_git_branch_name</string>
     <string name="pref_key_git_default_repository_directory">pref_key_git_default_repository_directory</string>
+
+    <!-- Developer options -->
+
+    <string name="pref_key_git_is_enabled" translatable="false">pref_key_git_is_enabled</string>
+    <bool name="pref_default_git_is_enabled" translatable="false">false</bool>
+
+    <string name="pref_key_log_major_events" translatable="false">pref_key_log_major_events</string>
+    <bool name="pref_default_log_major_events" translatable="false">false</bool>
+
+    <string name="pref_key_major_events_logs" translatable="false">pref_key_major_events_logs</string>
 
     <!-- These do not store any data. -->
     <string name="pref_key_repos" translatable="false">pref_key_repos</string>

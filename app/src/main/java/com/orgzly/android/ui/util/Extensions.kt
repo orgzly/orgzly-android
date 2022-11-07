@@ -1,18 +1,20 @@
 package com.orgzly.android.ui.util
 
 import android.annotation.SuppressLint
+import android.annotation.TargetApi
 import android.content.Context
-import android.content.Intent
 import android.content.res.TypedArray
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.StyleableRes
 import androidx.core.view.ViewCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.orgzly.R
-import com.orgzly.android.AppIntent
-import com.orgzly.android.sync.SyncService
-
+import com.orgzly.android.sync.SyncRunner
+import org.joda.time.Period
+import org.joda.time.format.PeriodFormat
 
 fun <R> Context.styledAttributes(@StyleableRes attrs: IntArray, f: (typedArray: TypedArray) -> R): R {
     val typedArray = obtainStyledAttributes(attrs)
@@ -32,20 +34,46 @@ fun <R> Context.styledAttributes(set: AttributeSet, @StyleableRes attrs: IntArra
     }
 }
 
+
+/**
+ * Determines if there is internet connection available.
+ */
+fun Context.haveNetworkConnection(): Boolean {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        haveNetworkConnection(getConnectivityManager())
+    } else {
+        haveNetworkConnectionPreM(getConnectivityManager())
+    }
+}
+
+@TargetApi(Build.VERSION_CODES.M)
+private fun haveNetworkConnection(cm: ConnectivityManager): Boolean {
+    val network = cm.activeNetwork
+
+    val capabilities = cm.getNetworkCapabilities(network)
+
+    return capabilities != null && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+}
+
+@Suppress("DEPRECATION")
+private fun haveNetworkConnectionPreM(cm: ConnectivityManager): Boolean {
+    val networkInfo = cm.activeNetworkInfo
+
+    if (networkInfo != null) {
+        val type = networkInfo.type
+
+        return type == ConnectivityManager.TYPE_WIFI || type == ConnectivityManager.TYPE_MOBILE
+    }
+
+    return false
+}
+
 @SuppressLint("ResourceType")
 fun SwipeRefreshLayout.setup() {
     setOnRefreshListener {
-        Intent(context, SyncService::class.java).setAction(AppIntent.ACTION_SYNC_START).let {
-            SyncService.start(context, it)
-        }
-
+        SyncRunner.startSync()
         isRefreshing = false
     }
-
-//    context?.styledAttributes(intArrayOf(R.attr.colorPrimary, R.attr.colorOnPrimary)) { typedArray ->
-//        setProgressBackgroundColorSchemeColor(typedArray.getColor(0, 0))
-//        setColorSchemeColors(typedArray.getColor(1, 0))
-//    }
 }
 
 fun View.removeBackgroundKeepPadding() {
@@ -70,3 +98,7 @@ fun View.invisibleIf(condition: Boolean) {
 }
 
 fun View.invisibleUnless(condition: Boolean) = invisibleIf(!condition)
+
+fun Long.userFriendlyPeriod(): String {
+    return PeriodFormat.getDefault().print(Period(this))
+}

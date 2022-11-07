@@ -10,4 +10,19 @@
         android:summary="@string/in_development"
         android:defaultValue="@bool/pref_default_git_is_enabled" />
 
+    <SwitchPreference
+        android:key="@string/pref_key_log_major_events"
+        android:title="@string/log_major_events"
+        android:defaultValue="@bool/pref_default_log_major_events" />
+
+    <Preference
+        android:key="@string/pref_key_major_events_logs"
+        android:dependency="@string/pref_key_log_major_events"
+        android:title="@string/logs">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.orgzly"
+            android:targetClass="com.orgzly.android.ui.LogsActivity"/>
+    </Preference>
+
 </androidx.preference.PreferenceScreen>

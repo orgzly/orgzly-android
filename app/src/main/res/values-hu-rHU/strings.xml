@@ -157,8 +157,9 @@
     <string name="searches">Keresések</string>
     <string name="search">Keresés</string>
     <string name="new_search">Új keresés</string>
-    <string name="no_repos">Nincs beállítva tárolóhely</string>
     <string name="multiple_repos">Több tárolóhely is létezik</string>
+    <string name="no_repos">Nincs beállítva tárolóhely</string>
+    <string name="no_books">Nem található jegyzetfüzet</string>
     <string name="book_encoding">Jegyzetfüzet kódolása</string>
     <string name="collecting_notebooks_in_progress">Jegyzetfüzetek összegyűjtése…</string>
     <string name="syncing_in_progress">Szinkronizálás…</string>
@@ -281,6 +282,10 @@
     <string name="notebooks_sort_order">Jegyzetfüzetek rendezési sorrendje</string>
     <string name="font_size">Betűméret</string>
     <string name="color_scheme">Színséma</string>
+    <string name="other">Egyéb</string>
+    <string name="theme">Színtéma</string>
+    <string name="light_scheme">Világos színtéma</string>
+    <string name="dark_scheme">Sötét színtéma</string>
     <string name="monospaced_font">Rögzített szélességű betűtípus</string>
     <string name="monospaced_font_summary">Rögzített szélességű betűtípussal mutassa a bejegyzések tartalmát és a könyv előszavát</string>
     <string name="reversed_note_click_action">Bejegyzésre koppintás eredményének megfordítása</string>
@@ -348,6 +353,7 @@
     <string name="displayed_book_details_last_action">Utolsó művelet</string>
     <string name="displayed_book_details_notes_count">Bejegyzések száma</string>
     <string name="color_scheme_system">Rendszer</string>
+    <string name="color_scheme_dynamic">A rendszer szerinti színtéma</string>
     <string name="color_scheme_light">Világos</string>
     <string name="color_scheme_dark">Sötét</string>
     <string name="color_scheme_black">Fekete</string>
@@ -568,4 +574,12 @@
     <string name="developer_options">Fejlesztői beállítások</string>
     <string name="git_repository_type">Git adattároló típusa</string>
     <string name="in_development">Fejlesztés alatt</string>
+    <string name="select_notebook">Jegyzetfüzet kiválasztása</string>
+    <string name="highlight_rich_text_being_edited">A szerkesztés alatt álló szöveg kiemelése</string>
+    <string name="use_alarm_clock_for_tod_reminders">Használjon ébresztőórát az emlékeztetőkhöz</string>
+    <string name="use_alarm_clock_for_tod_reminders_summary">Használjon ébresztőórát az emlékeztetők összesítő jelentéséhez</string>
+    <string name="log_major_events">Főbb események naplózása</string>
+    <string name="logs">Naplók</string>
+    <string name="share">Megosztás</string>
+    <string name="refresh_data">Adatok frissítése</string>
 </resources>

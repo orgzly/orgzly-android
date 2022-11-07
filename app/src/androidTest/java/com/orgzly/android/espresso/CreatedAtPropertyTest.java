@@ -18,14 +18,14 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.clickSetting;
-import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
-import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
-import static com.orgzly.android.espresso.EspressoUtils.onNoteInSearch;
-import static com.orgzly.android.espresso.EspressoUtils.onNotesInSearch;
-import static com.orgzly.android.espresso.EspressoUtils.recyclerViewItemCount;
-import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
-import static com.orgzly.android.espresso.EspressoUtils.searchForText;
+import static com.orgzly.android.espresso.util.EspressoUtils.clickSetting;
+import static com.orgzly.android.espresso.util.EspressoUtils.onActionItemClick;
+import static com.orgzly.android.espresso.util.EspressoUtils.onNoteInBook;
+import static com.orgzly.android.espresso.util.EspressoUtils.onNoteInSearch;
+import static com.orgzly.android.espresso.util.EspressoUtils.onNotesInSearch;
+import static com.orgzly.android.espresso.util.EspressoUtils.recyclerViewItemCount;
+import static com.orgzly.android.espresso.util.EspressoUtils.replaceTextCloseKeyboard;
+import static com.orgzly.android.espresso.util.EspressoUtils.searchForText;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.allOf;
 
@@ -70,11 +70,11 @@ public class CreatedAtPropertyTest extends OrgzlyTest {
         enableCreatedAt();
 
         searchForText("o.cr");
-        onNoteInSearch(0, R.id.item_head_title)
+        onNoteInSearch(0, R.id.item_head_title_view)
                 .check(matches(allOf(withText("Note [a-2]"), isDisplayed())));
 
         searchForText(".o.cr");
-        onNoteInSearch(0, R.id.item_head_title)
+        onNoteInSearch(0, R.id.item_head_title_view)
                 .check(matches(allOf(withText("Note [a-1]"), isDisplayed())));
     }
 
@@ -82,18 +82,18 @@ public class CreatedAtPropertyTest extends OrgzlyTest {
     public void testChangeCreatedAtPropertyResultsShouldBeReordered() {
         searchForText("o.cr");
 
-        onNoteInSearch(0, R.id.item_head_title).check(matches(withText("Note [a-1]")));
-        onNoteInSearch(1, R.id.item_head_title).check(matches(withText("Note [a-2]")));
+        onNoteInSearch(0, R.id.item_head_title_view).check(matches(withText("Note [a-1]")));
+        onNoteInSearch(1, R.id.item_head_title_view).check(matches(withText("Note [a-2]")));
 
         enableCreatedAt();
 
-        onNoteInSearch(0, R.id.item_head_title).check(matches(withText("Note [a-2]")));
-        onNoteInSearch(1, R.id.item_head_title).check(matches(withText("Note [a-1]")));
+        onNoteInSearch(0, R.id.item_head_title_view).check(matches(withText("Note [a-2]")));
+        onNoteInSearch(1, R.id.item_head_title_view).check(matches(withText("Note [a-1]")));
 
         changeCreatedAtProperty("ADDED");
 
-        onNoteInSearch(0, R.id.item_head_title).check(matches(withText("Note [a-1]")));
-        onNoteInSearch(1, R.id.item_head_title).check(matches(withText("Note [a-2]")));
+        onNoteInSearch(0, R.id.item_head_title_view).check(matches(withText("Note [a-1]")));
+        onNoteInSearch(1, R.id.item_head_title_view).check(matches(withText("Note [a-2]")));
     }
 
     @Test
@@ -103,19 +103,19 @@ public class CreatedAtPropertyTest extends OrgzlyTest {
         enableCreatedAt();
 
         onView(withId(R.id.fab)).perform(click());
-        onView(withId(R.id.title))
+        onView(withId(R.id.title_edit))
                 .perform(replaceTextCloseKeyboard("new note created by test"));
         onView(withId(R.id.done)).perform(click()); // Note done
 
-        onNoteInBook(3, R.id.item_head_title)
+        onNoteInBook(3, R.id.item_head_title_view)
                 .check(matches(allOf(withText("new note created by test"), isDisplayed())));
 
         searchForText("o.cr");
-        onNoteInSearch(0, R.id.item_head_title)
+        onNoteInSearch(0, R.id.item_head_title_view)
                 .check(matches(allOf(withText("Note [a-2]"), isDisplayed())));
 
         searchForText(".o.cr");
-        onNoteInSearch(0, R.id.item_head_title)
+        onNoteInSearch(0, R.id.item_head_title_view)
                 .check(matches(allOf(withText("new note created by test"), isDisplayed())));
     }
 
@@ -133,7 +133,7 @@ public class CreatedAtPropertyTest extends OrgzlyTest {
         clickSetting("prefs_screen_sync", R.string.sync);
         clickSetting("pref_key_created_at_property", R.string.created_at_property);
         onView(instanceOf(EditText.class)).perform(replaceTextCloseKeyboard(propName));
-        onView(withText(R.string.ok)).perform(click());
+        onView(withText(android.R.string.ok)).perform(click());
         onView(withText(R.string.yes)).perform(click());
         pressBack();
         pressBack();

@@ -24,7 +24,7 @@ object BottomActionBar {
                 .translationY(0f)
                 .setDuration(ANIMATION_DURATION)
                 .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationCancel(animation: Animator?) {
+                    override fun onAnimationCancel(animation: Animator) {
                     }
 
                     override fun onAnimationEnd(animation: Animator) {
@@ -44,7 +44,7 @@ object BottomActionBar {
                 .setListener(object : AnimatorListenerAdapter() {
                     var isCanceled = false
 
-                    override fun onAnimationCancel(animation: Animator?) {
+                    override fun onAnimationCancel(animation: Animator) {
                         isCanceled = true
                     }
 

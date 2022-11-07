@@ -74,12 +74,11 @@
     <color name="item_selected_dark_bg_color">#3290A4AE</color>  <!-- 20% blue_grey_300 -->
     <color name="item_selected_black_bg_color">#32B0BEC5</color> <!-- 20% blue_grey_200 -->
 
-    <color name="widget_light_header_bg_color">@color/blue_grey_500</color>
+    <color name="widget_light_header_bg_color">@color/blue_grey_600</color>
     <color name="widget_light_header_text_color">@color/white_text_primary_color</color>
     <color name="widget_light_list_bg_color">@color/white</color>
     <color name="widget_light_state_todo_color">@color/red_900</color>
     <color name="widget_light_state_done_color">@color/green_900</color>
-    <color name="widget_light_state_unknown_color">@color/blue_900</color>
     <color name="widget_light_title_color">@color/dark_text_primary_color</color>
     <color name="widget_light_post_title_color">@color/dark_text_secondary_color</color>
 
@@ -88,7 +87,6 @@
     <color name="widget_dark_list_bg_color">@color/dark_theme_cards_and_dialogs</color>
     <color name="widget_dark_state_todo_color">@color/red_200</color>
     <color name="widget_dark_state_done_color">@color/green_200</color>
-    <color name="widget_dark_state_unknown_color">@color/blue_200</color>
     <color name="widget_dark_title_color">@color/white_text_primary_color</color>
     <color name="widget_dark_post_title_color">@color/white_text_secondary_color</color>
 
@@ -97,8 +95,9 @@
     <color name="widget_black_list_bg_color">@color/black</color>
     <color name="widget_black_state_todo_color">@color/red_200</color>
     <color name="widget_black_state_done_color">@color/green_200</color>
-    <color name="widget_black_state_unknown_color">@color/blue_200</color>
     <color name="widget_black_title_color">@color/white_text_primary_color</color>
     <color name="widget_black_post_title_color">@color/white_text_secondary_color</color>
+
+    <color name="dropbox_blue">#007ee5</color>
 </resources>
 

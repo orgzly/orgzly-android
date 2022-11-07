@@ -163,8 +163,9 @@
     <string name="searches">Поисковые запросы</string>
     <string name="search">Поиск</string>
     <string name="new_search">Новый поиск</string>
-    <string name="no_repos">Нет настроенных хранилищ</string>
     <string name="multiple_repos">Существует несколько хранилищ</string>
+    <string name="no_repos">Нет настроенных хранилищ</string>
+    <string name="no_books">Блокноты не найдены</string>
     <string name="book_encoding">Кодировка блокнота</string>
     <string name="collecting_notebooks_in_progress">Обновление блокнотов…</string>
     <string name="syncing_in_progress">Синхронизация…</string>
@@ -287,6 +288,10 @@
     <string name="notebooks_sort_order">Порядок сортировки блокнотов</string>
     <string name="font_size">Размер шрифта</string>
     <string name="color_scheme">Цветовая схема</string>
+    <string name="other">Другое</string>
+    <string name="theme">Тема</string>
+    <string name="light_scheme">Светлая тема</string>
+    <string name="dark_scheme">Тёмная тема</string>
     <string name="monospaced_font">Моноширинный шрифт</string>
     <string name="monospaced_font_summary">Использовать моноширинный шрифт для содержания заметки и предисловия к блокноту</string>
     <string name="reversed_note_click_action">Обратное действие при нажатии на заметку</string>
@@ -354,6 +359,7 @@
     <string name="displayed_book_details_last_action">Последнее действие</string>
     <string name="displayed_book_details_notes_count">Количество заметок</string>
     <string name="color_scheme_system">Системная</string>
+    <string name="color_scheme_dynamic">Динамический цвет</string>
     <string name="color_scheme_light">Светлая</string>
     <string name="color_scheme_dark">Тёмная</string>
     <string name="color_scheme_black">Чёрная</string>
@@ -590,4 +596,12 @@
     <string name="developer_options">Для разработчиков</string>
     <string name="git_repository_type">Тип git-репозитория</string>
     <string name="in_development">В разработке</string>
+    <string name="select_notebook">Выбрать блокнот</string>
+    <string name="highlight_rich_text_being_edited">Выделять отформатированный текст при его изменении</string>
+    <string name="use_alarm_clock_for_tod_reminders">Задействовать будильник</string>
+    <string name="use_alarm_clock_for_tod_reminders_summary">Для напоминаний ко времени</string>
+    <string name="log_major_events">Журналировать основные события</string>
+    <string name="logs">Журналы</string>
+    <string name="share">Поделиться</string>
+    <string name="refresh_data">Обновить</string>
 </resources>

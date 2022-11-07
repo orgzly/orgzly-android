@@ -52,7 +52,7 @@ object UseCaseRunner {
 
         if (BuildConfig.LOG_DEBUG) {
             val ms = System.currentTimeMillis() - startedAt
-            LogUtils.d(TAG, "Finished ${action.javaClass.simpleName} in ${ms}ms")
+            LogUtils.d(TAG, "Finished $action in ${ms}ms")
         }
 
         return result

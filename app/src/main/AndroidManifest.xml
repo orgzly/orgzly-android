@@ -3,7 +3,6 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.orgzly"
     android:installLocation="auto">
 
     <!-- Initially added for Dropbox sync. -->
@@ -23,9 +22,6 @@
     <!-- For reminders -->
     <uses-permission android:name="android.permission.VIBRATE"/>
 
-    <!-- For sync -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
-
     <!-- For reminders -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
 
@@ -34,12 +30,13 @@
         android:allowBackup="true"
         android:networkSecurityConfig="@xml/network_security_config" tools:targetApi="n"
         android:supportsRtl="true"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/cic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppLightTheme.Light"
         android:fullBackupContent="@xml/backup_config"
         android:requestLegacyExternalStorage="true">
+
+        <!-- <profileable android:shell="true" tools:targetApi="q" /> -->
 
         <activity android:name=".android.ui.LauncherActivity" android:exported="true">
             <intent-filter>
@@ -56,6 +53,12 @@
             android:name=".android.ui.main.MainActivity"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="org-protocol" />
+            </intent-filter>
         </activity>
 
         <activity
@@ -150,7 +153,7 @@
             android:name=".android.ui.TemplateChooserActivity"
             android:label="@string/new_note_shortcut_label"
             android:icon="@mipmap/cic_shortcut_new_note"
-            android:exported="false">
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
@@ -173,9 +176,10 @@
             android:name=".android.ui.SyncShortcutActivity"
             android:taskAffinity="" />
 
-        <service
-            android:name=".android.sync.SyncService"
-            android:exported="true" />
+        <activity
+            android:name=".android.ui.LogsActivity"
+            android:exported="false"
+            android:label="@string/logs" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -226,7 +230,6 @@
 
         <receiver
             android:name=".android.ActionReceiver"
-            android:exported="true"
-            tools:ignore="ExportedReceiver" />
+            android:exported="true" tools:ignore="ExportedReceiver" />
     </application>
 </manifest>

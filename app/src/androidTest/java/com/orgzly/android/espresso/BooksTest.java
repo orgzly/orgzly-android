@@ -15,12 +15,12 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.contextualToolbarOverflowMenu;
-import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
-import static com.orgzly.android.espresso.EspressoUtils.onBook;
-import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
-import static com.orgzly.android.espresso.EspressoUtils.onSnackbar;
-import static com.orgzly.android.espresso.EspressoUtils.replaceTextCloseKeyboard;
+import static com.orgzly.android.espresso.util.EspressoUtils.contextualToolbarOverflowMenu;
+import static com.orgzly.android.espresso.util.EspressoUtils.onActionItemClick;
+import static com.orgzly.android.espresso.util.EspressoUtils.onBook;
+import static com.orgzly.android.espresso.util.EspressoUtils.onNoteInBook;
+import static com.orgzly.android.espresso.util.EspressoUtils.onSnackbar;
+import static com.orgzly.android.espresso.util.EspressoUtils.replaceTextCloseKeyboard;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.not;
@@ -216,10 +216,10 @@ public class BooksTest extends OrgzlyTest {
     @Test
     public void testDifferentBookLoading() {
         onView(allOf(withText("book-1"), isDisplayed())).perform(click());
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note A.")));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText("Note A.")));
         pressBack();
         onView(allOf(withText("book-2"), isDisplayed())).perform(click());
-        onNoteInBook(1, R.id.item_head_title).check(matches(withText("Note #1.")));
+        onNoteInBook(1, R.id.item_head_title_view).check(matches(withText("Note #1.")));
     }
 
     @Test

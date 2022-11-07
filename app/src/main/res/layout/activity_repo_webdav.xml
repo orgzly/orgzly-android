@@ -5,8 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    style="@style/CoordinatorLayoutFitsSystemWindows">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -95,24 +94,20 @@
 
     </ScrollView>
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
-        style="@style/BottomAppBar.FabAlignEnd.WithCancel">
+    <!-- Top toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        style="@style/AppBarLayoutStyle">
 
-        <TextView
-            android:id="@+id/bottomAppBarTitle"
-            style="@style/BottomAppBarTitle"
-            android:text="@string/webdav" />
+    <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_toolbar"
+            app:title="@string/webdav"
+            style="@style/TopToolbar"
+            app:navigationIcon="@drawable/ic_arrow_back"/>
 
-    </com.google.android.material.bottomappbar.BottomAppBar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="?attr/ic_done_24dp"
-        app:layout_anchor="@id/bottomAppBar" />
-
-    <include layout="@layout/snackbar_anchor" />
+        style="@style/Fab.Done" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,192 +1,210 @@
 package com.orgzly.android.widgets
 
 import android.content.Context
-import androidx.annotation.ColorInt
-import androidx.annotation.DrawableRes
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.util.TypedValue
 import android.view.Window
 import android.widget.RemoteViews
+import androidx.annotation.ColorInt
+import androidx.annotation.IdRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.util.TitleGenerator
+import com.orgzly.android.util.LogUtils
 
-
+/*
+ * Known issue:
+ * Widget needs to be recreated when scheme is switched back to dynamic color on API < 31.
+ */
 object WidgetStyle {
     @JvmStatic
     fun updateActivity(activity: AppCompatActivity) {
         when (AppPreferences.widgetColorScheme(activity)) {
-            "dark", "black" -> activity.setTheme(R.style.Theme_AppCompat_Dialog_Alert)
-            else -> activity.setTheme(R.style.Theme_AppCompat_Light_Dialog_Alert)
+            "light" -> activity.setTheme(R.style.Theme_Material3_Light_Dialog_Alert)
+            "dark", "black" -> activity.setTheme(R.style.Theme_Material3_Dark_Dialog_Alert)
+            else -> activity.setTheme(R.style.Theme_Material3_DayNight_Dialog_Alert)
         }
 
         activity.supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
     }
 
+    // Color or attribute id
+    private fun getInt(scheme: String, id: Int): Int {
+        WidgetColors.colors[scheme]?.get(id).let { value ->
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "$scheme/$id: $value")
+            return value ?: throw Exception("Not defined: $scheme/$id")
+        }
+    }
+
+    @ColorInt
+    private fun getColor(context: Context, scheme: String, name: String): Int {
+        val s = WidgetColors.dataDependentColors[scheme]?.get(name).let { value ->
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "$scheme/$name: $value")
+            value ?: throw Exception("Not defined: $scheme/$name")
+        }
+
+        return ContextCompat.getColor(context, s)
+    }
+
+    private fun setColorFilter(
+        context: Context,
+        colorScheme: String,
+        remoteViews: RemoteViews,
+        @IdRes id: Int) {
+
+        setInt("setColorFilter", context, colorScheme, remoteViews, id)
+    }
+
+    private fun setInt(
+        methodName: String,
+        context: Context,
+        colorScheme: String,
+        remoteViews: RemoteViews,
+        @IdRes id: Int,
+        withOpacity: Boolean = false) {
+
+        if (colorScheme == "dynamic") {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                remoteViews.setColorAttr(id, methodName, getInt(colorScheme, id))
+            } // else: Widget needs to be recreated
+
+        } else {
+            var color = ContextCompat.getColor(context, getInt(colorScheme, id))
+            if (withOpacity) {
+                color = withOpacity(context, color)
+            }
+            remoteViews.setInt(id, methodName, color)
+        }
+    }
+
+    private fun setTextColor(
+        context: Context,
+        colorScheme: String,
+        remoteViews: RemoteViews,
+        @IdRes id: Int) {
+
+        if (colorScheme == "dynamic") {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                remoteViews.setColorAttr(id, "setTextColor", getInt(colorScheme, id))
+            } // else: Widget needs to be recreated
+
+        } else {
+            val color = ContextCompat.getColor(context, getInt(colorScheme, id))
+            remoteViews.setTextColor(id, color)
+        }
+    }
+
+    private fun setBackgroundColor(
+        context: Context,
+        colorScheme: String,
+        remoteViews: RemoteViews,
+        @IdRes id: Int) {
+
+        setInt("setBackgroundColor", context, colorScheme, remoteViews, id, true)
+    }
+
     @JvmStatic
     fun updateWidget(remoteViews: RemoteViews, context: Context) {
-        remoteViews.setInt(
-                R.id.list_widget_header_container,
-                "setBackgroundColor",
-                headerBackground(context))
+        val scheme = AppPreferences.widgetColorScheme(context)
+
+        setBackgroundColor(context, scheme, remoteViews, R.id.list_widget_header_container)
+        setBackgroundColor(context, scheme, remoteViews, R.id.list_widget_list_container)
+        setColorFilter(context, scheme, remoteViews, R.id.list_widget_header_logo)
+        setTextColor(context, scheme, remoteViews, R.id.list_widget_header_selection)
+        setColorFilter(context, scheme, remoteViews, R.id.list_widget_header_selection_arrow)
+        setColorFilter(context, scheme, remoteViews, R.id.list_widget_header_add)
+        setTextColor(context, scheme, remoteViews, R.id.list_widget_empty_view)
 
         remoteViews.setTextViewTextSize(
-                R.id.list_widget_header_selection,
-                TypedValue.COMPLEX_UNIT_PX,
-                headerTextSize(context))
-
-        remoteViews.setTextColor(
-                R.id.list_widget_header_selection,
-                headerTextColor(context))
-
-        remoteViews.setTextColor(
-                R.id.list_widget_empty_view,
-                primaryTextColor(context))
-
-        remoteViews.setInt(
-                R.id.list_widget_list_container,
-                "setBackgroundColor",
-                listBackgroundColor(context))
+            R.id.list_widget_header_selection,
+            TypedValue.COMPLEX_UNIT_PX,
+            headerTextSize(context))
     }
 
     @JvmStatic
     fun updateDivider(remoteViews: RemoteViews, context: Context) {
-        remoteViews.setTextViewTextSize(
-                R.id.widget_list_item_divider_value,
-                TypedValue.COMPLEX_UNIT_PX,
-                titleTextSize(context))
+        val scheme = AppPreferences.widgetColorScheme(context)
 
-        remoteViews.setTextColor(
-                R.id.widget_list_item_divider_value,
-                primaryTextColor(context))
+        setTextColor(context, scheme, remoteViews, R.id.widget_list_item_divider_value)
+
+        remoteViews.setTextViewTextSize(
+            R.id.widget_list_item_divider_value,
+            TypedValue.COMPLEX_UNIT_PX,
+            titleTextSize(context))
     }
 
     @JvmStatic
     fun updateNote(remoteViews: RemoteViews, context: Context) {
-        /* Title */
+        val colorScheme = AppPreferences.widgetColorScheme(context)
+
+        setTextColor(context, colorScheme, remoteViews, R.id.item_list_widget_title)
+        setColorFilter(context, colorScheme, remoteViews, R.id.item_list_widget_book_icon)
+        setTextColor(context, colorScheme, remoteViews, R.id.item_list_widget_book_text)
+        setColorFilter(context, colorScheme, remoteViews, R.id.item_list_widget_scheduled_icon)
+        setTextColor(context, colorScheme, remoteViews, R.id.item_list_widget_scheduled_text)
+        setColorFilter(context, colorScheme, remoteViews, R.id.item_list_widget_deadline_icon)
+        setTextColor(context, colorScheme, remoteViews, R.id.item_list_widget_deadline_text)
+        setColorFilter(context, colorScheme, remoteViews, R.id.item_list_widget_event_icon)
+        setTextColor(context, colorScheme, remoteViews, R.id.item_list_widget_event_text)
+        setColorFilter(context, colorScheme, remoteViews, R.id.item_list_widget_closed_icon)
+        setTextColor(context, colorScheme, remoteViews, R.id.item_list_widget_closed_text)
+        setColorFilter(context, colorScheme, remoteViews, R.id.item_list_widget_done)
 
         remoteViews.setTextViewTextSize(
-                R.id.item_list_widget_title,
-                TypedValue.COMPLEX_UNIT_PX,
-                titleTextSize(context))
-
-        remoteViews.setTextColor(
-                R.id.item_list_widget_title,
-                primaryTextColor(context))
-
-        /* Book name */
-
-        remoteViews.setImageViewResource(
-                R.id.item_list_widget_book_icon,
-                bookIcon(context))
+            R.id.item_list_widget_title,
+            TypedValue.COMPLEX_UNIT_PX,
+            titleTextSize(context))
 
         remoteViews.setTextViewTextSize(
-                R.id.item_list_widget_book_text,
-                TypedValue.COMPLEX_UNIT_PX,
-                postTitleTextSize(context))
-
-        remoteViews.setTextColor(
-                R.id.item_list_widget_book_text,
-                secondaryTextColor(context))
-
-        /* Scheduled time */
-
-        remoteViews.setImageViewResource(
-                R.id.item_list_widget_scheduled_icon,
-                scheduledIcon(context))
+            R.id.item_list_widget_book_text,
+            TypedValue.COMPLEX_UNIT_PX,
+            postTitleTextSize(context))
 
         remoteViews.setTextViewTextSize(
-                R.id.item_list_widget_scheduled_text,
-                TypedValue.COMPLEX_UNIT_PX,
-                postTitleTextSize(context))
-
-        remoteViews.setTextColor(
-                R.id.item_list_widget_scheduled_text,
-                secondaryTextColor(context))
-
-        /* Deadline time */
-
-        remoteViews.setImageViewResource(
-                R.id.item_list_widget_deadline_icon,
-                deadlineIcon(context))
+            R.id.item_list_widget_scheduled_text,
+            TypedValue.COMPLEX_UNIT_PX,
+            postTitleTextSize(context))
 
         remoteViews.setTextViewTextSize(
-                R.id.item_list_widget_deadline_text,
-                TypedValue.COMPLEX_UNIT_PX,
-                postTitleTextSize(context))
-
-        remoteViews.setTextColor(
-                R.id.item_list_widget_deadline_text,
-                secondaryTextColor(context))
-
-        /* Event time */
-
-        remoteViews.setImageViewResource(
-                R.id.item_list_widget_event_icon,
-                eventIcon(context))
+            R.id.item_list_widget_deadline_text,
+            TypedValue.COMPLEX_UNIT_PX,
+            postTitleTextSize(context))
 
         remoteViews.setTextViewTextSize(
-                R.id.item_list_widget_event_text,
-                TypedValue.COMPLEX_UNIT_PX,
-                postTitleTextSize(context))
-
-        remoteViews.setTextColor(
-                R.id.item_list_widget_event_text,
-                secondaryTextColor(context))
-
-        /* Closed time */
-
-        remoteViews.setImageViewResource(
-                R.id.item_list_widget_closed_icon,
-                closedIcon(context))
+            R.id.item_list_widget_event_text,
+            TypedValue.COMPLEX_UNIT_PX,
+            postTitleTextSize(context))
 
         remoteViews.setTextViewTextSize(
-                R.id.item_list_widget_closed_text,
-                TypedValue.COMPLEX_UNIT_PX,
-                postTitleTextSize(context))
-
-        remoteViews.setTextColor(
-                R.id.item_list_widget_closed_text,
-                secondaryTextColor(context))
-
-        /* Done icon */
-
-        remoteViews.setImageViewResource(
-                R.id.item_list_widget_done,
-                doneIcon(context))
+            R.id.item_list_widget_closed_text,
+            TypedValue.COMPLEX_UNIT_PX,
+            postTitleTextSize(context))
 
         remoteViews.setInt(
-                R.id.item_list_widget_done, "setAlpha", doneIconAlpha(context))
+            R.id.item_list_widget_done, "setAlpha", doneIconAlpha(context))
     }
 
     @JvmStatic
     fun getTitleAttributes(context: Context): TitleGenerator.TitleAttributes {
-        return when (AppPreferences.widgetColorScheme(context)) {
-            "dark" ->
-                TitleGenerator.TitleAttributes(
-                        ContextCompat.getColor(context, R.color.widget_dark_state_todo_color),
-                        ContextCompat.getColor(context, R.color.widget_dark_state_done_color),
-                        ContextCompat.getColor(context, R.color.widget_dark_state_unknown_color),
-                        postTitleTextSize(context).toInt(),
-                        ContextCompat.getColor(context, R.color.widget_dark_post_title_color))
+        val scheme = AppPreferences.widgetColorScheme(context)
+        val dayNight = context.getString(R.string.day_night)
 
-            "black" ->
-                TitleGenerator.TitleAttributes(
-                        ContextCompat.getColor(context, R.color.widget_black_state_todo_color),
-                        ContextCompat.getColor(context, R.color.widget_black_state_done_color),
-                        ContextCompat.getColor(context, R.color.widget_black_state_unknown_color),
-                        postTitleTextSize(context).toInt(),
-                        ContextCompat.getColor(context, R.color.widget_black_post_title_color))
-
-            else ->
-                TitleGenerator.TitleAttributes(
-                        ContextCompat.getColor(context, R.color.widget_light_state_todo_color),
-                        ContextCompat.getColor(context, R.color.widget_light_state_done_color),
-                        ContextCompat.getColor(context, R.color.widget_light_state_unknown_color),
-                        postTitleTextSize(context).toInt(),
-                        ContextCompat.getColor(context, R.color.widget_light_post_title_color))
+        val stateColorsKey = if (scheme == "dynamic") {
+            "dynamic-$dayNight"
+        } else {
+            scheme
         }
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "$scheme/$dayNight: $stateColorsKey")
+
+        return TitleGenerator.TitleAttributes(
+            getColor(context, stateColorsKey, "todo"),
+            getColor(context, stateColorsKey, "done"),
+            postTitleTextSize(context).toInt(),
+            getColor(context, stateColorsKey, "post title"))
     }
 
     private fun titleTextSize(context: Context): Float {
@@ -210,103 +228,6 @@ object WidgetStyle {
         }
     }
 
-    @ColorInt
-    private fun primaryTextColor(context: Context): Int {
-        return when (AppPreferences.widgetColorScheme(context)) {
-            "dark" -> ContextCompat.getColor(context, R.color.widget_dark_title_color)
-            "black" -> ContextCompat.getColor(context, R.color.widget_black_title_color)
-            else -> ContextCompat.getColor(context, R.color.widget_light_title_color)
-        }
-    }
-
-    @ColorInt
-    private fun secondaryTextColor(context: Context): Int {
-        return when (AppPreferences.widgetColorScheme(context)) {
-            "dark" -> ContextCompat.getColor(context, R.color.widget_dark_post_title_color)
-            "black" -> ContextCompat.getColor(context, R.color.widget_black_post_title_color)
-            else -> ContextCompat.getColor(context, R.color.widget_light_post_title_color)
-        }
-    }
-
-    @ColorInt
-    fun headerBackground(context: Context): Int {
-        val color = when (AppPreferences.widgetColorScheme(context)) {
-            "dark" -> ContextCompat.getColor(context, R.color.widget_dark_header_bg_color)
-            "black" -> ContextCompat.getColor(context, R.color.widget_black_header_bg_color)
-            else -> ContextCompat.getColor(context, R.color.widget_light_header_bg_color)
-        }
-
-        return withOpacity(context, color)
-    }
-
-    @ColorInt
-    private fun headerTextColor(context: Context): Int {
-        return when (AppPreferences.widgetColorScheme(context)) {
-            "dark" -> ContextCompat.getColor(context, R.color.widget_dark_header_text_color)
-            "black" -> ContextCompat.getColor(context, R.color.widget_black_header_text_color)
-            else -> ContextCompat.getColor(context, R.color.widget_light_header_text_color)
-        }
-    }
-
-    @ColorInt
-    private fun listBackgroundColor(context: Context): Int {
-        val color = when (AppPreferences.widgetColorScheme(context)) {
-            "dark" -> ContextCompat.getColor(context, R.color.widget_dark_list_bg_color)
-            "black" -> ContextCompat.getColor(context, R.color.widget_black_list_bg_color)
-            else -> ContextCompat.getColor(context, R.color.widget_light_list_bg_color)
-        }
-
-        return withOpacity(context, color)
-    }
-
-    @DrawableRes
-    private fun bookIcon(context: Context): Int {
-        return when (AppPreferences.widgetColorScheme(context)) {
-            "dark", "black" -> R.drawable.ic_folder_open_white_18dp
-            else -> R.drawable.ic_folder_open_black_18dp
-        }
-    }
-
-    @DrawableRes
-    private fun scheduledIcon(context: Context): Int {
-        return when (AppPreferences.widgetColorScheme(context)) {
-            "dark", "black" -> R.drawable.ic_today_white_18dp
-            else -> R.drawable.ic_today_black_18dp
-        }
-    }
-
-    @DrawableRes
-    private fun deadlineIcon(context: Context): Int {
-        return when (AppPreferences.widgetColorScheme(context)) {
-            "dark", "black" -> R.drawable.ic_alarm_white_18dp
-            else -> R.drawable.ic_alarm_black_18dp
-        }
-    }
-
-    @DrawableRes
-    private fun eventIcon(context: Context): Int {
-        return when (AppPreferences.widgetColorScheme(context)) {
-            "dark", "black" -> R.drawable.ic_access_time_white_18dp
-            else -> R.drawable.ic_access_time_black_18dp
-        }
-    }
-
-    @DrawableRes
-    private fun closedIcon(context: Context): Int {
-        return when (AppPreferences.widgetColorScheme(context)) {
-            "dark", "black" -> R.drawable.outline_check_circle_white_18
-            else -> R.drawable.outline_check_circle_black_18
-        }
-    }
-
-    @DrawableRes
-    private fun doneIcon(context: Context): Int {
-        return when (AppPreferences.widgetColorScheme(context)) {
-            "dark", "black" -> R.drawable.outline_check_circle_white_24
-            else -> R.drawable.outline_check_circle_black_24
-        }
-    }
-
     private fun doneIconAlpha(context: Context): Int {
         return when (AppPreferences.widgetColorScheme(context)) {
             "dark", "black" -> 0xB3 // 70%
@@ -319,4 +240,6 @@ object WidgetStyle {
         val opacity = AppPreferences.widgetOpacity(context) / 100f
         return ((opacity * 0xFF).toInt() shl 24) or (color and 0x00ffffff)
     }
+
+    private val TAG = WidgetStyle::class.java.name
 }

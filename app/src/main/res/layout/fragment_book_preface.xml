@@ -3,41 +3,51 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    style="@style/CoordinatorLayoutFitsSystemWindows">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/fragment_book_preface_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/screen_edge"
-        android:paddingRight="@dimen/screen_edge"
-        android:paddingTop="@dimen/screen_edge"
-        android:paddingBottom="@dimen/padding_bottom_for_fab"
+        android:layout_marginTop="?attr/actionBarSize"
         android:clipToPadding="false"
-        android:fadeScrollbars="false">
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/book_preface_hint" />
-
-            <com.orgzly.android.ui.views.EditTextWithMarkup
+            <com.orgzly.android.ui.views.richtext.RichText
                 android:id="@+id/fragment_book_preface_content"
+                app:view_id="@+id/fragment_book_preface_content_view"
+                app:edit_id="@+id/fragment_book_preface_content_edit"
+                app:paddingHorizontal="@dimen/screen_edge"
+                app:paddingVertical="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text|textCapSentences|textMultiLine" />
+                android:imeOptions="flagNoFullscreen"
+                android:inputType="text|textCapSentences|textMultiLine"
+                android:hint="@string/book_preface_hint"
+                android:textSize="?attr/fragment_note_content_text_size" />
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
-        style="@style/BottomAppBar.FabAlignEnd.WithCancel" />
+    <!-- Top toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        style="@style/AppBarLayoutStyle">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_toolbar"
+            style="@style/TopToolbar"
+            app:title="@string/edit_book_preface"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:menu="@menu/preface_actions" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

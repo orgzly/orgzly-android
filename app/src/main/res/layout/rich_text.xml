@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.orgzly.android.ui.views.richtext.RichTextView
+        android:id="@+id/rich_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:visibility="visible"
+        tools:text="@string/lorem_ipsum" />
+
+    <com.orgzly.android.ui.views.richtext.RichTextEdit
+        android:id="@+id/rich_text_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:visibility="gone"
+        tools:text="@string/lorem_ipsum_rich" />
+</merge>

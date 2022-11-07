@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="pref_default_widget_color_scheme" translatable="false">dynamic</string>
+
+    <string-array name="widget_color_scheme" tools:ignore="InconsistentArrays">
+        <item>@string/color_scheme_dynamic</item>
+        <item>@string/color_scheme_light</item>
+        <item>@string/color_scheme_dark</item>
+        <item>@string/color_scheme_black</item>
+    </string-array>
+
+    <string-array name="widget_color_scheme_values" tools:ignore="InconsistentArrays">
+        <item>dynamic</item>
+        <item>light</item>
+        <item>dark</item>
+        <item>black</item>
+    </string-array>
+</resources>

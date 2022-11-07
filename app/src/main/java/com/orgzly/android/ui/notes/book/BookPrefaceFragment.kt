@@ -3,17 +3,19 @@ package com.orgzly.android.ui.notes.book
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
+import com.orgzly.android.BookUtils
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
-import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentBookPrefaceBinding
 import javax.inject.Inject
@@ -51,11 +53,11 @@ class BookPrefaceFragment : Fragment() {
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
-        sharedMainActivityViewModel = ViewModelProvider(requireActivity())
-                .get(SharedMainActivityViewModel::class.java)
+        sharedMainActivityViewModel =
+            ViewModelProvider(requireActivity())[SharedMainActivityViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState)
 
         binding = FragmentBookPrefaceBinding.inflate(inflater, container, false)
@@ -66,15 +68,12 @@ class BookPrefaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val activity = activity
-
-        if (activity != null && AppPreferences.isFontMonospaced(context)) {
-            binding.fragmentBookPrefaceContent.typeface = Typeface.MONOSPACE
+        if (AppPreferences.isFontMonospaced(context)) {
+            binding.fragmentBookPrefaceContent.setTypeface(Typeface.MONOSPACE)
         }
 
-        // Open keyboard
-        if (activity != null) {
-            ActivityUtils.openSoftKeyboard(activity, binding.fragmentBookPrefaceContent)
+        binding.fragmentBookPrefaceContent.setOnUserTextChangeListener { str ->
+            binding.fragmentBookPrefaceContent.setSourceText(str)
         }
 
         /* Parse arguments - set content. */
@@ -85,18 +84,16 @@ class BookPrefaceFragment : Fragment() {
 
             bookId = getLong(ARG_BOOK_ID)
 
-            binding.fragmentBookPrefaceContent.setText(getString(ARG_BOOK_PREFACE))
+            binding.fragmentBookPrefaceContent.setSourceText(getString(ARG_BOOK_PREFACE))
         }
 
         book = dataRepository.getBook(bookId)
 
-        appBarToDefault()
+        topToolbarToDefault()
     }
 
-    private fun appBarToDefault() {
-        binding.bottomAppBar.run {
-            replaceMenu(R.menu.preface_actions)
-
+    private fun topToolbarToDefault() {
+        binding.topToolbar.run {
             setNavigationOnClickListener {
                 listener?.onBookPrefaceEditCancelRequest()
             }
@@ -108,20 +105,28 @@ class BookPrefaceFragment : Fragment() {
                     }
 
                     R.id.done -> {
-                        save(binding.fragmentBookPrefaceContent.text.toString())
+                        val source = binding.fragmentBookPrefaceContent.getSourceText()
+                        save(source?.toString().orEmpty())
                     }
 
                 }
 
                 true
             }
+
+            setOnClickListener {
+                binding.fragmentBookPrefaceContainer.scrollTo(0, 0)
+            }
+
+            title = BookUtils.getFragmentTitleForBook(book)
+            subtitle = getString(R.string.preface_in_book)
         }
     }
 
     override fun onPause() {
         super.onPause()
 
-        sharedMainActivityViewModel.unlockDrawer();
+        sharedMainActivityViewModel.unlockDrawer()
     }
 
     override fun onResume() {
@@ -131,7 +136,7 @@ class BookPrefaceFragment : Fragment() {
 
         sharedMainActivityViewModel.setCurrentFragment(FRAGMENT_TAG)
 
-        sharedMainActivityViewModel.lockDrawer();
+        sharedMainActivityViewModel.lockDrawer()
     }
 
     override fun onDetach() {

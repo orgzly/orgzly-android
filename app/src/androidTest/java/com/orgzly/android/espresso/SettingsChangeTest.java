@@ -15,13 +15,13 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.orgzly.android.espresso.EspressoUtils.clickSetting;
-import static com.orgzly.android.espresso.EspressoUtils.onActionItemClick;
-import static com.orgzly.android.espresso.EspressoUtils.onBook;
-import static com.orgzly.android.espresso.EspressoUtils.onItemInAgenda;
-import static com.orgzly.android.espresso.EspressoUtils.onNoteInBook;
-import static com.orgzly.android.espresso.EspressoUtils.onNoteInSearch;
-import static com.orgzly.android.espresso.EspressoUtils.searchForText;
+import static com.orgzly.android.espresso.util.EspressoUtils.clickSetting;
+import static com.orgzly.android.espresso.util.EspressoUtils.onActionItemClick;
+import static com.orgzly.android.espresso.util.EspressoUtils.onBook;
+import static com.orgzly.android.espresso.util.EspressoUtils.onItemInAgenda;
+import static com.orgzly.android.espresso.util.EspressoUtils.onNoteInBook;
+import static com.orgzly.android.espresso.util.EspressoUtils.onNoteInSearch;
+import static com.orgzly.android.espresso.util.EspressoUtils.searchForText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasToString;
@@ -48,16 +48,16 @@ public class SettingsChangeTest extends OrgzlyTest {
     public void testChangeDefaultPrioritySearchResultsShouldBeReordered() {
         searchForText("o.p");
 
-        onNoteInSearch(0, R.id.item_head_title)
+        onNoteInSearch(0, R.id.item_head_title_view)
                 .check(matches(allOf(withText(containsString("#B  Note [a-1]")), isDisplayed())));
-        onNoteInSearch(1, R.id.item_head_title)
+        onNoteInSearch(1, R.id.item_head_title_view)
                 .check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
 
         setDefaultPriority("A");
 
-        onNoteInSearch(0, R.id.item_head_title)
+        onNoteInSearch(0, R.id.item_head_title_view)
                 .check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
-        onNoteInSearch(1, R.id.item_head_title)
+        onNoteInSearch(1, R.id.item_head_title_view)
                 .check(matches(allOf(withText(containsString("#B  Note [a-1]")), isDisplayed())));
     }
 
@@ -65,16 +65,16 @@ public class SettingsChangeTest extends OrgzlyTest {
     public void testChangeDefaultPriorityAgendaResultsShouldBeReordered() {
         searchForText("o.p ad.2");
 
-        onItemInAgenda(1, R.id.item_head_title)
+        onItemInAgenda(1, R.id.item_head_title_view)
                 .check(matches(allOf(withText(containsString("#B  Note [a-1]")), isDisplayed())));
-        onItemInAgenda(2, R.id.item_head_title)
+        onItemInAgenda(2, R.id.item_head_title_view)
                 .check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
 
         setDefaultPriority("A");
 
-        onItemInAgenda(1, R.id.item_head_title)
+        onItemInAgenda(1, R.id.item_head_title_view)
                 .check(matches(allOf(withText(containsString("Note [a-2]")), isDisplayed())));
-        onItemInAgenda(2, R.id.item_head_title)
+        onItemInAgenda(2, R.id.item_head_title_view)
                 .check(matches(allOf(withText(containsString("#B  Note [a-1]")), isDisplayed())));
     }
 
@@ -82,7 +82,7 @@ public class SettingsChangeTest extends OrgzlyTest {
     public void testDisplayedContentInBook() {
         onBook(0).perform(click());
 
-        onNoteInBook(1, R.id.item_head_content)
+        onNoteInBook(1, R.id.item_head_content_view)
                 .check(matches(allOf(withText(containsString("Content for [a-1]")), isDisplayed())));
 
         onActionItemClick(R.id.activity_action_settings, R.string.settings);
@@ -91,7 +91,7 @@ public class SettingsChangeTest extends OrgzlyTest {
         pressBack();
         pressBack();
 
-        onNoteInBook(1, R.id.item_head_content).check(matches(not(isDisplayed())));
+        onNoteInBook(1, R.id.item_head_content_view).check(matches(not(isDisplayed())));
     }
 
     private void setDefaultPriority(String priority) {

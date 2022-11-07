@@ -23,12 +23,19 @@
         android:summary="@string/pref_title_summary_reminders_for_event_times"
         android:defaultValue="@bool/pref_default_use_reminders_for_event_times" />
 
+    <SwitchPreference
+        android:key="@string/pref_key_reminders_use_alarm_clock_for_tod_reminders"
+        android:title="@string/use_alarm_clock_for_tod_reminders"
+        android:summary="@string/use_alarm_clock_for_tod_reminders_summary"
+        android:defaultValue="@bool/pref_default_reminders_use_alarm_clock_for_tod_reminders" />
+
     <com.orgzly.android.prefs.TimePreference
         android:key="@string/pref_key_daily_reminder_time"
         android:title="@string/pref_title_daily_reminder_time" />
 
+    <!-- Before v26 -->
     <PreferenceCategory
-        android:key="@string/pref_key_reminders_notification_settings"
+        android:key="@string/pref_key_reminders_notification_settings_preV26"
         android:title="@string/prefs_title_notifications">
 
         <SwitchPreference
@@ -45,8 +52,19 @@
             android:key="@string/pref_key_reminders_vibrate"
             android:title="@string/pref_title_reminders_vibrate"
             android:defaultValue="@bool/pref_default_reminders_vibrate" />
-
     </PreferenceCategory>
+
+    <!-- v26 and after -->
+    <!-- Open system settings to configure reminders' notification channel -->
+    <androidx.preference.PreferenceScreen
+        android:key="@string/pref_key_reminders_notification_settings_V26"
+        android:title="@string/notification_channel_settings"
+        android:summary="@string/notification_channel_settings_summary">
+        <intent android:action="android.settings.CHANNEL_NOTIFICATION_SETTINGS">
+            <extra android:name="android.provider.extra.CHANNEL_ID" android:value="reminders" />
+            <extra android:name="android.provider.extra.APP_PACKAGE" android:value="com.orgzly" />
+        </intent>
+    </androidx.preference.PreferenceScreen>
 
     <PreferenceCategory android:title="@string/reminder_snooze">
         <com.orgzly.android.prefs.IntegerPreference

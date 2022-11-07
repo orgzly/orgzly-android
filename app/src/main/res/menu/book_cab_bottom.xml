@@ -1,0 +1,70 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/refile"
+        app:showAsAction="always"
+        android:title="@string/refile"
+        android:icon="@drawable/ic_move_to_inbox"/>
+
+<!--    <item-->
+<!--        android:id="@+id/edit"-->
+<!--        app:showAsAction="always"-->
+<!--        android:title="@string/edit"-->
+<!--        android:icon="@drawable/ic_edit">-->
+
+<!--        <menu>-->
+<!--        </menu>-->
+<!--    </item>-->
+
+    <item
+        android:id="@+id/schedule"
+        app:showAsAction="always"
+        android:title="@string/schedule"
+        android:icon="@drawable/ic_today"/>
+
+    <item
+        android:id="@+id/deadline"
+        app:showAsAction="always"
+        android:layout_height="wrap_content"
+        android:title="@string/deadline"
+        android:icon="@drawable/ic_alarm" />
+
+    <item
+        android:id="@+id/state"
+        app:showAsAction="always"
+        android:title="@string/state"
+        android:icon="@drawable/ic_flag"/>
+
+    <item
+        android:id="@+id/toggle_state"
+        app:showAsAction="always"
+        android:title="@string/done"
+        android:icon="@drawable/ic_check_circle_outline"/>
+
+
+    <item
+        android:id="@+id/new_note"
+        android:icon="@drawable/ic_add"
+        app:showAsAction="always"
+        android:title="@string/new_note">
+
+        <menu>
+            <item
+                android:id="@+id/new_note_above"
+                android:title="@string/new_above"
+                android:icon="@drawable/cic_new_above" />
+
+            <item
+                android:id="@+id/new_note_under"
+                android:title="@string/new_under"
+                android:icon="@drawable/cic_new_under" />
+
+            <item
+                android:id="@+id/new_note_below"
+                android:title="@string/new_below"
+                android:icon="@drawable/cic_new_below"/>
+        </menu>
+    </item>
+</menu>

@@ -7,21 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.orgzly.BuildConfig
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.Selection
 import com.orgzly.android.ui.notes.NoteItemViewBinder
 import com.orgzly.android.ui.notes.NoteItemViewHolder
-import com.orgzly.android.ui.notes.quickbar.QuickBars
-import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.ItemHeadBinding
 
 class SearchAdapter(
         private val context: Context,
-        private val clickListener: OnViewHolderClickListener<NoteView>,
-        private val quickBar: QuickBars
+        private val clickListener: OnViewHolderClickListener<NoteView>
 ) :ListAdapter<NoteView, RecyclerView.ViewHolder>(DIFF_CALLBACK), SelectableItemAdapter {
 
     private val adapterSelection: Selection = Selection()
@@ -54,9 +50,7 @@ class SearchAdapter(
 
         noteItemViewBinder.bind(holder, noteView)
 
-        quickBar.bind(holder)
-
-        getSelection().setIsSelectedBackground(holder.itemView, note.id)
+        getSelection().setBackgroundIfSelected(holder.itemView, note.id)
     }
 
     override fun getItemId(position: Int): Long {

@@ -225,6 +225,10 @@ class DataRepository @Inject constructor(
         }
     }
 
+    fun getBooksWithError(): List<Book> {
+        return db.book().getWithActionType(BookAction.Type.ERROR)
+    }
+
     fun getBookView(name: String): BookView? {
         return db.bookView().get(name)
     }
@@ -416,7 +420,8 @@ class DataRepository @Inject constructor(
                 System.currentTimeMillis(),
                 status)
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Updating status for $bookId: $updated")
+        if (BuildConfig.LOG_DEBUG)
+            LogUtils.d(TAG, "Updating book $bookId status to $status ($updated updated)")
     }
 
     fun updateBookLinkAndSync(bookId: Long, uploadedBook: VersionedRook) {
@@ -977,6 +982,33 @@ class DataRepository @Inject constructor(
         }
     }
 
+    fun setNotesClockingState(noteIds: Set<Long>, type: Int) {
+        var contentUpdated = false
+
+        noteIds.forEach { noteId ->
+            val content = db.note().get(noteId)?.content
+
+            val newContent = when (type) {
+                0 -> OrgFormatter.clockIn(content)
+                1 -> OrgFormatter.clockOut(content)
+                2 -> OrgFormatter.clockCancel(content)
+                else -> content
+            }
+
+            if (newContent !== content) {
+                val contentLineCount = MiscUtils.lineCount(newContent)
+                db.note().updateContent(noteId, newContent, contentLineCount)
+                contentUpdated = true
+            }
+        }
+
+        if (contentUpdated) {
+            db.note().get(noteIds).mapTo(hashSetOf()) { it.position.bookId }.let {
+                updateBookIsModified(it, true)
+            }
+        }
+    }
+
     fun toggleNoteFoldedState(noteId: Long): Int {
         return db.runInTransaction(Callable {
             val note = db.note().get(noteId) ?: return@Callable 0
@@ -1082,13 +1114,14 @@ class DataRepository @Inject constructor(
                     }
 
                     updated += db.note().update(
-                            note.noteId,
-                            title,
-                            content,
-                            scl.state,
-                            getOrgRangeId(scl.scheduled),
-                            getOrgRangeId(scl.deadline),
-                            getOrgRangeId(scl.closed))
+                        note.noteId,
+                        title,
+                        content,
+                        MiscUtils.lineCount(content),
+                        scl.state,
+                        getOrgRangeId(scl.scheduled),
+                        getOrgRangeId(scl.deadline),
+                        getOrgRangeId(scl.closed))
 
                     if (scl.isShifted) {
                         replaceNoteEvents(note.noteId, title, content)
@@ -1105,7 +1138,7 @@ class DataRepository @Inject constructor(
 
     fun updateNoteContent(bookId: Long, noteId: Long, content: String?) {
         db.runInTransaction {
-            db.note().updateContent(noteId, content)
+            db.note().updateContent(noteId, content, MiscUtils.lineCount(content))
 
             updateBookIsModified(bookId, true)
         }
@@ -1851,7 +1884,11 @@ class DataRepository @Inject constructor(
 
         val startId = getOrgDateTimeId(range.startTime)
 
-        val rangeEndTime = if (range.endTime != null) { range.endTime } else { null }
+        val rangeEndTime = if (range.endTime != null) {
+            range.endTime
+        } else {
+            null
+        }
         val endId = if (rangeEndTime != null) getOrgDateTimeId(rangeEndTime) else null
 
         return db.orgRange().insert(OrgRange(0, str, startId, endId))
@@ -2296,6 +2333,19 @@ class DataRepository @Inject constructor(
         }
     }
 
+    fun getSyncRepos(): List<SyncRepo> {
+        val list = ArrayList<SyncRepo>()
+        for ((id, type, url) in getRepos()) {
+            try {
+                list.add(getRepoInstance(id, type, url))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+        }
+        return list
+    }
+
     fun getRepoInstance(id: Long, type: RepoType, url: String): SyncRepo {
         // Load additional repo parameters, if available
         val props = getRepoPropsMap(id)
@@ -2307,6 +2357,15 @@ class DataRepository @Inject constructor(
 
     fun getRepoPropsMap(id: Long): Map<String, String> {
         return AppPreferences.repoPropsMap(context, id)
+    }
+
+    fun updateBooksStatusToCanceled() {
+        db.book().updateStatusToCanceled(
+            BookAction.Type.PROGRESS,
+            BookAction.Type.INFO,
+            context.getString(R.string.canceled),
+            System.currentTimeMillis(),
+            null)
     }
 
     companion object {

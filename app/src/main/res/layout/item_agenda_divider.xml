@@ -5,10 +5,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
+    android:layout_height="48dp"
     style="?attr/materialCardViewElevatedStyle"
-    app:cardCornerRadius="0dp"
-    android:orientation="horizontal">
+    android:outlineSpotShadowColor="@android:color/transparent" tools:targetApi="p"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="0dp">
 
     <TextView
         android:id="@+id/item_agenda_divider_text"

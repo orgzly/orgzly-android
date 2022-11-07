@@ -2,8 +2,9 @@ package com.orgzly.android.ui.views.style
 
 import android.text.TextPaint
 import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.View
-import com.orgzly.android.ui.views.TextViewWithMarkup
+import com.orgzly.android.ui.views.richtext.ActionableRichTextView
 
 /**
  * @param content is `[ ]` or `[X]`
@@ -11,9 +12,10 @@ import com.orgzly.android.ui.views.TextViewWithMarkup
  */
 class CheckboxSpan(val content: CharSequence, val rawStart: Int, val rawEnd: Int) : ClickableSpan() {
 
-    override fun onClick(widget: View) {
-        if (widget is TextViewWithMarkup) {
-            widget.toggleCheckbox(this)
+    override fun onClick(view: View) {
+        Log.d("CheckboxSpan", "Checkbox clicked on $view")
+        if (view is ActionableRichTextView) {
+            view.toggleCheckbox(this)
         }
     }
 

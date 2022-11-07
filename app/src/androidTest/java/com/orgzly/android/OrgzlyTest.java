@@ -135,6 +135,12 @@ public class OrgzlyTest {
 
         /* Display inherited tags in search results. */
         AppPreferences.inheritedTagsInSearchResults(context, true);
+
+        /* Start with the light theme. */
+        AppPreferences.colorTheme(context, "light");
+
+        /* Log major events. */
+        AppPreferences.logMajorEvents(context, true);
     }
 
     /**

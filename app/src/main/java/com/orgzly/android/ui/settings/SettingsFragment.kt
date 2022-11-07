@@ -17,14 +17,13 @@ import com.orgzly.android.reminders.RemindersScheduler
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.NoteStates
 import com.orgzly.android.ui.notifications.Notifications
-import com.orgzly.android.ui.util.ActivityUtils
+import com.orgzly.android.ui.util.KeyboardUtils
 import com.orgzly.android.usecase.NoteReparseStateAndTitles
 import com.orgzly.android.usecase.NoteSyncCreatedAtTimeWithProperty
 import com.orgzly.android.usecase.UseCase
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.widgets.ListWidgetProvider
-import java.util.*
 
 /**
  * Displays settings.
@@ -78,13 +77,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
         setDefaultStateForNewNote()
 
-        /* Disable changing the language if it's not supported in this version. */
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            preference(R.string.pref_key_ignore_system_locale)?.let {
-                preferenceScreen.removePreference(it)
-            }
-        }
-
         preference(R.string.pref_key_file_absolute_root)?.let {
             val pref = it as EditTextPreference
             pref.text = AppPreferences.fileAbsoluteRoot(context)
@@ -93,6 +85,16 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         preference(R.string.pref_key_file_relative_root)?.let {
             val pref = it as EditTextPreference
             pref.text = AppPreferences.fileRelativeRoot(context)
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            preference(R.string.pref_key_reminders_notification_settings_V26)?.let {
+                preferenceScreen.removePreference(it)
+            }
+        } else {
+            preference(R.string.pref_key_reminders_notification_settings_preV26)?.let {
+                preferenceScreen.removePreference(it)
+            }
         }
 
         /* Update preferences which depend on multiple others. */
@@ -187,7 +189,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
                 AppPreferences.updateStaticKeywords(context)
 
                 /* Re-parse notes. */
-                ActivityUtils.closeSoftKeyboard(activity)
+                KeyboardUtils.closeSoftKeyboard(activity)
                 listener?.onNotesUpdateRequest(NoteReparseStateAndTitles())
 
                 setDefaultStateForNewNote()
@@ -205,7 +207,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             getString(R.string.pref_key_ongoing_notification),
             getString(R.string.pref_key_ongoing_notification_priority) -> {
                 if (AppPreferences.newNoteNotification(context)) {
-                    Notifications.createNewNoteNotification(context)
+                    Notifications.showNewNoteNotification(context)
                 } else {
                     Notifications.cancelNewNoteNotification(context)
                 }
@@ -247,11 +249,14 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
             // Update widget for changed style
             getString(R.string.pref_key_widget_color_scheme),
-            getString(R.string.pref_key_widget_font_size),
             getString(R.string.pref_key_widget_opacity),
+            getString(R.string.pref_key_widget_font_size),
+            getString(R.string.pref_key_widget_display_checkmarks),
+            getString(R.string.pref_key_widget_display_book_name),
             getString(R.string.pref_key_widget_update_frequency) -> {
-                val intent = Intent(context, ListWidgetProvider::class.java)
-                intent.action = AppIntent.ACTION_UPDATE_LAYOUT_LIST_WIDGET
+                val intent = Intent(context, ListWidgetProvider::class.java).apply {
+                    action = AppIntent.ACTION_UPDATE_LAYOUT_LIST_WIDGET
+                }
                 context?.sendBroadcast(intent)
             }
 

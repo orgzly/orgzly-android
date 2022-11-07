@@ -2,7 +2,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@style/ListWidgetTheme"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -12,43 +12,49 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:orientation="horizontal"
-        android:background="@color/widget_light_header_bg_color"
+        android:background="?colorPrimaryContainer"
         android:elevation="1dp">
 
         <ImageView
-            android:id="@+id/list_widget_header_icon"
+            android:id="@+id/list_widget_header_logo"
             style="@style/BorderlessButton"
-            android:padding="0dp"
+            android:padding="12dp"
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_logo_for_widget" />
+            android:src="@drawable/cic_logo_for_widget" />
 
         <LinearLayout
             android:id="@+id/list_widget_header_bar"
             style="@style/BorderlessButton"
-            android:paddingLeft="0dp"
-            android:paddingRight="0dp"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
             android:gravity="start"
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/list_widget_header_selection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/list_widget_select_search"
-                android:textColor="@color/widget_light_header_text_color"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="@dimen/widget_header_text_size_14"
-                android:drawableRight="@drawable/ic_arrow_drop_down_white_24dp"
-                android:drawableEnd="@drawable/ic_arrow_drop_down_white_24dp"
                 android:drawablePadding="4dp"
                 android:ellipsize="end"
                 android:maxLines="1" />
+
+            <ImageView
+                android:id="@+id/list_widget_header_selection_arrow"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_drop_down"
+                android:layout_gravity="center_vertical" />
         </LinearLayout>
 
         <ImageButton
@@ -58,15 +64,15 @@
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_add_white_24dp" />
+            android:src="@drawable/ic_add" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/list_widget_list_container"
+        android:background="?android:attr/colorBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/widget_light_list_bg_color">
+        android:orientation="vertical">
 
         <ListView
             android:id="@+id/list_widget_list_view"
@@ -75,7 +81,6 @@
             android:clipToPadding="false"
             android:paddingTop="@dimen/widget_padding"
             android:paddingBottom="@dimen/widget_padding"
-            android:paddingLeft="@dimen/widget_padding"
             android:paddingStart="@dimen/widget_padding"
             android:divider="@null"
             android:dividerHeight="0dp" />
@@ -87,6 +92,8 @@
             android:padding="16dp"
             android:gravity="center"
             android:visibility="gone"
+            android:text="@string/no_notes_found_after_search"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="20sp" />
     </LinearLayout>
 </LinearLayout>
