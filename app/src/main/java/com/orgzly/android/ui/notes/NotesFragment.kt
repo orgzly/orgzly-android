@@ -3,7 +3,10 @@ package com.orgzly.android.ui.notes
 import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
+import android.widget.PopupWindow
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -32,6 +35,55 @@ abstract class NotesFragment : Fragment(), TimestampDialogFragment.OnDateTimeSet
     abstract fun getCurrentListener(): Listener?
 
     abstract fun getAdapter(): SelectableItemAdapter?
+
+
+    private var notePopup: PopupWindow? = null
+
+    protected fun showPopupWindow(
+        noteId: Long,
+        location: NotePopup.Location,
+        direction: Int,
+        itemView: View,
+        e1: MotionEvent,
+        e2: MotionEvent,
+        listener: NotePopupListener
+    ): PopupWindow? {
+
+        val anchor = itemView.findViewById<View>(R.id.item_head_title)
+
+        notePopup = NotePopup.showWindow(noteId, anchor, location, direction, e1, e2) { _, buttonId ->
+            listener.onPopupButtonClick(noteId, buttonId)
+        }
+
+        // Enable back handler if popup is shown
+        if (notePopup != null) {
+            notePopupDismissOnBackPress.isEnabled = true
+        }
+
+        // Disable back handler on dismiss
+        notePopup?.setOnDismissListener {
+            notePopup = null
+            notePopupDismissOnBackPress.isEnabled = false
+        }
+
+        return notePopup
+    }
+
+    protected val notePopupDismissOnBackPress = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            // Dismiss window on back press
+            dismiss()
+
+            // Disable self and press back again
+            isEnabled = false
+            activity?.onBackPressed()
+        }
+    }
+
+    private fun dismiss() {
+        notePopup?.dismiss()
+        notePopup = null
+    }
 
 
     @JvmField

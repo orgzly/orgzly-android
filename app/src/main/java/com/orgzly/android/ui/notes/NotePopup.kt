@@ -18,7 +18,7 @@ import com.orgzly.android.ui.util.getLayoutInflater
 
 
 fun interface NotePopupListener {
-    fun onPopupButtonClick(@IdRes buttonId: Int)
+    fun onPopupButtonClick(itemId: Long, @IdRes buttonId: Int)
 }
 
 object NotePopup {
@@ -27,19 +27,19 @@ object NotePopup {
         QUERY
     }
 
-    fun showWindow(anchor: View, location: Location, direction: Int, e1: MotionEvent, e2: MotionEvent, listener: NotePopupListener) {
+    fun showWindow(itemId: Long, anchor: View, location: Location, direction: Int, e1: MotionEvent, e2: MotionEvent, listener: NotePopupListener): PopupWindow? {
         val context = anchor.context
 
         val actions = getActionsForLocation(context, location, direction)
 
         // If there is only one button just perform the action
         if (actions.size == 1) {
-            listener.onPopupButtonClick(actions.first().id)
-            return
+            listener.onPopupButtonClick(itemId, actions.first().id)
+            return null
 
         } else if (actions.isEmpty()) {
             // TODO: Don't allow in preference, and/or show a snackbar here
-            return
+            return null
         }
 
         val popupView = context.getLayoutInflater().inflate(R.layout.note_popup_buttons, null)
@@ -64,7 +64,7 @@ object NotePopup {
             val button = inflater.inflate(R.layout.note_popup_button, null) as MaterialButton
 
             button.setOnClickListener {
-                listener.onPopupButtonClick(action.id)
+                listener.onPopupButtonClick(itemId, action.id)
                 popupWindow.dismiss()
             }
 
@@ -72,9 +72,6 @@ object NotePopup {
 
             group.addView(button)
         }
-
-//        popupWindow.setOnDismissListener {
-//        }
 
         val gravity = Gravity.START or Gravity.TOP
 
@@ -85,6 +82,8 @@ object NotePopup {
         val y = e1.rawY.toInt()
 
         popupWindow.showAtLocation(anchor, gravity, x, y)
+
+        return popupWindow
     }
 
     private fun getActionsForLocation(context: Context, location: Location, direction: Int): List<Action> {

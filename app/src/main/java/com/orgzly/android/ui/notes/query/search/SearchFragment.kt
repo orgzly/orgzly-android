@@ -21,6 +21,7 @@ import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.main.setupSearchView
 import com.orgzly.android.ui.notes.ItemGestureDetector
 import com.orgzly.android.ui.notes.NoteItemViewHolder
+import com.orgzly.android.ui.notes.NotePopup
 import com.orgzly.android.ui.notes.query.QueryFragment
 import com.orgzly.android.ui.notes.query.QueryViewModel
 import com.orgzly.android.ui.notes.query.QueryViewModel.Companion.APP_BAR_DEFAULT_MODE
@@ -59,6 +60,7 @@ class SearchFragment : QueryFragment(), OnViewHolderClickListener<NoteView> {
         viewModel = ViewModelProvider(this, factory).get(QueryViewModel::class.java)
 
         requireActivity().onBackPressedDispatcher.addCallback(this, appBarBackPressHandler)
+        requireActivity().onBackPressedDispatcher.addCallback(this, notePopupDismissOnBackPress)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -92,7 +94,9 @@ class SearchFragment : QueryFragment(), OnViewHolderClickListener<NoteView> {
                     rv.findChildViewUnder(e1.x, e2.y)?.let { itemView ->
                         rv.findContainingViewHolder(itemView)?.let { vh ->
                             (vh as? NoteItemViewHolder)?.let {
-                                showPopupWindow(vh.itemId, direction, itemView, e1, e2)
+                                showPopupWindow(vh.itemId, NotePopup.Location.QUERY, direction, itemView, e1, e2) { noteId, buttonId ->
+                                        handleActionItemClick(setOf(noteId), buttonId)
+                                }
                             }
                         }
                     }
@@ -175,7 +179,7 @@ class SearchFragment : QueryFragment(), OnViewHolderClickListener<NoteView> {
             }
 
             setOnMenuItemClickListener { menuItem ->
-                handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
+                handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId)
                 true
             }
 
@@ -191,7 +195,7 @@ class SearchFragment : QueryFragment(), OnViewHolderClickListener<NoteView> {
             inflateMenu(R.menu.query_cab_bottom)
 
             setOnMenuItemClickListener { menuItem ->
-                handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
+                handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId)
                 true
             }
 
@@ -199,10 +203,6 @@ class SearchFragment : QueryFragment(), OnViewHolderClickListener<NoteView> {
 
             activity?.setDecorFitsSystemWindowsForBottomToolbar(visibility)
         }
-    }
-
-    override fun onNotePopupButtonClick(buttonId: Int, itemId: Long) {
-        handleActionItemClick(buttonId, setOf(itemId))
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

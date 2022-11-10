@@ -20,6 +20,7 @@ import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.main.setupSearchView
 import com.orgzly.android.ui.notes.ItemGestureDetector
 import com.orgzly.android.ui.notes.NoteItemViewHolder
+import com.orgzly.android.ui.notes.NotePopup
 import com.orgzly.android.ui.notes.query.QueryFragment
 import com.orgzly.android.ui.notes.query.QueryViewModel
 import com.orgzly.android.ui.notes.query.QueryViewModel.Companion.APP_BAR_DEFAULT_MODE
@@ -58,6 +59,7 @@ class AgendaFragment : QueryFragment(), OnViewHolderClickListener<AgendaItem> {
         super.onCreate(savedInstanceState)
 
         requireActivity().onBackPressedDispatcher.addCallback(this, appBarBackPressHandler)
+        requireActivity().onBackPressedDispatcher.addCallback(this, notePopupDismissOnBackPress)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -92,7 +94,11 @@ class AgendaFragment : QueryFragment(), OnViewHolderClickListener<AgendaItem> {
                     rv.findChildViewUnder(e1.x, e2.y)?.let { itemView ->
                         rv.findContainingViewHolder(itemView)?.let { vh ->
                             (vh as? NoteItemViewHolder)?.let {
-                                showPopupWindow(vh.itemId, direction, itemView, e1, e2)
+                                showPopupWindow(vh.itemId, NotePopup.Location.QUERY, direction, itemView, e1, e2) { noteId, buttonId ->
+                                    item2databaseIds[noteId]?.let {
+                                        handleActionItemClick(setOf(it), buttonId)
+                                    }
+                                }
                             }
                         }
                     }
@@ -170,7 +176,7 @@ class AgendaFragment : QueryFragment(), OnViewHolderClickListener<AgendaItem> {
             }
 
             setOnMenuItemClickListener { menuItem ->
-                handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
+                handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId)
                 true
             }
 
@@ -186,7 +192,7 @@ class AgendaFragment : QueryFragment(), OnViewHolderClickListener<AgendaItem> {
             inflateMenu(R.menu.query_cab_bottom)
 
             setOnMenuItemClickListener { menuItem ->
-                handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
+                handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId)
                 true
             }
 
@@ -198,12 +204,6 @@ class AgendaFragment : QueryFragment(), OnViewHolderClickListener<AgendaItem> {
             visibility = View.VISIBLE
 
             activity?.setDecorFitsSystemWindowsForBottomToolbar(visibility)
-        }
-    }
-
-    override fun onNotePopupButtonClick(buttonId: Int, itemId: Long) {
-        item2databaseIds[itemId]?.let {
-            handleActionItemClick(buttonId, setOf(it))
         }
     }
 

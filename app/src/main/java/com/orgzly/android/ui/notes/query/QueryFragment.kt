@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.widget.PopupWindow
 import androidx.lifecycle.ViewModelProvider
 import com.orgzly.R
 import com.orgzly.android.sync.SyncRunner
@@ -59,17 +60,8 @@ abstract class QueryFragment :
         setHasOptionsMenu(true)
     }
 
-    protected fun showPopupWindow(noteId: Long, direction: Int, itemView: View, e1: MotionEvent, e2: MotionEvent) {
-        val anchor = itemView.findViewById<View>(R.id.item_head_title)
 
-        NotePopup.showWindow(anchor, NotePopup.Location.QUERY, direction, e1, e2) { buttonId ->
-            onNotePopupButtonClick(buttonId, noteId)
-        }
-    }
-
-    abstract fun onNotePopupButtonClick(buttonId: Int, itemId: Long)
-
-    protected fun handleActionItemClick(actionId: Int, ids: Set<Long>) {
+    protected fun handleActionItemClick(ids: Set<Long>, actionId: Int) {
         if (ids.isEmpty()) {
             Log.e(TAG, "Cannot handle action when there are no items selected")
             return

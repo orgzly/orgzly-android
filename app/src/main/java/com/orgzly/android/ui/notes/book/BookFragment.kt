@@ -117,6 +117,7 @@ class BookFragment :
         viewModel = ViewModelProvider(this, factory).get(BookViewModel::class.java)
 
         requireActivity().onBackPressedDispatcher.addCallback(this, appBarBackPressHandler)
+        requireActivity().onBackPressedDispatcher.addCallback(this, notePopupDismissOnBackPress)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -155,7 +156,9 @@ class BookFragment :
                     rv.findChildViewUnder(e1.x, e1.y)?.let { itemView ->
                         rv.findContainingViewHolder(itemView)?.let { vh ->
                             (vh as? NoteItemViewHolder)?.let {
-                                showPopupWindow(vh.itemId, direction, itemView, e1, e2)
+                                showPopupWindow(vh.itemId, NotePopup.Location.BOOK, direction, itemView, e1, e2) { noteId, buttonId ->
+                                    handleActionItemClick(setOf(noteId), buttonId)
+                                }
                             }
                         }
                     }
@@ -273,14 +276,6 @@ class BookFragment :
                     appBarBackPressHandler.isEnabled = true
                 }
             }
-        }
-    }
-
-    private fun showPopupWindow(noteId: Long, direction: Int, itemView: View, e1: MotionEvent, e2: MotionEvent) {
-        val anchor = itemView.findViewById<View>(R.id.item_head_title)
-
-        NotePopup.showWindow(anchor, NotePopup.Location.BOOK, direction, e1, e2) { buttonId ->
-            handleActionItemClick(setOf(noteId), buttonId)
         }
     }
 
