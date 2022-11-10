@@ -30,6 +30,18 @@ object NotePopup {
     fun showWindow(anchor: View, location: Location, direction: Int, e1: MotionEvent, e2: MotionEvent, listener: NotePopupListener) {
         val context = anchor.context
 
+        val actions = getActionsForLocation(context, location, direction)
+
+        // If there is only one button just perform the action
+        if (actions.size == 1) {
+            listener.onPopupButtonClick(actions.first().id)
+            return
+
+        } else if (actions.isEmpty()) {
+            // TODO: Don't allow in preference, and/or show a snackbar here
+            return
+        }
+
         val popupView = context.getLayoutInflater().inflate(R.layout.note_popup_buttons, null)
 
         val width = LinearLayout.LayoutParams.WRAP_CONTENT
@@ -43,8 +55,6 @@ object NotePopup {
             // Required on API 21 and 22 (Lollipop) so it can be dismissed on outside click
             setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
-
-        val actions = getActionsForLocation(context, location, direction)
 
         val group = popupView.findViewById<ViewGroup>(R.id.group)
 
@@ -77,7 +87,6 @@ object NotePopup {
         popupWindow.showAtLocation(anchor, gravity, x, y)
     }
 
-    // TODO: Allow selecting the action only, without showing the popup (e.g. swipe right to toggle state).
     private fun getActionsForLocation(context: Context, location: Location, direction: Int): List<Action> {
         val keyId = preferenceKeyForLocation(location, direction)
         val key = context.getString(keyId)
