@@ -161,6 +161,7 @@ class SearchFragment : QueryFragment(), OnViewHolderClickListener<NoteView> {
     private fun topToolbarToMainSelection() {
         binding.topToolbar.run {
             menu.clear()
+            inflateMenu(R.menu.query_cab_top)
 
             // Hide buttons that can't be used when multiple notes are selected
             listOf(R.id.focus).forEach { id ->
@@ -173,6 +174,11 @@ class SearchFragment : QueryFragment(), OnViewHolderClickListener<NoteView> {
                 viewModel.appBar.toMode(APP_BAR_DEFAULT_MODE)
             }
 
+            setOnMenuItemClickListener { menuItem ->
+                handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
+                true
+            }
+
             // Number of selected notes as a title
             title = viewAdapter.getSelection().count.toString()
             subtitle = null
@@ -181,6 +187,9 @@ class SearchFragment : QueryFragment(), OnViewHolderClickListener<NoteView> {
 
     private fun bottomToolbarToMainSelection() {
         binding.bottomToolbar.run {
+            menu.clear()
+            inflateMenu(R.menu.query_cab_bottom)
+
             setOnMenuItemClickListener { menuItem ->
                 handleActionItemClick(menuItem.itemId, viewAdapter.getSelection().getIds())
                 true
