@@ -14,7 +14,7 @@ import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.util.LogUtils
 
 object SyncRunner {
-    const val AUTO_SYNC_DATA = "auto-sync"
+    const val IS_AUTO_SYNC = "auto-sync"
 
     private val TAG: String = SyncRunner::class.java.name
 
@@ -34,7 +34,7 @@ object SyncRunner {
             // On Android >= 12 notification from overridden getForegroundInfo might not be shown
             // We are handing sync-in-progress notification manually
             // .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-            .setInputData(workDataOf(AUTO_SYNC_DATA to autoSync))
+            .setInputData(workDataOf(IS_AUTO_SYNC to autoSync))
             .build()
 
         workManager

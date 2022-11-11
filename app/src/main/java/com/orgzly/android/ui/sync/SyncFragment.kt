@@ -203,10 +203,7 @@ class SyncFragment : Fragment() {
                     setAnimation(true)
                 }
 
-                SyncState.Type.AUTO_SYNC_NOT_STARTED -> {
-                    // Do nothing
-                }
-
+                SyncState.Type.AUTO_SYNC_NOT_STARTED,
                 SyncState.Type.FINISHED,
                 SyncState.Type.CANCELED,
                 SyncState.Type.FAILED_NO_REPOS,

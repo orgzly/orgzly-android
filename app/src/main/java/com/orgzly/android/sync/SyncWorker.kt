@@ -2,7 +2,6 @@ package com.orgzly.android.sync
 
 import android.content.Context
 import androidx.work.CoroutineWorker
-import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -117,7 +116,7 @@ class SyncWorker(val context: Context, val params: WorkerParameters) :
     private fun checkConditions(): SyncState? {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        val autoSync = params.inputData.getBoolean(SyncRunner.AUTO_SYNC_DATA, false)
+        val autoSync = params.inputData.getBoolean(SyncRunner.IS_AUTO_SYNC, false)
 
         val repos = dataRepository.getSyncRepos()
 
