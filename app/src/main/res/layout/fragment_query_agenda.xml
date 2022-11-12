@@ -31,6 +31,7 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <!-- Top toolbar -->
+    <!-- TODO: DRY -->
     <com.google.android.material.appbar.AppBarLayout
         style="@style/AppBarLayoutStyle">
 
@@ -38,6 +39,10 @@
             android:id="@+id/top_toolbar"
             style="@style/TopToolbar"
             app:navigationIcon="@drawable/ic_menu" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/sync_toolbar_progress"
+            style="@style/SyncProgressIndicator" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

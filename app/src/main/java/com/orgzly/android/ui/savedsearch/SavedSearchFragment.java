@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.orgzly.BuildConfig;
@@ -17,6 +16,7 @@ import com.orgzly.R;
 import com.orgzly.android.App;
 import com.orgzly.android.data.DataRepository;
 import com.orgzly.android.db.entity.SavedSearch;
+import com.orgzly.android.ui.CommonFragment;
 import com.orgzly.android.ui.drawer.DrawerItem;
 import com.orgzly.android.ui.main.SharedMainActivityViewModel;
 import com.orgzly.android.ui.savedsearches.SavedSearchesFragment;
@@ -28,7 +28,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class SavedSearchFragment extends Fragment implements DrawerItem {
+public class SavedSearchFragment extends CommonFragment implements DrawerItem {
     private static final String TAG = SavedSearchFragment.class.getName();
 
     private static final String ARG_ID = "id";
@@ -86,6 +86,8 @@ public class SavedSearchFragment extends Fragment implements DrawerItem {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         View viewToFocus = null;
 
         if (isEditingExistingFilter()) { /* Existing filter. */

@@ -38,6 +38,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <!-- Top toolbar -->
+    <!-- TODO: DRY -->
     <com.google.android.material.appbar.AppBarLayout
         style="@style/AppBarLayoutStyle">
 
@@ -47,6 +48,10 @@
             app:title="@string/edit_book_preface"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:menu="@menu/preface_actions" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/sync_toolbar_progress"
+            style="@style/SyncProgressIndicator" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

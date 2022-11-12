@@ -16,7 +16,6 @@ import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -52,7 +51,7 @@ import javax.inject.Inject
 /**
  * Note editor.
  */
-class NoteFragment : Fragment(), View.OnClickListener, TimestampDialogFragment.OnDateTimeSetListener, DrawerItem {
+class NoteFragment : CommonFragment(), View.OnClickListener, TimestampDialogFragment.OnDateTimeSetListener, DrawerItem {
 
     private lateinit var binding: FragmentNoteBinding
 

@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -22,6 +21,7 @@ import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.SavedSearch
 import com.orgzly.android.savedsearch.FileSavedSearchStore
 import com.orgzly.android.sync.SyncRunner
+import com.orgzly.android.ui.CommonFragment
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
@@ -38,7 +38,7 @@ import javax.inject.Inject
 /**
  * Displays and allows modifying saved searches.
  */
-class SavedSearchesFragment : Fragment(), DrawerItem, OnViewHolderClickListener<SavedSearch> {
+class SavedSearchesFragment : CommonFragment(), DrawerItem, OnViewHolderClickListener<SavedSearch> {
     private lateinit var binding: FragmentSavedSearchesBinding
 
     private var listener: Listener? = null

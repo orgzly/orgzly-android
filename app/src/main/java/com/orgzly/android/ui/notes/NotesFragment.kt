@@ -1,17 +1,17 @@
 package com.orgzly.android.ui.notes
 
-import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
 import android.widget.PopupWindow
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AlertDialog
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
+import com.orgzly.android.ui.CommonFragment
 import com.orgzly.android.ui.NotePlace
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.TimeType
@@ -27,7 +27,7 @@ import javax.inject.Inject
  * Fragment which is displaying a list of notes,
  * such as BookFragment, SearchFragment or AgendaFragment.
  */
-abstract class NotesFragment : Fragment(), TimestampDialogFragment.OnDateTimeSetListener {
+abstract class NotesFragment : CommonFragment(), TimestampDialogFragment.OnDateTimeSetListener {
 
     @Inject
     lateinit var dataRepository: DataRepository

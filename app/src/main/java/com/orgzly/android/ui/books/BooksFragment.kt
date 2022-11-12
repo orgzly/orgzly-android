@@ -17,7 +17,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +31,7 @@ import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.sync.SyncRunner
+import com.orgzly.android.ui.CommonFragment
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.books.BooksViewModel.Companion.APP_BAR_DEFAULT_MODE
 import com.orgzly.android.ui.books.BooksViewModel.Companion.APP_BAR_SELECTION_MODE
@@ -56,7 +56,7 @@ import javax.inject.Inject
  * Displays all notebooks.
  * Allows creating new, deleting, renaming, setting links etc.
  */
-class BooksFragment : Fragment(), DrawerItem, OnViewHolderClickListener<BookView> {
+class BooksFragment : CommonFragment(), DrawerItem, OnViewHolderClickListener<BookView> {
 
     private lateinit var binding: FragmentBooksBinding
 

@@ -31,6 +31,7 @@
     </ViewFlipper>
 
     <!-- Top toolbar -->
+    <!-- TODO: DRY -->
     <com.google.android.material.appbar.AppBarLayout
         style="@style/AppBarLayoutStyle">
 
@@ -39,6 +40,10 @@
             style="@style/TopToolbar"
             app:menu="@menu/saved_searches_actions"
             app:navigationIcon="@drawable/ic_menu" />
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/sync_toolbar_progress"
+            style="@style/SyncProgressIndicator" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -15,15 +15,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <View style="@style/HorizontalDivider" />
-
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/sync_progress_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:trackThickness="2dp"
-            android:layout_marginBottom="-2dp" />
-
         <!-- Sync button. Not using compound drawable as image has to be rotated while syncing. -->
         <LinearLayout
             android:id="@+id/sync_button_container"

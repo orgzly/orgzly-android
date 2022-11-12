@@ -108,6 +108,8 @@ android {
 dependencies {
     implementation orgJavaLocation()
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlin_coroutines")
+
     implementation "org.jetbrains:annotations:$versions.jetbrains_annotations"
 
     implementation "androidx.multidex:multidex:$versions.android_multidex"
@@ -133,6 +135,8 @@ dependencies {
 
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.android_lifecycle"
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$versions.android_lifecycle")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$versions.android_lifecycle")
 
     androidTestImplementation "androidx.annotation:annotation:$versions.android_annotation"
 

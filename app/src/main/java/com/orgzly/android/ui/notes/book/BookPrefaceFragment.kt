@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -15,6 +14,7 @@ import com.orgzly.android.BookUtils
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.ui.CommonFragment
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentBookPrefaceBinding
@@ -23,7 +23,7 @@ import javax.inject.Inject
 /**
  * Book's preface and settings.
  */
-class BookPrefaceFragment : Fragment() {
+class BookPrefaceFragment : CommonFragment() {
 
     private lateinit var binding: FragmentBookPrefaceBinding
 

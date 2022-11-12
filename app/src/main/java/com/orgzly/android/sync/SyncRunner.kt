@@ -66,7 +66,7 @@ object SyncRunner {
     fun onStateChange(tag: String): LiveData<SyncState> {
         return Transformations.map(onAllWorkInfo()) { workInfoList ->
             syncStateFromWorkInfoList(workInfoList).also { state ->
-                logStateChange(tag, workInfoList, state)
+                logStateChange(tag, state, workInfoList)
             }
         }
 
@@ -81,9 +81,10 @@ object SyncRunner {
 //        }
     }
 
-    private fun logStateChange(tag: String, workInfoList: List<WorkInfo>?, state: SyncState?) {
+    private fun logStateChange(tag: String, state: SyncState?, workInfoList: List<WorkInfo>?) {
         if (BuildConfig.LOG_DEBUG) {
-            LogUtils.d(TAG, "-> ($tag) Workers changed state to $state <- $workInfoList")
+            // LogUtils.d(TAG, "-> ($tag) Workers changed state to $state <- $workInfoList")
+            LogUtils.d(TAG, "-> ($tag) Workers changed state to $state <- ${workInfoList?.map { it.state }}")
         }
     }
 

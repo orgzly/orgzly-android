@@ -8,6 +8,8 @@ buildscript {
 
     versions.kotlin = '1.7.20'
 
+    versions.kotlin_coroutines = '1.6.4'
+
     versions.jetbrains_annotations = '23.0.0'
 
     versions.android_multidex = '2.0.1'
