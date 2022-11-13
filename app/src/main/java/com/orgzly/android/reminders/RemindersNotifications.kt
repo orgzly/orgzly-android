@@ -12,6 +12,7 @@ import com.orgzly.R
 import com.orgzly.android.AppIntent
 import com.orgzly.android.NotificationBroadcastReceiver
 import com.orgzly.android.NotificationChannels
+import com.orgzly.android.data.logs.AppLogsRepository
 import com.orgzly.android.db.dao.ReminderTimeDao
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.notifications.Notifications
@@ -27,7 +28,7 @@ object RemindersNotifications {
 
     private val LIGHTS = Triple(Color.BLUE, 1000, 5000)
 
-    fun showNotifications(context: Context, notes: List<NoteReminder>) {
+    fun showNotifications(context: Context, notes: List<NoteReminder>, logs: AppLogsRepository) {
         val notificationManager = context.getNotificationManager()
 
         for (noteReminder in notes) {
@@ -115,9 +116,10 @@ object RemindersNotifications {
 
             if (LogMajorEvents.isEnabled()) {
                 val note = "\"${noteReminder.payload.title}\" (id:${noteReminder.payload.noteId})"
-                LogMajorEvents.log(
+
+                logs.log(
                     LogMajorEvents.REMINDERS,
-                    "Notified! (tag:$notificationTag id:${Notifications.REMINDER_ID}): $note"
+                    "Notified (tag:$notificationTag id:${Notifications.REMINDER_ID}): $note"
                 )
             }
         }

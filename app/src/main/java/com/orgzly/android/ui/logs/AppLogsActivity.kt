@@ -1,21 +1,36 @@
-package com.orgzly.android.ui
+package com.orgzly.android.ui.logs
 
 import android.os.Bundle
 import android.os.SystemClock
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.orgzly.R
+import com.orgzly.android.App
+import com.orgzly.android.data.logs.AppLogsRepository
 import com.orgzly.android.reminders.LastRun
+import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.util.copyPlainTextToClipboard
 import com.orgzly.android.ui.util.getAlarmManager
 import com.orgzly.android.ui.util.sharePlainText
 import com.orgzly.android.ui.util.userFriendlyPeriod
-import com.orgzly.android.util.LogMajorEvents
 import com.orgzly.databinding.ActivityLogsBinding
+import kotlinx.coroutines.launch
 import org.joda.time.DateTime
+import javax.inject.Inject
 
-class LogsActivity : CommonActivity() {
+class AppLogsActivity : CommonActivity() {
     private lateinit var binding: ActivityLogsBinding
 
+    private lateinit var viewModel: AppLogsViewModel
+
+    @Inject
+    lateinit var appLogs: AppLogsRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        App.appComponent.inject(this)
+
         super.onCreate(savedInstanceState)
 
         binding = ActivityLogsBinding.inflate(layoutInflater)
@@ -25,7 +40,19 @@ class LogsActivity : CommonActivity() {
         binding.info.setTextIsSelectable(true)
         binding.logs.setTextIsSelectable(true)
 
-        updateViewsWithFreshData()
+
+        val factory = AppLogsViewModelFactory.getInstance(appLogs)
+        viewModel = ViewModelProvider(this, factory)[AppLogsViewModel::class.java]
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.logs.collect {
+                    binding.logs.text = it.joinToString("\n")
+                }
+            }
+        }
+
+        updateInfoWithFreshData()
 
         binding.topToolbar.run {
             setNavigationOnClickListener {
@@ -35,7 +62,7 @@ class LogsActivity : CommonActivity() {
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.refresh ->
-                        updateViewsWithFreshData()
+                        updateInfoWithFreshData()
                     R.id.copy ->
                         copyPlainTextToClipboard("Orgzly Logs", allText())
                     R.id.share ->
@@ -47,17 +74,12 @@ class LogsActivity : CommonActivity() {
         }
     }
 
-    private fun updateViewsWithFreshData() {
+    private fun updateInfoWithFreshData() {
         binding.info.text = getInfo()
-        binding.logs.text = getLogs()
     }
 
     private fun allText(): CharSequence {
         return binding.info.text.toString() + "\n" + binding.logs.text.toString()
-    }
-
-    private fun getLogs(): CharSequence {
-        return LogMajorEvents.readLogFile()
     }
 
     private fun getInfo(): CharSequence {

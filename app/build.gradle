@@ -132,6 +132,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$versions.android_room"
     testImplementation "androidx.room:room-testing:$versions.android_room"
     kapt "androidx.room:room-compiler:$versions.android_room"
+    implementation("androidx.room:room-ktx:$versions.android_room")
 
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.android_lifecycle"

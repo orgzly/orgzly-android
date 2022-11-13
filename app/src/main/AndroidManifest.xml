@@ -177,7 +177,7 @@
             android:taskAffinity="" />
 
         <activity
-            android:name=".android.ui.LogsActivity"
+            android:name=".android.ui.logs.AppLogsActivity"
             android:exported="false"
             android:label="@string/logs" />
 

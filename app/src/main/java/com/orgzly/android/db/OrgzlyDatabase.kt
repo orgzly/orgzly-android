@@ -35,10 +35,11 @@ import java.util.*
             Rook::class,
             RookUrl::class,
             SavedSearch::class,
-            VersionedRook::class
+            VersionedRook::class,
+            AppLog::class
         ],
 
-        version = 155
+        version = 156
 )
 @TypeConverters(com.orgzly.android.db.TypeConverters::class)
 abstract class OrgzlyDatabase : RoomDatabase() {
@@ -61,6 +62,7 @@ abstract class OrgzlyDatabase : RoomDatabase() {
     abstract fun savedSearch(): SavedSearchDao
     abstract fun versionedRook(): VersionedRookDao
     abstract fun dbRepoBook(): DbRepoBookDao
+    abstract fun appLog(): AppLogDao
 
     companion object {
         private val TAG = OrgzlyDatabase::class.java.name
@@ -110,7 +112,8 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                             MIGRATION_151_152,
                             MIGRATION_152_153,
                             MIGRATION_153_154,
-                            MIGRATION_154_155
+                            MIGRATION_154_155,
+                            MIGRATION_155_156
                     )
                     .addCallback(object : Callback() {
                         override fun onCreate(db: SupportSQLiteDatabase) {
@@ -551,6 +554,14 @@ abstract class OrgzlyDatabase : RoomDatabase() {
                         }
                     }
                 }
+            }
+        }
+
+        private val MIGRATION_155_156 = object : Migration(155, 156) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("CREATE TABLE IF NOT EXISTS `app_logs` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestamp` INTEGER NOT NULL, `name` TEXT NOT NULL, `message` TEXT NOT NULL)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_app_logs_timestamp` ON `app_logs` (`timestamp`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_app_logs_name` ON `app_logs` (`name`)")
             }
         }
     }
