@@ -3,6 +3,7 @@ package com.orgzly.android.ui.notes
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.TypedValue
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
@@ -12,9 +13,11 @@ import android.widget.PopupWindow
 import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import com.google.android.material.button.MaterialButton
+import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.prefs.NotePopupPreference
 import com.orgzly.android.ui.util.getLayoutInflater
+import com.orgzly.android.util.LogUtils
 
 
 fun interface NotePopupListener {
@@ -81,7 +84,32 @@ object NotePopup {
         // Starting position of the swipe
         val y = e1.rawY.toInt()
 
-        popupWindow.showAtLocation(anchor, gravity, x, y)
+        // Top left of the anchor
+        val (anchorX, anchorY) = IntArray(2).also { arr ->
+            anchor.getLocationInWindow(arr)
+        }
+
+        // Finger size
+        val fingerSize = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_MM, 16f /* From Espresso's Press.FINGER */,
+            context.resources.displayMetrics
+        ).toInt()
+
+        // Open more to the left, if swiping from right
+        // val betterX = if (e2.x < e1.x) { x - fingerSize } else { x }
+
+        // Not across the edge of anchor
+        // val usedX = betterX.coerceAtLeast(anchorX)
+
+        // Open above the finger
+        val betterY = y - fingerSize
+
+        // Not higher then the anchor
+        val usedY = betterY.coerceAtLeast(anchorY)
+
+        popupWindow.showAtLocation(anchor, gravity, x, usedY)
+
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, anchorY, y, fingerSize, betterY, usedY)
 
         return popupWindow
     }
