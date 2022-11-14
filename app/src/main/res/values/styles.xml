@@ -136,7 +136,7 @@
         <item name="colorSecondary">@color/blue_grey_300</item>
         <item name="colorPrimaryContainer">@color/grey_900</item>
         <item name="colorOnPrimaryContainer">@color/white</item>
-        <item name="colorPrimaryInverse">@color/blue_grey_800</item>
+        <item name="colorPrimaryInverse">@color/blue_grey_700</item>
         <item name="colorSecondaryContainer">@color/grey_800</item>
         <item name="colorOnSecondaryContainer">@color/grey_300</item>
         <item name="colorTertiaryContainer">@color/grey_800</item>
@@ -152,7 +152,7 @@
         <item name="colorSecondary">@color/blue_grey_300</item>
         <item name="colorPrimaryContainer">@color/grey_900</item>
         <item name="colorOnPrimaryContainer">@color/white</item>
-        <item name="colorPrimaryInverse">@color/blue_grey_800</item>
+        <item name="colorPrimaryInverse">@color/blue_grey_700</item>
         <item name="colorSecondaryContainer">@color/grey_900</item>
         <item name="colorOnSecondaryContainer">@color/grey_200</item>
         <item name="colorTertiaryContainer">@color/grey_800</item>
