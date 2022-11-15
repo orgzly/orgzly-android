@@ -99,7 +99,7 @@
 
         <activity
             android:name=".android.ui.repo.dropbox.DropboxRepoActivity"
-            android:windowSoftInputMode="stateAlwaysHidden">
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
         </activity>
 
         <activity
@@ -119,17 +119,17 @@
 
         <activity
             android:name=".android.ui.repo.git.GitRepoActivity"
-            android:windowSoftInputMode="stateAlwaysHidden">
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
         </activity>
 
         <activity
             android:name=".android.ui.repo.webdav.WebdavRepoActivity"
-            android:windowSoftInputMode="stateAlwaysHidden">
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
         </activity>
 
         <activity
             android:name=".android.ui.repo.directory.DirectoryRepoActivity"
-            android:windowSoftInputMode="stateAlwaysHidden">
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
         </activity>
 
         <activity

@@ -7,10 +7,12 @@
     android:id="@+id/main_content"
     style="@style/CoordinatorLayoutFitsSystemWindows">
 
-    <ScrollView
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingTop="?attr/actionBarSize"
+        android:paddingBottom="@dimen/padding_bottom_for_fab"
+        android:clipToPadding="false">
 
         <LinearLayout
             android:id="@+id/activity_repo_dropbox_container"
@@ -64,7 +66,7 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <!-- Top toolbar -->
     <com.google.android.material.appbar.AppBarLayout
