@@ -14,19 +14,10 @@ import com.orgzly.android.ui.util.ActivityUtils.immutable
 import com.orgzly.android.ui.util.getNotificationManager
 
 object SyncNotifications {
-//    fun syncInProgressForegroundInfo(context: Context): ForegroundInfo {
-//        return ForegroundInfo(
-//            Notifications.SYNC_IN_PROGRESS_ID,
-//            createSyncInProgressNotification(context))
-//    }
-
-    fun notifySyncInProgress(context: Context) {
-        val notification = createSyncInProgressNotification(context)
-        context.getNotificationManager().notify(Notifications.SYNC_IN_PROGRESS_ID, notification)
-    }
-
-    fun cancelSyncInProgress(context: Context) {
-        context.getNotificationManager().cancel(Notifications.SYNC_IN_PROGRESS_ID)
+    fun syncInProgressForegroundInfo(context: Context): ForegroundInfo {
+        return ForegroundInfo(
+            Notifications.SYNC_IN_PROGRESS_ID,
+            createSyncInProgressNotification(context))
     }
 
     private fun createSyncInProgressNotification(context: Context): Notification {

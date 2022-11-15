@@ -32,8 +32,9 @@ object SyncRunner {
 
         val syncWorker = OneTimeWorkRequestBuilder<SyncWorker>()
             // On Android >= 12 notification from overridden getForegroundInfo might not be shown
-            // We are handing sync-in-progress notification manually
-            // .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+            // Sync-in-progress notification cannot be canceled if app is killed by the system,
+            // when handling notification manually from the worker.
+            .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
             .setInputData(workDataOf(IS_AUTO_SYNC to autoSync))
             .build()
 
