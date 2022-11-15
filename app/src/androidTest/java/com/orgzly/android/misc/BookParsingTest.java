@@ -242,12 +242,6 @@ public class BookParsingTest extends OrgzlyTest {
         onBookFile("images/logo11w.org").onLoad();
     }
 
-    @Test
-    public void testLion() {
-        assumeTrue(runResourcesDemandingTest());
-        onBookFile("images/lion-wide.org").onLoad();
-    }
-
     /*
      * Generated lipsum ...
      */

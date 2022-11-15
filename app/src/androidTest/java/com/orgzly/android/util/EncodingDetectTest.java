@@ -17,7 +17,6 @@ import static org.junit.Assert.assertTrue;
  * Chinese-Lipsum.org: utf-8 (confidence: 0.99)
  * few_chinese_characters.org: utf-8 (confidence: 0.99)
  * org-blog-articles.org: ISO-8859-2 (confidence: 0.79)
- * org-issues.org: utf-8 (confidence: 0.99)
  * org-people.org: ISO-8859-2 (confidence: 0.85)
  */
 public class EncodingDetectTest {
@@ -72,25 +71,6 @@ public class EncodingDetectTest {
             case JUNIVERSALCHARDET:
                 assertTrue(detect.isDetected());
                 assertEquals("WINDOWS-1252", detect.getEncoding());
-                break;
-        }
-    }
-
-    @Test
-    public void testIssues() throws FileNotFoundException {
-        EncodingDetect detect = EncodingDetect.getInstance(getFromResource("org-issues.org"));
-
-        switch (EncodingDetect.USED_METHOD) {
-//            case ICU:
-//                assertTrue(detect.isDetected());
-//                assertEquals("ISO-8859-1", detect.getEncoding());
-//                break;
-//            case JCHARDET:
-//                assertFalse(detect.isDetected());
-//                break;
-            case JUNIVERSALCHARDET:
-                assertTrue(detect.isDetected());
-                assertEquals("UTF-8", detect.getEncoding());
                 break;
         }
     }

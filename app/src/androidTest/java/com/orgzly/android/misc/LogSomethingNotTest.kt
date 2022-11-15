@@ -9,7 +9,7 @@ class LogSomethingNotTest : OrgzlyTest() {
     @Test
     fun testLink() {
         Log.i(
-            "XXX", String.format(
+            TAG, String.format(
                 """
                     Environment.getExternalStorageDirectory: %s
                     context.filesDir: %s
@@ -20,6 +20,10 @@ class LogSomethingNotTest : OrgzlyTest() {
                 context.getExternalFilesDir(null),
                 context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
             )
-        );
+        )
+    }
+
+    companion object {
+        private val TAG = BookParsingTest::class.java.name
     }
 }

@@ -730,14 +730,14 @@ public class AppPreferences {
      * File relative path.
      */
 
-    /** Root for file:/xxx links */
+    /** Root for file:/ links */
     public static String fileAbsoluteRoot(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_file_absolute_root),
                 context.getResources().getString(R.string.pref_default_file_absolute_root));
     }
 
-    /** Root for file:xxx links */
+    /** Root for file: links */
     public static String fileRelativeRoot(Context context) {
         return getDefaultSharedPreferences(context).getString(
                 context.getResources().getString(R.string.pref_key_file_relative_root),
