@@ -63,7 +63,7 @@ Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mail
 
 You can also link to another note or notebook within the app.
 
-See https://www.orgzly.com/help#links for more information.
+See [[https://www.orgzly.com/docs#links]] for more information.
 
 ** Basic typographical emphasis is supported
 
@@ -82,7 +82,7 @@ Click the checkbox to toggle it. Press the new-line button at the end of the lin
 
 You can search notes by state, tag, scheduled, deadline or event times, etc.
 
-See https://www.orgzly.com/help#search to learn more.
+See [[https://www.orgzly.com/docs#search]] to learn more.
 
 ** Search queries can be saved for quick access
 
