@@ -39,7 +39,7 @@ public class Notifications {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
         PendingIntent newNotePendingIntent =
-                ShareActivity.createNewNotePendingIntent(context, null);
+                ShareActivity.createNewNotePendingIntent(context, "ongoing notification", null);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.ONGOING)
                 .setOngoing(true)

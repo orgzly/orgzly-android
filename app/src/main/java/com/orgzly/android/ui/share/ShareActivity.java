@@ -253,8 +253,11 @@ public class ShareActivity extends CommonActivity
         }
     }
 
-    public static PendingIntent createNewNotePendingIntent(Context context, SavedSearch savedSearch) {
+    public static PendingIntent createNewNotePendingIntent(Context context, String category, SavedSearch savedSearch) {
         Intent resultIntent = createNewNoteIntent(context);
+
+        // For distinguishing pending events
+        resultIntent.addCategory(category);
 
         if (savedSearch != null) {
             resultIntent.putExtra(AppIntent.EXTRA_QUERY_STRING, savedSearch.getQuery());
