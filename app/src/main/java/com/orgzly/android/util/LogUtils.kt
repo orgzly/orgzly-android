@@ -1,7 +1,7 @@
 package com.orgzly.android.util
 
+import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
 
 import com.orgzly.android.db.entity.Note
@@ -43,22 +43,11 @@ object LogUtils {
         val s = StringBuilder()
 
         for (i in args.indices) {
-            val arg = args[i]
-
-            when (arg) {
-                is Bundle -> {
-                    s.append(arg.keySet().joinToString(", ", "Bundle[", "]") { key ->
-                        key + ":" + arg.get(key)
-                    })
-                }
-
-                is Array<*> -> {
-                    s.append(TextUtils.join("|", arg))
-                }
-
-                else -> {
-                    s.append(arg)
-                }
+            when (val arg = args[i]) {
+                is Array<*> -> appendArray(s, arg)
+                is Intent -> appendIntent(s, arg)
+                is Bundle -> appendBundle(s, arg)
+                else -> s.append(arg)
             }
 
             if (i < args.size - 1) {
@@ -77,6 +66,23 @@ object LogUtils {
         s.insert(0, thread.id.toString() + "#" + thread.name + ": ")
 
         doLog(tag, s.toString())
+    }
+
+    private fun appendArray(s: StringBuilder, array: Array<*>) {
+        s.append(array.joinToString("|"))
+    }
+
+    private fun appendIntent(s: StringBuilder, intent: Intent) {
+        s.append(intent).append(" ")
+        appendBundle(s, intent.extras)
+    }
+
+    private fun appendBundle(s: StringBuilder, bundle: Bundle?) {
+        if (bundle != null) {
+            s.append(bundle.keySet().joinToString(", ", "Bundle[", "]") { key ->
+                key + ":" + bundle.get(key)
+            })
+        }
     }
 
     private fun notes(notes: List<Note>): String {

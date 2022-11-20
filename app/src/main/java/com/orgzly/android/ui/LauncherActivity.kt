@@ -12,7 +12,7 @@ class LauncherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (BuildConfig.LOG_DEBUG)
-            LogUtils.d(TAG, intent, intent.extras, savedInstanceState)
+            LogUtils.d(TAG, intent, savedInstanceState)
 
         startActivity(Intent(this, MainActivity::class.java))
         // startActivity(Intent(this, IntroActivity::class.java))

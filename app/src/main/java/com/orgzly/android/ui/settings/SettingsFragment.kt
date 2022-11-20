@@ -222,7 +222,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             getString(R.string.pref_key_ongoing_notification),
             getString(R.string.pref_key_ongoing_notification_priority) -> {
                 if (AppPreferences.newNoteNotification(context)) {
-                    Notifications.showNewNoteNotification(context)
+                    Notifications.showOngoingNotification(context)
                 } else {
                     Notifications.cancelNewNoteNotification(context)
                 }

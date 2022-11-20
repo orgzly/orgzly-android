@@ -52,7 +52,9 @@ class SharingShortcutsManager {
                 val title = BookUtils.getFragmentTitleForBook(book)
                 val icon = IconCompat.createWithResource(context, R.mipmap.cic_shortcut_notebook)
                 val categories = setOf(categoryTextShareTarget)
-                val intent = ShareActivity.createNewNoteInNotebookIntent(context, bookId)
+                val intent = ShareActivity.createNewNoteIntent(context).apply {
+                    putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
+                }
 
                 ShortcutInfoCompat.Builder(context, id)
                     .setShortLabel(name)

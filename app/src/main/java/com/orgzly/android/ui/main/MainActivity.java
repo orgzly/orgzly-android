@@ -123,7 +123,7 @@ public class MainActivity extends CommonActivity
         super.onCreate(savedInstanceState);
 
         if (BuildConfig.LOG_DEBUG)
-            LogUtils.d(TAG, getIntent(), getIntent().getExtras(), savedInstanceState);
+            LogUtils.d(TAG, getIntent(), savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
@@ -144,7 +144,7 @@ public class MainActivity extends CommonActivity
         setupDisplay(savedInstanceState);
 
         if (AppPreferences.newNoteNotification(this)) {
-            Notifications.showNewNoteNotification(this);
+            Notifications.showOngoingNotification(this);
         }
 
         activityForResult = new ActivityForResult(this) {

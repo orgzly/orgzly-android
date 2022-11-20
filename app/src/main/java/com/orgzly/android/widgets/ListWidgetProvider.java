@@ -22,7 +22,6 @@ import com.orgzly.android.prefs.AppPreferences;
 import com.orgzly.android.ui.main.MainActivity;
 import com.orgzly.android.ui.share.ShareActivity;
 import com.orgzly.android.ui.util.ActivityUtils;
-import com.orgzly.android.ui.util.ExtensionsKt;
 import com.orgzly.android.ui.util.SystemServices;
 import com.orgzly.android.usecase.NoteUpdateStateToggle;
 import com.orgzly.android.usecase.UseCaseRunner;
@@ -104,7 +103,9 @@ public class ListWidgetProvider extends AppWidgetProvider {
                 remoteViews.setPendingIntentTemplate(R.id.list_widget_list_view, onClickPendingIntent);
 
                 // Plus icon - new note
-                remoteViews.setOnClickPendingIntent(R.id.list_widget_header_add, ShareActivity.createNewNoteIntent(context, savedSearch));
+                remoteViews.setOnClickPendingIntent(
+                        R.id.list_widget_header_add,
+                        ShareActivity.createNewNotePendingIntent(context, savedSearch));
 
                 // Logo - open query
                 Intent openIntent = Intent.makeRestartActivityTask(new ComponentName(context, MainActivity.class));
@@ -253,6 +254,8 @@ public class ListWidgetProvider extends AppWidgetProvider {
             savedSearch = new SavedSearch(0, context.getString(R.string.list_widget_select_search), "", 0);
         }
 
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedSearch, appWidgetId, filterId);
+
         return savedSearch;
     }
 
@@ -289,7 +292,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         App.appComponent.inject(this);
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent, intent.getExtras());
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
         if (AppIntent.ACTION_UPDATE_LIST_WIDGET.equals(intent.getAction())) {
             updateListContents(context);

@@ -461,16 +461,25 @@ class DataRepository @Inject constructor(
     @Throws(IOException::class)
     fun getTargetBook(context: Context): BookView {
         val books = getBooks()
+
         val defaultBookName = AppPreferences.shareNotebook(context)
 
         if (books.isEmpty()) {
+            if (BuildConfig.LOG_DEBUG)
+                LogUtils.d(TAG, "No existing books found, creating new \"$defaultBookName\" book")
             return createBook(defaultBookName)
+
         } else {
             for (book in books) {
                 if (defaultBookName == book.book.name) {
+                    if (BuildConfig.LOG_DEBUG)
+                        LogUtils.d(TAG, "Found book that matches default book name \"$defaultBookName\"")
                     return book
                 }
             }
+
+            if (BuildConfig.LOG_DEBUG)
+                LogUtils.d(TAG, "No existing books found to match default book name \"$defaultBookName\", using the first book")
             return books.first()
         }
     }

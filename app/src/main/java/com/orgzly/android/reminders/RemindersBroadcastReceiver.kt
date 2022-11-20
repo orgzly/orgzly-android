@@ -34,7 +34,7 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
             return
         }
 
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent, intent.action, intent.extras)
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent)
 
         async {
             when (intent.action) {

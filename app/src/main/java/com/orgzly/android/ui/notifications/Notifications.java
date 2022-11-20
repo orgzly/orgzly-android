@@ -35,26 +35,26 @@ public class Notifications {
 
     public static final String REMINDERS_GROUP = "com.orgzly.notification.group.REMINDERS";
 
-    public static void showNewNoteNotification(Context context) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, context);
+    public static void showOngoingNotification(Context context) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG);
 
-        PendingIntent shareNotePendingIntent = ShareActivity.createNewNoteIntent(context, null);
+        PendingIntent newNotePendingIntent =
+                ShareActivity.createNewNotePendingIntent(context, null);
 
-        // Build notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationChannels.ONGOING)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.cic_logo_for_notification)
                 .setContentTitle(context.getString(R.string.new_note))
                 .setColor(ContextCompat.getColor(context, R.color.notification))
                 .setContentText(context.getString(R.string.tap_to_create_new_note))
-                .setContentIntent(shareNotePendingIntent);
+                .setContentIntent(newNotePendingIntent);
 
         builder.setPriority(
                 getNotificationPriority(
                         AppPreferences.ongoingNotificationPriority(context)));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            PendingIntent newNotePendingIntent = PendingIntent.getBroadcast(
+            PendingIntent quickNoteCreatePendingIntent = PendingIntent.getBroadcast(
                     context,
                     0,
                     new Intent(context, NewNoteBroadcastReceiver.class),
@@ -66,7 +66,7 @@ public class Notifications {
 
             // Add new note action
             NotificationCompat.Action action = new NotificationCompat.Action.Builder(
-                    R.drawable.ic_add, context.getString(R.string.quick_note), newNotePendingIntent)
+                    R.drawable.ic_add, context.getString(R.string.quick_note), quickNoteCreatePendingIntent)
                     .addRemoteInput(remoteInput)
                     .build();
             builder.addAction(action);
