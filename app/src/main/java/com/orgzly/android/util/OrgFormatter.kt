@@ -23,7 +23,7 @@ object OrgFormatter {
 
     private const val SYSTEM_LINK_SCHEMES = "https?|mailto|tel|voicemail|geo|sms|smsto|mms|mmsto"
 
-    private const val CUSTOM_LINK_SCHEMES = "id|file"
+    private const val CUSTOM_LINK_SCHEMES = "id|file|attachment"
 
     // Supported link schemas for plain links
     private const val LINK_SCHEMES = "(?:$SYSTEM_LINK_SCHEMES|$CUSTOM_LINK_SCHEMES)"
@@ -190,6 +190,9 @@ object OrgFormatter {
 
             link.startsWith(CustomIdLinkSpan.PREFIX) ->
                 CustomIdLinkSpan(linkType, link, name)
+
+            link.startsWith(AttachmentLinkSpan.PREFIX) ->
+                AttachmentLinkSpan(link.substring(11))
 
             link.matches("^(?:$SYSTEM_LINK_SCHEMES):.+".toRegex()) ->
                 UrlLinkSpan(linkType, link, name)

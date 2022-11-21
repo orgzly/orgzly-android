@@ -1,6 +1,7 @@
 package com.orgzly.android.ui.note
 
 import android.content.Context
+import android.net.Uri
 import com.orgzly.android.db.entity.NoteProperty
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
@@ -99,7 +100,7 @@ class NoteBuilder {
         }
 
         @JvmStatic
-        fun newPayload(context: Context, title: String, content: String?): NotePayload {
+        fun newPayload(context: Context, title: String, content: String?, attachmentUri: Uri?): NotePayload {
 
             val scheduled = initialScheduledTime(context)
 
@@ -109,7 +110,8 @@ class NoteBuilder {
                     title = title,
                     content = content,
                     state = state,
-                    scheduled = scheduled
+                    scheduled = scheduled,
+                    attachmentUri = attachmentUri
             )
         }
 

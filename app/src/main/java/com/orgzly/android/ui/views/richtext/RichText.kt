@@ -16,6 +16,7 @@ import android.widget.TextView
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.ui.AttachmentSpanLoader
 import com.orgzly.android.ui.ImageLoader
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.util.styledAttributes
@@ -65,6 +66,7 @@ class RichText(context: Context, attrs: AttributeSet?) :
 
     private val richTextEdit: RichTextEdit
     private val richTextView: RichTextView
+    var noteId: Long = 0
 
     init {
         parseAttrs(attrs)
@@ -182,6 +184,10 @@ class RichText(context: Context, attrs: AttributeSet?) :
         richTextView.text = text
     }
 
+    fun getVisibleText(): CharSequence? {
+        return richTextView.text
+    }
+
     fun toEditMode(charOffset: Int) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "editable:${attributes.editable}", charOffset)
 
@@ -209,6 +215,7 @@ class RichText(context: Context, attrs: AttributeSet?) :
 
             richTextView.setText(parsed, TextView.BufferType.SPANNABLE)
 
+            AttachmentSpanLoader.loadAttachmentPaths(noteId, this)
             ImageLoader.loadImages(richTextView)
 
         } else {

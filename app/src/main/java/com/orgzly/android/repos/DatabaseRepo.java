@@ -67,6 +67,11 @@ public class DatabaseRepo implements SyncRepo {
     }
 
     @Override
+    public VersionedRook storeFile(File file, String pathInRepo, String fileName) throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public VersionedRook renameBook(Uri fromUri, String name) {
         Uri toUri = UriUtils.getUriForNewName(fromUri, name);
         return dbRepo.renameBook(repoId, fromUri, toUri);

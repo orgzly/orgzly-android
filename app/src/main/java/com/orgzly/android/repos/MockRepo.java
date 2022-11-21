@@ -63,6 +63,12 @@ public class MockRepo implements SyncRepo {
     }
 
     @Override
+    public VersionedRook storeFile(File file, String pathInRepo, String fileName) throws IOException {
+        SystemClock.sleep(SLEEP_FOR_STORE_BOOK);
+        return databaseRepo.storeFile(file, pathInRepo, fileName);
+    }
+
+    @Override
     public VersionedRook renameBook(Uri fromUri, String name) throws IOException {
         SystemClock.sleep(SLEEP_FOR_STORE_BOOK);
         return databaseRepo.renameBook(fromUri, name);

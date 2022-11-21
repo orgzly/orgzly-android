@@ -12,6 +12,7 @@ import com.orgzly.android.App
 import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
+import com.orgzly.android.ui.AttachmentSpanLoader
 import com.orgzly.android.ui.TimeType
 import com.orgzly.android.ui.util.TitleGenerator
 import com.orgzly.android.ui.util.styledAttributes
@@ -102,6 +103,7 @@ class NoteItemViewBinder(private val context: Context, private val inBook: Boole
                 holder.binding.itemHeadContent.setTypeface(Typeface.MONOSPACE)
             }
 
+            holder.binding.itemHeadContent.noteId = note.id
             holder.binding.itemHeadContent.setSourceText(note.content)
 
             /* If content changes (for example by toggling the checkbox), update the note. */

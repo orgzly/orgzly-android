@@ -159,6 +159,11 @@ public class DirectoryRepo implements SyncRepo {
     }
 
     @Override
+    public VersionedRook storeFile(File file, String pathInRepo, String fileName) throws IOException {
+        return storeBook(file, pathInRepo + File.separator + fileName);
+    }
+
+    @Override
     public VersionedRook renameBook(Uri fromUri, String name) throws IOException {
         String fromFilePath = fromUri.getPath();
         if (fromFilePath == null) {

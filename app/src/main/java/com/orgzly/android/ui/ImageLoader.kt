@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.text.Spannable
+import android.text.style.ClickableSpan
 import android.text.style.ImageSpan
 import android.view.View
 import android.widget.TextView
@@ -21,6 +22,7 @@ import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.views.style.FileLinkSpan
+import com.orgzly.android.ui.views.style.AttachmentLinkSpan
 import com.orgzly.android.usecase.LinkFindTarget
 import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.AppPermissions
@@ -39,14 +41,16 @@ object ImageLoader {
                 && AppPermissions.isGranted(context, AppPermissions.Usage.EXTERNAL_FILES_ACCESS)) {
             // Load the associated image for each FileLinkSpan
             SpanUtils.forEachSpan(textWithMarkup.text as Spannable, FileLinkSpan::class.java) { span, _, _ ->
-                loadImage(textWithMarkup, span)
+                loadImage(textWithMarkup, span, span.path)
+            }
+            // Load the associated image for each AttachmentLinkSpan
+            SpanUtils.forEachSpan(textWithMarkup.text as Spannable, AttachmentLinkSpan::class.java) { span, _, _ ->
+                loadImage(textWithMarkup, span, span.getPrefixedPath())
             }
         }
     }
 
-    private fun loadImage(textWithMarkup: TextView, fileLinkSpan: FileLinkSpan) {
-        val path = fileLinkSpan.path
-
+    private fun loadImage(textWithMarkup: TextView, fileLinkSpan: ClickableSpan, path: String) {
         if (hasSupportedExtension(path)) {
             val text = textWithMarkup.text as Spannable
             // Get the current context
