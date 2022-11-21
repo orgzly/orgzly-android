@@ -1,11 +1,10 @@
 package com.orgzly.android.query
 
-import androidx.test.espresso.matcher.ViewMatchers.assertThat
-import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.query.sql.SqliteQueryBuilder
 import com.orgzly.android.query.user.DottedQueryBuilder
 import com.orgzly.android.query.user.DottedQueryParser
-import org.hamcrest.Matchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.core.Is.`is`
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -13,7 +12,7 @@ import org.junit.runners.Parameterized
 import java.util.*
 
 @RunWith(value = Parameterized::class)
-class QueryTest(private val param: Parameter) : OrgzlyTest() {
+class QueryTest(private val param: Parameter) {
 
     private lateinit var actualParsedQuery: String
     private lateinit var actualQueryString: String
@@ -305,8 +304,7 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
     }
 
     @Before
-    override fun setUp() {
-        super.setUp()
+    fun setUp() {
 
         // Parse query
         val parser = DottedQueryParser()
@@ -314,7 +312,11 @@ class QueryTest(private val param: Parameter) : OrgzlyTest() {
         actualParsedQuery = query.toString()
 
         // Build SQL
-        val sqlBuilder = SqliteQueryBuilder(context)
+        val defaultPriority = "B"
+        val todoKeywordsSet = setOf("TODO", "NEXT")
+        val doneKeywordsSet = setOf("DONE")
+        val sqlEscape = fun (str: String) : String {return "'$str'" }
+        val sqlBuilder = SqliteQueryBuilder(defaultPriority, todoKeywordsSet, doneKeywordsSet, sqlEscape)
         val sqlQuery = sqlBuilder.build(query)
 
         // Build query
