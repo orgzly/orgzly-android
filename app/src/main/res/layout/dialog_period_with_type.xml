@@ -23,8 +23,7 @@
             app:layout_constraintLeft_toLeftOf="@id/pickers"
             app:layout_constraintRight_toRightOf="@+id/pickers"
             tools:text="@string/repeater_description"
-            android:gravity="center"
-            android:lines="2" />
+            android:gravity="center" />
 
         <LinearLayout
             android:id="@+id/pickers"
