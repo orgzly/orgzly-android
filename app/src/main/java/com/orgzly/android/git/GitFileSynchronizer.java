@@ -311,9 +311,22 @@ public class GitFileSynchronizer {
                     throw new IOException(String.format("Failed to merge %s and %s",
                             current.getName(), mergeTarget.getName()));
                 }
+            } else {
+                // We failed to find a corresponding remote head. Check if the repo is completely
+                // empty, and if so, push to it.
+                pushToRemoteIfEmpty();
             }
         } catch (GitAPIException e) {
             throw new IOException(e.getMessage());
+        }
+    }
+
+    private void pushToRemoteIfEmpty() throws GitAPIException {
+        List<Ref> remoteBranches = git.branchList()
+                .setListMode(ListBranchCommand.ListMode.REMOTE)
+                .call();
+        if (remoteBranches.isEmpty()) {
+            tryPush();
         }
     }
 
@@ -396,6 +409,9 @@ public class GitFileSynchronizer {
             return null;
         }
         Ref target = git.getRepository().findRef(identifier);
+        if (target == null) {
+            return null;
+        }
         return new RevWalk(git.getRepository()).parseCommit(target.getObjectId());
     }
 
