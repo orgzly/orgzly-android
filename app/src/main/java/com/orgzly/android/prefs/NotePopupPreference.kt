@@ -45,10 +45,10 @@ class NotePopupPreference : DialogPreference {
         private val actionsByName = NotePopup.allActions.associateBy { it.name }
 
         private val dividerLeft = NotePopup.Action(
-            R.id.note_popup_divider, R.drawable.ic_swipe_left, "divider")
+            R.id.note_popup_divider, R.drawable.ic_swipe_left, R.string.ok, "divider")
 
         private val dividerRight = NotePopup.Action(
-            R.id.note_popup_divider, R.drawable.ic_swipe_right, "divider")
+            R.id.note_popup_divider, R.drawable.ic_swipe_right, R.string.ok, "divider")
 
         fun getSelected(context: Context, key: String): List<NotePopup.Action> {
             val str = AppPreferences.notePopupActions(context, key)

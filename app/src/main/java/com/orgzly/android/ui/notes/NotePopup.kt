@@ -3,6 +3,7 @@ package com.orgzly.android.ui.notes
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.MotionEvent
@@ -12,6 +13,7 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
+import androidx.annotation.StringRes
 import com.google.android.material.button.MaterialButton
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -72,6 +74,9 @@ object NotePopup {
             }
 
             button.setIconResource(action.icon)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                button.tooltipText = context.getString(action.tooltip)
+            }
 
             group.addView(button)
         }
@@ -132,22 +137,22 @@ object NotePopup {
         }
     }
 
-    data class Action(@IdRes val id : Int, @DrawableRes val icon: Int, val name: String)
+    data class Action(@IdRes val id : Int, @DrawableRes val icon: Int, @StringRes val tooltip: Int, val name: String)
 
     val allActions = listOf(
-        Action(R.id.note_popup_set_schedule, R.drawable.ic_today, "set-schedule"),
-        Action(R.id.note_popup_set_deadline, R.drawable.ic_alarm, "set-deadline"),
-        Action(R.id.note_popup_set_state, R.drawable.ic_flag, "set-state"),
-        Action(R.id.note_popup_toggle_state, R.drawable.ic_check_circle_outline, "toggle-state"),
-        Action(R.id.note_popup_clock_in, R.drawable.ic_hourglass_top, "clock-in"),
-        Action(R.id.note_popup_clock_out, R.drawable.ic_hourglass_bottom, "clock-out"),
-        Action(R.id.note_popup_clock_cancel, R.drawable.ic_hourglass_disabled, "clock-cancel"),
-        Action(R.id.note_popup_delete, R.drawable.ic_delete, "delete"),
-        Action(R.id.note_popup_new_above, R.drawable.cic_new_above, "new-above"),
-        Action(R.id.note_popup_new_under, R.drawable.cic_new_under, "new-under"),
-        Action(R.id.note_popup_new_below, R.drawable.cic_new_below, "new-below"),
-        Action(R.id.note_popup_refile, R.drawable.ic_move_to_inbox, "refile"),
-        Action(R.id.note_popup_focus, R.drawable.ic_center_focus_strong, "focus"),
+        Action(R.id.note_popup_set_schedule, R.drawable.ic_today, R.string.schedule, "set-schedule"),
+        Action(R.id.note_popup_set_deadline, R.drawable.ic_alarm, R.string.deadline, "set-deadline"),
+        Action(R.id.note_popup_set_state, R.drawable.ic_flag, R.string.state, "set-state"),
+        Action(R.id.note_popup_toggle_state, R.drawable.ic_check_circle_outline, R.string.done, "toggle-state"),
+        Action(R.id.note_popup_clock_in, R.drawable.ic_hourglass_top, R.string.clock_in, "clock-in"),
+        Action(R.id.note_popup_clock_out, R.drawable.ic_hourglass_bottom, R.string.clock_out, "clock-out"),
+        Action(R.id.note_popup_clock_cancel, R.drawable.ic_hourglass_disabled, R.string.clock_cancel, "clock-cancel"),
+        Action(R.id.note_popup_delete, R.drawable.ic_delete, R.string.delete, "delete"),
+        Action(R.id.note_popup_new_above, R.drawable.cic_new_above, R.string.new_above, "new-above"),
+        Action(R.id.note_popup_new_under, R.drawable.cic_new_under, R.string.new_under, "new-under"),
+        Action(R.id.note_popup_new_below, R.drawable.cic_new_below, R.string.new_below, "new-below"),
+        Action(R.id.note_popup_refile, R.drawable.ic_move_to_inbox, R.string.refile, "refile"),
+        Action(R.id.note_popup_focus, R.drawable.ic_center_focus_strong, R.string.open, "focus"),
     )
 
     private val TAG = NotePopup::class.java.name
