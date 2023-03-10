@@ -1,6 +1,5 @@
 package com.orgzly.android.sync
 
-import android.util.Log
 import com.orgzly.BuildConfig
 import com.orgzly.android.App
 import com.orgzly.android.BookFormat
@@ -182,8 +181,8 @@ object SyncUtils {
                 newRook = newRook1
                 val fileName = BookName.getFileName(App.getAppContext(), newRook.uri)
                 val bookName = BookName.fromFileName(fileName)
-                Log.i("Git", String.format("Loading from file %s", loadFile.toString()))
-                val loadedBook = dataRepository.loadBookFromFile(
+                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Loading from file '$loadFile'")
+                dataRepository.loadBookFromFile(
                     bookName.name,
                     bookName.format,
                     loadFile,

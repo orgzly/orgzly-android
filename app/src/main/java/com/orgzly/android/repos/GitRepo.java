@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.orgzly.BuildConfig;
 import com.orgzly.android.BookName;
 import com.orgzly.android.db.entity.Repo;
 import com.orgzly.android.git.GitFileSynchronizer;
@@ -11,13 +12,12 @@ import com.orgzly.android.git.GitPreferences;
 import com.orgzly.android.git.GitPreferencesFromRepoPrefs;
 import com.orgzly.android.git.GitTransportSetter;
 import com.orgzly.android.prefs.RepoPreferences;
+import com.orgzly.android.util.LogUtils;
 
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.JGitInternalException;
-import org.eclipse.jgit.errors.IncorrectObjectTypeException;
-import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.ignore.IgnoreNode;
 import org.eclipse.jgit.lib.FileMode;
 import org.eclipse.jgit.lib.ObjectId;
@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GitRepo implements SyncRepo, TwoWaySyncRepo {
+    private final static String TAG = GitRepo.class.getName();
     private final long repoId;
 
     /**
@@ -218,14 +219,13 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
 
     private VersionedRook currentVersionedRook(Uri uri) {
         RevCommit commit = null;
-        if (uri.toString().contains("%")) {
-            uri = Uri.parse(Uri.decode(uri.toString()));
-        }
+        uri = Uri.parse(Uri.decode(uri.toString()));
         try {
-            commit = synchronizer.getLatestCommitOfFile(uri);
+            commit = synchronizer.getLastCommitOfFile(uri);
         } catch (GitAPIException e) {
             e.printStackTrace();
         }
+        assert commit != null;
         long mtime = (long)commit.getCommitTime()*1000;
         return new VersionedRook(repoId, RepoType.GIT, getUri(), uri, commit.name(), mtime);
     }
@@ -290,7 +290,6 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     }
 
     public Uri getUri() {
-        Log.i("Git", String.format("%s", preferences.remoteUri()));
         return preferences.remoteUri();
     }
 
@@ -308,13 +307,16 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
             Uri uri, VersionedRook current, File fromDB) throws IOException {
         File writeBack = null;
         boolean onMainBranch = true;
-        String fileName = uri.getPath();
-        if (fileName.startsWith("/"))
-            fileName = fileName.replaceFirst("/", "");
+        String fileName = uri.getPath().replaceFirst("^/", "");
+        if (BuildConfig.LOG_DEBUG) {
+            LogUtils.d(TAG, String.format("Stripped fileName is now '%s'", fileName));
+        }
         boolean syncBackNeeded;
         if (current != null) {
             RevCommit rookCommit = getCommitFromRevisionString(current.getRevision());
-            Log.i("Git", String.format("File name %s, rookCommit: %s", fileName, rookCommit));
+            if (BuildConfig.LOG_DEBUG) {
+                LogUtils.d(TAG, String.format("Syncing file %s, rookCommit: %s", fileName, rookCommit));
+            }
             boolean merged = synchronizer.updateAndCommitFileFromRevisionAndMerge(
                     fromDB, fileName,
                     synchronizer.getFileRevision(fileName, rookCommit),
@@ -330,11 +332,12 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
             syncBackNeeded = !synchronizer.fileMatchesInRevisions(
                     fileName, rookCommit, synchronizer.currentHead());
         } else {
-            // TODO: Prompt user for confirmation?
-            Log.w("Git", "Unable to find previous commit, loading from repository.");
+            Log.w(TAG, "Unable to find previous commit, loading from repository.");
             syncBackNeeded = true;
         }
-        Log.i("Git", String.format("Sync back needed was %s", syncBackNeeded));
+        if (BuildConfig.LOG_DEBUG) {
+            LogUtils.d(TAG, String.format("Sync back needed was %s", syncBackNeeded));
+        }
         if (syncBackNeeded) {
             writeBack = synchronizer.repoDirectoryFile(fileName);
         }

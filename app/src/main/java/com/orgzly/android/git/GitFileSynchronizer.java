@@ -7,8 +7,10 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.App;
+import com.orgzly.android.util.LogUtils;
 import com.orgzly.android.util.MiscUtils;
 
 import org.eclipse.jgit.api.Git;
@@ -35,7 +37,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 public class GitFileSynchronizer {
-    private final static String TAG = GitFileSynchronizer.class.getSimpleName();
+    private final static String TAG = GitFileSynchronizer.class.getName();
 
     private final Git git;
     private final GitPreferences preferences;
@@ -60,7 +62,9 @@ public class GitFileSynchronizer {
 
     private void fetch() throws IOException {
         try {
-            Log.d("Git", String.format("Fetching Git repo from %s", preferences.remoteUri()));
+            if (BuildConfig.LOG_DEBUG) {
+                LogUtils.d(TAG, String.format("Fetching Git repo from %s", preferences.remoteUri()));
+            }
             transportSetter()
                     .setTransport(git.fetch()
                             .setRemote(preferences.remoteName())
@@ -113,14 +117,21 @@ public class GitFileSynchronizer {
             throws IOException {
         ensureRepoIsClean();
         if (updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision)) {
-            Log.d("Git", "File committed without conflicts.");
+            if (BuildConfig.LOG_DEBUG) {
+                LogUtils.d(TAG, String.format("File '%s' committed without conflicts.", repositoryPath));
+            }
             return true;
         }
 
         String originalBranch = git.getRepository().getFullBranch();
-        Log.d("Git", String.format("originalBranch is set to %s", originalBranch));
+        if (BuildConfig.LOG_DEBUG) {
+            LogUtils.d(TAG, String.format("originalBranch is set to %s", originalBranch));
+        }
         String mergeBranch = createMergeBranchName(repositoryPath, fileRevision);
-        Log.d("Git", String.format("Temporary mergeBranch is set to %s", mergeBranch));
+        if (BuildConfig.LOG_DEBUG) {
+            LogUtils.d(TAG, String.format("originalBranch is set to %s", originalBranch));
+            LogUtils.d(TAG, String.format("Temporary mergeBranch is set to %s", mergeBranch));
+        }
         try {
             git.branchDelete().setBranchNames(mergeBranch).call();
         } catch (GitAPIException ignored) {}
@@ -132,7 +143,9 @@ public class GitFileSynchronizer {
             if (branchStartPoint == null) {
                 branchStartPoint = revision;
             }
-            Log.d("Git", String.format("branchStartPoint is set to %s", branchStartPoint));
+            if (BuildConfig.LOG_DEBUG) {
+                LogUtils.d(TAG, String.format("branchStartPoint is set to %s", branchStartPoint));
+            }
             git.checkout().setCreateBranch(true).setForceRefUpdate(true).
                     setStartPoint(branchStartPoint).setName(mergeBranch).call();
             if (!currentHead().equals(branchStartPoint))
@@ -231,6 +244,13 @@ public class GitFileSynchronizer {
                 git.push().setRemote(preferences.remoteName()));
         final Object monitor = new Object();
 
+        if (BuildConfig.LOG_DEBUG) {
+            String currentBranch = "UNKNOWN_BRANCH";
+            try {
+                currentBranch = git.getRepository().getBranch();
+            } catch (IOException ignored) {}
+            LogUtils.d(TAG, "Pushing branch " + currentBranch + " to " + preferences.remoteUri());
+        }
         App.EXECUTORS.diskIO().execute(() -> {
             try {
                 Iterable<PushResult> results = (Iterable<PushResult>) pushCommand.call();
@@ -406,11 +426,8 @@ public class GitFileSynchronizer {
         return new RevWalk(git.getRepository()).parseCommit(target.getObjectId());
     }
 
-    public RevCommit getLatestCommitOfFile(Uri uri) throws GitAPIException {
-        String fileName = uri.toString();
-        if (fileName.startsWith("/")) {
-            fileName = fileName.replaceFirst("/", "");
-        }
+    public RevCommit getLastCommitOfFile(Uri uri) throws GitAPIException {
+        String fileName = uri.toString().replaceFirst("^/", "");
         return git.log().setMaxCount(1).addPath(fileName).call().iterator().next();
     }
 
