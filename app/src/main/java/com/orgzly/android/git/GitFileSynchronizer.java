@@ -55,21 +55,6 @@ public class GitFileSynchronizer {
         return preferences.createTransportSetter();
     }
 
-    public void safelyRetrieveLatestVersionOfFile(
-            String repositoryPath, File destination, RevCommit revision) throws IOException {
-        RevWalk revWalk = new RevWalk(git.getRepository());
-        RevCommit head = currentHead();
-        RevCommit rHead = revWalk.parseCommit(head.toObjectId());
-        RevCommit rRevision = revWalk.parseCommit(revision.toObjectId());
-        if (!revWalk.isMergedInto(rRevision, rHead)) {
-            throw new IOException(
-                    String.format(
-                            "The provided revision %s is not merged in to the current HEAD, %s.",
-                            revision, head));
-        }
-        retrieveLatestVersionOfFile(repositoryPath, destination);
-    }
-
     public void retrieveLatestVersionOfFile(
             String repositoryPath, File destination) throws IOException {
         MiscUtils.copyFile(repoDirectoryFile(repositoryPath), destination);

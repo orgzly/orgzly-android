@@ -206,31 +206,12 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     @Override
     public VersionedRook retrieveBook(String fileName, File destination) throws IOException {
 
-        // public VersionedRook retrieveBook(Uri sourceUri, File destinationFile)
-        // FIXME: Interface changed, this will not work
         Uri sourceUri = Uri.parse(fileName);
 
-        // FIXME: Removed current_versioned_rooks table, just get the list from remote
-        // VersionedRook current = CurrentRooksClient.get(App.getAppContext(), getUri().toString(), sourceUri.toString());
-        VersionedRook current = null;
-
-        RevCommit currentCommit = null;
-        if (current != null) {
-            currentCommit = getCommitFromRevisionString(current.getRevision());
-        }
-
-        // TODO: consider
-        // synchronizer.checkoutSelected();
-        try {
-            currentCommit = synchronizer.getLatestCommitOfFile(Uri.parse(fileName));
-        } catch (GitAPIException ex) {
-            throw new IOException("Error while retrieving latest commit of " + fileName, ex);
-        }
-        // TODO: What if we  can't merge here? Can that not happen?
+        // Ensure our repo copy is up-to-date. This is necessary when force-loading a book.
         synchronizer.mergeWithRemote();
-        synchronizer.tryPushIfUpdated(currentCommit);
-        synchronizer.safelyRetrieveLatestVersionOfFile(
-                sourceUri.getPath(), destination, currentCommit);
+
+        synchronizer.retrieveLatestVersionOfFile(sourceUri.getPath(), destination);
 
         return currentVersionedRook(sourceUri);
     }
