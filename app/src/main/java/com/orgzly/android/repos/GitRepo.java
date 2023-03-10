@@ -216,7 +216,7 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
         return currentVersionedRook(sourceUri);
     }
 
-    private VersionedRook currentVersionedRook(Uri uri) throws IOException {
+    private VersionedRook currentVersionedRook(Uri uri) {
         RevCommit commit = null;
         if (uri.toString().contains("%")) {
             uri = Uri.parse(Uri.decode(uri.toString()));
@@ -258,7 +258,7 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
         final IgnoreNode ignores = getIgnores();
         walk.setFilter(new TreeFilter() {
             @Override
-            public boolean include(TreeWalk walker) throws MissingObjectException, IncorrectObjectTypeException, IOException {
+            public boolean include(TreeWalk walker) {
                 final FileMode mode = walker.getFileMode(0);
                 final String filePath = walker.getPathString();
                 final boolean isDirectory = mode == FileMode.TREE;
