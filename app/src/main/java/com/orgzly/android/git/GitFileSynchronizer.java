@@ -131,7 +131,7 @@ public class GitFileSynchronizer {
             if (branchStartPoint == null) {
                 branchStartPoint = revision;
             }
-            git.checkout().setCreateBranch(true).setForce(true).
+            git.checkout().setCreateBranch(true).setForceRefUpdate(true).
                     setStartPoint(branchStartPoint).setName(mergeBranch).call();
             if (!currentHead().equals(branchStartPoint))
                 throw new IOException("Failed to create new branch at " + branchStartPoint.toString());
