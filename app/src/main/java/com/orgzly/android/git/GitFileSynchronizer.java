@@ -7,8 +7,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.orgzly.R;
 import com.orgzly.android.App;
 import com.orgzly.android.util.MiscUtils;
@@ -173,12 +171,6 @@ public class GitFileSynchronizer {
             return false;
         }
         return true;
-    }
-
-    public void tryPushIfUpdated(@NonNull RevCommit commit) throws IOException {
-        if (!commit.equals(currentHead())) {
-            tryPush();
-        }
     }
 
     /**
@@ -405,8 +397,7 @@ public class GitFileSynchronizer {
         if (fileName.startsWith("/")) {
             fileName = fileName.replaceFirst("/", "");
         }
-        Iterable<RevCommit> log = git.log().setMaxCount(1).addPath(fileName).call();
-        return log.iterator().next();
+        return git.log().setMaxCount(1).addPath(fileName).call().iterator().next();
     }
 
     public String repoPath() {
