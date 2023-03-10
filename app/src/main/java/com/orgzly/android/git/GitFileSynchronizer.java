@@ -60,6 +60,7 @@ public class GitFileSynchronizer {
 
     private void fetch() throws IOException {
         try {
+            Log.d("Git", String.format("Fetching Git repo from %s", preferences.remoteUri()));
             transportSetter()
                     .setTransport(git.fetch()
                             .setRemote(preferences.remoteName())
@@ -112,16 +113,18 @@ public class GitFileSynchronizer {
             throws IOException {
         ensureRepoIsClean();
         if (updateAndCommitFileFromRevision(sourceFile, repositoryPath, fileRevision)) {
+            Log.d("Git", "File committed without conflicts.");
             return true;
         }
 
         String originalBranch = git.getRepository().getFullBranch();
+        Log.d("Git", String.format("originalBranch is set to %s", originalBranch));
         String mergeBranch = createMergeBranchName(repositoryPath, fileRevision);
+        Log.d("Git", String.format("Temporary mergeBranch is set to %s", mergeBranch));
         try {
             git.branchDelete().setBranchNames(mergeBranch).call();
-        } catch (GitAPIException e) {}
-        boolean mergeSucceeded = true;
-        boolean doCleanup = false;
+        } catch (GitAPIException ignored) {}
+        boolean mergeSucceeded = false;
         try {
             RevCommit mergeTarget = currentHead();
             // Try to use the branch "orgzly-pre-sync-marker" to find a good point for branching off.
@@ -129,6 +132,7 @@ public class GitFileSynchronizer {
             if (branchStartPoint == null) {
                 branchStartPoint = revision;
             }
+            Log.d("Git", String.format("branchStartPoint is set to %s", branchStartPoint));
             git.checkout().setCreateBranch(true).setForceRefUpdate(true).
                     setStartPoint(branchStartPoint).setName(mergeBranch).call();
             if (!currentHead().equals(branchStartPoint))
@@ -145,20 +149,30 @@ public class GitFileSynchronizer {
                 git.checkout().setName(originalBranch).call();
                 MergeResult result = git.merge().include(merged).call();
                 if (!result.getMergeStatus().isSuccessful()) {
-                    throw new IOException("Unexpected failure to merge branch");
+                    throw new IOException(String.format("Unexpected failure to merge '%s' into '%s'", merged.toString(), originalBranch));
                 }
             }
         } catch (GitAPIException e) {
-            doCleanup = true;
             e.printStackTrace();
-            throw new IOException(
-                    String.format("Failed to handle merge correctly: %s", e.getMessage()));
-            // TODO: want to catch CheckoutConflictException as well, that means that the actual merge produced conflicts
+            throw new IOException("Failed to handle merge conflict: " + e.getMessage());
         } finally {
-            if (mergeSucceeded || doCleanup) try {
-                git.checkout().setName(originalBranch).call();
-                git.branchDelete().setBranchNames(mergeBranch);
-            } catch (GitAPIException e) {
+            if (mergeSucceeded) {
+                try {
+                    if (BuildConfig.LOG_DEBUG) {
+                        LogUtils.d(TAG, String.format("Checking out originalBranch '%s'", originalBranch));
+                    }
+                    git.checkout().setName(originalBranch).call();
+                } catch (GitAPIException e) {
+                    Log.w(TAG, String.format("Failed to checkout original branch '%s': %s", originalBranch, e.getMessage()));
+                }
+                try {
+                    if (BuildConfig.LOG_DEBUG) {
+                        LogUtils.d(TAG, String.format("Deleting temporary mergeBranch '%s'", mergeBranch));
+                    }
+                    git.branchDelete().setBranchNames(mergeBranch).call();
+                } catch (GitAPIException e) {
+                    Log.w(TAG, String.format("Failed to delete temporary mergeBranch '%s': %s", mergeBranch, e.getMessage()));
+                }
             }
         }
         return mergeSucceeded;
