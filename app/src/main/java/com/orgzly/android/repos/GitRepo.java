@@ -293,9 +293,8 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
         return preferences.remoteUri();
     }
 
-    public void delete(Uri deleteUri) throws IOException {
-        // FIXME: finish me
-        throw new IOException("Don't do that");
+    public void delete(Uri uri) throws IOException {
+        if (synchronizer.deleteFileFromRepo(uri)) synchronizer.tryPush();
     }
 
     public VersionedRook renameBook(Uri from, String name) throws IOException {

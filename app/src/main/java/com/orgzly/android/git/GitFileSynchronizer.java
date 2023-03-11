@@ -466,4 +466,20 @@ public class GitFileSynchronizer {
             throws IOException {
         return getFileRevision(pathString, start).equals(getFileRevision(pathString, end));
     }
+
+    public boolean deleteFileFromRepo(Uri uri) throws IOException {
+        if (mergeWithRemote()) {
+            String fileName = uri.toString().replaceFirst("^/", "");
+            try {
+                git.rm().addFilepattern(fileName).call();
+                if (!gitRepoIsClean())
+                    commit(String.format("Orgzly deletion: %s", fileName));
+                return true;
+            } catch (GitAPIException e) {
+                throw new IOException(String.format("Failed to commit deletion of %s, %s", fileName, e.getMessage()));
+            }
+        } else {
+            return false;
+        }
+    }
 }
