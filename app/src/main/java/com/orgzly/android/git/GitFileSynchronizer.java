@@ -482,4 +482,30 @@ public class GitFileSynchronizer {
             return false;
         }
     }
+
+    public boolean renameFileInRepo(String oldFileName, String newFileName) throws IOException {
+        ensureRepoIsClean();
+        if (mergeWithRemote()) {
+            File oldFile = repoDirectoryFile(oldFileName);
+            File newFile = repoDirectoryFile(newFileName);
+            // Abort if destination file exists
+            if (newFile.exists()) {
+                throw new IOException("Can't add new file " + newFileName + " that already exists.");
+            }
+            // Copy the file contents and add it to the index
+            MiscUtils.copyFile(oldFile, newFile);
+            try {
+                git.add().addFilepattern(newFileName).call();
+                if (!gitRepoIsClean()) {
+                    // Remove the old file from the Git index
+                    git.rm().addFilepattern(oldFileName).call();
+                    commit(String.format("Orgzly: rename %s to %s", oldFileName, newFileName));
+                    return true;
+                }
+            } catch (GitAPIException e) {
+                throw new IOException("Failed to rename file in repo, " + e.getMessage());
+            }
+        }
+        return false;
+    }
 }

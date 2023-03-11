@@ -297,8 +297,15 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
         if (synchronizer.deleteFileFromRepo(uri)) synchronizer.tryPush();
     }
 
-    public VersionedRook renameBook(Uri from, String name) throws IOException {
-        return null;
+    public VersionedRook renameBook(Uri oldUri, String newRookName) throws IOException {
+        String oldFileName = oldUri.toString().replaceFirst("^/", "");
+        String newFileName = newRookName + ".org";
+        if (synchronizer.renameFileInRepo(oldFileName, newFileName)) {
+            synchronizer.tryPush();
+            return currentVersionedRook(Uri.EMPTY.buildUpon().appendPath(newFileName).build());
+        } else {
+            return null;
+        }
     }
 
     @Override
