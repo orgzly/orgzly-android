@@ -8,6 +8,7 @@ import com.orgzly.android.NotesOrgExporter
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.BookAction
 import com.orgzly.android.db.entity.Repo
+import com.orgzly.android.repos.GitRepo
 import com.orgzly.android.repos.SyncRepo
 import com.orgzly.android.repos.TwoWaySyncRepo
 import com.orgzly.android.repos.VersionedRook
@@ -28,12 +29,20 @@ object SyncUtils {
         val repoList = repos ?: dataRepository.getSyncRepos()
 
         for (repo in repoList) {
-            val libBooks = repo.books
-
-            /* Each book in repository. */
-            result.addAll(libBooks)
+            if (repo is GitRepo && repo.isUnchanged) {
+                for (book in dataRepository.getBooks()) {
+                    if (book.hasLink()) {
+                        if (book.linkRepo!!.url == repo.uri.toString()) {
+                            result.add(book.syncedTo!!)
+                        }
+                    }
+                }
+            } else {
+                val libBooks = repo.books
+                /* Each book in repository. */
+                result.addAll(libBooks)
+            }
         }
-
         return result
     }
 

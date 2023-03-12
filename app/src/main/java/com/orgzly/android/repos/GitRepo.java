@@ -243,8 +243,14 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
         return ignores;
     }
 
-    public List<VersionedRook> getBooks() throws IOException {
+    public boolean isUnchanged() throws IOException {
+        // Check if the current head is unchanged.
+        // If so, we can read all the VersionedRooks from the database.
         synchronizer.setBranchAndGetLatest();
+        return synchronizer.currentHead().equals(synchronizer.getCommit("orgzly-pre-sync-marker"));
+    }
+
+    public List<VersionedRook> getBooks() throws IOException {
         List<VersionedRook> result = new ArrayList<>();
         if (synchronizer.currentHead() == null) {
             return result;
