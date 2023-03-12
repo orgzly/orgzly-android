@@ -185,7 +185,6 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     }
 
     public VersionedRook storeBook(File file, String fileName) throws IOException {
-        // If the file already exists it is because we're trying to force save a file
         File destination = synchronizer.repoDirectoryFile(fileName);
         if (destination.exists()) {
             synchronizer.updateAndCommitExistingFile(file, fileName);
@@ -311,13 +310,8 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
     @Override
     public TwoWaySyncResult syncBook(
             Uri uri, VersionedRook current, File fromDB) throws IOException {
-        File writeBack = null;
         boolean onMainBranch = true;
         String fileName = uri.getPath().replaceFirst("^/", "");
-        if (BuildConfig.LOG_DEBUG) {
-            LogUtils.d(TAG, String.format("Stripped fileName is now '%s'", fileName));
-        }
-        boolean syncBackNeeded;
         if (current != null) {
             RevCommit rookCommit = getCommitFromRevisionString(current.getRevision());
             if (BuildConfig.LOG_DEBUG) {
@@ -334,22 +328,13 @@ public class GitRepo implements SyncRepo, TwoWaySyncRepo {
             if (merged && !onMainBranch) {
                 onMainBranch = synchronizer.attemptReturnToMainBranch();
             }
-
-            syncBackNeeded = !synchronizer.fileMatchesInRevisions(
-                    fileName, rookCommit, synchronizer.currentHead());
         } else {
             Log.w(TAG, "Unable to find previous commit, loading from repository.");
-            syncBackNeeded = true;
         }
-        if (BuildConfig.LOG_DEBUG) {
-            LogUtils.d(TAG, String.format("Sync back needed was %s", syncBackNeeded));
-        }
-        if (syncBackNeeded) {
-            writeBack = synchronizer.repoDirectoryFile(fileName);
-        }
+        File writeBackFile = synchronizer.repoDirectoryFile(fileName);
         return new TwoWaySyncResult(
                 currentVersionedRook(Uri.EMPTY.buildUpon().appendPath(fileName).build()), onMainBranch,
-                writeBack);
+                writeBackFile);
     }
 
     public void tryPushIfHeadDiffersFromRemote() {

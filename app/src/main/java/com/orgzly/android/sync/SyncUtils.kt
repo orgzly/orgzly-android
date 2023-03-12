@@ -85,7 +85,7 @@ object SyncUtils {
         // FIXME: This is a pretty nasty hack that completely circumvents the existing code path
         if (namesake.rooks.isNotEmpty()) {
             val rook = namesake.rooks[0]
-            if (rook != null && namesake.status !== BookSyncStatus.NO_CHANGE) {
+            if (rook != null && namesake.status !== BookSyncStatus.NO_CHANGE && namesake.status !== BookSyncStatus.BOOK_WITH_LINK_LOCAL_MODIFIED) {
                 val repo = dataRepository.getRepoInstance(
                     rook.repoId, rook.repoType, rook.repoUri.toString())
                 if (repo is TwoWaySyncRepo) {
@@ -168,17 +168,17 @@ object SyncUtils {
     private fun handleTwoWaySync(dataRepository: DataRepository, repo: TwoWaySyncRepo, namesake: BookNamesake): Boolean {
         val (book, _, _, currentRook) = namesake.book
         val someRook = currentRook ?: namesake.rooks[0]
-        var newRook = currentRook
-        var onMainBranch = true
+        val newRook: VersionedRook?
+        val onMainBranch: Boolean
         val dbFile = dataRepository.getTempBookFile()
         try {
             NotesOrgExporter(dataRepository).exportBook(book, dbFile)
             val (newRook1, onMainBranch1, loadFile) =
                 repo.syncBook(someRook.uri, currentRook, dbFile)
             onMainBranch = onMainBranch1
+            newRook = newRook1
             // We only need to write it if syncback is needed
             if (loadFile != null) {
-                newRook = newRook1
                 val fileName = BookName.getFileName(App.getAppContext(), newRook.uri)
                 val bookName = BookName.fromFileName(fileName)
                 if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Loading from file '$loadFile'")
@@ -198,6 +198,6 @@ object SyncUtils {
 
         dataRepository.updateBookLinkAndSync(book.id, newRook!!)
 
-        return onMainBranch;
+        return onMainBranch
     }
 }

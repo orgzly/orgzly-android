@@ -221,18 +221,10 @@ public class GitFileSynchronizer {
             e.printStackTrace();
         }
 
-        // If the current branch exists on the remote side, find out its HEAD commit.
+        // Try to get the commit of the remote head with the same name as our local current head
         try {
-            List<Ref> remoteBranches = git.branchList().setListMode(ListBranchCommand.ListMode.REMOTE).call();
-            for (Ref remoteBranch : remoteBranches) {
-                if (remoteBranch.getName().equals("refs/remotes/" + remoteName + "/" + branchName)) {
-                    remoteHead = getCommit(remoteName + "/" + branchName);
-                    break;
-                }
-            }
-        } catch (GitAPIException | IOException e) {
-            e.printStackTrace();
-        }
+            remoteHead = getCommit(remoteName + "/" + branchName);
+        } catch (IOException ignored) {}
 
         if (localHead != null && !localHead.equals(remoteHead)) {
             tryPush();
@@ -460,11 +452,6 @@ public class GitFileSynchronizer {
     public ObjectId getFileRevision(String pathString, RevCommit commit) throws IOException {
         return TreeWalk.forPath(
                 git.getRepository(), pathString, commit.getTree()).getObjectId(0);
-    }
-
-    public boolean fileMatchesInRevisions(String pathString, RevCommit start, RevCommit end)
-            throws IOException {
-        return getFileRevision(pathString, start).equals(getFileRevision(pathString, end));
     }
 
     public boolean deleteFileFromRepo(Uri uri) throws IOException {
