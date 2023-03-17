@@ -17,5 +17,5 @@ class GetOrgInfo : ExternalAccessActionHandler() {
             dataRepository.getSavedSearches().map(SavedSearch::from).toTypedArray()
 
     private fun getNote(intent: Intent) =
-            Note.from(intent.getNote())
+            Note.from(intent.getNoteAndProps())
 }

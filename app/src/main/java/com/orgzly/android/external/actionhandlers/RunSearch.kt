@@ -15,6 +15,7 @@ class RunSearch : ExternalAccessActionHandler() {
         if (searchTerm.isNullOrBlank()) throw ExternalHandlerFailure("invalid search term")
         val query = InternalQueryParser().parse(searchTerm)
         val notes = dataRepository.selectNotesFromQuery(query)
-        return notes.map(Note::from)
+        val notesWithProps = notes.map { it to dataRepository.getNoteProperties(it.note.id) }
+        return notesWithProps.map(Note::from)
     }
 }

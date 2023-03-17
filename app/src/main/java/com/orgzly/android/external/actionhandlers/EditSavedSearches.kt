@@ -23,10 +23,8 @@ class EditSavedSearches : ExternalAccessActionHandler() {
         val newSavedSearch = intent.getNewSavedSearch(allowBlank = true)
         dataRepository.updateSavedSearch(SavedSearch(
                 savedSearch.id,
-                (if (newSavedSearch.name.isBlank()) savedSearch.name
-                else newSavedSearch.name),
-                (if (newSavedSearch.query.isBlank()) savedSearch.query
-                else newSavedSearch.query),
+                newSavedSearch.name.ifBlank { savedSearch.name },
+                newSavedSearch.query.ifBlank { savedSearch.query },
                 savedSearch.position
         ))
     }

@@ -19,8 +19,7 @@ class ManageWidgets : ExternalAccessActionHandler() {
         val widgetManager = AppWidgetManager.getInstance(context)
         val componentName = ComponentName(context.packageName, ListWidgetProvider::class.java.name)
         return widgetManager.getAppWidgetIds(componentName)
-                .map { it to ListWidgetProvider.getSavedSearch(context, it, dataRepository) }
-                .toMap()
+            .associateWith { ListWidgetProvider.getSavedSearch(context, it, dataRepository) }
     }
 
     private fun setWidget(intent: Intent, context: Context) {
