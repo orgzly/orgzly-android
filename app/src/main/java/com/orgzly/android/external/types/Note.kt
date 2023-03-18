@@ -32,22 +32,22 @@ data class Note(
                         .filter { it.isNotEmpty() },
                 view.bookName,
                 Timestamp.from(
+                    view.scheduledRangeString,
                     view.scheduledTimeTimestamp,
                     view.scheduledTimeString,
                     view.scheduledTimeEndString,
-                    view.scheduledRangeString
                 ),
                 Timestamp.from(
+                    view.deadlineRangeString,
                     view.deadlineTimeTimestamp,
                     view.deadlineTimeString,
                     view.deadlineTimeEndString,
-                    view.deadlineRangeString
                 ),
                 Timestamp.from(
+                    view.closedRangeString,
                     view.closedTimeTimestamp,
                     view.closedTimeString,
                     view.closedTimeEndString,
-                    view.closedRangeString
                 ),
                 note.priority,
                 note.state,
@@ -61,20 +61,20 @@ data class Note(
     }
 
     data class Timestamp(
+        val rangeString: String,
         val timeTimestamp: Long,
-        val timeString: String,
+        val timeString: String?,
         val timeEndString: String? = null,
-        val rangeString: String?,
     ) {
         companion object {
             fun from(
+                rangeString: String?,
                 timeTimestamp: Long?,
                 timeString: String?,
                 timeEndString: String?,
-                rangeString: String?
             ): Timestamp? {
-                return if (timeTimestamp != null && timeString != null)
-                    Timestamp(timeTimestamp, timeString, timeEndString, rangeString)
+                return if (rangeString != null && timeTimestamp != null)
+                    Timestamp(rangeString, timeTimestamp, timeString, timeEndString)
                 else null
             }
         }
