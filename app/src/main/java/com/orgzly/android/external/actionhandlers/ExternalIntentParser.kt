@@ -3,7 +3,6 @@ package com.orgzly.android.external.actionhandlers
 import android.content.Intent
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import com.google.gson.JsonParseException
 import com.google.gson.JsonParser
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.NoteView
@@ -22,31 +21,26 @@ interface ExternalIntentParser {
         val rawJson = getStringExtra("NOTE_PAYLOAD")
         val json = try {
             JsonParser.parseString(rawJson)
-                .let { if (it.isJsonObject) it.asJsonObject else null }
-        } catch (e: JsonParseException) {
-            null
+                .let { if (it.isJsonObject) it.asJsonObject else null }!!
+        } catch (e: Exception) {
+            throw ExternalHandlerFailure("failed to parse json: ${e.message}\n$rawJson")
         }
-
-        return try {
-            json!!
-            NotePayload(
-                (json.getString("title") ?: title)!!,
-                json.getString("content"),
-                json.getString("state"),
-                json.getString("priority"),
-                json.getString("scheduled"),
-                json.getString("deadline"),
-                json.getString("closed"),
-                (json.getString("tags") ?: "")
-                    .split(" +".toRegex())
-                    .filter { it.isNotEmpty() },
-                OrgProperties().apply {
-                    json["properties"]?.asMap?.forEach { (k, v) -> this[k] = v }
-                }
-            )
-        } catch (e: NullPointerException) {
-            throw ExternalHandlerFailure("invalid payload")
-        }
+        return NotePayload(
+            json.getString("title") ?: title
+                ?: throw ExternalHandlerFailure("no title supplied!\n$rawJson"),
+            json.getString("content"),
+            json.getString("state"),
+            json.getString("priority"),
+            json.getString("scheduled"),
+            json.getString("deadline"),
+            json.getString("closed"),
+            (json.getString("tags") ?: "")
+                .split(" +".toRegex())
+                .filter { it.isNotEmpty() },
+            OrgProperties().apply {
+                json["properties"]?.asMap?.forEach { (k, v) -> this[k] = v }
+            }
+        )
     }
 
     private fun getNoteByQuery(rawQuery: String?): NoteView {

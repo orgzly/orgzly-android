@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
-import com.orgzly.android.external.types.ExternalHandlerFailure
 import com.orgzly.android.external.types.Response
 import javax.inject.Inject
 
@@ -40,7 +39,7 @@ abstract class ExternalAccessActionHandler : ExternalIntentParser {
         fullNameActions[intent.action!!]
                 ?.let { it(intent, context) }
                 ?.let { Response(true, if (it is Unit) null else it) }
-    } catch (e: ExternalHandlerFailure) {
+    } catch (e: Exception) {
         Response(false, e.message)
     }
 }
