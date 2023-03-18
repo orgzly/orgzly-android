@@ -7,6 +7,7 @@ import com.orgzly.android.TimeChangeBroadcastReceiver
 import com.orgzly.android.di.module.ApplicationModule
 import com.orgzly.android.di.module.DataModule
 import com.orgzly.android.di.module.DatabaseModule
+import com.orgzly.android.external.actionhandlers.ExternalAccessActionHandler
 import com.orgzly.android.reminders.NoteReminders
 import com.orgzly.android.reminders.RemindersBroadcastReceiver
 import com.orgzly.android.sync.SyncWorker
@@ -86,4 +87,5 @@ interface AppComponent {
     fun inject(arg: RemindersBroadcastReceiver)
     fun inject(arg: NotificationBroadcastReceiver)
     fun inject(arg: SharingShortcutsManager)
+    fun inject(arg: ExternalAccessActionHandler)
 }
