@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
@@ -120,9 +121,12 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             createDefaultRepoFolder()
             binding.activityRepoGitAuthor.setText("Orgzly")
             binding.activityRepoGitBranch.setText(R.string.git_default_branch)
-            val deviceName = Settings.Secure.getString(contentResolver, "bluetooth_name")
-            if (deviceName != null) binding.activityRepoGitEmail.setText(String.format("orgzly@%s", deviceName))
-            else binding.activityRepoGitEmail.setText("orgzly@phone")
+            val userDeviceName: String = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S) {
+                Settings.Global.getString(contentResolver, Settings.Global.DEVICE_NAME)
+            } else {
+                Settings.Secure.getString(contentResolver, "bluetooth_name")
+            }
+            binding.activityRepoGitEmail.setText(String.format("orgzly@%s", userDeviceName))
         }
 
         viewModel.finishEvent.observeSingle(this, Observer {
