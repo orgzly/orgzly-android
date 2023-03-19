@@ -22,9 +22,7 @@ public class GitPreferencesFromRepoPrefs implements GitPreferences {
             return new HTTPSTransportSetter(username, password);
         } else {
             // assume SSH, since ssh:// usually isn't specified as the scheme when cloning via SSH.
-            String sshKeyPath = repoPreferences.getStringValueWithGlobalDefault(
-                    R.string.pref_key_git_ssh_key_path, "orgzly");
-            return new GitSSHKeyTransportSetter(sshKeyPath);
+            return new GitSshKeyTransportSetter();
         }
     }
 

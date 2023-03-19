@@ -175,7 +175,6 @@
     <string name="git_verifying_settings">S\'assurer que les paramètres du dépôt fonctionnent.</string>
     <string name="git_url_hint">Adresse distante (par exemple : git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">Emplacement du dossier (par exemple : file:/sdcard/orgzly)</string>
-    <string name="git_ssh_key_hint">Emplacement de la clé SSH (par exemple : file:/sdcard/id_rsa)</string>
     <string name="git_https_username_hint">Nom d\'utilisateur</string>
     <string name="git_https_password_hint">Mot de passe</string>
     <string name="git_author_hint">Auteur (par exemple : Jean Dupont)</string>

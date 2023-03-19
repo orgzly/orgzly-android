@@ -38,6 +38,10 @@ public class AppIntent {
 
     public static final String ACTION_SHOW_SNACKBAR = "com.orgzly.intent.action.SHOW_SNACKBAR";
 
+    public static final String ACTION_REJECT_REMOTE_HOST_KEY = "com.orgzly.intent.action.REJECT_REMOTE_HOST_KEY";
+    public static final String ACTION_ACCEPT_REMOTE_HOST_KEY = "com.orgzly.intent.action.ACCEPT_REMOTE_HOST_KEY";
+    public static final String ACTION_ACCEPT_AND_STORE_REMOTE_HOST_KEY = "com.orgzly.intent.action.ACCEPT_AND_STORE_REMOTE_HOST_KEY";
+
     public static final String EXTRA_MESSAGE = "com.orgzly.intent.extra.MESSAGE";
     public static final String EXTRA_BOOK_ID = "com.orgzly.intent.extra.BOOK_ID";
     public static final String EXTRA_BOOK_PREFACE = "com.orgzly.intent.extra.BOOK_PREFACE";

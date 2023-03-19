@@ -181,7 +181,6 @@
     <string name="git_verifying_settings">Перевірка налаштувань репозиторію.</string>
     <string name="git_url_hint">Віддалена адреса (напр. git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">Розташування каталогу (напр. «file:/sdcard/orgzly»)</string>
-    <string name="git_ssh_key_hint">Розташування ключа SSH (напр. «file:/sdcard/id_rsa»)</string>
     <string name="git_https_username_hint">Імʼя користувача</string>
     <string name="git_https_password_hint">Пароль</string>
     <string name="git_author_hint">Автор (напр. John Doe)</string>

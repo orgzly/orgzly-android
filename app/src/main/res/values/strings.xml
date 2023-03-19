@@ -85,6 +85,9 @@
     <!-- Preferences (Settings). -->
     <string name="repos_preference_title">Repositories</string>
     <string name="repos_preference_summary">Location to synchronize your notebooks with</string>
+    <string name="ssh_keygen_preference_title">SSH key generation</string>
+    <string name="ssh_keygen_preference_summary">Generate key pair for Git repo sync</string>
+    <string name="ssh_show_public_key_preference_title">View generated SSH public key</string>
     <string name="message_book_has_no_link">No link set</string>
     <string name="message_note_created">Note created</string>
     <string name="message_failed_creating_note">Failed to create note</string>
@@ -198,7 +201,8 @@
     <string name="git_verifying_settings">Ensuring repository settings will work.</string>
     <string name="git_url_hint">Remote URL (e.g. git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">Directory location (e.g. “/sdcard/orgzly”)</string>
-    <string name="git_ssh_key_hint">SSH key location (e.g. “/sdcard/id_rsa”)</string>
+    <string name="git_ssh_on_missing_key_dialog_text">No SSH key pair found. Do you wish to generate one?</string>
+    <string name="git_ssh_on_missing_key_dialog_title">No SSH key found</string>
     <string name="git_https_username_hint">Username</string>
     <string name="git_https_password_hint">Password</string>
     <string name="git_author_hint">Author (e.g. John Doe)</string>
@@ -214,11 +218,13 @@
     <!-- Git sync repo errors -->
     <!-- TODO: I don't think we can say more than this for ssh authentication failures, but we probably want to -->
     <string name="git_clone_error_ssh_auth">Failure while cloning, authentication error</string>
+    <string name="git_clone_error_ssh">Failure while cloning: %s</string>
     <string name="git_clone_error_invalid_repo">The remote address is not a git repo</string>
     <string name="git_clone_error_unknown">Unknown error while cloning</string>
     <string name="git_clone_error_invalid_target_dir">The target directory does not exist</string>
     <string name="git_clone_error_target_not_empty">The target directory is not empty</string>
     <string name="git_clone_error_uri_not_supported">The remote address is not supported</string>
+    <string name="git_sync_error_failed_set_marker_branch">Failed to update marker branch</string>
 
     <string name="webdav_url_hint">URL (e.g. webdavs://example.com/my-org-files/)</string>
     <string name="webdav_auth_username_hint">Username</string>
@@ -728,4 +734,31 @@
     <string name="clock_cancel">Clock cancel</string>
     <string name="search_results">Search results</string>
     <string name="popup_menu_buttons">Popup menu buttons</string>
+
+    <string name="ssh_keygen_label_rsa">RSA</string>
+    <string name="ssh_keygen_label_ecdsa">ECDSA</string>
+    <string name="ssh_keygen_label_ed25519">ED25519</string>
+    <string name="ssh_keygen_require_authentication">Protect with screen lock credential</string>
+    <string name="ssh_keygen_generate">Generate</string>
+    <string name="ssh_keygen_existing_title">SSH key</string>
+    <string name="ssh_keygen_existing_message">Replace existing SSH key? You might lose access to your server.</string>
+    <string name="ssh_keygen_existing_replace">Replace</string>
+    <string name="ssh_keygen_existing_keep">Keep</string>
+    <string name="ssh_keygen_explanation_ecdsa"><b>ECDSA (NIST P-256)</b>\nFast authentication and supported by most servers that are still receiving updates.</string>
+    <string name="ssh_keygen_explanation_ed25519"><b>ED25519</b>\nFast authentication, but only supported by rather modern servers.</string>
+    <string name="ssh_keygen_explanation_rsa"><b>RSA (3072 bit)</b>\nSupported by older servers.</string>
+    <string name="ssh_keygen_generating_progress">Generating keys…</string>
+    <string name="ssh_key_failed_get_public">Failed to get SSH public key</string>
+    <string name="ssh_key_failed_get_private">Failed to get SSH private key</string>
+    <string name="ssh_key_failed_unlock_private">Failed to unlock SSH private key</string>
+    <string name="biometric_prompt_title_ssh_keygen">Generate SSH key</string>
+    <string name="biometric_prompt_title_unlock_ssh_key">Unlock Orgzly\'s SSH key</string>
+    <string name="biometric_auth_not_available">Biometric authentication is not available</string>
+    <string name="biometric_auth_on_error">Authentication error: Code: %1$d (%2$s)</string>
+    <string name="ssh_keygen_message">%1$s\n\nProvide this public key to your Git server.</string>
+    <string name="your_public_key">Your public key</string>
+    <string name="ssh_keygen_share">Share</string>
+    <string name="error_generate_ssh_key">Error while trying to generate the SSH key pair</string>
+    <string name="ssh_key_error_dialog_text">Message: \n</string>
+    <string name="ssh_key_locked_and_no_activity">Error: SSH key can only be unlocked from an activity</string>
 </resources>

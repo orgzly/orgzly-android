@@ -175,7 +175,6 @@
     <string name="git_verifying_settings">Controleren dat repository instellingen werken.</string>
     <string name="git_url_hint">Extern adres (bijv. git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">Locatie van map (bijv. \"file:/sdcard/orgzly\")</string>
-    <string name="git_ssh_key_hint">SSH-sleutellocatie (bijv. “file:/sdcard/id_rsa”)</string>
     <string name="git_https_username_hint">Gebruikersnaam</string>
     <string name="git_https_password_hint">Wachtwoord</string>
     <string name="git_author_hint">Auteur (bijv. John Doe)</string>

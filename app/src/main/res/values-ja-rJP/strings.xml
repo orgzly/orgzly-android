@@ -172,7 +172,6 @@
     <string name="git_verifying_settings">リポジトリの設定が動作することを確認します。</string>
     <string name="git_url_hint">リモートアドレス (例: git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">ディレクトリの位置 (例: \"file:/sdcard/orgzly\")</string>
-    <string name="git_ssh_key_hint">SSH秘密鍵 (例: \"file:/sdcard/id_rsa\")</string>
     <string name="git_https_username_hint">ユーザー名</string>
     <string name="git_https_password_hint">パスワード</string>
     <string name="git_author_hint">Author (例:  John Doe)</string>

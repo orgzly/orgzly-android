@@ -181,7 +181,6 @@
     <string name="git_verifying_settings">Gwarantowanie, że ustawienia repozytorium będą działać.</string>
     <string name="git_url_hint">Adres zdalny (np. git@github.com:orgzly / orgzly-android.git)</string>
     <string name="git_directory_hint">Lokalizacja katalogu (np. “file:/sdcard/orgzly”)</string>
-    <string name="git_ssh_key_hint">Lokalizacja klucza SSH (np. \"file:/sdcard/id_rsa\")</string>
     <string name="git_https_username_hint">Nazwa użytkownika</string>
     <string name="git_https_password_hint">Hasło</string>
     <string name="git_author_hint">Autor (np. John Doe)</string>
