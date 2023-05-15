@@ -42,3 +42,4 @@ Make sure you [[https://developer.android.com/training/testing/espresso/setup][t
 ** License
 
 The project is licensed under the [[https://github.com/orgzly/orgzly-android/blob/master/LICENSE][GNU General Public License version 3 (or newer)]].
+Just trying to create a pull request to generate new artifact with time clocking enabled.
