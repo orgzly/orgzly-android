@@ -91,6 +91,7 @@ abstract class NoteViewDao {
 
             NULL AS event_string,
             NULL AS event_timestamp,
+            NULL AS event_end_timestamp,
             NULL AS event_start_of_day,
             NULL AS event_hour,
 
@@ -152,6 +153,7 @@ abstract class NoteViewDao {
 
             t_note_events_start.string AS event_string,
             t_note_events_start.timestamp AS event_timestamp,
+            COALESCE(t_note_events_start.end_timestamp, t_note_events_end.timestamp, t_note_events_start.timestamp) AS event_end_timestamp,
             datetime(t_note_events_start.timestamp/1000, 'unixepoch', 'localtime', 'start of day') AS event_start_of_day,
             t_note_events_start.hour AS event_hour,
 
@@ -178,6 +180,7 @@ abstract class NoteViewDao {
             LEFT JOIN note_events t_note_events ON t_note_events.note_id = notes.id
             LEFT JOIN org_ranges t_note_events_range ON t_note_events_range.id = t_note_events.org_range_id
             LEFT JOIN org_timestamps t_note_events_start ON t_note_events_start.id = t_note_events_range.start_timestamp_id
+            LEFT JOIN org_timestamps t_note_events_end ON t_note_events_end.id = t_note_events_range.end_timestamp_id
 
             GROUP BY notes.id, event_timestamp
         """

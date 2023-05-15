@@ -61,6 +61,8 @@ data class NoteView(
         val eventString : String? = null,
         @ColumnInfo(name = "event_timestamp")
         val eventTimestamp: Long? = null,
+        @ColumnInfo(name = "event_end_timestamp")
+        val eventEndTimestamp: Long? = null,
         @ColumnInfo(name = "event_start_of_day")
         val eventStartOfDay : Long? = null,
         @ColumnInfo(name = "event_hour")
