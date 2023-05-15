@@ -150,7 +150,7 @@ abstract class NoteViewDao {
             t_clock_timestamps_start.string AS clock_time_string,
             t_clock_timestamps_end.string AS clock_time_end_string,
 
-            t_note_events_start.string AS event_string,
+            t_note_events_range.string AS event_string,
             t_note_events_start.timestamp AS event_timestamp,
             datetime(t_note_events_start.timestamp/1000, 'unixepoch', 'localtime', 'start of day') AS event_start_of_day,
             t_note_events_start.hour AS event_hour,
