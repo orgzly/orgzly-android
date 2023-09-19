@@ -12,7 +12,7 @@
         android:shortcutShortLabel="@string/new_note">
         <intent
             android:action="android.intent.action.SEND"
-            android:targetPackage="com.orgzly"
+            android:targetPackage="com.orgzlyrevived"
             android:targetClass="com.orgzly.android.ui.share.ShareActivity" />
     </shortcut>
 
@@ -23,7 +23,7 @@
         android:shortcutShortLabel="@string/sync">
         <intent
             android:action="com.orgzly.intent.action.SYNC_START"
-            android:targetPackage="com.orgzly"
+            android:targetPackage="com.orgzlyrevived"
             android:targetClass="com.orgzly.android.ui.SyncShortcutActivity" />
     </shortcut>
 

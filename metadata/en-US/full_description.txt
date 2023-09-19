@@ -3,3 +3,5 @@ Orgzly is an outliner for taking notes and managing to-do lists.
 You can keep notebooks stored in plain-text and have them synchronized with a directory on your mobile device, SD card or over WebDAV.
 
 Notebooks are saved in Org mode's file format. “Org mode is for keeping notes, maintaining TODO lists, planning projects, and authoring documents with a fast and effective plain-text system.” See http://orgmode.org for more information.
+
+Orgzly Revived is a community fork of the original Orgzly app.
