@@ -181,7 +181,6 @@
     <string name="git_verifying_settings">Обеспечение работоспособных настроек репозитория.</string>
     <string name="git_url_hint">Удалённый адрес (например, git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">Путь к каталогу (например, «file:/sdcard/orgzly»)</string>
-    <string name="git_ssh_key_hint">Путь к SSH-ключу (например, «file:/sdcard/id_rsa»)</string>
     <string name="git_https_username_hint">Имя</string>
     <string name="git_https_password_hint">Пароль</string>
     <string name="git_author_hint">Автор (например, John Doe)</string>

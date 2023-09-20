@@ -31,7 +31,7 @@
                     android:id="@+id/activity_repo_git_url"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
+                    android:inputType="textUri"
                     android:imeOptions="actionNext"
                     android:hint="@string/git_url_hint"/>
 
@@ -63,38 +63,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/git_directory_hint"
-                        android:inputType="text" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/activity_repo_git_ssh_auth_info"
-                android:layout_marginTop="@dimen/space_between_content_areas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/activity_repo_git_ssh_key_browse"
-                    style="@style/Button.Repo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/screen_edge"
-                    android:text="@string/browse" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/activity_repo_git_ssh_key_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:errorEnabled="true">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_repo_git_ssh_key"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/git_ssh_key_hint"
                         android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -150,7 +118,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/git_author_hint"
-                    android:inputType="text" />
+                    android:inputType="textPersonName" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -165,7 +133,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/git_email_hint"
-                    android:inputType="text" />
+                    android:inputType="textEmailAddress" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -179,7 +147,6 @@
                     android:id="@+id/activity_repo_git_branch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/git_default_branch"
                     android:hint="@string/git_branch_hint"
                     android:selectAllOnFocus="true"
                     android:inputType="text" />

@@ -172,7 +172,6 @@
     <string name="git_verifying_settings">Ensuring repository settings will work.</string>
     <string name="git_url_hint">Remote URL (e.g. git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">Directory location (e.g. “/sdcard/orgzly”)</string>
-    <string name="git_ssh_key_hint">SSH key location (e.g. “/sdcard/id_rsa”)</string>
     <string name="git_https_username_hint">Username</string>
     <string name="git_https_password_hint">Password</string>
     <string name="git_author_hint">Author (e.g. John Doe)</string>

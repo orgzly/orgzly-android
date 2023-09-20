@@ -172,7 +172,6 @@
     <string name="git_verifying_settings">Ensuring repository settings will work.</string>
     <string name="git_url_hint">외부 주소 (예. git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">디렉터리 위치 (예: \"file:/sdcard/orgzly\")</string>
-    <string name="git_ssh_key_hint">SSH 키 위치 (예: \"file:/sdcard/id_rsa\")</string>
     <string name="git_https_username_hint">Username</string>
     <string name="git_https_password_hint">Password</string>
     <string name="git_author_hint">저자 (예. 홍길동)</string>

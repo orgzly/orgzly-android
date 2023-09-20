@@ -172,7 +172,6 @@
     <string name="git_verifying_settings">确保存储库设置工作。</string>
     <string name="git_url_hint">远程地址（例如 git@github.com:orgzly/orgzly-android.git）</string>
     <string name="git_directory_hint">目录位置（例如 “file:/sdcard/orgzly”）</string>
-    <string name="git_ssh_key_hint">SSH 密钥位置（例如 “file:/sdcard/id_rsa”）</string>
     <string name="git_https_username_hint">用户名</string>
     <string name="git_https_password_hint">密码</string>
     <string name="git_author_hint">作者（例如 John Doe）</string>

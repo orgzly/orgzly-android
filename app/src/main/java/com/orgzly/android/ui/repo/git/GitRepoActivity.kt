@@ -7,8 +7,10 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.provider.Settings
 import android.text.TextUtils
 import android.view.ContextMenu
 import android.view.Menu
@@ -21,7 +23,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.orgzly.R
 import com.orgzly.android.App
 import com.orgzly.android.git.GitPreferences
-import com.orgzly.android.git.GitSSHKeyTransportSetter
+import com.orgzly.android.git.GitSshKeyTransportSetter
 import com.orgzly.android.git.GitTransportSetter
 import com.orgzly.android.git.HTTPSTransportSetter
 import com.orgzly.android.prefs.AppPreferences
@@ -36,7 +38,7 @@ import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.databinding.ActivityRepoGitBinding
-import org.eclipse.jgit.api.errors.TransportException
+import org.eclipse.jgit.errors.TransportException
 import org.eclipse.jgit.errors.NoRemoteRepositoryException
 import org.eclipse.jgit.errors.NotSupportedException
 import org.eclipse.jgit.lib.ProgressMonitor
@@ -80,10 +82,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
                         true
                 ),
                 Field(
-                        binding.activityRepoGitSshKey,
-                        binding.activityRepoGitSshKeyLayout,
-                        R.string.pref_key_git_ssh_key_path),
-                Field(
                         binding.activityRepoGitAuthor,
                         binding.activityRepoGitAuthorLayout,
                         R.string.pref_key_git_author),
@@ -106,24 +104,29 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             startLocalFileBrowser(binding.activityRepoGitDirectory, ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION)
         }
 
-        binding.activityRepoGitSshKeyBrowse.setOnClickListener {
-            startLocalFileBrowser(binding.activityRepoGitSshKey, ACTIVITY_REQUEST_CODE_FOR_SSH_KEY_SELECTION, true)
-        }
-
         val repoId = intent.getLongExtra(ARG_REPO_ID, 0)
 
         val factory = RepoViewModelFactory.getInstance(dataRepository, repoId)
 
         viewModel = ViewModelProvider(this, factory).get(RepoViewModel::class.java)
 
-        /* Set directory value for existing repository being edited. */
         if (repoId != 0L) {
+            /* Set directory value for existing repository being edited. */
             dataRepository.getRepo(repoId)?.let { repo ->
                 binding.activityRepoGitUrl.setText(repo.url)
                 setFromPreferences()
             }
         } else {
+            /* Set default values for new repo being added. */
             createDefaultRepoFolder()
+            binding.activityRepoGitAuthor.setText("Orgzly")
+            binding.activityRepoGitBranch.setText(R.string.git_default_branch)
+            val userDeviceName: String = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S) {
+                Settings.Global.getString(contentResolver, Settings.Global.DEVICE_NAME)
+            } else {
+                Settings.Secure.getString(contentResolver, "bluetooth_name")
+            }
+            binding.activityRepoGitEmail.setText(String.format("orgzly@%s", userDeviceName))
         }
 
         viewModel.finishEvent.observeSingle(this, Observer {
@@ -190,14 +193,10 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     private fun updateAuthVisibility() {
         val repoScheme = getRepoScheme()
         if ("https" == repoScheme) {
-            binding.activityRepoGitSshAuthInfo.visibility = View.GONE
-            binding.activityRepoGitSshKeyLayout.visibility = View.GONE
             binding.activityRepoGitHttpsAuthInfo.visibility = View.VISIBLE
             binding.activityRepoGitHttpsUsernameLayout.visibility = View.VISIBLE
             binding.activityRepoGitHttpsPasswordLayout.visibility = View.VISIBLE
         } else {
-            binding.activityRepoGitSshAuthInfo.visibility = View.VISIBLE
-            binding.activityRepoGitSshKeyLayout.visibility = View.VISIBLE
             binding.activityRepoGitHttpsAuthInfo.visibility = View.GONE
             binding.activityRepoGitHttpsUsernameLayout.visibility = View.GONE
             binding.activityRepoGitHttpsPasswordLayout.visibility = View.GONE
@@ -230,7 +229,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
     private fun setTextFromPrefKey(prefs: RepoPreferences, editText: EditText, prefKey: Int) {
         if (editText.length() < 1) {
-            val setting = prefs.getStringValue(prefKey, "")
             editText.setText(prefs.getStringValue(prefKey, ""))
         }
     }
@@ -269,8 +267,18 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
 
     private fun saveAndFinish() {
         if (validateFields()) {
-            // TODO: If this fails we should notify the user in a nice way and mark the git repo field as bad
-            RepoCloneTask(this).execute()
+            val repoId = intent.getLongExtra(ARG_REPO_ID, 0)
+            if (repoId != 0L) {
+                save()
+            } else {
+                val targetDirectory = File(binding.activityRepoGitDirectory.text.toString())
+                if (targetDirectory.list()!!.isNotEmpty()) {
+                    binding.activityRepoGitDirectoryLayout.error = getString(R.string.git_clone_error_target_not_empty)
+                } else {
+                    // TODO: If this fails we should notify the user in a nice way and mark the git repo field as bad
+                    RepoCloneTask(this).execute()
+                }
+            }
         }
     }
 
@@ -278,17 +286,26 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         if (e == null) {
             save()
         } else {
-            val errorId = when {
-                // TODO: show error for invalid username/password when using HTTPS
-                e.cause is NoRemoteRepositoryException -> R.string.git_clone_error_invalid_repo
-                e.cause is TransportException -> R.string.git_clone_error_ssh_auth
+            val error = when (e.cause) {
+                is NoRemoteRepositoryException -> R.string.git_clone_error_invalid_repo
+                is TransportException -> {
+                    // JGit's catch-all "remote hung up unexpectedly" message is not very useful.
+                    if (Regex("hung up unexpectedly").containsMatchIn(e.cause!!.message!!)) {
+                        String.format(getString(R.string.git_clone_error_ssh), e.cause!!.cause!!.message)
+                    } else {
+                        String.format(getString(R.string.git_clone_error_ssh), e.cause!!.message)
+                    }
+                }
                 // TODO: This should be checked when the user enters a directory by hand
-                e.cause is FileNotFoundException -> R.string.git_clone_error_invalid_target_dir
-                e.cause is GitRepo.DirectoryNotEmpty -> R.string.git_clone_error_target_not_empty
-                e.cause is NotSupportedException -> R.string.git_clone_error_uri_not_supported
+                is FileNotFoundException -> R.string.git_clone_error_invalid_target_dir
+                is GitRepo.DirectoryNotEmpty -> R.string.git_clone_error_target_not_empty
+                is NotSupportedException -> R.string.git_clone_error_uri_not_supported
                 else -> R.string.git_clone_error_unknown
             }
-            showSnackbar(errorId)
+            when (error) {
+                is Int -> { showSnackbar(error) }
+                is String -> { showSnackbar(error) }
+            }
             e.printStackTrace()
         }
     }
@@ -323,8 +340,8 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         }
 
         val targetDirectory = File(binding.activityRepoGitDirectory.text.toString())
-        if (!targetDirectory.exists() || targetDirectory.list().isNotEmpty()) {
-            binding.activityRepoGitDirectoryLayout.error = getString(R.string.git_clone_error_target_not_empty)
+        if (!targetDirectory.exists()) {
+            binding.activityRepoGitDirectoryLayout.error = getString(R.string.git_clone_error_invalid_target_dir)
         }
 
         for (field in fields) {
@@ -368,8 +385,7 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
             val password = withDefault(binding.activityRepoGitHttpsPassword.text.toString(), R.string.pref_key_git_https_password)
             return HTTPSTransportSetter(username, password)
         } else {
-            val sshKeyPath = withDefault(binding.activityRepoGitSshKey.text.toString(), R.string.pref_key_git_ssh_key_path)
-            return GitSSHKeyTransportSetter(sshKeyPath)
+            return GitSshKeyTransportSetter()
         }
     }
 
@@ -428,11 +444,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     val uri = data.data
                     binding.activityRepoGitDirectory.setText(uri?.path)
-                }
-            ACTIVITY_REQUEST_CODE_FOR_SSH_KEY_SELECTION ->
-                if (resultCode == Activity.RESULT_OK && data != null) {
-                    val uri = data.data
-                    binding.activityRepoGitSshKey.setText(uri?.path)
                 }
         }
     }
@@ -507,7 +518,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
         private const val ARG_REPO_ID = "repo_id"
 
         const val ACTIVITY_REQUEST_CODE_FOR_DIRECTORY_SELECTION = 0
-        const val ACTIVITY_REQUEST_CODE_FOR_SSH_KEY_SELECTION = 1
 
         @JvmStatic
         @JvmOverloads

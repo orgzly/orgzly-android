@@ -12,10 +12,12 @@ import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
 import com.orgzly.android.SharingShortcutsManager
+import com.orgzly.android.git.SshKey
 import com.orgzly.android.prefs.*
 import com.orgzly.android.reminders.RemindersScheduler
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.NoteStates
+import com.orgzly.android.ui.dialogs.ShowSshKeyDialogFragment
 import com.orgzly.android.ui.notifications.Notifications
 import com.orgzly.android.ui.util.KeyboardUtils
 import com.orgzly.android.usecase.NoteReparseStateAndTitles
@@ -93,6 +95,31 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             }
         } else {
             preference(R.string.pref_key_reminders_notification_settings_preV26)?.let {
+                preferenceScreen.removePreference(it)
+            }
+        }
+
+        // Disable Git repos completely on API < 23
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            preference(R.string.pref_key_git_is_enabled)?.let {
+                preferenceScreen.removePreference(it)
+            }
+        }
+
+        /* Disable SSH key generation if Git repository type is not enabled */
+        if (!AppPreferences.gitIsEnabled(context)) {
+            preference(R.string.pref_key_ssh_keygen)?.let {
+                preferenceScreen.removePreference(it)
+            }
+        }
+
+        preference(R.string.pref_key_ssh_show_public_key)?.let {
+            if (AppPreferences.gitIsEnabled(context) && SshKey.canShowSshPublicKey) {
+                it.setOnPreferenceClickListener {
+                    ShowSshKeyDialogFragment().show(childFragmentManager, "public_key")
+                    true
+                }
+            } else {
                 preferenceScreen.removePreference(it)
             }
         }

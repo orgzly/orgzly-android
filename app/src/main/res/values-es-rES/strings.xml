@@ -175,7 +175,6 @@
     <string name="git_verifying_settings">Asegurando que la configuración del repositorio funciona.</string>
     <string name="git_url_hint">Dirección remota (por ejemplo git@github.com:orgzly/orgzly-android.git)</string>
     <string name="git_directory_hint">Ubicación del directorio (por ejemplo, \"file:/sdcard/orgzly\")</string>
-    <string name="git_ssh_key_hint">Ubicación de llave SSH (por ejemplo, \"file:/sdcard/id_rsa\")</string>
     <string name="git_https_username_hint">Nombre de usuario</string>
     <string name="git_https_password_hint">Contraseña</string>
     <string name="git_author_hint">Autor (por ejemplo, Juan Pérez)</string>

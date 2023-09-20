@@ -181,7 +181,6 @@
     <string name="git_verifying_settings">Kontroluji nastavení repozitáře.</string>
     <string name="git_url_hint">Vzdálená adresa (například git@github.com:orgzly / orgzly-android.git)</string>
     <string name="git_directory_hint">Umístění slozky (například \"file:/sdcard/orgzly\")</string>
-    <string name="git_ssh_key_hint">Umístění SSH klíče (například \"file:/sdcard/id_rsa\")</string>
     <string name="git_https_username_hint">Uživatelské jméno</string>
     <string name="git_https_password_hint">Heslo</string>
     <string name="git_author_hint">Autor (např. Jan Novák)</string>

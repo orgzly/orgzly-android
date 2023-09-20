@@ -16,6 +16,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
 
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+
     <!-- For BroadcastReceiver below -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
@@ -120,6 +122,11 @@
         <activity
             android:name=".android.ui.repo.git.GitRepoActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
+        </activity>
+
+        <activity
+            android:name=".android.ui.SshKeygenActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
 
         <activity
