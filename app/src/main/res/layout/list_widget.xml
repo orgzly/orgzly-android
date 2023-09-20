@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,9 +13,9 @@
         android:id="@+id/list_widget_header_container"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:orientation="horizontal"
         android:background="?colorPrimaryContainer"
-        android:elevation="1dp"
-        android:orientation="horizontal">
+        android:elevation="1dp">
 
         <ImageView
             android:id="@+id/list_widget_header_logo"
@@ -28,13 +29,13 @@
         <LinearLayout
             android:id="@+id/list_widget_header_bar"
             style="@style/BorderlessButton"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:gravity="start"
+            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="start"
-            android:orientation="horizontal"
-            android:paddingStart="0dp"
-            android:paddingEnd="0dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/list_widget_header_selection"
@@ -43,19 +44,19 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:drawablePadding="4dp"
-                android:ellipsize="end"
-                android:maxLines="1"
                 android:text="@string/list_widget_select_search"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textSize="@dimen/widget_header_text_size_14" />
+                android:textSize="@dimen/widget_header_text_size_14"
+                android:drawablePadding="4dp"
+                android:ellipsize="end"
+                android:maxLines="1" />
 
             <ImageView
                 android:id="@+id/list_widget_header_selection_arrow"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_arrow_drop_down" />
+                android:src="@drawable/ic_arrow_drop_down"
+                android:layout_gravity="center_vertical" />
 
         </LinearLayout>
 
@@ -71,19 +72,19 @@
         <ImageButton
             android:id="@+id/list_widget_header_add"
             style="@style/BorderlessButton"
+            android:padding="0dp"
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:padding="0dp"
             android:src="@drawable/ic_add" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/list_widget_list_container"
+        android:background="?android:attr/colorBackground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?android:attr/colorBackground"
         android:orientation="vertical">
 
         <ListView
@@ -91,22 +92,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:divider="@null"
-            android:dividerHeight="0dp"
-            android:paddingStart="@dimen/widget_padding"
             android:paddingTop="@dimen/widget_padding"
-            android:paddingBottom="@dimen/widget_padding" />
+            android:paddingBottom="@dimen/widget_padding"
+            android:paddingStart="@dimen/widget_padding"
+            android:divider="@null"
+            android:dividerHeight="0dp" />
 
         <TextView
             android:id="@+id/list_widget_empty_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:padding="16dp"
+            android:gravity="center"
+            android:visibility="gone"
             android:text="@string/no_notes_found_after_search"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="20sp"
-            android:visibility="gone" />
+            android:textSize="20sp" />
     </LinearLayout>
 
 </LinearLayout>
