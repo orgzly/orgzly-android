@@ -2,12 +2,13 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:theme="@style/ListWidgetTheme"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:theme="@style/ListWidgetTheme">
+    android:orientation="vertical">
+
 
     <LinearLayout
         android:id="@+id/list_widget_header_container"
@@ -20,10 +21,10 @@
         <ImageView
             android:id="@+id/list_widget_header_logo"
             style="@style/BorderlessButton"
+            android:padding="12dp"
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:padding="12dp"
             android:src="@drawable/cic_logo_for_widget" />
 
         <LinearLayout
