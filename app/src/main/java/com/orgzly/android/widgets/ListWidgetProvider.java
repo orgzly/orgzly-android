@@ -14,6 +14,7 @@ import android.widget.RemoteViews;
 
 import com.orgzly.BuildConfig;
 import com.orgzly.R;
+import com.orgzly.android.ActionReceiver;
 import com.orgzly.android.App;
 import com.orgzly.android.AppIntent;
 import com.orgzly.android.data.DataRepository;
@@ -106,6 +107,16 @@ public class ListWidgetProvider extends AppWidgetProvider {
                 remoteViews.setOnClickPendingIntent(
                         R.id.list_widget_header_add,
                         ShareActivity.createNewNotePendingIntent(context, "widget-" + appWidgetId, savedSearch));
+
+                // Sync icon - sync start
+                final Intent onSyncIntent = new Intent(context, ActionReceiver.class);
+                onSyncIntent.setAction(AppIntent.ACTION_SYNC_START);
+                final PendingIntent onSyncPendingIntent = PendingIntent.getBroadcast(
+                        context,
+                        0,
+                        onSyncIntent,
+                        ActivityUtils.mutable(PendingIntent.FLAG_UPDATE_CURRENT));
+                remoteViews.setOnClickPendingIntent(R.id.list_widget_header_sync, onSyncPendingIntent);
 
                 // Logo - open query
                 Intent openIntent = Intent.makeRestartActivityTask(new ComponentName(context, MainActivity.class));
