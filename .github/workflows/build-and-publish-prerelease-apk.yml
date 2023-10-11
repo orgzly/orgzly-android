@@ -1,4 +1,4 @@
-name: Build and publish pre-release APK
+name: Build beta APK and prepare Github pre-release draft
 
 on:
   # Trigger by pushing a version tag (which are protected)
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-publish-prerelease-apk:
+  build-beta-apk-and-prepare-gh-prerelease:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -22,20 +22,27 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
 
-      - name: Generate F-Droid debug APK
-        run: ./gradlew assembleFdroidDebug --stacktrace
+      - name: Generate "premium" debug APK
+        run: ./gradlew assemblePremiumDebug --stacktrace
 
       - name: Sign APK using key store from repo secrets
         uses: r0adkll/sign-android-release@v1
-        id: sign_app
+        id: sign_apk
         with:
-          releaseDirectory: app/build/outputs/apk/fdroid/debug
+          releaseDirectory: app/build/outputs/apk/premium/debug
           signingKeyBase64: ${{ secrets.APK_SIGNING_KEYSTORE_FILE }}
           alias: mykey
           keyStorePassword: ${{ secrets.APK_SIGNING_KEYSTORE_PASSWORD }}
 
-      - name: Publish pre-release APK as Github pre-release
+      - name: Get version name from git tag
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+
+      - name: Rename APK file
+        run: mv ${{steps.sign_apk.outputs.signedReleaseFile}} orgzly-revived-${{ env.VERSION }}-debug.apk
+
+      - name: Upload APK and create Github pre-release draft
         uses: softprops/action-gh-release@v1
         with:
-          files: ${{steps.sign_app.outputs.signedReleaseFile}}
+          files: 'orgzly-revived-*.apk'
           prerelease: true
+          draft: true
