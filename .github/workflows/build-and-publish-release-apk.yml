@@ -1,0 +1,49 @@
+name: Build release APK and prepare Github release draft
+
+on:
+  # Trigger by pushing a version tag (which are protected)
+  push:
+    tags:
+      - 'v*.*.*'
+      - '!v*.*.*-*'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build-release-apk-and-prepare-gh-release-draft:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - name: Generate "premium" release APK
+        run: ./gradlew assemblePremiumRelease --stacktrace
+
+      - name: Sign APK using key store from repo secrets
+        uses: kevin-david/zipalign-sign-android-release@v1.1.1
+        id: sign_apk
+        with:
+          releaseDirectory: app/build/outputs/apk/premium/release
+          signingKeyBase64: ${{ secrets.APK_SIGNING_KEYSTORE_FILE }}
+          alias: mykey
+          keyStorePassword: ${{ secrets.APK_SIGNING_KEYSTORE_PASSWORD }}
+          zipAlign: true
+
+      - name: Get version name from git tag
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+
+      - name: Rename APK file
+        run: mv ${{steps.sign_apk.outputs.signedReleaseFile}} orgzly-revived-${{ env.VERSION }}.apk
+
+      - name: Upload APK and create Github release draft
+        uses: softprops/action-gh-release@v1
+        with:
+          files: 'orgzly-revived-*.apk'
+          draft: true
