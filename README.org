@@ -1,5 +1,5 @@
 #+BEGIN_HTML
-<a title="Build" target="_blank" href="https://github.com/orgzly-community/orgzly-android/actions/workflows/android-build-master.yml"><img src="https://github.com/orgzly-community/orgzly-android/actions/workflows/android-build-master.yml/badge.svg"></a>
+<a title="Build" target="_blank" href="https://github.com/orgzly-revived/orgzly-android-revived/actions/workflows/android-build-master.yml"><img src="https://github.com/orgzly-revived/orgzly-android-revived/actions/workflows/android-build-master.yml/badge.svg"></a>
 <a title="Crowdin" target="_blank" href="https://crowdin.com/project/orgzly"><img src="https://d322cqt584bo4o.cloudfront.net/orgzly/localized.svg"></a>
 #+END_HTML
 
@@ -35,4 +35,4 @@ Make sure you [[https://developer.android.com/training/testing/espresso/setup][t
 
 ** License
 
-The project is licensed under the [[https://github.com/orgzly-community/orgzly-android/blob/master/LICENSE][GNU General Public License version 3 (or newer)]].
+The project is licensed under the [[https://github.com/orgzly-revived/orgzly-android-revived/blob/master/LICENSE][GNU General Public License version 3 (or newer)]].
