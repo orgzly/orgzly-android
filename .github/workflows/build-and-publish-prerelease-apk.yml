@@ -31,7 +31,7 @@ jobs:
         with:
           releaseDirectory: app/build/outputs/apk/premium/debug
           signingKeyBase64: ${{ secrets.APK_SIGNING_KEYSTORE_FILE }}
-          alias: mykey
+          alias: orgzly-revived-20231013
           keyStorePassword: ${{ secrets.APK_SIGNING_KEYSTORE_PASSWORD }}
 
       - name: Get version name from git tag

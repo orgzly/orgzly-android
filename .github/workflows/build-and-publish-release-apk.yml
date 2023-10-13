@@ -27,14 +27,13 @@ jobs:
         run: ./gradlew assemblePremiumRelease --stacktrace
 
       - name: Sign APK using key store from repo secrets
-        uses: kevin-david/zipalign-sign-android-release@v1.1.1
+        uses: r0adkll/sign-android-release@v1
         id: sign_apk
         with:
           releaseDirectory: app/build/outputs/apk/premium/release
           signingKeyBase64: ${{ secrets.APK_SIGNING_KEYSTORE_FILE }}
-          alias: mykey
+          alias: orgzly-revived-20231013
           keyStorePassword: ${{ secrets.APK_SIGNING_KEYSTORE_PASSWORD }}
-          zipAlign: true
 
       - name: Get version name from git tag
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
