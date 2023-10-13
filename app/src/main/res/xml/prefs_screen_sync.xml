@@ -11,7 +11,7 @@
         android:summary="@string/repos_preference_summary">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="com.orgzly"
+            android:targetPackage="com.orgzlyrevived"
             android:targetClass="com.orgzly.android.ui.repos.ReposActivity"/>
     </Preference>
 
@@ -27,7 +27,7 @@
         android:summary="@string/ssh_keygen_preference_summary">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="com.orgzly"
+            android:targetPackage="com.orgzlyrevived"
             android:targetClass="com.orgzly.android.ui.SshKeygenActivity"/>
     </Preference>
 
