@@ -37,11 +37,13 @@ object SyncUtils {
                         }
                     }
                 }
-            } else {
-                val libBooks = repo.books
-                /* Each book in repository. */
-                result.addAll(libBooks)
+                if (result.isNotEmpty()) {
+                    continue
+                }
             }
+            val libBooks = repo.books
+            /* Each book in repository. */
+            result.addAll(libBooks)
         }
         return result
     }
