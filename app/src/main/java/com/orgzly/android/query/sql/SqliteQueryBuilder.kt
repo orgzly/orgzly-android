@@ -230,7 +230,14 @@ class SqliteQueryBuilder(val context: Context) {
             }
 
             is Condition.Event -> {
-                toInterval("event_timestamp", null, expr.interval, expr.relation)
+                when (expr.relation) {
+                    Relation.EQ -> "(${toInterval("event_timestamp", null, expr.interval, Relation.GE)} AND ${toInterval("event_end_timestamp", null, expr.interval, Relation.LE)})"
+                    Relation.NE -> "(${toInterval("event_timestamp", null, expr.interval, Relation.LT)} AND ${toInterval("event_end_timestamp", null, expr.interval, Relation.GT)})"
+                    Relation.LT,
+                    Relation.LE -> toInterval("event_timestamp", null, expr.interval, expr.relation)
+                    Relation.GT,
+                    Relation.GE -> toInterval("event_end_timestamp", null, expr.interval, expr.relation)
+                }
             }
 
             is Condition.Scheduled -> {
