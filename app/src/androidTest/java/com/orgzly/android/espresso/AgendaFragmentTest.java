@@ -103,6 +103,19 @@ public class AgendaFragmentTest extends OrgzlyTest {
     }
 
     @Test
+    public void testAgendaRangeEvent() {
+        DateTime start = DateTime.now().withTimeAtStartOfDay();
+        DateTime end = DateTime.now().withTimeAtStartOfDay().plusDays(4);
+        testUtils.setupBook("book", "Book for testing\n" +
+                            "* Event A.\n" +
+                            "<" + start.toString() + ">--<" + end.toString() + ">\n");
+
+        ActivityScenario.launch(MainActivity.class);
+        searchForText("ad.5");
+        onNotesInAgenda().check(matches(recyclerViewItemCount(10)));
+    }
+
+    @Test
     public void testOneTimeTaskMarkedDone() {
         defaultSetUp();
         searchForText(".it.done ad.7");
