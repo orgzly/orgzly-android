@@ -22,6 +22,36 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.8.11"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Add clocking/time capture feature" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Add support for opening org-protocol://org-id-goto links" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Make popup buttons configurable" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Generate SSH key for Git syncing on the device" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Various Git-related improvements (feature still in beta)" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Add monochrome icon definition" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.8.10"
             tools:ignore="HardcodedText" />
 
