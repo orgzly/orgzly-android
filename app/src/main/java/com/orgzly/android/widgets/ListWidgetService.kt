@@ -90,7 +90,8 @@ class ListWidgetService : RemoteViewsService() {
 
             if (query.isAgenda()) {
                 val idMap = mutableMapOf<Long, Long>()
-                val agendaItems = AgendaItems.getList(notes, query, idMap)
+                val hideEmptyDaysInAgenda = AppPreferences.hideEmptyDaysInAgenda(context)
+                val agendaItems = AgendaItems(hideEmptyDaysInAgenda).getList(notes, query, idMap)
 
                 dataList = agendaItems.map {
                     when (it) {
