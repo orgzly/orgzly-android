@@ -76,4 +76,9 @@
         android:id="@+id/activity_action_settings"
         app:showAsAction="never"
         android:title="@string/settings"/>
+
+    <item
+        android:id="@+id/sort_note"
+        app:showAsAction="never"
+        android:title="@string/sortnote"/>
 </menu>
