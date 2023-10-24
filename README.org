@@ -42,7 +42,8 @@ Make sure you [[https://developer.android.com/training/testing/espresso/setup][t
 * Contributing
 
 Please feel free to get involved in the project on GitHub by contributing issues, ideas, or features! 
-We generally plan to leave existing open issues in the original repository and reference them here as 
+We generally plan to leave existing open issues in the original 
+[[https://github.com/orgzly/orgzly-android][repository]] and reference them here as 
 they are addressed.
 
 * License
