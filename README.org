@@ -9,7 +9,7 @@ Orgzly Revived is a community-maintained version of Orgzly, as the development o
 
 Orgzly Revived project aims to continue development of the Orgzly application, adding useful features, 
 fixing bugs, keeping up-to-date with technological evolution, and generally maintaining the 
-[Org Mode](https://orgmode.org/) support on Android.
+[[https://orgmode.org/][Org Mode]] support on Android.
 
 [Orgzly](https://orgzly.com/) is an outliner for taking notes and managing to-do lists. The source code
 [repository](https://github.com/orgzly/orgzly-android) is available on GitHub but is no longer actively 
