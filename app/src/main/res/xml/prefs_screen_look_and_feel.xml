@@ -84,4 +84,12 @@
             android:defaultValue="@bool/pref_default_ignore_system_locale"/>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/agenda">
+
+        <SwitchPreference
+            android:key="@string/pref_key_hide_empty_days_in_agenda"
+            android:title="@string/hide_empty_days_in_agenda"
+            android:defaultValue="@bool/pref_default_hide_empty_days_in_agenda" />
+    </PreferenceCategory>
+
 </androidx.preference.PreferenceScreen>

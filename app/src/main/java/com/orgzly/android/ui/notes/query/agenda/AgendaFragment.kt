@@ -229,7 +229,8 @@ class AgendaFragment : QueryFragment(), OnViewHolderClickListener<AgendaItem> {
         viewModel.data.observe(viewLifecycleOwner, Observer { notes ->
             if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Observed notes: ${notes.size}")
 
-            val items = AgendaItems.getList(notes, currentQuery, item2databaseIds)
+            val hideEmptyDaysInAgenda = AppPreferences.hideEmptyDaysInAgenda(context)
+            val items = AgendaItems(hideEmptyDaysInAgenda).getList(notes, currentQuery, item2databaseIds)
 
             if (BuildConfig.LOG_DEBUG)
                 LogUtils.d(TAG, "Replacing data with ${items.size} agenda items")
