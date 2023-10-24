@@ -5,18 +5,23 @@
 
 * Orgzly Revived
 
-Orgzly is an outliner for taking notes and managing to-do lists.
+Orgzly Revived is a community-maintained version of Orgzly, as the development of the original app is no longer active.
 
-You can keep notebooks stored in plain-text and have them synchronized
-with a directory on your mobile device, SD card, WebDAV server or Dropbox.
+Orgzly Revived project aims to continue development of the Orgzly application, adding useful features, 
+fixing bugs, keeping up-to-date with technological evolution, and generally maintaining the 
+[Org Mode](https://orgmode.org/) support on Android.
+
+[Orgzly](https://orgzly.com/) is an outliner for taking notes and managing to-do lists. The source code
+[repository](https://github.com/orgzly/orgzly-android) is available on GitHub but is no longer actively 
+maintained. We have used this code as the base for Orgzly Revived.
+
+With Orgzly, you can keep notebooks stored in plain-text and have them synchronized
+with a directory on your mobile device or an SD card, WebDAV server, or Dropbox.
 
 Notebooks are saved in /Org mode/'s file format. “Org mode is for
 keeping notes, maintaining TODO lists, planning projects, and
 authoring documents with a fast and effective plain-text system.” See
 http://orgmode.org for more information.
-
-Orgzly Revived is a community fork of Orgzly, launched because of an absence of
-communication from the creator of the original app.
 
 ** End-user documentation
 
