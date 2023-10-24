@@ -5,24 +5,30 @@
 
 * Orgzly Revived
 
-Orgzly is an outliner for taking notes and managing to-do lists.
+Orgzly Revived is a community-maintained version of Orgzly, as the development of the original app is no longer active.
 
-You can keep notebooks stored in plain-text and have them synchronized
-with a directory on your mobile device, SD card, WebDAV server or Dropbox.
+The Orgzly Revived project aims to continue development of the Orgzly application. The rebranding is due 
+to the disappearance of the Orgzly author so we, as the community, had to come up with a new solution.
+We plan to continue adding useful features, fixing bugs, keeping up-to-date with technological evolution, 
+and generally maintaining the [[https://orgmode.org/][Org Mode]] outreach and its support on Android.
+
+[[https://orgzly.com/][Orgzly]] is an outliner for taking notes and managing to-do lists. The source code
+[[https://github.com/orgzly/orgzly-android][repository]] is available on GitHub but is no longer actively 
+maintained. We have used this code as the base for Orgzly Revived.
+
+With Orgzly, you can keep notebooks stored in plain-text and have them synchronized
+with a directory on your mobile device or an SD card, WebDAV server, or Dropbox.
 
 Notebooks are saved in /Org mode/'s file format. “Org mode is for
 keeping notes, maintaining TODO lists, planning projects, and
 authoring documents with a fast and effective plain-text system.” See
 http://orgmode.org for more information.
 
-Orgzly Revived is a community fork of Orgzly, launched because of an absence of
-communication from the creator of the original app.
-
-** End-user documentation
+* End-user documentation
 
 Find out more here: https://github.com/orgzly/documentation
 
-** Building & testing
+* Building & testing
 
 If you don't use Android Studio and wish to [[https://developer.android.com/studio/build/building-cmdline.html][build]] and [[https://developer.android.com/studio/test/command-line.html][test]] the app
 from command line, the standard set of Gradle tasks is available.  For
@@ -33,6 +39,13 @@ example:
 
 Make sure you [[https://developer.android.com/training/testing/espresso/setup][turn off animations]] for the device you're testing on.
 
-** License
+* Contributing
+
+Please feel free to get involved in the project on GitHub by contributing issues, ideas, or features! 
+We generally plan to leave existing open issues in the original 
+[[https://github.com/orgzly/orgzly-android][repository]] and reference them here as 
+they are addressed.
+
+* License
 
 The project is licensed under the [[https://github.com/orgzly-revived/orgzly-android-revived/blob/master/LICENSE][GNU General Public License version 3 (or newer)]].
