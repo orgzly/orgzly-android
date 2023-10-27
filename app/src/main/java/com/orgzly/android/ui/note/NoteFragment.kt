@@ -344,6 +344,13 @@ class NoteFragment : CommonFragment(), View.OnClickListener, TimestampDialogFrag
             R.id.activity_action_settings -> {
                 startActivity(Intent(context, SettingsActivity::class.java))
             }
+
+            R.id.sort_note -> {
+                val contentLines = binding.content.getSourceText()?.toString()?.split("\n");
+                Collections.sort(contentLines)
+                val newContent = contentLines?.joinToString("\n")
+                binding.content.setSourceText(newContent)
+            }
         }
 
         // Handled
