@@ -253,6 +253,13 @@ public class ShareActivity extends CommonActivity
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        autoSync.trigger(AutoSync.Type.APP_SUSPENDED);
+    }
+
     public static PendingIntent createNewNotePendingIntent(Context context, String category, SavedSearch savedSearch) {
         Intent resultIntent = createNewNoteIntent(context);
 

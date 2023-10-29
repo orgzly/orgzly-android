@@ -1057,6 +1057,12 @@ public class AppPreferences {
                 context.getResources().getBoolean(R.bool.pref_default_auto_sync_on_resume));
     }
 
+    public static boolean syncOnSuspend(Context context) {
+        return getDefaultSharedPreferences(context).getBoolean(
+                context.getResources().getString(R.string.pref_key_auto_sync_on_suspend),
+                context.getResources().getBoolean(R.bool.pref_default_auto_sync_on_suspend));
+    }
+
     /*
      * Notes clipboard
      */

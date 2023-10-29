@@ -36,6 +36,13 @@
         android:defaultValue="@bool/pref_default_auto_sync_on_resume"/>
 
     <SwitchPreference
+        android:key="@string/pref_key_auto_sync_on_suspend"
+        android:dependency="@string/pref_key_auto_sync"
+        android:title="@string/pref_title_on_suspend_sync"
+        android:summary="@string/pref_summary_on_suspend_sync"
+        android:defaultValue="@bool/pref_default_auto_sync_on_suspend"/>
+
+    <SwitchPreference
         android:key="@string/pref_key_auto_sync_on_repo_change"
         android:enabled="false"
         android:title="@string/pref_title_repo_update_sync"
