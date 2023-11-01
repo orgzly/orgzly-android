@@ -30,6 +30,11 @@ class AutoSync @Inject constructor(val context: Application, val dataRepository:
                     if (AppPreferences.syncOnResume(context)) {
                         startSync()
                     }
+
+                Type.APP_SUSPENDED ->
+                    if (AppPreferences.syncOnSuspend(context)) {
+                        startSync()
+                    }
             }
         }
     }
@@ -43,7 +48,8 @@ class AutoSync @Inject constructor(val context: Application, val dataRepository:
     enum class Type {
         NOTE_CREATED,
         DATA_MODIFIED,
-        APP_RESUMED
+        APP_RESUMED,
+        APP_SUSPENDED,
     }
 
     companion object {

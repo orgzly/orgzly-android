@@ -506,6 +506,13 @@ public class MainActivity extends CommonActivity
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+
+        autoSync.trigger(AutoSync.Type.APP_SUSPENDED);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
 
