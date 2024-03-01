@@ -1,18 +1,23 @@
 package com.orgzly.android.repos
 
 import android.net.Uri
+import android.os.Build
 import com.orgzly.android.BookName
+import com.orgzly.android.util.TLSSocketFactory
 import com.orgzly.android.util.UriUtils
 import com.thegrizzlylabs.sardineandroid.DavResource
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
+import okhttp3.CipherSuite
+import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
+import okhttp3.TlsVersion
 import okio.Buffer
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 import java.security.KeyStore
 import java.security.cert.CertificateFactory
-import java.util.*
+import java.util.Arrays
 import javax.net.ssl.*
 
 
@@ -29,57 +34,55 @@ class WebdavRepo(
     }
 
     private fun client(certificates: String?): OkHttpSardine {
-        return if (certificates.isNullOrEmpty()) {
-            OkHttpSardine()
+        return OkHttpSardine(okHttpClient(certificates))
+    }
+
+    private fun okHttpClient(certificates: String?): OkHttpClient {
+        val trustManager = x509TrustManager(certificates)
+        val builder = OkHttpClient.Builder()
+        if (Build.VERSION.SDK_INT >= 16 && Build.VERSION.SDK_INT < 22) {
+            builder.sslSocketFactory(TLSSocketFactory(trustManager), trustManager)
+                .connectionSpecs(arrayListOf(
+                    ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+                        .allEnabledTlsVersions()
+                        .allEnabledCipherSuites()
+                        .build(),
+                    ConnectionSpec.COMPATIBLE_TLS,
+                    ConnectionSpec.CLEARTEXT
+                ))
         } else {
-            OkHttpSardine(okHttpClientWithTrustedCertificates(certificates))
+            val sslContext = SSLContext.getInstance("TLS").apply {
+                init(null, arrayOf(trustManager), null)
+            }
+            builder.sslSocketFactory(sslContext.socketFactory, trustManager)
+        }
+        return builder.build()
+    }
+
+    private fun x509TrustManager(certificates: String?): X509TrustManager {
+        TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()).apply {
+            init(keyStore(certificates))
+            if (trustManagers.isNotEmpty() && trustManagers[0] is X509TrustManager) {
+                return trustManagers[0] as X509TrustManager
+            }
+            throw IllegalStateException("Unexpected default trust manager: " + Arrays.toString(trustManagers))
         }
     }
 
-    private fun okHttpClientWithTrustedCertificates(certificates: String): OkHttpClient {
-        val trustManager = trustManagerForCertificates(certificates)
-
-        val sslContext = SSLContext.getInstance("TLS").apply {
-            init(null, arrayOf(trustManager), null)
+    private fun keyStore(certificates: String?): KeyStore? {
+        if (certificates.isNullOrEmpty()) {
+            return null
         }
-
-        val sslSocketFactory = sslContext.socketFactory
-
-        return OkHttpClient.Builder()
-                .sslSocketFactory(sslSocketFactory, trustManager)
-                .build()
-    }
-
-    private fun trustManagerForCertificates(str: String): X509TrustManager {
-        // Read certificates
-        val certificates = Buffer().writeUtf8(str).inputStream().use { stream ->
+        val certs = Buffer().writeUtf8(certificates).inputStream().use { stream ->
             CertificateFactory.getInstance("X.509").generateCertificates(stream)
         }
-
-//        require(!certificates.isEmpty()) {
-//            "Expected non-empty set of trusted certificates"
-//        }
-
-        // Create new key store
         val password = "password".toCharArray() // Any password will work
         val keyStore = newEmptyKeyStore(password)
-        for ((index, certificate) in certificates.withIndex()) {
+        for ((index, cert) in certs.withIndex()) {
             val certificateAlias = index.toString()
-            keyStore.setCertificateEntry(certificateAlias, certificate)
+            keyStore.setCertificateEntry(certificateAlias, cert)
         }
-
-        val trustManagerFactory = TrustManagerFactory.getInstance(
-                TrustManagerFactory.getDefaultAlgorithm()
-        ).apply {
-            init(keyStore)
-        }
-
-        val trustManagers = trustManagerFactory.trustManagers
-        check(trustManagers.size == 1 && trustManagers[0] is X509TrustManager) {
-            "Unexpected default trust managers: ${Arrays.toString(trustManagers)}"
-        }
-
-        return trustManagers[0] as X509TrustManager
+        return keyStore
     }
 
     private fun newEmptyKeyStore(password: CharArray): KeyStore {
