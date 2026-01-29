@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Handler
 import android.text.TextUtils
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -1161,6 +1162,32 @@ class DataRepository @Inject constructor(
         val query = parser.parse(queryString)
 
         val sqlQuery = buildSqlQuery(query)
+
+        if (query.options.searchLeafNodes) { // If search contained "h.leaf" in it,
+            // display only leaf nodes of the live data query
+            val result = MediatorLiveData<List<NoteView>>()
+            val parentNotesLiveData = db.noteView().runQueryLiveData(sqlQuery)
+
+            result.addSource(parentNotesLiveData) { parentNotes ->
+                if (parentNotes.isNotEmpty()) {
+                    var parentIds = parentNotes.map { it.note.id }
+
+                    val leafNotesLiveData = db.noteView().runQueryLeafNotesData(parentIds) // This is a recursive
+                    // CTE (Common Table Expression) that searches all the child nodes of the parent ids,
+                    // the returning result filters out the notes with ids that have children in the same selection
+
+                    result.removeSource(parentNotesLiveData)
+
+                    result.addSource(leafNotesLiveData) { leafNotes ->
+                        result.value = leafNotes
+                    }
+                } else {
+                    result.value = emptyList()
+                }
+            }
+
+            return  result
+        }
 
         return db.noteView().runQueryLiveData(sqlQuery)
     }

@@ -113,6 +113,10 @@ open class DottedQueryParser : QueryParser() {
             OptionMatch("""^ad\.(\d+)$""") { match, options ->
                 val days = match.groupValues[1].toInt()
                 if (days > 0) options.copy(agendaDays = days) else null
+            },
+            OptionMatch("""^(\.)?h\.(.+)""") { match, options ->
+                if (match.groupValues[2].lowercase() == HierarchyType.LEAF.toString().lowercase())
+                    options.copy(searchLeafNodes = true) else null
             }
     )
 }

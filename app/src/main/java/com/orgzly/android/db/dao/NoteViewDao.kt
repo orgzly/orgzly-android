@@ -27,6 +27,28 @@ abstract class NoteViewDao {
     abstract fun getVisibleLiveData(bookId: Long): LiveData<List<NoteView>>
 
     @Query("""
+        WITH RECURSIVE temp_notes AS (
+            $QUERY
+            GROUP BY notes.id, event_timestamp
+        ), 
+        rec_search_leaf_notes AS (
+            select * from temp_notes 
+            WHERE temp_notes.id IN (:noteIdList)
+            UNION ALL
+            SELECT 
+                a.*
+            FROM temp_notes a
+            JOIN rec_search_leaf_notes b ON b.id = a.parent_id
+        )
+        SELECT DISTINCT b.* 
+        FROM rec_search_leaf_notes b
+        WHERE b.id NOT IN (
+            SELECT parent_id FROM rec_search_leaf_notes WHERE parent_id IS NOT NULL
+        )
+    """)
+    abstract fun runQueryLeafNotesData(noteIdList: List<Long>): LiveData<List<NoteView>>
+
+    @Query("""
         $QUERY
         WHERE notes.book_id = :bookId
         AND notes.level > 0
