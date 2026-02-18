@@ -9,7 +9,7 @@ import com.orgzly.org.datetime.OrgInterval
 import com.orgzly.org.datetime.OrgRange
 import org.joda.time.DateTime
 
-object AgendaItems {
+class AgendaItems(private val hideEmptyDaysInAgenda : Boolean) {
     data class ExpandableOrgRange(
             val range: OrgRange,
             val canBeOverdueToday: Boolean,
@@ -136,8 +136,9 @@ object AgendaItems {
 
         // Add daily
         dailyNotes.forEach { d ->
-            // Always add day heading
-            result.add(AgendaItem.Day(agendaItemId++, DateTime(d.key)))
+            if (d.value.isNotEmpty() || !hideEmptyDaysInAgenda) {
+                result.add(AgendaItem.Day(agendaItemId++, DateTime(d.key)))
+            }
 
             if (d.value.isNotEmpty()) {
                 result.addAll(d.value)
