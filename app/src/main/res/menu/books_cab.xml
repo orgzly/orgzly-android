@@ -40,4 +40,10 @@
         app:showAsAction="never">
     </item>
 
+    <item
+        android:id="@+id/books_context_menu_show_diff"
+        android:title="Show diff"
+        app:showAsAction="never">
+    </item>
+
 </menu>

@@ -35,7 +35,7 @@ class BooksViewModel @Inject constructor(
     val bookToExportEvent: SingleLiveEvent<Pair<Book, BookFormat>> = SingleLiveEvent()
     val bookExportedEvent: SingleLiveEvent<String> = SingleLiveEvent()
     val setBookLinkRequestEvent: SingleLiveEvent<BookLinkOptions> = SingleLiveEvent()
-
+    val showDiffEvent: SingleLiveEvent<BookView> = SingleLiveEvent()
 
     enum class ViewState {
         LOADING,
@@ -72,6 +72,12 @@ class BooksViewModel @Inject constructor(
     fun deleteBookRequest(bookId: Long) {
         App.EXECUTORS.diskIO().execute {
             bookToDeleteEvent.postValue(dataRepository.getBookView(bookId))
+        }
+    }
+
+    fun showDiffBookRequest(bookId: Long) {
+        App.EXECUTORS.diskIO().execute {
+            showDiffEvent.postValue(dataRepository.getBookView(bookId))
         }
     }
 
